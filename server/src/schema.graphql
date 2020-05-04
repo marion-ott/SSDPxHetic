@@ -1,0 +1,116 @@
+scalar DateTime
+
+type Query {
+	user: User!
+	users: [User!]!
+	hotel: Hotel!
+	hotels: [Hotel!]!
+	sector: Sector!
+	sectors: [Sector!]!
+}
+
+type Mutation {
+	createUser(input: CreateUserInput): User!
+	updateUser(id: ID!, input: UpdateUserInput): User!
+	deleteUser(id: ID!): User!
+	createHotel(input: CreateHotelInput): Hotel!
+	updateHotel(id: ID!, input: UpdateHotelInput): Hotel!
+	deleteHotel(id: ID!): Hotel!
+	createSector(input: CreateSectorInput): Sector!
+	updateSector(id: ID!, input: UpdateSectorInput): Sector!
+	deleteSector(id: ID!): Sector!
+}
+
+type User {
+	id: ID!
+	firstName: String!
+	lastName: String!
+	role: String!
+	sector: Sector
+	address: String
+	email: String!
+	password: String
+	createdAt: DateTime!
+	updatedAt: DateTime!
+}
+
+type Hotel {
+	id: ID!
+	uuid: Int!
+	name: String!
+	address: String!
+	zipCode: Int!
+	city: String!
+	active: Boolean!
+	rooms: Int!
+	lastVisit: DateTime
+	score: Float
+	sector: Sector!
+	lat: Float!
+	long: Float!
+	createdAt: DateTime!
+	updatedAt: DateTime!
+}
+
+type Sector {
+	id: ID!
+	zone: String!
+	users: [User!]
+	hotels: [Hotel!]
+	createdAt: DateTime!
+	updatedAt: DateTime!
+}
+
+input CreateUserInput {
+	firstName: String!
+	lastName: String!
+	role: String!
+	sector: ID
+	address: String
+	email: String!
+	password: String
+}
+
+input UpdateUserInput {
+	firstName: String
+	lastName: String
+	role: String
+	sector: ID
+	address: String
+	email: String
+	password: String
+}
+
+input CreateHotelInput {
+	uuid: Int!
+	name: String!
+	address: String!
+	zipCode: Int!
+	city: String!
+	status: Boolean!
+	rooms: Int!
+	lastVisit: DateTime
+	score: Float
+	sector: ID!
+}
+
+input UpdateHotelInput {
+	uuid: Int
+	name: String
+	address: String
+	zipCode: Int
+	city: String
+	status: Boolean
+	rooms: Int
+	lastVisit: DateTime
+	score: Float
+	sector: ID
+}
+
+input CreateSectorInput {
+	zone: String!
+}
+
+input UpdateSectorInput {
+	zone: String!
+}
