@@ -1,3 +1,5 @@
+@import "./../node_modules/bulma/css/bulma.min.css";
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -10,4 +12,24 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+.table th,
+.table td {
+  border: none;
+}
+
+.table thead td,
+.table thead th {
+  border-bottom: 1px solid #dbdbdb;
+}
+
+.menu-list li ul {
+  border: none;
+  padding: 0;
+}
+
+.menu-label:not(:last-child) {
+  margin: 1em;
+  color: black;
 }
