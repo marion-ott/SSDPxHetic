@@ -1,16 +1,21 @@
 import React from 'react'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
-
+import Login from './Login'
 import Home from './Home'
 import Employees from './Employees'
 import Hotels from './Hotels'
 import { Nav } from '../organisms'
 
+const logged = false
+
 function App() {
   return (
     <Router>
-      <Nav />
+      {logged && <Nav />}
       <Switch>
+        <Route exact path='/login'>
+          <Login />
+        </Route>
         <Route exact path='/'>
           <Home />
         </Route>
