@@ -17,10 +17,12 @@ const resolvers = {
 const server = new GraphQLServer({
 	typeDefs: 'src/schema.graphql',
 	resolvers,
-	context: req => ({
-		...req,
-		prisma
-	})
+	context(request) {
+		return {
+			prisma,
+			request
+		}
+	}
 })
 
 server.start({port: process.env.PORT || 9000}, () =>
