@@ -1,6 +1,10 @@
 import bcrypt from 'bcryptjs'
-import jwt from 'jsonwebtoken'
-import getAuthUserId from './../utils/getAuthUserId'
+import {
+	getAuthUserId,
+	generateToken,
+	hashPassword,
+	generateSearchIndex
+} from './../utils'
 
 const Mutation = {
 	async login(parent, {data}, {prisma}) {
@@ -16,7 +20,7 @@ const Mutation = {
 			throw new Error('incorrect password')
 		}
 
-		const token = jwt.sign({id: user.id}, 'thisisasecret')
+		const token = generateToken()
 
 		return {
 			user,
@@ -24,12 +28,10 @@ const Mutation = {
 		}
 	},
 	async createUser(parent, {data}, {prisma}) {
-		// if (data.password.length < 8) {
-		// 	throw new Error("Password doesn't meet requirements.")
-		// }
-		data.password = await bcrypt.hash(data.password, 10)
+		data.password = hashPassword(data.password)
+		data.searchIndex = generateSearchIndex(data.firstName, data.lastName)
 		const user = await prisma.createUser(data)
-		const token = jwt.sign({id: user.id}, 'thisisasecret')
+		const token = generateToken()
 
 		return {
 			user,
@@ -53,6 +55,14 @@ const Mutation = {
 			throw new Error("You can't perform this action")
 		}
 
+		if (data.firstName || data.lastName) {
+			data.searchIndex = generateSearchIndex(data.firstName, data.lastName)
+		}
+
+		if (data.password) {
+			data.password = hashPassword(data.password)
+		}
+
 		return prisma.updateUser({
 			data,
 			where: {id: userId}
@@ -62,9 +72,15 @@ const Mutation = {
 		return prisma.deleteUser({id})
 	},
 	createHotel(parent, {data}, {prisma, request}) {
+		data.searchIndex = generateSearchIndex(data.name)
+		//TODO: generate lat long value from input address?
 		return prisma.createHotel(data)
 	},
 	updateHotel(parent, {id, data}, {prisma}) {
+		if (data.name) {
+			data.searchIndex = generateSearchIndex(data.name)
+		}
+
 		return prisma.updateHotel({
 			data,
 			where: {id}
@@ -85,6 +101,7 @@ const Mutation = {
 	deleteSector(parent, {id}, {prisma}) {
 		return prisma.deleteSector({id})
 	}
+	// TODO: create visit type, query & mutations
 	// async deleteVisit(parent, {id}, {prisma, request}) {
 	// 	const userId = getAuthUserId(request)
 	// 	const visitExists = await prisma.exists.Visit({

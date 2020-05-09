@@ -23,6 +23,7 @@ scalar DateTime
 
 type Hotel {
   id: ID!
+  searchIndex: String!
   uuid: Int!
   name: String!
   address: String!
@@ -47,6 +48,7 @@ type HotelConnection {
 
 input HotelCreateInput {
   id: ID
+  searchIndex: String!
   uuid: Int!
   name: String!
   address: String!
@@ -68,6 +70,7 @@ input HotelCreateManyWithoutSectorInput {
 
 input HotelCreateWithoutSectorInput {
   id: ID
+  searchIndex: String!
   uuid: Int!
   name: String!
   address: String!
@@ -89,6 +92,8 @@ type HotelEdge {
 enum HotelOrderByInput {
   id_ASC
   id_DESC
+  searchIndex_ASC
+  searchIndex_DESC
   uuid_ASC
   uuid_DESC
   name_ASC
@@ -119,6 +124,7 @@ enum HotelOrderByInput {
 
 type HotelPreviousValues {
   id: ID!
+  searchIndex: String!
   uuid: Int!
   name: String!
   address: String!
@@ -149,6 +155,20 @@ input HotelScalarWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
+  searchIndex: String
+  searchIndex_not: String
+  searchIndex_in: [String!]
+  searchIndex_not_in: [String!]
+  searchIndex_lt: String
+  searchIndex_lte: String
+  searchIndex_gt: String
+  searchIndex_gte: String
+  searchIndex_contains: String
+  searchIndex_not_contains: String
+  searchIndex_starts_with: String
+  searchIndex_not_starts_with: String
+  searchIndex_ends_with: String
+  searchIndex_not_ends_with: String
   uuid: Int
   uuid_not: Int
   uuid_in: [Int!]
@@ -289,6 +309,7 @@ input HotelSubscriptionWhereInput {
 }
 
 input HotelUpdateInput {
+  searchIndex: String
   uuid: Int
   name: String
   address: String
@@ -304,6 +325,7 @@ input HotelUpdateInput {
 }
 
 input HotelUpdateManyDataInput {
+  searchIndex: String
   uuid: Int
   name: String
   address: String
@@ -318,6 +340,7 @@ input HotelUpdateManyDataInput {
 }
 
 input HotelUpdateManyMutationInput {
+  searchIndex: String
   uuid: Int
   name: String
   address: String
@@ -349,6 +372,7 @@ input HotelUpdateManyWithWhereNestedInput {
 }
 
 input HotelUpdateWithoutSectorDataInput {
+  searchIndex: String
   uuid: Int
   name: String
   address: String
@@ -388,6 +412,20 @@ input HotelWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
+  searchIndex: String
+  searchIndex_not: String
+  searchIndex_in: [String!]
+  searchIndex_not_in: [String!]
+  searchIndex_lt: String
+  searchIndex_lte: String
+  searchIndex_gt: String
+  searchIndex_gte: String
+  searchIndex_contains: String
+  searchIndex_not_contains: String
+  searchIndex_starts_with: String
+  searchIndex_not_starts_with: String
+  searchIndex_ends_with: String
+  searchIndex_not_ends_with: String
   uuid: Int
   uuid_not: Int
   uuid_in: [Int!]
@@ -768,6 +806,7 @@ type Subscription {
 
 type User {
   id: ID!
+  searchIndex: String!
   firstName: String!
   lastName: String!
   role: String!
@@ -787,6 +826,7 @@ type UserConnection {
 
 input UserCreateInput {
   id: ID
+  searchIndex: String!
   firstName: String!
   lastName: String!
   role: String!
@@ -803,6 +843,7 @@ input UserCreateManyWithoutSectorInput {
 
 input UserCreateWithoutSectorInput {
   id: ID
+  searchIndex: String!
   firstName: String!
   lastName: String!
   role: String!
@@ -819,6 +860,8 @@ type UserEdge {
 enum UserOrderByInput {
   id_ASC
   id_DESC
+  searchIndex_ASC
+  searchIndex_DESC
   firstName_ASC
   firstName_DESC
   lastName_ASC
@@ -839,6 +882,7 @@ enum UserOrderByInput {
 
 type UserPreviousValues {
   id: ID!
+  searchIndex: String!
   firstName: String!
   lastName: String!
   role: String!
@@ -864,6 +908,20 @@ input UserScalarWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
+  searchIndex: String
+  searchIndex_not: String
+  searchIndex_in: [String!]
+  searchIndex_not_in: [String!]
+  searchIndex_lt: String
+  searchIndex_lte: String
+  searchIndex_gt: String
+  searchIndex_gte: String
+  searchIndex_contains: String
+  searchIndex_not_contains: String
+  searchIndex_starts_with: String
+  searchIndex_not_starts_with: String
+  searchIndex_ends_with: String
+  searchIndex_not_ends_with: String
   firstName: String
   firstName_not: String
   firstName_in: [String!]
@@ -988,6 +1046,7 @@ input UserSubscriptionWhereInput {
 }
 
 input UserUpdateInput {
+  searchIndex: String
   firstName: String
   lastName: String
   role: String
@@ -998,6 +1057,7 @@ input UserUpdateInput {
 }
 
 input UserUpdateManyDataInput {
+  searchIndex: String
   firstName: String
   lastName: String
   role: String
@@ -1007,6 +1067,7 @@ input UserUpdateManyDataInput {
 }
 
 input UserUpdateManyMutationInput {
+  searchIndex: String
   firstName: String
   lastName: String
   role: String
@@ -1033,6 +1094,7 @@ input UserUpdateManyWithWhereNestedInput {
 }
 
 input UserUpdateWithoutSectorDataInput {
+  searchIndex: String
   firstName: String
   lastName: String
   role: String
@@ -1067,6 +1129,20 @@ input UserWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
+  searchIndex: String
+  searchIndex_not: String
+  searchIndex_in: [String!]
+  searchIndex_not_in: [String!]
+  searchIndex_lt: String
+  searchIndex_lte: String
+  searchIndex_gt: String
+  searchIndex_gte: String
+  searchIndex_contains: String
+  searchIndex_not_contains: String
+  searchIndex_starts_with: String
+  searchIndex_not_starts_with: String
+  searchIndex_ends_with: String
+  searchIndex_not_ends_with: String
   firstName: String
   firstName_not: String
   firstName_in: [String!]
