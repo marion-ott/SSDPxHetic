@@ -9,7 +9,7 @@ import { Title } from '../atoms'
 
 const Home = () => (
   <section className='section'>
-    <h1>hello home</h1>
+    <h1 className='title is-1'>planning</h1>
   </section>
 )
 

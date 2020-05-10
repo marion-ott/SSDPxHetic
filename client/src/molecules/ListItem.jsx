@@ -7,6 +7,9 @@ const ListItem = ({ index, data, keys }) => (
       if (typeof data[el.name] == 'object') {
         return <td key={i}>{data[el.name] ? data[el.name].zone : 'N/A'}</td>
       }
+      if (el.name === 'lastVisit') {
+        return <td key={i}>{new Date(data[el.name]).toLocaleDateString()}</td>
+      }
       return <td key={i}>{data[el.name]}</td>
     })}
   </tr>

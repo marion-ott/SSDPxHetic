@@ -1,40 +1,56 @@
-import React, { useMemo } from 'react'
+import React, { useState } from 'react'
+import { useQuery } from '@apollo/react-hooks'
+import { GET_COUNT } from './../graphql/queries/index'
 import { ListItem } from '../molecules'
+import { Pagination } from './../molecules'
 import { Input } from '../atoms'
 import { listKeys } from '../global/data'
 
-const List = ({ entries }) => {
+const List = ({ entries, type, title }) => {
+  const { loading, error, data } = useQuery(GET_COUNT, { variables: { type } })
   const keys = listKeys.filter((el) =>
     Object.keys(entries[0]).find((entry) => entry === el.name)
   )
+
+  if (loading) {
+    return <p>loading</p>
+  }
+
   return (
     <div className='column'>
+      <h3 className='title is-3'>
+        {title}
+        <span className='subtitle is-6'>&nbsp;({data.count})</span>
+      </h3>
       <div className='control has-icons-left is-loading'>
         <Input type='text' placeholder='Rechercher' />
         <span className='icon is-left'>
           <i className='fas fa-search' aria-hidden='true'></i>
         </span>
       </div>
-      <table className='table table is-fullwidth is-hoverable'>
-        <thead>
-          <tr>
-            <th></th>
-            {keys.map((el, id) => (
-              <th key={id}>{el.label}</th>
+      <div className='box table-box'>
+        <table className='table is-fullwidth is-hoverable'>
+          <thead>
+            <tr>
+              <th></th>
+              {keys.map((el, id) => (
+                <th key={id}>{el.label}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {entries.map((entry, index) => (
+              <ListItem
+                key={entry.id}
+                index={index + 1}
+                data={entry}
+                keys={keys}
+              />
             ))}
-          </tr>
-        </thead>
-        <tbody>
-          {entries.map((entry, index) => (
-            <ListItem
-              key={entry.id}
-              index={index + 1}
-              data={entry}
-              keys={keys}
-            />
-          ))}
-        </tbody>
-      </table>
+          </tbody>
+        </table>
+      </div>
+      <Pagination />
     </div>
   )
 }

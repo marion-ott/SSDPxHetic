@@ -1,9 +1,9 @@
 import React from 'react'
 
 const Filters = () => (
-  <aside className='menu column is-one-fifth'>
+  <aside className='box menu column is-one-fifth'>
     <ul className='menu-list'>
-      <a class='is-active'>Filtres</a>
+      <a className='is-active'>Filtres</a>
       <li>
         <p className='menu-label'>
           <strong>Secteurs</strong>

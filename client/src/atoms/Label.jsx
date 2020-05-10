@@ -1,7 +1,7 @@
 import React from 'react'
 
-const Label = ({ size, text, forAttr }) => (
-  <label className={`label ${size}`} htmlFor={forAttr}>
+const Label = ({ size, text, name }) => (
+  <label className={`label ${size}`} htmlFor={name}>
     {text}
   </label>
 )

@@ -11,7 +11,7 @@ const logged = false
 function App() {
   return (
     <Router>
-      {logged && <Nav />}
+      <Nav />
       <Switch>
         <Route exact path='/login'>
           <Login />

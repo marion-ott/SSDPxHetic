@@ -7,11 +7,46 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: #E5E5E5;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
+}
+
+.login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  min-height: 100vh;
+  background: white;
+}
+
+.login .box {
+  width: 100%;
+  max-width: 450px;
+}
+
+section.section {
+  max-width: 1440px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 2rem 1.5rem;
+}
+
+.box.table-box,
+.box.menu.column {
+  box-shadow: none
+}
+
+.box.menu.column {
+  height: fit-content;
+}
+
+.box.table-box {
+  margin-top: 20px;
 }
 
 .table th,
@@ -32,4 +67,23 @@ code {
 .menu-label:not(:last-child) {
   margin: 1em;
   color: black;
+}
+
+.buttons .button {
+  margin-bottom: 0;
+}
+
+.navbar .container {
+  max-width: 1440px !important;
+  padding: 0 1.5rem;
+}
+
+.logo-container,
+.logo-container a {
+  display: flex;
+  align-items: center;
+}
+
+.pagination a {
+  background: white;
 }

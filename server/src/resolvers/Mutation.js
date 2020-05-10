@@ -20,15 +20,15 @@ const Mutation = {
 			throw new Error('incorrect password')
 		}
 
-		const token = generateToken()
+		const token = await generateToken()
 
 		return {
-			user,
-			token
+			token,
+			user
 		}
 	},
 	async createUser(parent, {data}, {prisma}) {
-		data.password = hashPassword(data.password)
+		data.password = await hashPassword(data.password)
 		data.searchIndex = generateSearchIndex(data.firstName, data.lastName)
 		const user = await prisma.createUser(data)
 		const token = generateToken()

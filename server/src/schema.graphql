@@ -19,6 +19,8 @@ type Query {
 
 	sector(id: ID!): Sector!
 	sectors: [Sector!]!
+
+	count(query: String): Int!
 }
 
 type Mutation {
@@ -50,8 +52,8 @@ type User {
 }
 
 type AuthPayload {
-	token: String!
-	user: User!
+	token: String
+	user: User
 }
 
 input LoginInput {

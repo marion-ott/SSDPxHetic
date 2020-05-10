@@ -25,8 +25,8 @@ export const GET_HOTEL = gql`
 `
 
 export const GET_HOTELS = gql`
-  query {
-    hotels {
+  query Hotels($first: Int, $skip: Int, $orderBy: HotelOrderByInput) {
+    hotels(first: $first, skip: $skip, orderBy: $orderBy) {
       id
       name
       rooms

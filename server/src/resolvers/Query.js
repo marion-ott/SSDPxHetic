@@ -7,17 +7,18 @@ const Query = {
 	},
 	users(parent, args, {prisma}) {
 		const opArgs = {
+			where: {},
 			first: args.first,
 			skip: args.skip,
 			orderBy: args.orderBy
 		}
 
+		//TODO: create field with name in lowercase with no accent to handle search query
 		if (args.query) {
 			opArgs.where = {
 				searchIndex_contains: args.query
 			}
 		}
-
 		return prisma.users(opArgs)
 	},
 	hotel(parent, {id}, {prisma}) {
@@ -44,6 +45,18 @@ const Query = {
 	},
 	sectors(parent, args, {prisma}) {
 		return prisma.sectors()
+	},
+	count(parent, args, {prisma}) {
+		if (args.query === 'hotels') {
+			return prisma
+				.hotelsConnection()
+				.aggregate()
+				.count()
+		}
+		return prisma
+			.usersConnection()
+			.aggregate()
+			.count()
 	}
 }
 
