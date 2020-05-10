@@ -1,8 +1,12 @@
 const fs = require('fs')
 const {prisma} = require('../src/generated/prisma-client')
+const {generateSearchIndex} = require('./../src/utils/index')
 
 let sectors
-/** ADD ALL DATA IN DB */
+
+/**
+ * Entry function to import data from json
+ */
 const importData = async () => {
 	try {
 		// Sector data import
@@ -27,6 +31,12 @@ const importData = async () => {
 	}
 }
 
+/**
+ *
+ * @param {String} file
+ * @param {Function} callback
+ * @returns {void}
+ */
 const dataImport = async (file, callback) => {
 	const json = JSON.parse(fs.readFileSync(`${__dirname}/${file}.json`))
 	console.log(`Importing ${json[file].length} ${file}...`)
@@ -37,11 +47,24 @@ const dataImport = async (file, callback) => {
 				connect: {id: sector.id}
 			}
 		}
+
+		if (entry.name) {
+			entry.searchIndex = generateSearchIndex(entry.name)
+		}
+
+		if (entry.firstName && entry.lastName) {
+			entry.searchIndex = generateSearchIndex(entry.firstName, entry.lastName)
+		}
 		await callback(entry)
 	}
 	console.log(`${file} successfully imported.`)
 }
 
+/**
+ * Prisma data import
+ * @param {Object} data
+ * @returns {void}
+ */
 const addHotel = async data => {
 	await prisma.createHotel(data)
 }
@@ -49,23 +72,25 @@ const addUser = async data => {
 	await prisma.createUser(data)
 }
 
-/** REMOVE ALL DB DATA */
+/**
+ * Remove database data if needed
+ */
 const deleteData = async () => {
-	users = await prisma.users()
+	const users = await prisma.users()
 	console.log(`Deleting users...`)
 	for (const user of users) {
 		await prisma.deleteUser({id: user.id})
 	}
 	console.log(`${users.length} users deleted.`)
 
-	hotels = await prisma.hotels()
+	const hotels = await prisma.hotels()
 	console.log(`Deleting hotels...`)
 	for (const hotel of hotels) {
 		await prisma.deleteHotel({id: hotel.id})
 	}
 	console.log(`${hotels.length} hotels deleted.`)
 
-	sectors = await prisma.sectors()
+	const sectors = await prisma.sectors()
 	console.log(`Deleting sectors...`)
 	for (const sector of sectors) {
 		await prisma.deleteSector({id: sector.id})
@@ -75,4 +100,14 @@ const deleteData = async () => {
 
 /** UNCOMMENT IF YOU WISH TO REMOVE ALL DATA */
 // deleteData()
-importData()
+// importData()
+console.log(process.argv)
+/**
+ * Use appropriate node script argument to proceed with the right action
+ * e.g: `yarn data--import`
+ */
+if (process.argv[2] === '--import') {
+	importData()
+} else if (process.argv[2] === '--delete') {
+	deleteData()
+}

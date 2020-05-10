@@ -1,7 +1,7 @@
 {
   "employees": [{
-      "lastName": "Eric",
-      "firstName": "Priou",
+      "lastName": "Priou",
+      "firstName": "Eric",
       "role": "admin",
       "email": "eric.priou@hetic.net",
       "password": "admin"

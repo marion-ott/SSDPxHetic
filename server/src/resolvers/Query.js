@@ -1,21 +1,49 @@
+import getAuthUserId from './../utils/getAuthUserId'
+
 const Query = {
-	user(parent, args, context) {
-		return context.prisma.user({id: args.id})
+	user(parent, {id}, {prisma, request}) {
+		const userId = getAuthUserId(request)
+		return prisma.user({id})
 	},
-	users(parent, args, context) {
-		return context.prisma.users()
+	users(parent, args, {prisma}) {
+		const opArgs = {
+			first: args.first,
+			skip: args.skip,
+			orderBy: args.orderBy
+		}
+
+		if (args.query) {
+			opArgs.where = {
+				searchIndex_contains: args.query
+			}
+		}
+
+		return prisma.users(opArgs)
 	},
-	hotel(parent, args, context) {
-		return context.prisma.hotel({id: args.id})
+	hotel(parent, {id}, {prisma}) {
+		return prisma.hotel({id})
 	},
-	hotels(parent, args, context) {
-		return context.prisma.hotels()
+	hotels(parent, args, {prisma}) {
+		const opArgs = {
+			where: {},
+			first: args.first,
+			skip: args.skip,
+			orderBy: args.orderBy
+		}
+
+		//TODO: create field with name in lowercase with no accent to handle search query
+		if (args.query) {
+			opArgs.where = {
+				searchIndex_contains: args.query
+			}
+		}
+		return prisma.hotels(opArgs)
 	},
-	sector(parent, args, context) {
-		return context.prisma.sector({id: args.id})
+	sector(parent, {id}, {prisma}) {
+		return prisma.sector({id})
 	},
-	sectors(parent, args, context) {
-		return context.prisma.sectors()
+	sectors(parent, args, {prisma}) {
+		return prisma.sectors()
 	}
 }
 

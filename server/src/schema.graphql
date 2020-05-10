@@ -1,28 +1,43 @@
 scalar DateTime
 
 type Query {
-	user: User!
-	users: [User!]!
-	hotel: Hotel!
-	hotels: [Hotel!]!
-	sector: Sector!
+	user(id: ID!): User!
+	users(
+		query: String
+		first: Int
+		skip: Int
+		UserOrderByInput: UserOrderByInput
+	): [User!]!
+
+	hotel(id: ID!): Hotel!
+	hotels(
+		query: String
+		first: Int
+		skip: Int
+		orderBy: HotelOrderByInput
+	): [Hotel!]!
+
+	sector(id: ID!): Sector!
 	sectors: [Sector!]!
 }
 
 type Mutation {
-	createUser(input: CreateUserInput): User!
-	updateUser(id: ID!, input: UpdateUserInput): User!
+	login(data: LoginInput): AuthPayload!
+	createUser(data: CreateUserInput): AuthPayload!
+	updateUser(id: ID!, data: UpdateUserInput): User!
 	deleteUser(id: ID!): User!
-	createHotel(input: CreateHotelInput): Hotel!
-	updateHotel(id: ID!, input: UpdateHotelInput): Hotel!
+	createHotel(data: CreateHotelInput): Hotel!
+	updateHotel(id: ID!, data: UpdateHotelInput): Hotel!
 	deleteHotel(id: ID!): Hotel!
-	createSector(input: CreateSectorInput): Sector!
-	updateSector(id: ID!, input: UpdateSectorInput): Sector!
+	createSector(data: CreateSectorInput): Sector!
+	updateSector(id: ID!, data: UpdateSectorInput): Sector!
 	deleteSector(id: ID!): Sector!
 }
 
+##	USER	##
 type User {
 	id: ID!
+	searchIndex: String!
 	firstName: String!
 	lastName: String!
 	role: String!
@@ -34,31 +49,14 @@ type User {
 	updatedAt: DateTime!
 }
 
-type Hotel {
-	id: ID!
-	uuid: Int!
-	name: String!
-	address: String!
-	zipCode: Int!
-	city: String!
-	active: Boolean!
-	rooms: Int!
-	lastVisit: DateTime
-	score: Float
-	sector: Sector!
-	lat: Float!
-	long: Float!
-	createdAt: DateTime!
-	updatedAt: DateTime!
+type AuthPayload {
+	token: String!
+	user: User!
 }
 
-type Sector {
-	id: ID!
-	zone: String!
-	users: [User!]
-	hotels: [Hotel!]
-	createdAt: DateTime!
-	updatedAt: DateTime!
+input LoginInput {
+	email: String!
+	password: String!
 }
 
 input CreateUserInput {
@@ -81,13 +79,46 @@ input UpdateUserInput {
 	password: String
 }
 
+enum UserOrderByInput {
+	firstName_ASC
+	firstName_DESC
+	lastName_ASC
+	lastName_DESC
+	role_ASC
+	role_DESC
+	createdAt_ASC
+	createdAt_DESC
+	updatedAt_ASC
+	updatedAt_DESC
+}
+
+##	HOTEL	##
+type Hotel {
+	id: ID!
+	searchIndex: String!
+	uuid: Int!
+	name: String!
+	address: String!
+	zipCode: Int!
+	city: String!
+	active: Boolean!
+	rooms: Int!
+	lastVisit: DateTime
+	score: Float
+	sector: Sector!
+	lat: Float!
+	long: Float!
+	createdAt: DateTime!
+	updatedAt: DateTime!
+}
+
 input CreateHotelInput {
 	uuid: Int!
 	name: String!
 	address: String!
 	zipCode: Int!
 	city: String!
-	status: Boolean!
+	active: Boolean!
 	rooms: Int!
 	lastVisit: DateTime
 	score: Float
@@ -105,6 +136,37 @@ input UpdateHotelInput {
 	lastVisit: DateTime
 	score: Float
 	sector: ID
+}
+
+enum HotelOrderByInput {
+	name_ASC
+	name_DESC
+	zipCode_ASC
+	zipCode_DESC
+	city_ASC
+	city_DESC
+	active_ASC
+	active_DESC
+	rooms_ASC
+	rooms_DESC
+	lastVisit_ASC
+	lastVisit_DESC
+	score_ASC
+	score_DESC
+	createdAt_ASC
+	createdAt_DESC
+	updatedAt_ASC
+	updatedAt_DESC
+}
+
+##	SECTOR	##
+type Sector {
+	id: ID!
+	zone: String!
+	users: [User!]
+	hotels: [Hotel!]
+	createdAt: DateTime!
+	updatedAt: DateTime!
 }
 
 input CreateSectorInput {

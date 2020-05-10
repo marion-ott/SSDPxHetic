@@ -182,6 +182,8 @@ export interface ClientConstructor<T> {
 export type UserOrderByInput =
   | "id_ASC"
   | "id_DESC"
+  | "searchIndex_ASC"
+  | "searchIndex_DESC"
   | "firstName_ASC"
   | "firstName_DESC"
   | "lastName_ASC"
@@ -202,6 +204,8 @@ export type UserOrderByInput =
 export type HotelOrderByInput =
   | "id_ASC"
   | "id_DESC"
+  | "searchIndex_ASC"
+  | "searchIndex_DESC"
   | "uuid_ASC"
   | "uuid_DESC"
   | "name_ASC"
@@ -242,6 +246,7 @@ export type SectorOrderByInput =
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
 export interface UserUpdateWithoutSectorDataInput {
+  searchIndex?: Maybe<String>;
   firstName?: Maybe<String>;
   lastName?: Maybe<String>;
   role?: Maybe<String>;
@@ -257,6 +262,7 @@ export type HotelWhereUniqueInput = AtLeastOne<{
 
 export interface HotelCreateInput {
   id?: Maybe<ID_Input>;
+  searchIndex: String;
   uuid: Int;
   name: String;
   address: String;
@@ -308,6 +314,20 @@ export interface UserWhereInput {
   id_not_starts_with?: Maybe<ID_Input>;
   id_ends_with?: Maybe<ID_Input>;
   id_not_ends_with?: Maybe<ID_Input>;
+  searchIndex?: Maybe<String>;
+  searchIndex_not?: Maybe<String>;
+  searchIndex_in?: Maybe<String[] | String>;
+  searchIndex_not_in?: Maybe<String[] | String>;
+  searchIndex_lt?: Maybe<String>;
+  searchIndex_lte?: Maybe<String>;
+  searchIndex_gt?: Maybe<String>;
+  searchIndex_gte?: Maybe<String>;
+  searchIndex_contains?: Maybe<String>;
+  searchIndex_not_contains?: Maybe<String>;
+  searchIndex_starts_with?: Maybe<String>;
+  searchIndex_not_starts_with?: Maybe<String>;
+  searchIndex_ends_with?: Maybe<String>;
+  searchIndex_not_ends_with?: Maybe<String>;
   firstName?: Maybe<String>;
   firstName_not?: Maybe<String>;
   firstName_in?: Maybe<String[] | String>;
@@ -434,6 +454,20 @@ export interface HotelWhereInput {
   id_not_starts_with?: Maybe<ID_Input>;
   id_ends_with?: Maybe<ID_Input>;
   id_not_ends_with?: Maybe<ID_Input>;
+  searchIndex?: Maybe<String>;
+  searchIndex_not?: Maybe<String>;
+  searchIndex_in?: Maybe<String[] | String>;
+  searchIndex_not_in?: Maybe<String[] | String>;
+  searchIndex_lt?: Maybe<String>;
+  searchIndex_lte?: Maybe<String>;
+  searchIndex_gt?: Maybe<String>;
+  searchIndex_gte?: Maybe<String>;
+  searchIndex_contains?: Maybe<String>;
+  searchIndex_not_contains?: Maybe<String>;
+  searchIndex_starts_with?: Maybe<String>;
+  searchIndex_not_starts_with?: Maybe<String>;
+  searchIndex_ends_with?: Maybe<String>;
+  searchIndex_not_ends_with?: Maybe<String>;
   uuid?: Maybe<Int>;
   uuid_not?: Maybe<Int>;
   uuid_in?: Maybe<Int[] | Int>;
@@ -558,6 +592,7 @@ export interface HotelWhereInput {
 
 export interface UserCreateWithoutSectorInput {
   id?: Maybe<ID_Input>;
+  searchIndex: String;
   firstName: String;
   lastName: String;
   role: String;
@@ -578,6 +613,7 @@ export interface HotelSubscriptionWhereInput {
 }
 
 export interface HotelUpdateInput {
+  searchIndex?: Maybe<String>;
   uuid?: Maybe<Int>;
   name?: Maybe<String>;
   address?: Maybe<String>;
@@ -664,6 +700,7 @@ export interface HotelUpsertWithWhereUniqueWithoutSectorInput {
 }
 
 export interface HotelUpdateManyDataInput {
+  searchIndex?: Maybe<String>;
   uuid?: Maybe<Int>;
   name?: Maybe<String>;
   address?: Maybe<String>;
@@ -698,6 +735,20 @@ export interface HotelScalarWhereInput {
   id_not_starts_with?: Maybe<ID_Input>;
   id_ends_with?: Maybe<ID_Input>;
   id_not_ends_with?: Maybe<ID_Input>;
+  searchIndex?: Maybe<String>;
+  searchIndex_not?: Maybe<String>;
+  searchIndex_in?: Maybe<String[] | String>;
+  searchIndex_not_in?: Maybe<String[] | String>;
+  searchIndex_lt?: Maybe<String>;
+  searchIndex_lte?: Maybe<String>;
+  searchIndex_gt?: Maybe<String>;
+  searchIndex_gte?: Maybe<String>;
+  searchIndex_contains?: Maybe<String>;
+  searchIndex_not_contains?: Maybe<String>;
+  searchIndex_starts_with?: Maybe<String>;
+  searchIndex_not_starts_with?: Maybe<String>;
+  searchIndex_ends_with?: Maybe<String>;
+  searchIndex_not_ends_with?: Maybe<String>;
   uuid?: Maybe<Int>;
   uuid_not?: Maybe<Int>;
   uuid_in?: Maybe<Int[] | Int>;
@@ -834,6 +885,20 @@ export interface UserScalarWhereInput {
   id_not_starts_with?: Maybe<ID_Input>;
   id_ends_with?: Maybe<ID_Input>;
   id_not_ends_with?: Maybe<ID_Input>;
+  searchIndex?: Maybe<String>;
+  searchIndex_not?: Maybe<String>;
+  searchIndex_in?: Maybe<String[] | String>;
+  searchIndex_not_in?: Maybe<String[] | String>;
+  searchIndex_lt?: Maybe<String>;
+  searchIndex_lte?: Maybe<String>;
+  searchIndex_gt?: Maybe<String>;
+  searchIndex_gte?: Maybe<String>;
+  searchIndex_contains?: Maybe<String>;
+  searchIndex_not_contains?: Maybe<String>;
+  searchIndex_starts_with?: Maybe<String>;
+  searchIndex_not_starts_with?: Maybe<String>;
+  searchIndex_ends_with?: Maybe<String>;
+  searchIndex_not_ends_with?: Maybe<String>;
   firstName?: Maybe<String>;
   firstName_not?: Maybe<String>;
   firstName_in?: Maybe<String[] | String>;
@@ -951,6 +1016,7 @@ export interface UserSubscriptionWhereInput {
 }
 
 export interface HotelUpdateWithoutSectorDataInput {
+  searchIndex?: Maybe<String>;
   uuid?: Maybe<Int>;
   name?: Maybe<String>;
   address?: Maybe<String>;
@@ -976,6 +1042,7 @@ export interface SectorSubscriptionWhereInput {
 }
 
 export interface UserUpdateManyDataInput {
+  searchIndex?: Maybe<String>;
   firstName?: Maybe<String>;
   lastName?: Maybe<String>;
   role?: Maybe<String>;
@@ -1001,6 +1068,7 @@ export interface SectorCreateWithoutUsersInput {
 }
 
 export interface HotelUpdateManyMutationInput {
+  searchIndex?: Maybe<String>;
   uuid?: Maybe<Int>;
   name?: Maybe<String>;
   address?: Maybe<String>;
@@ -1025,6 +1093,7 @@ export interface HotelUpdateWithWhereUniqueWithoutSectorInput {
 }
 
 export interface UserUpdateManyMutationInput {
+  searchIndex?: Maybe<String>;
   firstName?: Maybe<String>;
   lastName?: Maybe<String>;
   role?: Maybe<String>;
@@ -1035,6 +1104,7 @@ export interface UserUpdateManyMutationInput {
 
 export interface HotelCreateWithoutSectorInput {
   id?: Maybe<ID_Input>;
+  searchIndex: String;
   uuid: Int;
   name: String;
   address: String;
@@ -1085,6 +1155,7 @@ export interface HotelUpdateManyWithoutSectorInput {
 }
 
 export interface UserUpdateInput {
+  searchIndex?: Maybe<String>;
   firstName?: Maybe<String>;
   lastName?: Maybe<String>;
   role?: Maybe<String>;
@@ -1157,6 +1228,7 @@ export interface HotelUpdateManyWithWhereNestedInput {
 
 export interface UserCreateInput {
   id?: Maybe<ID_Input>;
+  searchIndex: String;
   firstName: String;
   lastName: String;
   role: String;
@@ -1172,6 +1244,7 @@ export interface NodeNode {
 
 export interface UserPreviousValues {
   id: ID_Output;
+  searchIndex: String;
   firstName: String;
   lastName: String;
   role: String;
@@ -1186,6 +1259,7 @@ export interface UserPreviousValuesPromise
   extends Promise<UserPreviousValues>,
     Fragmentable {
   id: () => Promise<ID_Output>;
+  searchIndex: () => Promise<String>;
   firstName: () => Promise<String>;
   lastName: () => Promise<String>;
   role: () => Promise<String>;
@@ -1200,6 +1274,7 @@ export interface UserPreviousValuesSubscription
   extends Promise<AsyncIterator<UserPreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
+  searchIndex: () => Promise<AsyncIterator<String>>;
   firstName: () => Promise<AsyncIterator<String>>;
   lastName: () => Promise<AsyncIterator<String>>;
   role: () => Promise<AsyncIterator<String>>;
@@ -1212,6 +1287,7 @@ export interface UserPreviousValuesSubscription
 
 export interface Hotel {
   id: ID_Output;
+  searchIndex: String;
   uuid: Int;
   name: String;
   address: String;
@@ -1229,6 +1305,7 @@ export interface Hotel {
 
 export interface HotelPromise extends Promise<Hotel>, Fragmentable {
   id: () => Promise<ID_Output>;
+  searchIndex: () => Promise<String>;
   uuid: () => Promise<Int>;
   name: () => Promise<String>;
   address: () => Promise<String>;
@@ -1249,6 +1326,7 @@ export interface HotelSubscription
   extends Promise<AsyncIterator<Hotel>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
+  searchIndex: () => Promise<AsyncIterator<String>>;
   uuid: () => Promise<AsyncIterator<Int>>;
   name: () => Promise<AsyncIterator<String>>;
   address: () => Promise<AsyncIterator<String>>;
@@ -1269,6 +1347,7 @@ export interface HotelNullablePromise
   extends Promise<Hotel | null>,
     Fragmentable {
   id: () => Promise<ID_Output>;
+  searchIndex: () => Promise<String>;
   uuid: () => Promise<Int>;
   name: () => Promise<String>;
   address: () => Promise<String>;
@@ -1287,6 +1366,7 @@ export interface HotelNullablePromise
 
 export interface HotelPreviousValues {
   id: ID_Output;
+  searchIndex: String;
   uuid: Int;
   name: String;
   address: String;
@@ -1306,6 +1386,7 @@ export interface HotelPreviousValuesPromise
   extends Promise<HotelPreviousValues>,
     Fragmentable {
   id: () => Promise<ID_Output>;
+  searchIndex: () => Promise<String>;
   uuid: () => Promise<Int>;
   name: () => Promise<String>;
   address: () => Promise<String>;
@@ -1325,6 +1406,7 @@ export interface HotelPreviousValuesSubscription
   extends Promise<AsyncIterator<HotelPreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
+  searchIndex: () => Promise<AsyncIterator<String>>;
   uuid: () => Promise<AsyncIterator<Int>>;
   name: () => Promise<AsyncIterator<String>>;
   address: () => Promise<AsyncIterator<String>>;
@@ -1625,6 +1707,7 @@ export interface SectorSubscriptionPayloadSubscription
 
 export interface User {
   id: ID_Output;
+  searchIndex: String;
   firstName: String;
   lastName: String;
   role: String;
@@ -1637,6 +1720,7 @@ export interface User {
 
 export interface UserPromise extends Promise<User>, Fragmentable {
   id: () => Promise<ID_Output>;
+  searchIndex: () => Promise<String>;
   firstName: () => Promise<String>;
   lastName: () => Promise<String>;
   role: () => Promise<String>;
@@ -1652,6 +1736,7 @@ export interface UserSubscription
   extends Promise<AsyncIterator<User>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
+  searchIndex: () => Promise<AsyncIterator<String>>;
   firstName: () => Promise<AsyncIterator<String>>;
   lastName: () => Promise<AsyncIterator<String>>;
   role: () => Promise<AsyncIterator<String>>;
@@ -1667,6 +1752,7 @@ export interface UserNullablePromise
   extends Promise<User | null>,
     Fragmentable {
   id: () => Promise<ID_Output>;
+  searchIndex: () => Promise<String>;
   firstName: () => Promise<String>;
   lastName: () => Promise<String>;
   role: () => Promise<String>;
