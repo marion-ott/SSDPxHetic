@@ -47,6 +47,6 @@ $ cd server
 $ yarn generate
 ```
 
-###### client running on http://localhost:3000
-###### server running on http://localhost:9000
-###### prisma running on http://localhost:4466
+#### client running on http://localhost:3000
+#### server running on http://localhost:9000
+#### prisma running on http://localhost:4466
