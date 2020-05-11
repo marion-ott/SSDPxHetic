@@ -15,6 +15,26 @@ code {
     monospace;
 }
 
+.navbar,
+.navbar-end,
+.navbar-menu,
+.navbar-start {
+  align-items: center;
+}
+
+a.navbar-item {
+  color: black;
+  padding: .3rem .75rem;
+  border-radius: 6px;
+  margin: 0 5px;
+}
+
+a.navbar-item:hover,
+a.navbar-item.is-active {
+  color: black;
+  background: rgba(7, 100, 159, 0.1) !important;
+}
+
 .login {
   display: flex;
   justify-content: center;
