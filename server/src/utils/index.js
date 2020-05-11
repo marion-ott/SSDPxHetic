@@ -59,4 +59,27 @@ const generateSearchIndex = (str1, str2 = null) => {
 	return searchIndex
 }
 
-export {getAuthUserId, generateToken, hashPassword, generateSearchIndex}
+/**
+ * Publish subscription on visit mutation
+ * @param {String} mutation
+ * @param {Object} data
+ * @param {PubSub Object} pubsub
+ */
+const publishVisit = async (mutation, data, pubsub) => {
+	await pubsub.publish('visit', {
+		visit: {
+			mutation,
+			data
+		}
+	})
+
+	return null
+}
+
+export {
+	getAuthUserId,
+	generateToken,
+	hashPassword,
+	generateSearchIndex,
+	publishVisit
+}

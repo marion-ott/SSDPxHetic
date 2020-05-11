@@ -3,10 +3,12 @@ import {
 	getAuthUserId,
 	generateToken,
 	hashPassword,
-	generateSearchIndex
+	generateSearchIndex,
+	publishVisit
 } from './../utils'
 
 const Mutation = {
+	/** AUTH */
 	async login(parent, {data}, {prisma}) {
 		const {email, password} = data
 
@@ -27,6 +29,8 @@ const Mutation = {
 			user
 		}
 	},
+
+	/** USERS */
 	async createUser(parent, {data}, {prisma}) {
 		data.password = await hashPassword(data.password)
 		data.searchIndex = generateSearchIndex(data.firstName, data.lastName)
@@ -71,9 +75,33 @@ const Mutation = {
 	deleteUser(parent, {id}, {prisma}) {
 		return prisma.deleteUser({id})
 	},
+
+	/** TEAMS */
+	createTeam(parent, {data}, {prisma, request}) {
+		const users = data.users.map(id => ({
+			id
+		}))
+		data = {
+			...data,
+			users: {
+				connect: users
+			}
+		}
+		return prisma.createTeam(data)
+	},
+	updateTeam(parent, {id, data}, {prisma}) {
+		return prisma.updateTeam({
+			data,
+			where: {id}
+		})
+	},
+	deleteTeam(parent, {id}, {prisma}) {
+		return prisma.deleteTeam({id})
+	},
+
+	/** HOTELS */
 	createHotel(parent, {data}, {prisma, request}) {
 		data.searchIndex = generateSearchIndex(data.name)
-		//TODO: generate lat long value from input address?
 		return prisma.createHotel(data)
 	},
 	updateHotel(parent, {id, data}, {prisma}) {
@@ -89,6 +117,75 @@ const Mutation = {
 	deleteHotel(parent, {id}, {prisma}) {
 		return prisma.deleteHotel({id})
 	},
+
+	/** RESIDENTS */
+	createResident(parent, {data}, {prisma, request}) {
+		return prisma.createResident(data)
+	},
+	updateResident(parent, {id, data}, {prisma}) {
+		if (data.name) {
+			data.searchIndex = generateSearchIndex(data.name)
+		}
+
+		return prisma.updateResident({
+			data,
+			where: {id}
+		})
+	},
+	deleteResident(parent, {id}, {prisma}) {
+		return prisma.deleteResident({id})
+	},
+
+	/** VISIT */
+	async createVisit(parent, {data}, {prisma, pubsub}) {
+		const formattedData = {
+			...data,
+			team: {
+				connect: {
+					id: data.team
+				}
+			},
+			hotel: {
+				connect: {
+					id: data.hotel
+				}
+			}
+		}
+		const visit = await prisma.createVisit(formattedData)
+		await publishVisit('CREATED', visit, pubsub)
+		return visit
+	},
+	async updateVisit(parent, {id, data}, {prisma, pubsub}) {
+		if (data.team) {
+			data.team = {
+				connect: {
+					id: data.team
+				}
+			}
+		}
+
+		if (data.hotel) {
+			data.hotel = {
+				connect: {
+					id: data.hotel
+				}
+			}
+		}
+
+		const visit = prisma.updateVisit({
+			data,
+			where: {id}
+		})
+		await publishVisit('UPDATED', visit, pubsub)
+		return visit
+	},
+	async deleteVisit(parent, {id}, {prisma, pubsub}) {
+		const visit = await prisma.deleteVisit({id})
+		await publishVisit('DELETED', visit, pubsub)
+		return visit
+	},
+
+	/** SECTORS */
 	createSector(parent, {data}, {prisma}) {
 		return prisma.createSector(data)
 	},
