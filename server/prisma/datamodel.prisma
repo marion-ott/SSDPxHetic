@@ -12,6 +12,22 @@ type User {
 	updatedAt: DateTime! @updatedAt
 }
 
+type Team {
+	id: ID! @id
+	users: [User!]! @relation(link: INLINE)
+	createdAt: DateTime! @createdAt
+	updatedAt: DateTime! @updatedAt
+}
+
+type Visit {
+	id: ID! @id
+	date: DateTime!
+	team: Team! @relation(link: INLINE)
+	hotel: Hotel! @relation(link: INLINE)
+	createdAt: DateTime! @createdAt
+	updatedAt: DateTime! @updatedAt
+}
+
 type Hotel {
 	id: ID! @id
 	searchIndex: String!
@@ -27,6 +43,7 @@ type Hotel {
 	sector: Sector! @relation(link: INLINE)
 	lat: Float!
 	long: Float!
+	residents: [Resident!]
 	createdAt: DateTime! @createdAt
 	updatedAt: DateTime! @updatedAt
 }
@@ -38,4 +55,33 @@ type Sector {
 	hotels: [Hotel!]
 	createdAt: DateTime! @createdAt
 	updatedAt: DateTime! @updatedAt
+}
+
+type Resident {
+	id: ID! @id
+	firstName: String!
+	lastName: String!
+	phone: Int
+	email: String @unique
+	dob: DateTime
+	gender: Gender
+	hotel: Hotel! @relation(link: INLINE)
+	createdAt: DateTime! @createdAt
+	updatedAt: DateTime! @updatedAt
+}
+
+enum Role {
+	USER
+	ADMIN
+}
+
+enum MutationType {
+	CREATED
+	UPDATED
+	DELETED
+}
+
+enum Gender {
+	MALE
+	FEMALE
 }

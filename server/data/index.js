@@ -101,7 +101,7 @@ const deleteData = async () => {
 /** UNCOMMENT IF YOU WISH TO REMOVE ALL DATA */
 // deleteData()
 // importData()
-console.log(process.argv)
+
 /**
  * Use appropriate node script argument to proceed with the right action
  * e.g: `yarn data--import`

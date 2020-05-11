@@ -9,11 +9,35 @@ var models = [
     embedded: false
   },
   {
+    name: "Team",
+    embedded: false
+  },
+  {
+    name: "Visit",
+    embedded: false
+  },
+  {
     name: "Hotel",
     embedded: false
   },
   {
     name: "Sector",
+    embedded: false
+  },
+  {
+    name: "Resident",
+    embedded: false
+  },
+  {
+    name: "Role",
+    embedded: false
+  },
+  {
+    name: "MutationType",
+    embedded: false
+  },
+  {
+    name: "Gender",
     embedded: false
   }
 ];
