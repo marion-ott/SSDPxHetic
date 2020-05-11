@@ -1,0 +1,41 @@
+type User {
+	id: ID! @id
+	searchIndex: String!
+	firstName: String!
+	lastName: String!
+	role: String!
+	sector: Sector @relation(link: INLINE)
+	address: String
+	email: String! @unique
+	password: String
+	createdAt: DateTime! @createdAt
+	updatedAt: DateTime! @updatedAt
+}
+
+type Hotel {
+	id: ID! @id
+	searchIndex: String!
+	uuid: Int! @unique
+	name: String!
+	address: String!
+	zipCode: Int!
+	city: String!
+	active: Boolean!
+	rooms: Int!
+	lastVisit: DateTime
+	score: Float
+	sector: Sector! @relation(link: INLINE)
+	lat: Float!
+	long: Float!
+	createdAt: DateTime! @createdAt
+	updatedAt: DateTime! @updatedAt
+}
+
+type Sector {
+	id: ID! @id
+	zone: String! @unique
+	users: [User!]
+	hotels: [Hotel!]
+	createdAt: DateTime! @createdAt
+	updatedAt: DateTime! @updatedAt
+}
