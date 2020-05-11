@@ -20,8 +20,8 @@ export const GET_USER = gql`
 `
 
 export const GET_USERS = gql`
-  query {
-    users {
+  query Users($first: Int, $skip: Int) {
+    users(first: $first, skip: $skip) {
       id
       firstName
       lastName

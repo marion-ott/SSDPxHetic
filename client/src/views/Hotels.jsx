@@ -6,10 +6,16 @@ import { Filters } from './../organisms'
 import { List } from './../organisms'
 
 const Hotels = () => {
-  const { loading, error, data } = useQuery(GET_HOTELS)
-  let mutatedData = null
+  const { loading, error, data } = useQuery(GET_HOTELS, {
+    variables: {
+      first: 15,
+      skip: 0,
+      orderBy: 'lastVisit_DESC'
+    }
+  })
 
   if (error) {
+    console.log(error)
     return <p>there was an error</p>
   }
 
@@ -17,14 +23,10 @@ const Hotels = () => {
     return <Loading />
   }
 
-  if (data) {
-    mutatedData = data.hotels.slice(0, 10)
-  }
-
   return (
     <section className='section columns'>
       <Filters />
-      <List entries={mutatedData} />
+      <List entries={data.hotels} type='hotels' title='Liste des hôtels' />
     </section>
   )
 }

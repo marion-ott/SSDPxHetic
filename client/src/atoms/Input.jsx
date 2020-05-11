@@ -1,14 +1,18 @@
 import React from 'react'
-import PropTypes from 'prop-types'
+// import PropTypes from 'prop-types'
 
-const Input = ({ type, placeholder, size, value }) => (
-  <input
-    className={`input ${size}`}
-    type={type}
-    placeholder={placeholder}
-    defaultValue={value}
-  />
-)
+const Input = ({ type, name, placeholder, size, value, ...field }) => {
+  return (
+    <input
+      className={`input ${size}`}
+      name={name}
+      type={type}
+      placeholder={placeholder}
+      defaultValue={value}
+      {...field}
+    />
+  )
+}
 
 Input.defaultProps = {
   type: 'text',

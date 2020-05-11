@@ -55,4 +55,37 @@ const listKeys = [
   }
 ]
 
-export { navEls, listKeys, filters }
+const form = {
+  login: {
+    initialValues: {
+      email: '',
+      password: ''
+    },
+    elements: [
+      {
+        name: 'email',
+        icon: 'fa-envelope',
+        inputProps: {
+          placeholder: 'exemple@samu-social.net',
+          type: 'email'
+        },
+        labelProps: {
+          text: 'Email'
+        }
+      },
+      {
+        name: 'password',
+        icon: 'fa-lock',
+        inputProps: {
+          placeholder: '',
+          type: 'password'
+        },
+        labelProps: {
+          text: 'Mot de passe'
+        }
+      }
+    ]
+  }
+}
+
+export { navEls, listKeys, filters, form }
