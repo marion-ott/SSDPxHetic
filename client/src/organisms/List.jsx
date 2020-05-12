@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { useQuery } from '@apollo/react-hooks'
-import { GET_COUNT } from './../graphql/queries/index'
+import { GET_COUNT } from './../graphql/queries/count'
 import { ListItem } from '../molecules'
 import { Pagination } from './../molecules'
 import { Input } from '../atoms'
