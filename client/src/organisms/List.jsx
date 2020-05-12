@@ -1,9 +1,8 @@
 import React, { useState } from 'react'
 import { useQuery } from '@apollo/react-hooks'
 import { GET_COUNT } from './../graphql/queries/count'
-import { ListItem } from '../molecules'
-import { Pagination } from './../molecules'
-import { Input } from '../atoms'
+import { ListItem, Pagination } from '../molecules'
+import { Input, Title } from '../atoms'
 import { listKeys } from '../global/data'
 
 const List = ({ entries, type, title }) => {
@@ -18,10 +17,10 @@ const List = ({ entries, type, title }) => {
 
   return (
     <div className='column'>
-      <h3 className='title is-3'>
+      <Title classProp='is-3' tag='h3'>
         {title}
         <span className='subtitle is-6'>&nbsp;({data.count})</span>
-      </h3>
+      </Title>
       <div className='control has-icons-left is-loading'>
         <Input type='text' placeholder='Rechercher' />
         <span className='icon is-left'>
