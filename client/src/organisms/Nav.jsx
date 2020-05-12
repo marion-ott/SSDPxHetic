@@ -27,7 +27,7 @@ const Nav = () => {
               <Link
                 className={`navbar-item${
                   pathname === href ? ' is-active' : ''
-                }`}
+                  }`}
                 to={href}
                 key={id}>
                 <strong>{label}</strong>
@@ -42,7 +42,7 @@ const Nav = () => {
                   <p>Visite d'urgence</p>
                 </Button>
                 {/* <Icon classname='fa-bell' /> */}
-                <Dropdown />
+                <Dropdown downicon={true} title="Marion" titleicon="fa-user" data={["Mon profile", "Mes visites", "Déconnexion"]} />
               </div>
             </div>
           </div>

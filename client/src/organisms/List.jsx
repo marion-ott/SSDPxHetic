@@ -36,6 +36,7 @@ const List = ({ entries, type, title }) => {
               {keys.map((el, id) => (
                 <th key={id}>{el.label}</th>
               ))}
+              <th></th>
             </tr>
           </thead>
           <tbody>
