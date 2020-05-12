@@ -163,7 +163,7 @@ type Visit {
 	id: ID!
 	date: DateTime!
 	team: Team!
-	hotel: Hotel!
+	hotel: Hotel
 	createdAt: DateTime!
 	updatedAt: DateTime!
 }
