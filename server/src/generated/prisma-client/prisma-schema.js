@@ -7,11 +7,23 @@ module.exports = {
   count: Int!
 }
 
+type AggregateResident {
+  count: Int!
+}
+
 type AggregateSector {
   count: Int!
 }
 
+type AggregateTeam {
+  count: Int!
+}
+
 type AggregateUser {
+  count: Int!
+}
+
+type AggregateVisit {
   count: Int!
 }
 
@@ -20,6 +32,11 @@ type BatchPayload {
 }
 
 scalar DateTime
+
+enum Gender {
+  MALE
+  FEMALE
+}
 
 type Hotel {
   id: ID!
@@ -36,6 +53,8 @@ type Hotel {
   sector: Sector!
   lat: Float!
   long: Float!
+  visits(where: VisitWhereInput, orderBy: VisitOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Visit!]
+  residents(where: ResidentWhereInput, orderBy: ResidentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Resident!]
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -61,11 +80,41 @@ input HotelCreateInput {
   sector: SectorCreateOneWithoutHotelsInput!
   lat: Float!
   long: Float!
+  visits: VisitCreateManyWithoutHotelInput
+  residents: ResidentCreateManyWithoutHotelInput
 }
 
 input HotelCreateManyWithoutSectorInput {
   create: [HotelCreateWithoutSectorInput!]
   connect: [HotelWhereUniqueInput!]
+}
+
+input HotelCreateOneWithoutResidentsInput {
+  create: HotelCreateWithoutResidentsInput
+  connect: HotelWhereUniqueInput
+}
+
+input HotelCreateOneWithoutVisitsInput {
+  create: HotelCreateWithoutVisitsInput
+  connect: HotelWhereUniqueInput
+}
+
+input HotelCreateWithoutResidentsInput {
+  id: ID
+  searchIndex: String!
+  uuid: Int!
+  name: String!
+  address: String!
+  zipCode: Int!
+  city: String!
+  active: Boolean!
+  rooms: Int!
+  lastVisit: DateTime
+  score: Float
+  sector: SectorCreateOneWithoutHotelsInput!
+  lat: Float!
+  long: Float!
+  visits: VisitCreateManyWithoutHotelInput
 }
 
 input HotelCreateWithoutSectorInput {
@@ -82,6 +131,26 @@ input HotelCreateWithoutSectorInput {
   score: Float
   lat: Float!
   long: Float!
+  visits: VisitCreateManyWithoutHotelInput
+  residents: ResidentCreateManyWithoutHotelInput
+}
+
+input HotelCreateWithoutVisitsInput {
+  id: ID
+  searchIndex: String!
+  uuid: Int!
+  name: String!
+  address: String!
+  zipCode: Int!
+  city: String!
+  active: Boolean!
+  rooms: Int!
+  lastVisit: DateTime
+  score: Float
+  sector: SectorCreateOneWithoutHotelsInput!
+  lat: Float!
+  long: Float!
+  residents: ResidentCreateManyWithoutHotelInput
 }
 
 type HotelEdge {
@@ -322,6 +391,8 @@ input HotelUpdateInput {
   sector: SectorUpdateOneRequiredWithoutHotelsInput
   lat: Float
   long: Float
+  visits: VisitUpdateManyWithoutHotelInput
+  residents: ResidentUpdateManyWithoutHotelInput
 }
 
 input HotelUpdateManyDataInput {
@@ -371,6 +442,39 @@ input HotelUpdateManyWithWhereNestedInput {
   data: HotelUpdateManyDataInput!
 }
 
+input HotelUpdateOneRequiredWithoutResidentsInput {
+  create: HotelCreateWithoutResidentsInput
+  update: HotelUpdateWithoutResidentsDataInput
+  upsert: HotelUpsertWithoutResidentsInput
+  connect: HotelWhereUniqueInput
+}
+
+input HotelUpdateOneWithoutVisitsInput {
+  create: HotelCreateWithoutVisitsInput
+  update: HotelUpdateWithoutVisitsDataInput
+  upsert: HotelUpsertWithoutVisitsInput
+  delete: Boolean
+  disconnect: Boolean
+  connect: HotelWhereUniqueInput
+}
+
+input HotelUpdateWithoutResidentsDataInput {
+  searchIndex: String
+  uuid: Int
+  name: String
+  address: String
+  zipCode: Int
+  city: String
+  active: Boolean
+  rooms: Int
+  lastVisit: DateTime
+  score: Float
+  sector: SectorUpdateOneRequiredWithoutHotelsInput
+  lat: Float
+  long: Float
+  visits: VisitUpdateManyWithoutHotelInput
+}
+
 input HotelUpdateWithoutSectorDataInput {
   searchIndex: String
   uuid: Int
@@ -384,11 +488,40 @@ input HotelUpdateWithoutSectorDataInput {
   score: Float
   lat: Float
   long: Float
+  visits: VisitUpdateManyWithoutHotelInput
+  residents: ResidentUpdateManyWithoutHotelInput
+}
+
+input HotelUpdateWithoutVisitsDataInput {
+  searchIndex: String
+  uuid: Int
+  name: String
+  address: String
+  zipCode: Int
+  city: String
+  active: Boolean
+  rooms: Int
+  lastVisit: DateTime
+  score: Float
+  sector: SectorUpdateOneRequiredWithoutHotelsInput
+  lat: Float
+  long: Float
+  residents: ResidentUpdateManyWithoutHotelInput
 }
 
 input HotelUpdateWithWhereUniqueWithoutSectorInput {
   where: HotelWhereUniqueInput!
   data: HotelUpdateWithoutSectorDataInput!
+}
+
+input HotelUpsertWithoutResidentsInput {
+  update: HotelUpdateWithoutResidentsDataInput!
+  create: HotelCreateWithoutResidentsInput!
+}
+
+input HotelUpsertWithoutVisitsInput {
+  update: HotelUpdateWithoutVisitsDataInput!
+  create: HotelCreateWithoutVisitsInput!
 }
 
 input HotelUpsertWithWhereUniqueWithoutSectorInput {
@@ -527,6 +660,12 @@ input HotelWhereInput {
   long_lte: Float
   long_gt: Float
   long_gte: Float
+  visits_every: VisitWhereInput
+  visits_some: VisitWhereInput
+  visits_none: VisitWhereInput
+  residents_every: ResidentWhereInput
+  residents_some: ResidentWhereInput
+  residents_none: ResidentWhereInput
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]
@@ -562,18 +701,35 @@ type Mutation {
   upsertHotel(where: HotelWhereUniqueInput!, create: HotelCreateInput!, update: HotelUpdateInput!): Hotel!
   deleteHotel(where: HotelWhereUniqueInput!): Hotel
   deleteManyHotels(where: HotelWhereInput): BatchPayload!
+  createResident(data: ResidentCreateInput!): Resident!
+  updateResident(data: ResidentUpdateInput!, where: ResidentWhereUniqueInput!): Resident
+  updateManyResidents(data: ResidentUpdateManyMutationInput!, where: ResidentWhereInput): BatchPayload!
+  upsertResident(where: ResidentWhereUniqueInput!, create: ResidentCreateInput!, update: ResidentUpdateInput!): Resident!
+  deleteResident(where: ResidentWhereUniqueInput!): Resident
+  deleteManyResidents(where: ResidentWhereInput): BatchPayload!
   createSector(data: SectorCreateInput!): Sector!
   updateSector(data: SectorUpdateInput!, where: SectorWhereUniqueInput!): Sector
   updateManySectors(data: SectorUpdateManyMutationInput!, where: SectorWhereInput): BatchPayload!
   upsertSector(where: SectorWhereUniqueInput!, create: SectorCreateInput!, update: SectorUpdateInput!): Sector!
   deleteSector(where: SectorWhereUniqueInput!): Sector
   deleteManySectors(where: SectorWhereInput): BatchPayload!
+  createTeam(data: TeamCreateInput!): Team!
+  updateTeam(data: TeamUpdateInput!, where: TeamWhereUniqueInput!): Team
+  upsertTeam(where: TeamWhereUniqueInput!, create: TeamCreateInput!, update: TeamUpdateInput!): Team!
+  deleteTeam(where: TeamWhereUniqueInput!): Team
+  deleteManyTeams(where: TeamWhereInput): BatchPayload!
   createUser(data: UserCreateInput!): User!
   updateUser(data: UserUpdateInput!, where: UserWhereUniqueInput!): User
   updateManyUsers(data: UserUpdateManyMutationInput!, where: UserWhereInput): BatchPayload!
   upsertUser(where: UserWhereUniqueInput!, create: UserCreateInput!, update: UserUpdateInput!): User!
   deleteUser(where: UserWhereUniqueInput!): User
   deleteManyUsers(where: UserWhereInput): BatchPayload!
+  createVisit(data: VisitCreateInput!): Visit!
+  updateVisit(data: VisitUpdateInput!, where: VisitWhereUniqueInput!): Visit
+  updateManyVisits(data: VisitUpdateManyMutationInput!, where: VisitWhereInput): BatchPayload!
+  upsertVisit(where: VisitWhereUniqueInput!, create: VisitCreateInput!, update: VisitUpdateInput!): Visit!
+  deleteVisit(where: VisitWhereUniqueInput!): Visit
+  deleteManyVisits(where: VisitWhereInput): BatchPayload!
 }
 
 enum MutationType {
@@ -597,13 +753,390 @@ type Query {
   hotel(where: HotelWhereUniqueInput!): Hotel
   hotels(where: HotelWhereInput, orderBy: HotelOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Hotel]!
   hotelsConnection(where: HotelWhereInput, orderBy: HotelOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): HotelConnection!
+  resident(where: ResidentWhereUniqueInput!): Resident
+  residents(where: ResidentWhereInput, orderBy: ResidentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Resident]!
+  residentsConnection(where: ResidentWhereInput, orderBy: ResidentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ResidentConnection!
   sector(where: SectorWhereUniqueInput!): Sector
   sectors(where: SectorWhereInput, orderBy: SectorOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Sector]!
   sectorsConnection(where: SectorWhereInput, orderBy: SectorOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SectorConnection!
+  team(where: TeamWhereUniqueInput!): Team
+  teams(where: TeamWhereInput, orderBy: TeamOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Team]!
+  teamsConnection(where: TeamWhereInput, orderBy: TeamOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): TeamConnection!
   user(where: UserWhereUniqueInput!): User
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User]!
   usersConnection(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): UserConnection!
+  visit(where: VisitWhereUniqueInput!): Visit
+  visits(where: VisitWhereInput, orderBy: VisitOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Visit]!
+  visitsConnection(where: VisitWhereInput, orderBy: VisitOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): VisitConnection!
   node(id: ID!): Node
+}
+
+type Resident {
+  id: ID!
+  firstName: String!
+  lastName: String!
+  phone: Int
+  email: String
+  dob: DateTime
+  gender: Gender
+  hotel: Hotel!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type ResidentConnection {
+  pageInfo: PageInfo!
+  edges: [ResidentEdge]!
+  aggregate: AggregateResident!
+}
+
+input ResidentCreateInput {
+  id: ID
+  firstName: String!
+  lastName: String!
+  phone: Int
+  email: String
+  dob: DateTime
+  gender: Gender
+  hotel: HotelCreateOneWithoutResidentsInput!
+}
+
+input ResidentCreateManyWithoutHotelInput {
+  create: [ResidentCreateWithoutHotelInput!]
+  connect: [ResidentWhereUniqueInput!]
+}
+
+input ResidentCreateWithoutHotelInput {
+  id: ID
+  firstName: String!
+  lastName: String!
+  phone: Int
+  email: String
+  dob: DateTime
+  gender: Gender
+}
+
+type ResidentEdge {
+  node: Resident!
+  cursor: String!
+}
+
+enum ResidentOrderByInput {
+  id_ASC
+  id_DESC
+  firstName_ASC
+  firstName_DESC
+  lastName_ASC
+  lastName_DESC
+  phone_ASC
+  phone_DESC
+  email_ASC
+  email_DESC
+  dob_ASC
+  dob_DESC
+  gender_ASC
+  gender_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type ResidentPreviousValues {
+  id: ID!
+  firstName: String!
+  lastName: String!
+  phone: Int
+  email: String
+  dob: DateTime
+  gender: Gender
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+input ResidentScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  firstName: String
+  firstName_not: String
+  firstName_in: [String!]
+  firstName_not_in: [String!]
+  firstName_lt: String
+  firstName_lte: String
+  firstName_gt: String
+  firstName_gte: String
+  firstName_contains: String
+  firstName_not_contains: String
+  firstName_starts_with: String
+  firstName_not_starts_with: String
+  firstName_ends_with: String
+  firstName_not_ends_with: String
+  lastName: String
+  lastName_not: String
+  lastName_in: [String!]
+  lastName_not_in: [String!]
+  lastName_lt: String
+  lastName_lte: String
+  lastName_gt: String
+  lastName_gte: String
+  lastName_contains: String
+  lastName_not_contains: String
+  lastName_starts_with: String
+  lastName_not_starts_with: String
+  lastName_ends_with: String
+  lastName_not_ends_with: String
+  phone: Int
+  phone_not: Int
+  phone_in: [Int!]
+  phone_not_in: [Int!]
+  phone_lt: Int
+  phone_lte: Int
+  phone_gt: Int
+  phone_gte: Int
+  email: String
+  email_not: String
+  email_in: [String!]
+  email_not_in: [String!]
+  email_lt: String
+  email_lte: String
+  email_gt: String
+  email_gte: String
+  email_contains: String
+  email_not_contains: String
+  email_starts_with: String
+  email_not_starts_with: String
+  email_ends_with: String
+  email_not_ends_with: String
+  dob: DateTime
+  dob_not: DateTime
+  dob_in: [DateTime!]
+  dob_not_in: [DateTime!]
+  dob_lt: DateTime
+  dob_lte: DateTime
+  dob_gt: DateTime
+  dob_gte: DateTime
+  gender: Gender
+  gender_not: Gender
+  gender_in: [Gender!]
+  gender_not_in: [Gender!]
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  AND: [ResidentScalarWhereInput!]
+  OR: [ResidentScalarWhereInput!]
+  NOT: [ResidentScalarWhereInput!]
+}
+
+type ResidentSubscriptionPayload {
+  mutation: MutationType!
+  node: Resident
+  updatedFields: [String!]
+  previousValues: ResidentPreviousValues
+}
+
+input ResidentSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: ResidentWhereInput
+  AND: [ResidentSubscriptionWhereInput!]
+  OR: [ResidentSubscriptionWhereInput!]
+  NOT: [ResidentSubscriptionWhereInput!]
+}
+
+input ResidentUpdateInput {
+  firstName: String
+  lastName: String
+  phone: Int
+  email: String
+  dob: DateTime
+  gender: Gender
+  hotel: HotelUpdateOneRequiredWithoutResidentsInput
+}
+
+input ResidentUpdateManyDataInput {
+  firstName: String
+  lastName: String
+  phone: Int
+  email: String
+  dob: DateTime
+  gender: Gender
+}
+
+input ResidentUpdateManyMutationInput {
+  firstName: String
+  lastName: String
+  phone: Int
+  email: String
+  dob: DateTime
+  gender: Gender
+}
+
+input ResidentUpdateManyWithoutHotelInput {
+  create: [ResidentCreateWithoutHotelInput!]
+  delete: [ResidentWhereUniqueInput!]
+  connect: [ResidentWhereUniqueInput!]
+  set: [ResidentWhereUniqueInput!]
+  disconnect: [ResidentWhereUniqueInput!]
+  update: [ResidentUpdateWithWhereUniqueWithoutHotelInput!]
+  upsert: [ResidentUpsertWithWhereUniqueWithoutHotelInput!]
+  deleteMany: [ResidentScalarWhereInput!]
+  updateMany: [ResidentUpdateManyWithWhereNestedInput!]
+}
+
+input ResidentUpdateManyWithWhereNestedInput {
+  where: ResidentScalarWhereInput!
+  data: ResidentUpdateManyDataInput!
+}
+
+input ResidentUpdateWithoutHotelDataInput {
+  firstName: String
+  lastName: String
+  phone: Int
+  email: String
+  dob: DateTime
+  gender: Gender
+}
+
+input ResidentUpdateWithWhereUniqueWithoutHotelInput {
+  where: ResidentWhereUniqueInput!
+  data: ResidentUpdateWithoutHotelDataInput!
+}
+
+input ResidentUpsertWithWhereUniqueWithoutHotelInput {
+  where: ResidentWhereUniqueInput!
+  update: ResidentUpdateWithoutHotelDataInput!
+  create: ResidentCreateWithoutHotelInput!
+}
+
+input ResidentWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  firstName: String
+  firstName_not: String
+  firstName_in: [String!]
+  firstName_not_in: [String!]
+  firstName_lt: String
+  firstName_lte: String
+  firstName_gt: String
+  firstName_gte: String
+  firstName_contains: String
+  firstName_not_contains: String
+  firstName_starts_with: String
+  firstName_not_starts_with: String
+  firstName_ends_with: String
+  firstName_not_ends_with: String
+  lastName: String
+  lastName_not: String
+  lastName_in: [String!]
+  lastName_not_in: [String!]
+  lastName_lt: String
+  lastName_lte: String
+  lastName_gt: String
+  lastName_gte: String
+  lastName_contains: String
+  lastName_not_contains: String
+  lastName_starts_with: String
+  lastName_not_starts_with: String
+  lastName_ends_with: String
+  lastName_not_ends_with: String
+  phone: Int
+  phone_not: Int
+  phone_in: [Int!]
+  phone_not_in: [Int!]
+  phone_lt: Int
+  phone_lte: Int
+  phone_gt: Int
+  phone_gte: Int
+  email: String
+  email_not: String
+  email_in: [String!]
+  email_not_in: [String!]
+  email_lt: String
+  email_lte: String
+  email_gt: String
+  email_gte: String
+  email_contains: String
+  email_not_contains: String
+  email_starts_with: String
+  email_not_starts_with: String
+  email_ends_with: String
+  email_not_ends_with: String
+  dob: DateTime
+  dob_not: DateTime
+  dob_in: [DateTime!]
+  dob_not_in: [DateTime!]
+  dob_lt: DateTime
+  dob_lte: DateTime
+  dob_gt: DateTime
+  dob_gte: DateTime
+  gender: Gender
+  gender_not: Gender
+  gender_in: [Gender!]
+  gender_not_in: [Gender!]
+  hotel: HotelWhereInput
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  AND: [ResidentWhereInput!]
+  OR: [ResidentWhereInput!]
+  NOT: [ResidentWhereInput!]
+}
+
+input ResidentWhereUniqueInput {
+  id: ID
+  email: String
 }
 
 type Sector {
@@ -800,8 +1333,146 @@ input SectorWhereUniqueInput {
 
 type Subscription {
   hotel(where: HotelSubscriptionWhereInput): HotelSubscriptionPayload
+  resident(where: ResidentSubscriptionWhereInput): ResidentSubscriptionPayload
   sector(where: SectorSubscriptionWhereInput): SectorSubscriptionPayload
+  team(where: TeamSubscriptionWhereInput): TeamSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
+  visit(where: VisitSubscriptionWhereInput): VisitSubscriptionPayload
+}
+
+type Team {
+  id: ID!
+  users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
+  visits(where: VisitWhereInput, orderBy: VisitOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Visit!]
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type TeamConnection {
+  pageInfo: PageInfo!
+  edges: [TeamEdge]!
+  aggregate: AggregateTeam!
+}
+
+input TeamCreateInput {
+  id: ID
+  users: UserCreateManyInput
+  visits: VisitCreateManyWithoutTeamInput
+}
+
+input TeamCreateOneWithoutVisitsInput {
+  create: TeamCreateWithoutVisitsInput
+  connect: TeamWhereUniqueInput
+}
+
+input TeamCreateWithoutVisitsInput {
+  id: ID
+  users: UserCreateManyInput
+}
+
+type TeamEdge {
+  node: Team!
+  cursor: String!
+}
+
+enum TeamOrderByInput {
+  id_ASC
+  id_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type TeamPreviousValues {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type TeamSubscriptionPayload {
+  mutation: MutationType!
+  node: Team
+  updatedFields: [String!]
+  previousValues: TeamPreviousValues
+}
+
+input TeamSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: TeamWhereInput
+  AND: [TeamSubscriptionWhereInput!]
+  OR: [TeamSubscriptionWhereInput!]
+  NOT: [TeamSubscriptionWhereInput!]
+}
+
+input TeamUpdateInput {
+  users: UserUpdateManyInput
+  visits: VisitUpdateManyWithoutTeamInput
+}
+
+input TeamUpdateOneRequiredWithoutVisitsInput {
+  create: TeamCreateWithoutVisitsInput
+  update: TeamUpdateWithoutVisitsDataInput
+  upsert: TeamUpsertWithoutVisitsInput
+  connect: TeamWhereUniqueInput
+}
+
+input TeamUpdateWithoutVisitsDataInput {
+  users: UserUpdateManyInput
+}
+
+input TeamUpsertWithoutVisitsInput {
+  update: TeamUpdateWithoutVisitsDataInput!
+  create: TeamCreateWithoutVisitsInput!
+}
+
+input TeamWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  users_every: UserWhereInput
+  users_some: UserWhereInput
+  users_none: UserWhereInput
+  visits_every: VisitWhereInput
+  visits_some: VisitWhereInput
+  visits_none: VisitWhereInput
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  AND: [TeamWhereInput!]
+  OR: [TeamWhereInput!]
+  NOT: [TeamWhereInput!]
+}
+
+input TeamWhereUniqueInput {
+  id: ID
 }
 
 type User {
@@ -834,6 +1505,11 @@ input UserCreateInput {
   address: String
   email: String!
   password: String
+}
+
+input UserCreateManyInput {
+  create: [UserCreateInput!]
+  connect: [UserWhereUniqueInput!]
 }
 
 input UserCreateManyWithoutSectorInput {
@@ -1045,6 +1721,17 @@ input UserSubscriptionWhereInput {
   NOT: [UserSubscriptionWhereInput!]
 }
 
+input UserUpdateDataInput {
+  searchIndex: String
+  firstName: String
+  lastName: String
+  role: String
+  sector: SectorUpdateOneWithoutUsersInput
+  address: String
+  email: String
+  password: String
+}
+
 input UserUpdateInput {
   searchIndex: String
   firstName: String
@@ -1064,6 +1751,18 @@ input UserUpdateManyDataInput {
   address: String
   email: String
   password: String
+}
+
+input UserUpdateManyInput {
+  create: [UserCreateInput!]
+  update: [UserUpdateWithWhereUniqueNestedInput!]
+  upsert: [UserUpsertWithWhereUniqueNestedInput!]
+  delete: [UserWhereUniqueInput!]
+  connect: [UserWhereUniqueInput!]
+  set: [UserWhereUniqueInput!]
+  disconnect: [UserWhereUniqueInput!]
+  deleteMany: [UserScalarWhereInput!]
+  updateMany: [UserUpdateManyWithWhereNestedInput!]
 }
 
 input UserUpdateManyMutationInput {
@@ -1103,9 +1802,20 @@ input UserUpdateWithoutSectorDataInput {
   password: String
 }
 
+input UserUpdateWithWhereUniqueNestedInput {
+  where: UserWhereUniqueInput!
+  data: UserUpdateDataInput!
+}
+
 input UserUpdateWithWhereUniqueWithoutSectorInput {
   where: UserWhereUniqueInput!
   data: UserUpdateWithoutSectorDataInput!
+}
+
+input UserUpsertWithWhereUniqueNestedInput {
+  where: UserWhereUniqueInput!
+  update: UserUpdateDataInput!
+  create: UserCreateInput!
 }
 
 input UserUpsertWithWhereUniqueWithoutSectorInput {
@@ -1252,6 +1962,260 @@ input UserWhereInput {
 input UserWhereUniqueInput {
   id: ID
   email: String
+}
+
+type Visit {
+  id: ID!
+  date: DateTime!
+  team: Team!
+  hotel: Hotel
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type VisitConnection {
+  pageInfo: PageInfo!
+  edges: [VisitEdge]!
+  aggregate: AggregateVisit!
+}
+
+input VisitCreateInput {
+  id: ID
+  date: DateTime!
+  team: TeamCreateOneWithoutVisitsInput!
+  hotel: HotelCreateOneWithoutVisitsInput
+}
+
+input VisitCreateManyWithoutHotelInput {
+  create: [VisitCreateWithoutHotelInput!]
+  connect: [VisitWhereUniqueInput!]
+}
+
+input VisitCreateManyWithoutTeamInput {
+  create: [VisitCreateWithoutTeamInput!]
+  connect: [VisitWhereUniqueInput!]
+}
+
+input VisitCreateWithoutHotelInput {
+  id: ID
+  date: DateTime!
+  team: TeamCreateOneWithoutVisitsInput!
+}
+
+input VisitCreateWithoutTeamInput {
+  id: ID
+  date: DateTime!
+  hotel: HotelCreateOneWithoutVisitsInput
+}
+
+type VisitEdge {
+  node: Visit!
+  cursor: String!
+}
+
+enum VisitOrderByInput {
+  id_ASC
+  id_DESC
+  date_ASC
+  date_DESC
+  createdAt_ASC
+  createdAt_DESC
+  updatedAt_ASC
+  updatedAt_DESC
+}
+
+type VisitPreviousValues {
+  id: ID!
+  date: DateTime!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+input VisitScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  date: DateTime
+  date_not: DateTime
+  date_in: [DateTime!]
+  date_not_in: [DateTime!]
+  date_lt: DateTime
+  date_lte: DateTime
+  date_gt: DateTime
+  date_gte: DateTime
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  AND: [VisitScalarWhereInput!]
+  OR: [VisitScalarWhereInput!]
+  NOT: [VisitScalarWhereInput!]
+}
+
+type VisitSubscriptionPayload {
+  mutation: MutationType!
+  node: Visit
+  updatedFields: [String!]
+  previousValues: VisitPreviousValues
+}
+
+input VisitSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: VisitWhereInput
+  AND: [VisitSubscriptionWhereInput!]
+  OR: [VisitSubscriptionWhereInput!]
+  NOT: [VisitSubscriptionWhereInput!]
+}
+
+input VisitUpdateInput {
+  date: DateTime
+  team: TeamUpdateOneRequiredWithoutVisitsInput
+  hotel: HotelUpdateOneWithoutVisitsInput
+}
+
+input VisitUpdateManyDataInput {
+  date: DateTime
+}
+
+input VisitUpdateManyMutationInput {
+  date: DateTime
+}
+
+input VisitUpdateManyWithoutHotelInput {
+  create: [VisitCreateWithoutHotelInput!]
+  delete: [VisitWhereUniqueInput!]
+  connect: [VisitWhereUniqueInput!]
+  set: [VisitWhereUniqueInput!]
+  disconnect: [VisitWhereUniqueInput!]
+  update: [VisitUpdateWithWhereUniqueWithoutHotelInput!]
+  upsert: [VisitUpsertWithWhereUniqueWithoutHotelInput!]
+  deleteMany: [VisitScalarWhereInput!]
+  updateMany: [VisitUpdateManyWithWhereNestedInput!]
+}
+
+input VisitUpdateManyWithoutTeamInput {
+  create: [VisitCreateWithoutTeamInput!]
+  delete: [VisitWhereUniqueInput!]
+  connect: [VisitWhereUniqueInput!]
+  set: [VisitWhereUniqueInput!]
+  disconnect: [VisitWhereUniqueInput!]
+  update: [VisitUpdateWithWhereUniqueWithoutTeamInput!]
+  upsert: [VisitUpsertWithWhereUniqueWithoutTeamInput!]
+  deleteMany: [VisitScalarWhereInput!]
+  updateMany: [VisitUpdateManyWithWhereNestedInput!]
+}
+
+input VisitUpdateManyWithWhereNestedInput {
+  where: VisitScalarWhereInput!
+  data: VisitUpdateManyDataInput!
+}
+
+input VisitUpdateWithoutHotelDataInput {
+  date: DateTime
+  team: TeamUpdateOneRequiredWithoutVisitsInput
+}
+
+input VisitUpdateWithoutTeamDataInput {
+  date: DateTime
+  hotel: HotelUpdateOneWithoutVisitsInput
+}
+
+input VisitUpdateWithWhereUniqueWithoutHotelInput {
+  where: VisitWhereUniqueInput!
+  data: VisitUpdateWithoutHotelDataInput!
+}
+
+input VisitUpdateWithWhereUniqueWithoutTeamInput {
+  where: VisitWhereUniqueInput!
+  data: VisitUpdateWithoutTeamDataInput!
+}
+
+input VisitUpsertWithWhereUniqueWithoutHotelInput {
+  where: VisitWhereUniqueInput!
+  update: VisitUpdateWithoutHotelDataInput!
+  create: VisitCreateWithoutHotelInput!
+}
+
+input VisitUpsertWithWhereUniqueWithoutTeamInput {
+  where: VisitWhereUniqueInput!
+  update: VisitUpdateWithoutTeamDataInput!
+  create: VisitCreateWithoutTeamInput!
+}
+
+input VisitWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  date: DateTime
+  date_not: DateTime
+  date_in: [DateTime!]
+  date_not_in: [DateTime!]
+  date_lt: DateTime
+  date_lte: DateTime
+  date_gt: DateTime
+  date_gte: DateTime
+  team: TeamWhereInput
+  hotel: HotelWhereInput
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  AND: [VisitWhereInput!]
+  OR: [VisitWhereInput!]
+  NOT: [VisitWhereInput!]
+}
+
+input VisitWhereUniqueInput {
+  id: ID
 }
 `
       }

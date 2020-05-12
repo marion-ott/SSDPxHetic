@@ -1,14 +1,16 @@
 scalar DateTime
 
 type Query {
+	# User
 	user(id: ID!): User!
 	users(
 		query: String
 		first: Int
 		skip: Int
-		UserOrderByInput: UserOrderByInput
+		orderBy: UserOrderByInput
 	): [User!]!
 
+	# Hotel
 	hotel(id: ID!): Hotel!
 	hotels(
 		query: String
@@ -17,23 +19,64 @@ type Query {
 		orderBy: HotelOrderByInput
 	): [Hotel!]!
 
+	# Resident
+	resident(id: ID!): Resident!
+	residents(
+		query: String
+		first: Int
+		skip: Int
+		orderBy: ResidentOrderByInput
+	): [Resident!]!
+
+	# Visit
+	visit(id: ID!): Visit!
+	visits: [Visit!]!
+
+	# Team
+	team(id: ID!): Team!
+	teams: [Team!]!
+
+	# Sector
 	sector(id: ID!): Sector!
 	sectors: [Sector!]!
 
+	# Count
 	count(query: String): Int!
 }
 
 type Mutation {
+	# Auth
 	login(data: LoginInput): AuthPayload!
+
+	# User
 	createUser(data: CreateUserInput): AuthPayload!
 	updateUser(id: ID!, data: UpdateUserInput): User!
 	deleteUser(id: ID!): User!
+
+	# Team
+	createTeam(data: CreateTeamInput): Team!
+	updateTeam(id: ID!, data: UpdateTeamInput): Team!
+	deleteTeam(id: ID!): Team!
+
+	# Visit
+	createVisit(data: CreateVisitInput): Visit!
+	updateVisit(id: ID!, data: UpdateVisitInput): Visit!
+	deleteVisit(id: ID!): Visit!
+
+	# Hotel
 	createHotel(data: CreateHotelInput): Hotel!
 	updateHotel(id: ID!, data: UpdateHotelInput): Hotel!
 	deleteHotel(id: ID!): Hotel!
+
+	# Sector
 	createSector(data: CreateSectorInput): Sector!
 	updateSector(id: ID!, data: UpdateSectorInput): Sector!
 	deleteSector(id: ID!): Sector!
+
+	# Resident
+	createResident(data: CreateResidentInput): Resident!
+	updateResident(id: ID!, data: UpdateResidentInput): Resident!
+	deleteResident(id: ID!): Resident!
 }
 
 ##	USER	##
@@ -42,7 +85,7 @@ type User {
 	searchIndex: String!
 	firstName: String!
 	lastName: String!
-	role: String!
+	role: Role!
 	sector: Sector
 	address: String
 	email: String!
@@ -81,6 +124,11 @@ input UpdateUserInput {
 	password: String
 }
 
+enum Role {
+	USER
+	ADMIN
+}
+
 enum UserOrderByInput {
 	firstName_ASC
 	firstName_DESC
@@ -92,6 +140,59 @@ enum UserOrderByInput {
 	createdAt_DESC
 	updatedAt_ASC
 	updatedAt_DESC
+}
+
+##	TEAM	##
+type Team {
+	id: ID!
+	users: [User!]!
+	createdAt: DateTime!
+	updatedAt: DateTime!
+}
+
+input CreateTeamInput {
+	users: [ID!]!
+}
+
+input UpdateTeamInput {
+	users: [ID!]!
+}
+
+##	VISIT	##
+type Visit {
+	id: ID!
+	date: DateTime!
+	team: Team!
+	hotel: Hotel
+	createdAt: DateTime!
+	updatedAt: DateTime!
+}
+
+input CreateVisitInput {
+	date: DateTime!
+	team: ID!
+	hotel: ID!
+}
+
+input UpdateVisitInput {
+	date: DateTime
+	team: ID
+	hotel: ID
+}
+
+type Subscription {
+	visit: VisitSubscriptionPayload!
+}
+
+type VisitSubscriptionPayload {
+	mutation: MutationType!
+	data: Visit!
+}
+
+enum MutationType {
+	CREATED
+	UPDATED
+	DELETED
 }
 
 ##	HOTEL	##
@@ -110,6 +211,7 @@ type Hotel {
 	sector: Sector!
 	lat: Float!
 	long: Float!
+	residents: [Resident!]
 	createdAt: DateTime!
 	updatedAt: DateTime!
 }
@@ -177,4 +279,50 @@ input CreateSectorInput {
 
 input UpdateSectorInput {
 	zone: String!
+}
+
+## RESIDENTS ##
+type Resident {
+	id: ID!
+	firstName: String!
+	lastName: String!
+	phone: Int
+	email: String
+	dob: DateTime
+	gender: Gender
+	hotel: Hotel!
+}
+
+input CreateResidentInput {
+	firstName: String!
+	lastName: String!
+	phone: Int
+	email: String
+	dob: DateTime
+	gender: Gender
+	hotel: ID!
+}
+
+input UpdateResidentInput {
+	firstName: String
+	lastName: String
+	phone: Int
+	email: String
+	dob: DateTime
+	gender: Gender
+	hotel: ID
+}
+
+enum ResidentOrderByInput {
+	lastName_ASC
+	lastName_DESC
+	createdAt_ASC
+	createdAt_DESC
+	updatedAt_ASC
+	updatedAt_DESC
+}
+
+enum Gender {
+	MALE
+	FEMALE
 }

@@ -2,152 +2,152 @@
   "employees": [{
       "lastName": "Priou",
       "firstName": "Eric",
-      "role": "admin",
+      "role": "ADMIN",
       "email": "eric.priou@hetic.net",
       "password": "admin"
     },
     {
       "lastName": "Salarié 2",
       "firstName": "Anouck",
-      "role": "user",
+      "role": "USER",
       "sector": "93",
       "address": "8  RUE AUGUSTE BLANQUI, 93170 BAGNOLET",
       "email": "anouck.salarie2@samusocial.net"
     }, {
       "lastName": "Salarié 4",
       "firstName": "Quebuathe",
-      "role": "user",
+      "role": "USER",
       "sector": "92-94",
       "address": "126  BOULEVARD Jean Jaures, 92110 CLICHY",
       "email": "quebuathe.salarie4@samusocial.net"
     }, {
       "lastName": "Salarié 5",
       "firstName": "Vanessa",
-      "role": "user",
+      "role": "USER",
       "sector": "77-91",
       "address": "15  ALLÉE LEO FERRE, 94450 LIMEIL BREVANNES",
       "email": "vanessa.salarie5@samusocial.net"
     }, {
       "lastName": "Salarié 8",
       "firstName": "Mokrane",
-      "role": "user",
+      "role": "USER",
       "sector": "93",
       "address": "7  RUE CHARLES PEGUY, 94460 VALENTON",
       "email": "mokrane.salarie8@samusocial.net"
     }, {
       "lastName": "Salarié 9",
       "firstName": "Youssouf",
-      "role": "user",
+      "role": "USER",
       "sector": "75",
       "address": "146  RUE RAYMOND LOSSERAND, 75014 PARIS",
       "email": "youssouf.salarie9@samusocial.net"
     }, {
       "lastName": "Salarié 11",
       "firstName": "Stéphane",
-      "role": "user",
+      "role": "USER",
       "sector": "75",
       "address": "26  RUE LA FAYETTE, 91100 CORBEIL ESSONNES",
       "email": "stephane.salarie11@samusocial.net"
     }, {
       "lastName": "Salarié 17",
       "firstName": "Léo",
-      "role": "user",
+      "role": "USER",
       "sector": "92-94",
       "address": "6  RUE MORNAY, 75004 PARIS",
       "email": "leo.salarie17@samusocial.net"
     }, {
       "lastName": "Salarié 21",
       "firstName": "Sarah",
-      "role": "user",
+      "role": "USER",
       "sector": "92-94",
       "address": "9  RUE DEMANIEUX, 94600 CHOISY LE ROI",
       "email": "sarah.salarie21@samusocial.net"
     }, {
       "lastName": "Salarié 22",
       "firstName": "Patricia",
-      "role": "user",
+      "role": "USER",
       "sector": "78-95",
       "address": "14 BIS AVENUE DE BRY, 94170 PERREUX-SUR-MARNE",
       "email": "patricia.salarie22@samusocial.net"
     }, {
       "lastName": "Salarié 26",
       "firstName": "Oumar",
-      "role": "user",
+      "role": "USER",
       "sector": "78-95",
       "address": "31  RUE DES JUMELAGES, 10000 TROYES",
       "email": "oumar.salarie26@samusocial.net"
     }, {
       "lastName": "Salarié 27",
       "firstName": "Clément",
-      "role": "user",
+      "role": "USER",
       "sector": "93",
       "address": "5  RUE DU CLOS SAINT-VINCENT, 93460 GOURNAY-SUR-MARNE",
       "email": "clement.salarie27@samusocial.net"
     }, {
       "lastName": "Salarié 28",
       "firstName": "Jeannette",
-      "role": "user",
+      "role": "USER",
       "sector": "75",
       "address": "168  RUE DE CHARENTON, 75012 PARIS",
       "email": "jeannette.salarie28@samusocial.net"
     }, {
       "lastName": "Salarié 31",
       "firstName": "Jonathan",
-      "role": "user",
+      "role": "USER",
       "sector": "77-91",
       "address": "7  AVENUE MALLERET JOINVILLE, 94140 ALFORTVILLE",
       "email": "jonathan.salarie31@samusocial.net"
     }, {
       "lastName": "Salarié 34",
       "firstName": "Alain",
-      "role": "user",
+      "role": "USER",
       "sector": "93",
       "address": "5  RUE JULES HARDOUIN MANSART, 92600 ASNIERES SUR SEINE",
       "email": "alain.salarie34@samusocial.net"
     }, {
       "lastName": "Salarié 37",
       "firstName": "Flora",
-      "role": "user",
+      "role": "USER",
       "sector": "75",
       "address": "9 QUATER PLACE DU GÉNÉRAL DE GAULLE, 93100 MONTREUIL",
       "email": "flora.salarie37@samusocial.net"
     }, {
       "lastName": "Salarié 39",
       "firstName": "Dominique",
-      "role": "user",
+      "role": "USER",
       "sector": "78-95",
       "address": "16  RUE RASPAIL, 94200 IVRY-SUR-SEINE",
       "email": "dominique.salarie39@samusocial.net"
     }, {
       "lastName": "Salarié 40",
       "firstName": "Rehan",
-      "role": "user",
+      "role": "USER",
       "sector": "93",
       "address": "112  AVENUE DU GENERAL LECLERC, 75014 PARIS",
       "email": "rehan.salarie40@samusocial.net"
     }, {
       "lastName": "Salarié 41",
       "firstName": "Jacques-Philippe",
-      "role": "user",
+      "role": "USER",
       "sector": "77-91",
       "address": "16 BIS RUE HENRI ROL TANGUY, 91350 GRIGNY",
       "email": "jacques-philippe.salarie41@samusocial.net"
     }, {
       "lastName": "Salarié 42",
       "firstName": "Ramdane",
-      "role": "user",
+      "role": "USER",
       "sector": "75",
       "address": "1  RUE DE L HOTEL DE VILLE, 92400 COURBEVOIE",
       "email": "ramdane.salarie42@samusocial.net"
     }, {
       "lastName": "Salarié 43",
       "firstName": "Georgio Angelo",
-      "role": "user",
+      "role": "USER",
       "sector": "77-91",
       "address": "62  BOULEVARD Massena, 75013 PARIS",
       "email": "georgioangelo.salarie43@samusocial.net"
     }, {
-      "role": "admin",
+      "role": "ADMIN",
       "lastName": "Admin",
       "firstName": "Salarié",
       "sector": "93",
