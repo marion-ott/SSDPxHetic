@@ -1,8 +1,7 @@
 import React from 'react'
 import { Icon } from '../atoms'
 
-const Dropdown = ({ data, titleicon, downicon, title, type }) => {
-
+const Dropdown = ({ children, titleicon, downicon, title }) => {
   return (
     <div className='dropdown is-right is-hoverable'>
       <div className='dropdown-trigger'>
@@ -21,15 +20,7 @@ const Dropdown = ({ data, titleicon, downicon, title, type }) => {
       </div>
       <div className='dropdown-menu' id='dropdown-menu3' role='menu'>
         <div className='dropdown-content'>
-          {data && data.map((d, i) => {
-            return <a key={i} href='#' className='dropdown-item'>{d}</a>
-          })}
-          {type === "Menu" &&
-            <>
-              <hr class="dropdown-divider"></hr>
-              <a href='#' className='dropdown-item'>Déconnexion</a>
-            </>
-          }
+          {children}
         </div>
       </div>
     </div>

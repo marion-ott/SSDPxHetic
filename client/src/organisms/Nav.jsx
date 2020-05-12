@@ -42,7 +42,12 @@ const Nav = () => {
                   <p>Visite d'urgence</p>
                 </Button>
                 {/* <Icon classname='fa-bell' /> */}
-                <Dropdown type="Menu" downicon={true} title="Marion" titleicon="fa-user" data={["Mon profile", "Mes visites"]} />
+                <Dropdown downicon={true} title="Marion" titleicon="fa-user">
+                  <Link to='/' className='dropdown-item'>Mon profile</Link>
+                  <Link to='/' className='dropdown-item'>Mes visites</Link>
+                  <hr class="dropdown-divider"></hr>
+                  <Link to='/' className='dropdown-item'>Déconnexion</Link>
+                </Dropdown>
               </div>
             </div>
           </div>
