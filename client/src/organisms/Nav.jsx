@@ -42,7 +42,7 @@ const Nav = () => {
                   <p>Visite d'urgence</p>
                 </Button>
                 {/* <Icon classname='fa-bell' /> */}
-                <Dropdown downicon={true} title="Marion" titleicon="fa-user" data={["Mon profile", "Mes visites", "Déconnexion"]} />
+                <Dropdown type="Menu" downicon={true} title="Marion" titleicon="fa-user" data={["Mon profile", "Mes visites"]} />
               </div>
             </div>
           </div>
