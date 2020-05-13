@@ -72,6 +72,7 @@ section.section {
 .table th,
 .table td {
   border: none;
+  vertical-align: middle;
 }
 
 .table thead td,
