@@ -27,7 +27,7 @@ const Nav = () => {
               <Link
                 className={`navbar-item${
                   pathname === href ? ' is-active' : ''
-                  }`}
+                }`}
                 to={href}
                 key={id}>
                 <strong>{label}</strong>
@@ -38,15 +38,21 @@ const Nav = () => {
             <div className='navbar-item'>
               <div className='buttons'>
                 <Button classProp='is-link'>
-                  <Icon classname='fa-calendar-plus' />
+                  <Icon classProp='fa-calendar-plus' />
                   <p>Visite d'urgence</p>
                 </Button>
-                {/* <Icon classname='fa-bell' /> */}
-                <Dropdown downicon={true} title="Marion" titleicon="fa-user">
-                  <Link to='/' className='dropdown-item'>Mon profile</Link>
-                  <Link to='/' className='dropdown-item'>Mes visites</Link>
-                  <hr class="dropdown-divider"></hr>
-                  <Link to='/' className='dropdown-item'>Déconnexion</Link>
+                {/* <Icon classProp='fa-bell' /> */}
+                <Dropdown downicon={true} title='Marion' titleicon='fa-user'>
+                  <Link to='/' className='dropdown-item'>
+                    Mon profile
+                  </Link>
+                  <Link to='/' className='dropdown-item'>
+                    Mes visites
+                  </Link>
+                  <hr className='dropdown-divider'></hr>
+                  <Link to='/' className='dropdown-item'>
+                    Déconnexion
+                  </Link>
                 </Dropdown>
               </div>
             </div>

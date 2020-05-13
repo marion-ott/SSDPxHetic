@@ -1,8 +1,8 @@
 import React from 'react'
 
-const Icon = ({ classname }) => (
+const Icon = ({ classProp }) => (
   <span className='icon'>
-    <i className={`fas ${classname}`}></i>
+    <i className={`fas ${classProp}`}></i>
   </span>
 )
 

@@ -1,4 +1,4 @@
-import getAuthUserId from './../utils/getAuthUserId'
+import getAuthUserId from './../utils/'
 
 const User = {
 	sector(parent, args, {prisma}) {

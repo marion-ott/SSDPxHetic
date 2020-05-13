@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { LOGIN } from './../graphql/mutations/auth'
 import { Modal } from './../organisms'
 import Dropdown from './Dropdown'
 import Icon from '../atoms/Icon'
@@ -38,17 +37,15 @@ const ListItem = ({ id, index, data, keys, query }) => {
           }
           return <td key={i}>{data[el.name]}</td>
         })}
-        <td>
-          <Dropdown title={<Icon classname='fa-ellipsis-h' />}>
+        <td className='list-dropdown'>
+          <Dropdown title={<Icon classProp='fa-ellipsis-h' />}>
             <Link to={`/${type}/${data.id}`} className='dropdown-item'>
               Détails
             </Link>
-            <Link to='/' className='dropdown-item'>
+            <p onClick={handleClick} className='dropdown-item'>
               Modifier
-            </Link>
-            <Link to='/' className='dropdown-item'>
-              Supprimer
-            </Link>
+            </p>
+            <p className='dropdown-item has-text-danger	'>Supprimer</p>
           </Dropdown>
         </td>
       </tr>

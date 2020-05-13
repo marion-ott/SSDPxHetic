@@ -12,10 +12,10 @@ const schema = yup.object({
 })
 
 const Login = () => {
-  const [login, { client, loading, error, data }] = useMutation(LOGIN, {
-    onCompleted(res) {
-      console.log(res)
-      localStorage.setItem('token', "hello it's a token")
+  const [login, { client, loading, error }] = useMutation(LOGIN, {
+    onCompleted({ login }) {
+      //TODO: update context with logged login.user
+      localStorage.setItem('token', login.token)
       client.resetStore()
     },
     onError: (error) => console.log(error)
@@ -28,6 +28,10 @@ const Login = () => {
 
   if (error) {
     return <p>there was an error</p>
+  }
+
+  if (loading) {
+    return <p>loading</p>
   }
 
   return (

@@ -7,8 +7,6 @@ import Hotels from './Hotels'
 import Details from './Details'
 import { Nav } from '../organisms'
 
-const logged = false
-
 function App() {
   return (
     <Router>
