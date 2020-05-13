@@ -19,7 +19,7 @@ $ cd client/src
 $ touch .env
 ```
 
-### Copy & paste the following variables in dev.env
+### Copy & paste the following variables in server/config/dev.env
 
 ```env
 PORT=9000
