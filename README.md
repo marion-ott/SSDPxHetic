@@ -7,6 +7,7 @@ $ cd client
 $ yarn install
 $ cd server
 $ yarn install
+$ docker-compose up
 ```
 
 ### Create environment variables file
