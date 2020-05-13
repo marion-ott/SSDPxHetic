@@ -23,7 +23,7 @@ const Mutation = {
 		}
 
 		const token = await generateToken()
-
+		console.log('token')
 		return {
 			token,
 			user
@@ -43,6 +43,7 @@ const Mutation = {
 		}
 	},
 	async updateUser(parent, {id, data}, {prisma, request}) {
+		console.log(id, data)
 		const userId = getAuthUserId(request)
 		const requestingUser = await prisma.user({id})
 
