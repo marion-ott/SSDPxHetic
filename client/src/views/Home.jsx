@@ -13,7 +13,7 @@ const Home = () => (
     <Title classProp='is-1' tag='h1'>
       planning
     </Title>
-    <Modal isActive />
+    {/* <Modal isActive /> */}
   </section>
 )
 

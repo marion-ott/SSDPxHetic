@@ -1,14 +1,15 @@
 import React, { useState } from 'react'
 import { useQuery } from '@apollo/react-hooks'
 import { GET_COUNT } from './../graphql/queries/count'
+import { Modal } from '../organisms'
 import { ListItem, Pagination } from '../molecules'
 import { Input, Title } from '../atoms'
 import { listKeys } from '../global/data'
 
-const List = ({ entries, type, title }) => {
+const List = ({ entries, type, title, query }) => {
   const { loading, error, data } = useQuery(GET_COUNT, { variables: { type } })
   const keys = listKeys.filter((el) =>
-    Object.keys(entries[0]).find((entry) => entry === el.name)
+    Object.keys(entries[0]).find((entry) => entry === el.name && el.inTable)
   )
 
   if (loading) {
@@ -41,9 +42,11 @@ const List = ({ entries, type, title }) => {
             {entries.map((entry, index) => (
               <ListItem
                 key={entry.id}
+                id={entry.id}
                 index={index + 1}
                 data={entry}
                 keys={keys}
+                query={query}
               />
             ))}
           </tbody>

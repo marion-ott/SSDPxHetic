@@ -6,15 +6,12 @@ export const GET_USER = gql`
       id
       firstName
       lastName
-      role
       sector {
         id
         zone
       }
       address
       email
-      createdAt
-      updatedAt
     }
   }
 `
@@ -26,7 +23,7 @@ export const GET_USERS = gql`
       firstName
       lastName
       email
-      role
+      address
       sector {
         id
         zone

@@ -1,21 +1,22 @@
 import React from 'react'
-import * as yup from 'yup'
+import { useMutation } from '@apollo/react-hooks'
 import { getFormProps } from './../global/data'
 import { Form } from './index'
 import { Title, Button } from './../atoms'
 
-const mock = {
-  firstName: 'Marion',
-  lastName: 'Ott',
-  email: 'marion_ott@me.com',
-  address: 'adresse postale',
-  zipCode: 75004,
-  city: 'Paris',
-  sector: '75'
-}
+const Modal = ({ isActive, title, data, close, query }) => {
+  const [callback, { loading, error, res }] = useMutation(query, {
+    onCompleted(res) {
+      console.log('hojhoho')
+      console.log(res)
+    },
+    onError: (error) => console.log('ededdedededde', error)
+  })
+  const [form, schema] = getFormProps(data)
 
-const Modal = ({ isActive, title = 'éditer', data }) => {
-  const [form, schema] = getFormProps(mock)
+  if (error) {
+    return <p>there was an error</p>
+  }
 
   return (
     <div className={`modal${isActive ? ' is-active' : ''}`}>
@@ -25,10 +26,19 @@ const Modal = ({ isActive, title = 'éditer', data }) => {
           <Title classProp='is-3 modal-card-title' tag='h3'>
             {title}
           </Title>
-          <button className='delete' aria-label='close'></button>
+          <button
+            onClick={close}
+            className='delete'
+            aria-label='close'></button>
         </div>
         <section className='modal-card-body'>
-          <Form data={form} schema={schema} />
+          <Form
+            id={data.id}
+            data={form}
+            schema={schema}
+            withIcon={false}
+            callback={callback}
+          />
         </section>
       </div>
     </div>
