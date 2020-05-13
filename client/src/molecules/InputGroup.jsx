@@ -1,7 +1,7 @@
-import React, { useMemo } from 'react'
+import React from 'react'
 import { useField } from 'formik'
-import { Input } from './../atoms'
-import { Label } from './../atoms'
+import { Label, Input, Select } from './../atoms'
+// import { Label } from './../atoms'
 
 const InputGroup = ({
   labelProps,
@@ -12,22 +12,18 @@ const InputGroup = ({
   ...props
 }) => {
   const [field, meta] = useField(props)
+  const Component = inputProps.type === 'select' ? Select : Input
   return (
     <div className='field'>
       <Label name={props.name} {...labelProps} />
-      <div className='control has-icons-left has-icons-right'>
-        <Input {...inputProps} {...field} />
+      <Component icon={icon} {...inputProps} {...field}>
         {icon && (
           <span className={`icon ${size} is-left`}>
             <i className={`fas ${icon}`}></i>
           </span>
         )}
-        {meta.error && <p>{meta.error}</p>}
-        {/* <span className={`icon ${size} is-right`}>
-          <i className='fas fa-exclamation-triangle'></i>
-        </span> */}
-      </div>
-      {/* <p className='help is-danger'>This email is invalid</p> */}
+      </Component>
+      {meta.error && <p>{meta.error}</p>}
     </div>
   )
 }

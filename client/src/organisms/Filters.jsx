@@ -1,65 +1,65 @@
 import React from 'react'
 
 const Filters = () => (
-  <aside className='box menu column is-one-fifth'>
-    <ul className='menu-list'>
-      <a className='is-active'>Filtres</a>
-      <li>
-        <p className='menu-label'>
-          <strong>Secteurs</strong>
+  <aside style={{ flex: "0 0 20%", height: 'fit-content', borderRadius: 6 }} className="card">
+    <div>
+      <div style={{ padding: "0.75rem 1.5rem 0.75rem 1.5rem", borderTopLeftRadius: 6, borderTopRightRadius: 6 }} className="card">
+        <p style={{ marginBottom: 7 }}>
+          <strong>Chercher ...</strong>
         </p>
-        <ul className='menu-list'>
+        <div class="field">
+          <div class="control">
+            <input class="input is-info" type="text" placeholder="Secteur, criticité ..." />
+          </div>
+        </div>
+      </div>
+      <div style={{ padding: "0.75rem 1.5rem 1.5rem 1.5rem" }}>
+        <ul style={{ marginBottom: 14 }}>
           <li>
-            <label className='panel-block'>
-              <input type='checkbox' />
-              75
-            </label>
-          </li>
-          <li>
-            <label className='panel-block'>
-              <input type='checkbox' />
-              92
-            </label>
+            <p style={{ marginBottom: 7 }}>
+              <strong>Secteurs</strong>
+            </p>
+            <ul class="menu-list control">
+              {["Tous", "92 / 93", "93", "77 / 91", "75", "78 / 95"].map((sect) => {
+                return (
+                  <>
+                    <li>
+                      <label style={{ height: 43 }} class="radio panel-block">
+                        <input type="radio" name="sector" />
+                        <div style={{ marginLeft: "0.75em" }}>{sect}</div>
+                      </label>
+                    </li>
+                    <div style={{ height: 1, backgroundColor: "#F3F3F3" }}></div>
+                  </>
+                )
+              })}
+            </ul>
           </li>
         </ul>
-      </li>
-      <li>
-        <p className='menu-label'>
-          <strong>Note</strong>
-        </p>
-        <ul className='menu-list'>
+        <ul>
           <li>
-            <label className='panel-block'>
-              <input type='checkbox' />> 10
-            </label>
-          </li>
-          <li>
-            <label className='panel-block'>
-              <input type='checkbox' />
-              >30
-            </label>
-          </li>
-        </ul>
-      </li>
-      <li>
-        <p className='menu-label'>
-          <strong>Dernière visite</strong>
-        </p>
-        <ul className='menu-list'>
-          <li>
-            <label className='panel-block'>
-              <input type='checkbox' />> 10
-            </label>
-          </li>
-          <li>
-            <label className='panel-block'>
-              <input type='checkbox' />
-              >30
-            </label>
+            <p style={{ marginBottom: 7 }}>
+              <strong>Taux de criticité</strong>
+            </p>
+            <ul class="menu-list control">
+              {["Tous", "0 - 20", "15 - 30", "25 - 50", "50 - 75"].map((sect) => {
+                return (
+                  <>
+                    <li>
+                      <label style={{ height: 43 }} class="radio panel-block">
+                        <input type="radio" name="sector" />
+                        <div style={{ marginLeft: "0.75em" }}>{sect}</div>
+                      </label>
+                    </li>
+                    <div style={{ height: 1, backgroundColor: "#F3F3F3" }}></div>
+                  </>
+                )
+              })}
+            </ul>
           </li>
         </ul>
-      </li>
-    </ul>
+      </div>
+    </div>
   </aside>
 )
 

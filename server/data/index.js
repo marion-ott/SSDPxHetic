@@ -96,6 +96,27 @@ const deleteData = async () => {
 		await prisma.deleteSector({id: sector.id})
 	}
 	console.log(`${sectors.length} sectors deleted.`)
+
+	const teams = await prisma.teams()
+	console.log(`Deleting teams...`)
+	for (const team of teams) {
+		await prisma.deleteTeam({id: team.id})
+	}
+	console.log(`${teams.length} teams deleted.`)
+
+	const visits = await prisma.visits()
+	console.log(`Deleting visits...`)
+	for (const visit of visits) {
+		await prisma.deleteVisit({id: visit.id})
+	}
+	console.log(`${visits.length} visits deleted.`)
+
+	const residents = await prisma.residents()
+	console.log(`Deleting residents...`)
+	for (const resident of residents) {
+		await prisma.deleteResident({id: resident.id})
+	}
+	console.log(`${residents.length} residents deleted.`)
 }
 
 /** UNCOMMENT IF YOU WISH TO REMOVE ALL DATA */

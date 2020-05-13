@@ -1,6 +1,7 @@
 import React from 'react'
 import { useQuery } from '@apollo/react-hooks'
 import { GET_HOTELS } from './../graphql/queries/hotels'
+import { UPDATE_HOTEL } from './../graphql/mutations/hotels'
 import Loading from './Loading'
 import { Filters } from './../organisms'
 import { List } from './../organisms'
@@ -26,7 +27,12 @@ const Hotels = () => {
   return (
     <section className='section columns'>
       <Filters />
-      <List entries={data.hotels} type='hotels' title='Liste des hôtels' />
+      <List
+        entries={data.hotels}
+        type='hotels'
+        title='Liste des hôtels'
+        query={UPDATE_HOTEL}
+      />
     </section>
   )
 }

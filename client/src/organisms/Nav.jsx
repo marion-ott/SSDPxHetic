@@ -37,7 +37,7 @@ const Nav = () => {
           <div className='navbar-end'>
             <div className='navbar-item'>
               <div className='buttons'>
-                <Button classname='is-link'>
+                <Button classProp='is-link'>
                   <Icon classname='fa-calendar-plus' />
                   <p>Visite d'urgence</p>
                 </Button>

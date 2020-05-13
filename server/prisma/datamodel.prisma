@@ -4,7 +4,7 @@ type User {
 	firstName: String!
 	lastName: String!
 	role: String!
-	sector: Sector @relation(link: INLINE)
+	sector: Sector @relation(name: "UserSector", link: INLINE)
 	address: String
 	email: String! @unique
 	password: String
@@ -15,6 +15,7 @@ type User {
 type Team {
 	id: ID! @id
 	users: [User!]! @relation(link: INLINE)
+	visits: [Visit!] @relation(name: "TeamVisits", link: INLINE)
 	createdAt: DateTime! @createdAt
 	updatedAt: DateTime! @updatedAt
 }
@@ -22,8 +23,8 @@ type Team {
 type Visit {
 	id: ID! @id
 	date: DateTime!
-	team: Team! @relation(link: INLINE)
-	hotel: Hotel! @relation(link: INLINE)
+	team: Team! @relation(name: "TeamVisits")
+	hotel: Hotel @relation(name: "HotelVisits")
 	createdAt: DateTime! @createdAt
 	updatedAt: DateTime! @updatedAt
 }
@@ -40,10 +41,11 @@ type Hotel {
 	rooms: Int!
 	lastVisit: DateTime
 	score: Float
-	sector: Sector! @relation(link: INLINE)
+	sector: Sector! @relation(name: "HotelSector", link: INLINE)
 	lat: Float!
 	long: Float!
-	residents: [Resident!]
+	visits: [Visit!] @relation(name: "HotelVisits", link: INLINE)
+	residents: [Resident!] @relation(name: "HotelResidents", link: INLINE)
 	createdAt: DateTime! @createdAt
 	updatedAt: DateTime! @updatedAt
 }
@@ -51,8 +53,8 @@ type Hotel {
 type Sector {
 	id: ID! @id
 	zone: String! @unique
-	users: [User!]
-	hotels: [Hotel!]
+	users: [User!] @relation(name: "UserSector")
+	hotels: [Hotel!] @relation(name: "HotelSector")
 	createdAt: DateTime! @createdAt
 	updatedAt: DateTime! @updatedAt
 }
@@ -65,7 +67,7 @@ type Resident {
 	email: String @unique
 	dob: DateTime
 	gender: Gender
-	hotel: Hotel! @relation(link: INLINE)
+	hotel: Hotel! @relation(name: "HotelResidents")
 	createdAt: DateTime! @createdAt
 	updatedAt: DateTime! @updatedAt
 }
