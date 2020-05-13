@@ -16,6 +16,8 @@ $ docker-compose up
 $ cd server
 $ mkdir config && cd config
 $ touch dev.env
+$ cd client/src
+$ touch .env
 ```
 
 ### Copy & paste the following variables in dev.env
