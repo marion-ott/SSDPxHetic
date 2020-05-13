@@ -13,9 +13,7 @@ const getAuthUserId = req => {
 	if (!header) {
 		throw new Error('Authentication required')
 	}
-	console.log(req.request.headers)
 	const token = header.replace('Bearer ', '')
-	console.log(token)
 	const decoded = jwt.verify(token, JWT_SECRET)
 
 	return decoded.id

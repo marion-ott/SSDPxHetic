@@ -41,7 +41,7 @@ type Query {
 	sectors: [Sector!]!
 
 	# Count
-	count(query: String): Int!
+	count(type: String!, query: String): Int!
 }
 
 type Mutation {
@@ -163,7 +163,7 @@ type Visit {
 	id: ID!
 	date: DateTime!
 	team: Team!
-	hotel: Hotel
+	hotel: Hotel!
 	createdAt: DateTime!
 	updatedAt: DateTime!
 }

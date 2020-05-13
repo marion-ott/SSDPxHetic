@@ -50,7 +50,7 @@ const Mutation = {
 		const userId = getAuthUserId(request)
 		const userToUpdate = await prisma.user({id})
 
-		if (userToUpdate.id !== userId && userToUpdate.role === 'USER') {
+		if (userToUpdate.id !== userId && userToUpdate.role !== 'USER') {
 			throw new Error(
 				"The user doesn't exist or you don't have persmission to update the information."
 			)

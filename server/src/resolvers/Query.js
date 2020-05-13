@@ -1,3 +1,5 @@
+import {generateSearchIndex} from './../utils'
+
 const Query = {
 	/** USERS */
 	user(parent, {id}, {prisma, request}) {
@@ -5,7 +7,9 @@ const Query = {
 	},
 	users(parent, args, {prisma}) {
 		const opArgs = {
-			where: {},
+			where: {
+				role: 'USER'
+			},
 			first: args.first,
 			skip: args.skip,
 			orderBy: args.orderBy
@@ -14,6 +18,7 @@ const Query = {
 		if (args.query) {
 			const input = generateSearchIndex(args.query)
 			opArgs.where = {
+				...opArgs.where,
 				searchIndex_contains: input
 			}
 		}
@@ -46,6 +51,7 @@ const Query = {
 				searchIndex_contains: input
 			}
 		}
+
 		return prisma.hotels(opArgs)
 	},
 
@@ -89,23 +95,34 @@ const Query = {
 
 	/** COUNT */
 	count(parent, args, {prisma}) {
-		if (args.query === 'hotels') {
+		const opArgs = {
+			where: {}
+		}
+
+		if (args.query) {
+			const input = generateSearchIndex(args.query)
+			opArgs.where = {
+				searchIndex_contains: input
+			}
+		}
+
+		if (args.type === 'hotels') {
 			return prisma
-				.hotelsConnection()
+				.hotelsConnection(opArgs)
 				.aggregate()
 				.count()
 		}
 
-		if (args.query === 'users') {
+		if (args.type === 'users') {
 			return prisma
-				.usersConnection()
+				.usersConnection(opArgs)
 				.aggregate()
 				.count()
 		}
 
-		if (args.query === 'residents') {
+		if (args.type === 'residents') {
 			return prisma
-				.residentsConnection()
+				.residentsConnection(opArgs)
 				.aggregate()
 				.count()
 		}

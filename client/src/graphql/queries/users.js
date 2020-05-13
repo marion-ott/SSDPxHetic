@@ -17,8 +17,8 @@ export const GET_USER = gql`
 `
 
 export const GET_USERS = gql`
-  query Users($first: Int, $skip: Int) {
-    users(first: $first, skip: $skip) {
+  query Users($type: String!, $query: String, $first: Int, $skip: Int) {
+    users(query: $query, first: $first, skip: $skip, orderBy: lastName_ASC) {
       id
       firstName
       lastName
@@ -29,5 +29,6 @@ export const GET_USERS = gql`
         zone
       }
     }
+    count(query: $query, type: $type)
   }
 `
