@@ -1,10 +1,79 @@
 import React from 'react'
 import { Link, withRouter } from 'react-router-dom'
+import { List } from '../organisms'
 
 const Details = ({ location }) => {
   const breadcrumb = location.pathname.split('/')
   breadcrumb.shift()
-  console.log(location)
+
+  var historic = [
+    {
+      date: "12/02/2020",
+      coop: "Michel Lupin",
+      crit: 22,
+      destination: "25 rue des carrés, 75012 Paris"
+    },
+    {
+      date: "12/02/2020",
+      coop: "Michel Lupin",
+      crit: 22,
+      destination: "25 rue des carrés, 75012 Paris"
+    },
+    {
+      date: "12/02/2020",
+      coop: "Michel Lupin",
+      crit: 22,
+      destination: "25 rue des carrés, 75012 Paris"
+    },
+    {
+      date: "12/02/2020",
+      coop: "Michel Lupin",
+      crit: 22,
+      destination: "25 rue des carrés, 75012 Paris"
+    },
+    {
+      date: "12/02/2020",
+      coop: "Michel Lupin",
+      crit: 22,
+      destination: "25 rue des carrés, 75012 Paris"
+    },
+    {
+      date: "23/11/2019",
+      coop: "Michel Lupin",
+      crit: 22,
+      destination: "25 rue des carrés, 75012 Paris"
+    },
+    {
+      date: "23/11/2019",
+      coop: "Michel Lupin",
+      crit: 22,
+      destination: "25 rue des carrés, 75012 Paris"
+    },
+    {
+      date: "23/11/2019",
+      coop: "Michel Lupin",
+      crit: 22,
+      destination: "25 rue des carrés, 75012 Paris"
+    },
+    {
+      date: "23/11/2019",
+      coop: "Michel Lupin",
+      crit: 22,
+      destination: "25 rue des carrés, 75012 Paris"
+    },
+    {
+      date: "23/11/2019",
+      coop: "Michel Lupin",
+      crit: 22,
+      destination: "25 rue des carrés, 75012 Paris"
+    },
+    {
+      date: "23/11/2019",
+      coop: "Michel Lupin",
+      crit: 22,
+      destination: "25 rue des carrés, 75012 Paris"
+    }
+  ]
 
   return (
     <section style={{ height: "calc(100vh - 68px)" }} className='section'>
@@ -19,7 +88,6 @@ const Details = ({ location }) => {
           ))}
         </ul>
       </div>
-      <h2 className='title is-3'>Utilisateur</h2>
       <div className='columns'>
         <div className='column is-one-third'>
           <div class="card">
@@ -63,13 +131,7 @@ const Details = ({ location }) => {
             </div>
           </div>
         </div>
-        <div className='column'>
-          <div className="title is-3">
-            Historique d'activité
-          </div>
-          <div class="box">
-          </div>
-        </div>
+        <List type="details" title="Historique d'activité" entries={historic} />
       </div>
     </section>
   )

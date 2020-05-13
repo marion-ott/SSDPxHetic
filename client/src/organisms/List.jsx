@@ -11,6 +11,8 @@ const List = ({ entries, type, title }) => {
   const keys = listKeys.filter((el) =>
     Object.keys(entries[0]).find((entry) => entry === el.name)
   )
+  console.log(keys)
+  console.log(entries)
 
   if (loading) {
     return <p>loading</p>
@@ -20,7 +22,7 @@ const List = ({ entries, type, title }) => {
     <div className='column'>
       <h3 className='title is-3'>
         {title}
-        <span className='subtitle is-6'>&nbsp;({data.count})</span>
+        {data && <span className='subtitle is-6'>&nbsp;({data.count})</span>}
       </h3>
       <div className='control has-icons-left is-loading'>
         <Input type='text' placeholder='Rechercher' />
