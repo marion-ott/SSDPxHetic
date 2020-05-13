@@ -34,7 +34,7 @@ const Query = {
 	hotel(parent, {id}, {prisma}) {
 		return prisma.hotel({id})
 	},
-	hotels(parent, args, {prisma}) {
+	hotels(parent, args, {prisma, request}) {
 		const opArgs = {
 			where: {},
 			first: args.first,
