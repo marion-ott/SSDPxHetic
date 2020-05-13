@@ -162,7 +162,7 @@ const getFormProps = (data) => {
   }
   const obj = {}
 
-  Object.keys(data).map((key) => {
+  Object.keys(data).forEach((key) => {
     if (key === 'id' || key === '__typename') return
     form.initialValues[key] = data[key] || ''
     const inputModel = listKeys.find((listKey) => listKey.name === key)

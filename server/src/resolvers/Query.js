@@ -1,5 +1,3 @@
-import getAuthUserId from './../utils/getAuthUserId'
-
 const Query = {
 	/** USERS */
 	user(parent, {id}, {prisma, request}) {

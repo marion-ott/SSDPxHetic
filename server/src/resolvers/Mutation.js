@@ -23,7 +23,11 @@ const Mutation = {
 		}
 
 		const token = await generateToken()
-		console.log('token')
+		const response = {
+			token,
+			user
+		}
+
 		return {
 			token,
 			user
@@ -43,11 +47,10 @@ const Mutation = {
 		}
 	},
 	async updateUser(parent, {id, data}, {prisma, request}) {
-		console.log(id, data)
 		const userId = getAuthUserId(request)
-		const requestingUser = await prisma.user({id})
+		const userToUpdate = await prisma.user({id})
 
-		if (requestingUser.id !== userId && requestingUser.role === 'USER') {
+		if (userToUpdate.id !== userId && userToUpdate.role === 'USER') {
 			throw new Error(
 				"The user doesn't exist or you don't have persmission to update the information."
 			)
@@ -56,7 +59,7 @@ const Mutation = {
 		 * Prevent another user's password update
 		 * Prevent the update of another ADMIN user
 		 */
-		if (requestingUser.role !== 'USER' && data.password) {
+		if (userToUpdate.role !== 'USER' && data.password) {
 			throw new Error("You can't perform this action")
 		}
 
@@ -70,7 +73,7 @@ const Mutation = {
 
 		return prisma.updateUser({
 			data,
-			where: {id: userId}
+			where: {id: userToUpdate.id}
 		})
 	},
 	deleteUser(parent, {id}, {prisma}) {

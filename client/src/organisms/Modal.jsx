@@ -2,20 +2,23 @@ import React from 'react'
 import { useMutation } from '@apollo/react-hooks'
 import { getFormProps } from './../global/data'
 import { Form } from './index'
-import { Title, Button } from './../atoms'
+import { Title } from './../atoms'
 
 const Modal = ({ isActive, title, data, close, query }) => {
-  const [callback, { loading, error, res }] = useMutation(query, {
-    onCompleted(res) {
-      console.log('hojhoho')
-      console.log(res)
+  const [callback, { loading, error }] = useMutation(query, {
+    onCompleted() {
+      close()
     },
-    onError: (error) => console.log('ededdedededde', error)
+    onError: (error) => console.error(error)
   })
   const [form, schema] = getFormProps(data)
 
   if (error) {
     return <p>there was an error</p>
+  }
+
+  if (loading) {
+    return <p>loading</p>
   }
 
   return (

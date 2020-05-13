@@ -1,7 +1,7 @@
 import React from 'react'
 import { Formik, Form as FormElement } from 'formik'
 import { InputGroup } from './../molecules'
-import { Button, Label } from './../atoms'
+import { Button } from './../atoms'
 
 const Form = ({ data, callback, schema, id, withIcon }) => {
   return (

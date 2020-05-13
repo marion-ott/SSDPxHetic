@@ -1,7 +1,7 @@
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
 import deburr from 'lodash.deburr'
-
+const JWT_SECRET = 'thisisasecret'
 /**
  * Get logged in user id from JWT token
  * @param {Object} req (request)
@@ -13,9 +13,10 @@ const getAuthUserId = req => {
 	if (!header) {
 		throw new Error('Authentication required')
 	}
-
+	console.log(req.request.headers)
 	const token = header.replace('Bearer ', '')
-	const decoded = jwt.verify(token, 'thisisasecret')
+	console.log(token)
+	const decoded = jwt.verify(token, JWT_SECRET)
 
 	return decoded.id
 }
@@ -26,7 +27,7 @@ const getAuthUserId = req => {
  * @returns {String} token
  */
 const generateToken = id => {
-	return jwt.sign({id}, 'thisisasecret')
+	return jwt.sign({id}, JWT_SECRET)
 }
 
 /**

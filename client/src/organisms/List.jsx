@@ -1,7 +1,6 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { useQuery } from '@apollo/react-hooks'
 import { GET_COUNT } from './../graphql/queries/count'
-import { Modal } from '../organisms'
 import { ListItem, Pagination } from '../molecules'
 import { Input, Title } from '../atoms'
 import { listKeys } from '../global/data'
@@ -14,6 +13,10 @@ const List = ({ entries, type, title, query }) => {
 
   if (loading) {
     return <p>loading</p>
+  }
+
+  if (error) {
+    return <p>error</p>
   }
 
   return (
