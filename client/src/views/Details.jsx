@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link, withRouter } from 'react-router-dom'
+import { Title } from './../atoms'
 
 const Details = ({ location }) => {
   const breadcrumb = location.pathname.split('/')
@@ -18,7 +19,9 @@ const Details = ({ location }) => {
           ))}
         </ul>
       </div>
-      <h2 className='title is-3'>Détails</h2>
+      <Title classProp='is-3' tag='h2'>
+        Détails
+      </Title>
       <div className='columns'>
         <div className='column'>col 1</div>
         <div className='column'>col 2</div>
