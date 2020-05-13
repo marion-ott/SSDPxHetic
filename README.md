@@ -7,6 +7,9 @@ $ cd client
 $ yarn install
 $ cd server
 $ yarn install
+```
+### Start docker containers
+```shell
 $ docker-compose up
 ```
 
