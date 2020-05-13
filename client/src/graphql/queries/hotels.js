@@ -31,6 +31,9 @@ export const GET_HOTELS = gql`
       name
       rooms
       lastVisit
+      address
+      zipCode
+      city
       score
       sector {
         zone
