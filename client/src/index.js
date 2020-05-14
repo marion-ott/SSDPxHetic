@@ -8,7 +8,15 @@ import App from './views'
 import './index.css'
 
 const client = new ApolloClient({
-  uri: 'http://localhost:9000'
+  uri: 'http://localhost:9000',
+  request: (operation) => {
+    const token = localStorage.getItem('token')
+    operation.setContext({
+      headers: {
+        authorization: token ? `Bearer ${token}` : ''
+      }
+    })
+  }
 })
 
 ReactDOM.render(

@@ -37,12 +37,23 @@ const Nav = () => {
           <div className='navbar-end'>
             <div className='navbar-item'>
               <div className='buttons'>
-                <Button classname='is-link'>
-                  <Icon classname='fa-calendar-plus' />
+                <Button classProp='is-link'>
+                  <Icon classProp='fa-calendar-plus' />
                   <p>Visite d'urgence</p>
                 </Button>
-                {/* <Icon classname='fa-bell' /> */}
-                <Dropdown />
+                {/* <Icon classProp='fa-bell' /> */}
+                <Dropdown downicon={true} title='Marion' titleicon='fa-user'>
+                  <Link to='/' className='dropdown-item'>
+                    Mon profile
+                  </Link>
+                  <Link to='/' className='dropdown-item'>
+                    Mes visites
+                  </Link>
+                  <hr className='dropdown-divider'></hr>
+                  <Link to='/' className='dropdown-item'>
+                    Déconnexion
+                  </Link>
+                </Dropdown>
               </div>
             </div>
           </div>

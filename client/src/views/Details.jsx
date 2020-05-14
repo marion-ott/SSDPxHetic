@@ -1,22 +1,13 @@
 import React from 'react'
 import { Link, withRouter } from 'react-router-dom'
 import { List } from '../organisms'
-import { GET_HOTELS } from './../graphql/queries/hotels'
-import { GET_USERS } from './../graphql/queries/users'
-import { useQuery } from '@apollo/react-hooks'
 
-const Details = ({ location }) => {
-  // const { loading, error, data } = useQuery(location[0] === "hotels" ? GET_HOTELS : GET_USERS, {
-  //   variables: {
-  //     first: 15,
-  //     skip: 0,
-  //   }
-  // })
-  // console.log("location", location)
-  // console.log(data)
-  // console.log("data", data && data.users.location[1])
-  const breadcrumb = location.pathname.split('/')
-  breadcrumb.shift()
+const Details = ({ match }) => {
+  //const { loading, error, data } = useQuery(GET_HOTEL, { variables: { id: match.hotelId } })
+
+  //const breadcrumb = location.pathname.split('/')
+  //breadcrumb.shift()
+  //console.log(breadcrumb[1])
 
   var historic = [
     {
@@ -90,7 +81,7 @@ const Details = ({ location }) => {
   return (
     <section style={{ height: "calc(100vh - 68px)" }} className='section'>
       <div className='breadcrumb is-right is-small' aria-label='breadcrumbs'>
-        <ul>
+        {/* <ul>
           {breadcrumb.map((el, index) => (
             <li
               key={index}
@@ -98,7 +89,7 @@ const Details = ({ location }) => {
               <Link to={`/${el}`}>{el}</Link>
             </li>
           ))}
-        </ul>
+        </ul> */}
       </div>
       <div className='columns'>
         <div className='column is-one-third'>
@@ -143,7 +134,6 @@ const Details = ({ location }) => {
             </div>
           </div>
         </div>
-        <List type="details" title="Historique d'activité" entries={historic} />
       </div>
     </section>
   )

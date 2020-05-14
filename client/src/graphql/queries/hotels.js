@@ -25,16 +25,20 @@ export const GET_HOTEL = gql`
 `
 
 export const GET_HOTELS = gql`
-  query Hotels($first: Int, $skip: Int, $orderBy: HotelOrderByInput) {
-    hotels(first: $first, skip: $skip, orderBy: $orderBy) {
+  query Hotels($type: String!, $query: String, $first: Int, $skip: Int) {
+    hotels(query: $query, first: $first, skip: $skip, orderBy: lastVisit_DESC) {
       id
       name
       rooms
       lastVisit
+      address
+      zipCode
+      city
       score
       sector {
         zone
       }
     }
+    count(type: $type, query: $query)
   }
 `

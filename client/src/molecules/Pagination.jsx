@@ -1,5 +1,4 @@
 import React from 'react'
-import { useQuery } from '@apollo/react-hooks'
 
 // create & use amount & on click props
 const Pagination = () => {
@@ -8,11 +7,15 @@ const Pagination = () => {
       className='pagination is-centered is-small'
       role='navigation'
       aria-label='pagination'>
-      <a className='pagination-previous'>Précédent</a>
-      <a className='pagination-next'>Suivant</a>
+      <a href='/' className='pagination-previous'>
+        Précédent
+      </a>
+      <a href='/' className='pagination-next'>
+        Suivant
+      </a>
       <ul className='pagination-list'>
         <li>
-          <a className='pagination-link' aria-label='Goto page 1'>
+          <a href='/' className='pagination-link' aria-label='Goto page 1'>
             1
           </a>
         </li>
@@ -20,12 +23,13 @@ const Pagination = () => {
           <span className='pagination-ellipsis'>&hellip;</span>
         </li>
         <li>
-          <a className='pagination-link' aria-label='Goto page 45'>
+          <a href='/' className='pagination-link' aria-label='Goto page 45'>
             45
           </a>
         </li>
         <li>
           <a
+            href='/'
             className='pagination-link is-current'
             aria-label='Page 46'
             aria-current='page'>
@@ -33,7 +37,7 @@ const Pagination = () => {
           </a>
         </li>
         <li>
-          <a className='pagination-link' aria-label='Goto page 47'>
+          <a href='/' className='pagination-link' aria-label='Goto page 47'>
             47
           </a>
         </li>
@@ -41,7 +45,7 @@ const Pagination = () => {
           <span className='pagination-ellipsis'>&hellip;</span>
         </li>
         <li>
-          <a className='pagination-link' aria-label='Goto page 86'>
+          <a href='/' className='pagination-link' aria-label='Goto page 86'>
             86
           </a>
         </li>

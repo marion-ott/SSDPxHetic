@@ -41,7 +41,7 @@ type Query {
 	sectors: [Sector!]!
 
 	# Count
-	count(query: String): Int!
+	count(type: String!, query: String): Int!
 }
 
 type Mutation {
