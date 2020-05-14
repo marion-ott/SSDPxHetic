@@ -171,3 +171,12 @@ td.list-dropdown {
   padding-bottom: 0;
   border: none;
 }
+
+.pagination-link:focus, .pagination-next:focus, .pagination-previous:focus {
+  border-color: #dbdbdb;
+}
+
+.page-item.active a {
+  background: rgba(7, 100, 159, 1);
+  color: white;
+}

@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useEffect, useRef } from 'react'
 import { useQuery } from '@apollo/react-hooks'
 import { ListItem, Pagination } from '../molecules'
 import { Input, Title, Button, Icon } from '../atoms'
@@ -16,7 +16,13 @@ const List = ({ title, get, update, type, buttonProps }) => {
       skip: 0
     }
   })
+  const currentPage = useRef(null)
   const searchInput = useRef('')
+
+  useEffect(() => {
+    console.log('USE EFFECT')
+    currentPage.current = 1
+  }, [data, type])
 
   const handleSearch = (event) => {
     event.preventDefault()
@@ -37,17 +43,35 @@ const List = ({ title, get, update, type, buttonProps }) => {
     })
   }
 
+  const handlePageChange = (page) => {
+    const skip = 15 * (page - 1)
+    currentPage.current = page
+    fetchMore({
+      variables: {
+        query: searchInput.current,
+        first: 15,
+        skip
+      },
+      updateQuery: (prev, { fetchMoreResult, ...rest }) => {
+        if (!fetchMoreResult) return prev
+        return {
+          [type]: [...fetchMoreResult[type]],
+          count: fetchMoreResult.count
+        }
+      }
+    })
+  }
+
   if (loading) {
     return <p>loading</p>
   }
+  // console.log(data.count)
 
   if (error) {
     return <p>error</p>
   }
 
-  const keys = listKeys.filter((el) =>
-    Object.keys(data[type][0]).find((entry) => entry === el.name && el.inTable)
-  )
+  const keys = listKeys.filter((el) => Object.keys(data[type][0]).find((entry) => entry === el.name && el.inTable))
 
   return (
     <div className='column'>
@@ -90,18 +114,20 @@ const List = ({ title, get, update, type, buttonProps }) => {
               <ListItem
                 key={entry.id}
                 id={entry.id}
-                index={index + 1}
+                index={index}
                 data={entry}
                 keys={keys}
                 query={update}
+                currentPage={currentPage.current || 1}
               />
             ))}
           </tbody>
         </table>
       </div>
-      <Pagination />
+      <Pagination handlePageChange={handlePageChange} totalRecords={data.count} itemPerPage={15} pageNeighbours={1} />
     </div>
   )
 }
 
 export default List
+
