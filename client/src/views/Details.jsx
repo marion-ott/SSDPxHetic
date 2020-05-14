@@ -1,8 +1,20 @@
 import React from 'react'
 import { Link, withRouter } from 'react-router-dom'
 import { List } from '../organisms'
+import { GET_HOTELS } from './../graphql/queries/hotels'
+import { GET_USERS } from './../graphql/queries/users'
+import { useQuery } from '@apollo/react-hooks'
 
 const Details = ({ location }) => {
+  // const { loading, error, data } = useQuery(location[0] === "hotels" ? GET_HOTELS : GET_USERS, {
+  //   variables: {
+  //     first: 15,
+  //     skip: 0,
+  //   }
+  // })
+  // console.log("location", location)
+  // console.log(data)
+  // console.log("data", data && data.users.location[1])
   const breadcrumb = location.pathname.split('/')
   breadcrumb.shift()
 
@@ -90,11 +102,11 @@ const Details = ({ location }) => {
       </div>
       <div className='columns'>
         <div className='column is-one-third'>
-          <div class="card">
-            <div class="card-content">
+          <div className="card">
+            <div className="card-content">
               <div style={{ justifyContent: 'center' }} className="is-flex">
                 <div>
-                  <figure style={{ margin: "auto" }} class="image is-96x96">
+                  <figure style={{ margin: "auto" }} className="image is-96x96">
                     <div style={{
                       display: "flex",
                       alignItems: "center",
@@ -110,23 +122,23 @@ const Details = ({ location }) => {
                     </div>
                     {/* <img class="is-rounded" src="https://bulma.io/images/placeholders/96x96.png" /> */}
                   </figure>
-                  <h5 style={{ marginTop: 11 }} class="title is-5">
+                  <h5 style={{ marginTop: 11 }} className="title is-5">
                     Helliot Thimothé
                   </h5>
                 </div>
               </div>
               <div style={{ height: 1, backgroundColor: '#F3F3F3', margin: "14px 0px" }}></div>
               <div style={{ height: 55 }}>
-                <h6 class="title is-6">Téléphone</h6>
-                <h6 class="subtitle is-6">0434928433</h6>
+                <h6 className="title is-6">Téléphone</h6>
+                <h6 className="subtitle is-6">0434928433</h6>
               </div>
               <div style={{ height: 55 }}>
-                <h6 class="title is-6">Email</h6>
-                <h6 class="subtitle is-6">Helliot.Thimothé@gmail.com</h6>
+                <h6 className="title is-6">Email</h6>
+                <h6 className="subtitle is-6">Helliot.Thimothé@gmail.com</h6>
               </div>
               <div style={{ height: 55 }}>
-                <h6 class="title is-6">Adresse</h6>
-                <h6 class="subtitle is-6">30 rue de la pépiniète</h6>
+                <h6 className="title is-6">Adresse</h6>
+                <h6 className="subtitle is-6">30 rue de la pépiniète</h6>
               </div>
             </div>
           </div>

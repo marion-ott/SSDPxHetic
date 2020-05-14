@@ -11,8 +11,6 @@ const List = ({ entries, type, title }) => {
   const keys = listKeys.filter((el) =>
     Object.keys(entries[0]).find((entry) => entry === el.name)
   )
-  console.log(keys)
-  console.log(entries)
 
   if (loading) {
     return <p>loading</p>
