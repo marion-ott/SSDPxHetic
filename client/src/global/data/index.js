@@ -119,6 +119,26 @@ const listKeys = [
     inTable: true,
     inForm: false,
     yupVal: null
+  },
+  {
+    name: 'score',
+    label: 'Note'
+  },
+  {
+    name: "date",
+    label: 'Date'
+  },
+  {
+    name: "coop",
+    label: "Binome"
+  },
+  {
+    name: "crit",
+    label: "Criticité"
+  },
+  {
+    name: "destination",
+    label: "Destination"
   }
 ]
 

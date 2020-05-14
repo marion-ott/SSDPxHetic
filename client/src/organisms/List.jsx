@@ -8,7 +8,6 @@ const List = ({ title, get, update, type, buttonProps }) => {
   // const { loading, error, data } = useQuery(GET_COUNT, {
   //   variables: { type, query: queryArg }
   // })
-
   const { loading, error, data, fetchMore } = useQuery(get, {
     variables: {
       query: '',
