@@ -1,0 +1,14 @@
+FROM node:latest
+
+WORKDIR /app
+
+COPY ./package.json .
+COPY ./yarn.lock .
+
+RUN yarn install --production=true --pure-lockfile
+
+COPY . .
+
+EXPOSE 9000
+
+CMD ["yarn", "start"]
