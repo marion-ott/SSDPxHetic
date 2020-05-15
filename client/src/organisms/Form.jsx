@@ -1,9 +1,21 @@
-import React from 'react'
+import React, { useState, useContext } from 'react'
 import { Formik, Form as FormElement } from 'formik'
 import { InputGroup } from './../molecules'
 import { Button } from './../atoms'
+import { userContext } from '../context/userContext';
 
 const Form = ({ data, callback, schema, id, withIcon }) => {
+  const user = useContext(userContext);
+  console.log(user)
+
+
+  // console.log(user)
+  // const loggin = () => {
+  //   // setAuthenticated(true)
+  // }
+
+
+
   return (
     <Formik
       initialValues={data.initialValues}
