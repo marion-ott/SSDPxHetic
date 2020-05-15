@@ -4,10 +4,10 @@ import { getFormProps } from './../global/data'
 import { Form } from './index'
 import { Title } from './../atoms'
 
-const Modal = ({ isActive, title, data, close, query }) => {
-  const [callback, { loading, error }] = useMutation(query, {
+const Modal = ({ isActive, title, data, onClick, update }) => {
+  const [callback, { loading, error }] = useMutation(update, {
     onCompleted() {
-      close()
+      onClick()
     },
     onError: (error) => console.error(error)
   })
@@ -30,7 +30,7 @@ const Modal = ({ isActive, title, data, close, query }) => {
             {title}
           </Title>
           <button
-            onClick={close}
+            onClick={onClick}
             className='delete'
             aria-label='close'></button>
         </div>

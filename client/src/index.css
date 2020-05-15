@@ -150,16 +150,6 @@ td.list-dropdown {
   justify-content: flex-end;
 }
 
-.search-container {
-  display: flex;
-  width: 100%;
-}
-
-.search-container .control {
-  width: 100%;
-  margin-right: .5rem;
-}
-
 .list-head {
   display: flex;
   justify-content: space-between;
@@ -172,11 +162,25 @@ td.list-dropdown {
   border: none;
 }
 
-.pagination-link:focus, .pagination-next:focus, .pagination-previous:focus {
+.pagination-link:focus,
+.pagination-next:focus,
+.pagination-previous:focus {
   border-color: #dbdbdb;
 }
 
 .page-item.active a {
   background: rgba(7, 100, 159, 1);
   color: white;
+}
+
+.details-info {
+  margin: 1.5rem 0;
+}
+
+.details-info .title {
+  margin: 0;
+}
+
+.tabs {
+  background: white;
 }

@@ -2,19 +2,15 @@ import gql from 'graphql-tag'
 
 export const GET_HOTEL = gql`
   query Hotel($id: ID!) {
-    hotel(where: { id: $id }) {
+    hotel(id: $id) {
       id
-      uuid
       name
       address
       zipCode
       city
-      active
       rooms
       lastVisit
       score
-      lat
-      long
       sector {
         zone
       }

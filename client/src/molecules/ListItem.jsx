@@ -4,42 +4,26 @@ import Dropdown from './Dropdown'
 import Icon from '../atoms/Icon'
 import { Link } from 'react-router-dom'
 
-const ListItem = ({ id, index, data, keys, query, currentPage }) => {
+const ListItem = ({
+  id,
+  index,
+  type,
+  getOne,
+  data,
+  keys,
+  update,
+  currentPage
+}) => {
   const [modalIsActive, setModalIsActive] = useState(false)
 
-  var type
-
-  if (data.__typename === 'Hotel') {
-    type = 'hotels'
-  }
-  if (data.__typename === 'User') {
-    type = 'users'
-  }
-
   const handleClick = () => {
-    setModalIsActive((val) => true)
+    setModalIsActive((val) => !val)
   }
-  /**
-   * 15 résultats par page
-   * PAGE 1
-   * resultat 1 -> 1
-   * resultat 2 -> 2
-   * 
-   * PAGE 2
-   * resultat 1 -> 16
-   * resultat 2 -> 17
-   * (index + resultatParPage * (page - 1)) + 1
-   * 15 * 2
-   * PAGE 3
-   * resultat 1 -> 31
-   * resultat 2 -> 32
-   */
-  const closeModal = () => setModalIsActive(false)
-  // console.log(index, currentPage)
+
   return (
     <>
-      <tr onClick={handleClick}>
-        <th>{index + (15 * (currentPage - 1)) + 1}</th>
+      <tr>
+        <th>{index + 15 * (currentPage - 1) + 1}</th>
         {keys.map((el, i) => {
           if (typeof data[el.name] == 'object') {
             return <td key={i}>{data[el.name] ? data[el.name].zone : 'N/A'}</td>
@@ -66,9 +50,9 @@ const ListItem = ({ id, index, data, keys, query, currentPage }) => {
       {modalIsActive && (
         <Modal
           isActive={modalIsActive}
-          close={closeModal}
+          onClick={handleClick}
           data={data}
-          query={query}
+          update={update}
           title='Modifier'
         />
       )}
@@ -77,4 +61,3 @@ const ListItem = ({ id, index, data, keys, query, currentPage }) => {
 }
 
 export default ListItem
-
