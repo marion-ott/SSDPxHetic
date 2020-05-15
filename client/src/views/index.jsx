@@ -21,13 +21,13 @@ function App() {
         <Route exact path='/users'>
           <Employees />
         </Route>
-        <Route path='/users/:userId'>
+        <Route path='/users/:id'>
           <Details />
         </Route>
         <Route exact path='/hotels'>
           <Hotels />
         </Route>
-        <Route path='/hotels/:hotelId'>
+        <Route path='/hotels/:id'>
           <Details />
         </Route>
         <Route path='/'>

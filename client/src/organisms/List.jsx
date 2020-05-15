@@ -4,11 +4,8 @@ import { ListItem, Pagination } from '../molecules'
 import { Input, Title, Button, Icon } from '../atoms'
 import { listKeys } from '../global/data'
 
-const List = ({ title, get, update, type, buttonProps }) => {
-  // const { loading, error, data } = useQuery(GET_COUNT, {
-  //   variables: { type, query: queryArg }
-  // })
-  const { loading, error, data, fetchMore } = useQuery(get, {
+const List = ({ title, getMany, update, type, buttonProps }) => {
+  const { loading, error, data, fetchMore } = useQuery(getMany, {
     variables: {
       query: '',
       type,
@@ -20,7 +17,6 @@ const List = ({ title, get, update, type, buttonProps }) => {
   const searchInput = useRef('')
 
   useEffect(() => {
-    console.log('USE EFFECT')
     currentPage.current = 1
   }, [data, type])
 
@@ -65,13 +61,14 @@ const List = ({ title, get, update, type, buttonProps }) => {
   if (loading) {
     return <p>loading</p>
   }
-  // console.log(data.count)
 
   if (error) {
     return <p>error</p>
   }
 
-  const keys = listKeys.filter((el) => Object.keys(data[type][0]).find((entry) => entry === el.name && el.inTable))
+  const keys = listKeys.filter((el) =>
+    Object.keys(data[type][0]).find((entry) => entry === el.name && el.inTable)
+  )
 
   return (
     <div className='column'>
@@ -114,20 +111,25 @@ const List = ({ title, get, update, type, buttonProps }) => {
               <ListItem
                 key={entry.id}
                 id={entry.id}
+                type={type}
                 index={index}
                 data={entry}
                 keys={keys}
-                query={update}
+                update={update}
                 currentPage={currentPage.current || 1}
               />
             ))}
           </tbody>
         </table>
       </div>
-      <Pagination handlePageChange={handlePageChange} totalRecords={data.count} itemPerPage={15} pageNeighbours={1} />
+      <Pagination
+        handlePageChange={handlePageChange}
+        totalRecords={data.count}
+        itemPerPage={15}
+        pageNeighbours={1}
+      />
     </div>
   )
 }
 
 export default List
-

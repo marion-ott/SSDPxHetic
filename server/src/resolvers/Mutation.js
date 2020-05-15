@@ -23,10 +23,6 @@ const Mutation = {
 		}
 
 		const token = await generateToken()
-		const response = {
-			token,
-			user
-		}
 
 		return {
 			token,
