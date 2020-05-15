@@ -4,7 +4,7 @@ import * as serviceWorker from './serviceWorker'
 import ApolloClient from 'apollo-boost'
 import { ApolloProvider } from '@apollo/react-hooks'
 
-import App from './views'
+import App from './views/_App'
 import './index.css'
 
 const client = new ApolloClient({
@@ -20,11 +20,9 @@ const client = new ApolloClient({
 })
 
 ReactDOM.render(
-  <React.StrictMode>
-    <ApolloProvider client={client}>
-      <App />
-    </ApolloProvider>
-  </React.StrictMode>,
+  <ApolloProvider client={client}>
+    <App />
+  </ApolloProvider>,
   document.getElementById('root')
 )
 
