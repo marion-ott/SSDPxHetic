@@ -39,7 +39,7 @@ const Form = ({ data, callback, schema, id, withIcon }) => {
             if (id) {
               variables.id = id
             }
-
+            console.log('FORMULAIRE VALIDE')
             callback({
               variables
             })

@@ -1,87 +1,34 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link, withRouter } from 'react-router-dom'
-import { List } from '../organisms'
+import useGetOne from './../hooks/useGetOne'
+import { Title } from './../atoms'
+import { listKeys } from '../global/data'
 
-const Details = ({ match }) => {
-  //const { loading, error, data } = useQuery(GET_HOTEL, { variables: { id: match.hotelId } })
+const Details = ({ location, match }) => {
+  const type = location.pathname.replace(`/${match.params.id}`, '').slice(1, -1)
+  const { loading, error, data } = useGetOne(type, match.params.id)
 
-  //const breadcrumb = location.pathname.split('/')
-  //breadcrumb.shift()
-  //console.log(breadcrumb[1])
+  if (error) {
+    return <p>{error}</p>
+  }
 
-  var historic = [
-    {
-      date: "12/02/2020",
-      coop: "Michel Lupin",
-      crit: 22,
-      destination: "25 rue des carrés, 75012 Paris"
-    },
-    {
-      date: "12/02/2020",
-      coop: "Michel Lupin",
-      crit: 22,
-      destination: "25 rue des carrés, 75012 Paris"
-    },
-    {
-      date: "12/02/2020",
-      coop: "Michel Lupin",
-      crit: 22,
-      destination: "25 rue des carrés, 75012 Paris"
-    },
-    {
-      date: "12/02/2020",
-      coop: "Michel Lupin",
-      crit: 22,
-      destination: "25 rue des carrés, 75012 Paris"
-    },
-    {
-      date: "12/02/2020",
-      coop: "Michel Lupin",
-      crit: 22,
-      destination: "25 rue des carrés, 75012 Paris"
-    },
-    {
-      date: "23/11/2019",
-      coop: "Michel Lupin",
-      crit: 22,
-      destination: "25 rue des carrés, 75012 Paris"
-    },
-    {
-      date: "23/11/2019",
-      coop: "Michel Lupin",
-      crit: 22,
-      destination: "25 rue des carrés, 75012 Paris"
-    },
-    {
-      date: "23/11/2019",
-      coop: "Michel Lupin",
-      crit: 22,
-      destination: "25 rue des carrés, 75012 Paris"
-    },
-    {
-      date: "23/11/2019",
-      coop: "Michel Lupin",
-      crit: 22,
-      destination: "25 rue des carrés, 75012 Paris"
-    },
-    {
-      date: "23/11/2019",
-      coop: "Michel Lupin",
-      crit: 22,
-      destination: "25 rue des carrés, 75012 Paris"
-    },
-    {
-      date: "23/11/2019",
-      coop: "Michel Lupin",
-      crit: 22,
-      destination: "25 rue des carrés, 75012 Paris"
-    }
+  if (loading) {
+    return <p>{loading}</p>
+  }
+
+  const keys = listKeys.filter((el) =>
+    Object.keys(data[type]).find((entry) => entry === el.name && el.inForm)
+  )
+
+  const breadcrumb = [
+    type,
+    data[type].name || `${data[type].firstName} ${data[type].lastName}`
   ]
 
   return (
-    <section style={{ height: "calc(100vh - 68px)" }} className='section'>
+    <section style={{ height: 'calc(100vh - 68px)' }} className='section'>
       <div className='breadcrumb is-right is-small' aria-label='breadcrumbs'>
-        {/* <ul>
+        <ul>
           {breadcrumb.map((el, index) => (
             <li
               key={index}
@@ -89,49 +36,71 @@ const Details = ({ match }) => {
               <Link to={`/${el}`}>{el}</Link>
             </li>
           ))}
-        </ul> */}
+        </ul>
       </div>
       <div className='columns'>
         <div className='column is-one-third'>
-          <div className="card">
-            <div className="card-content">
-              <div style={{ justifyContent: 'center' }} className="is-flex">
-                <div>
-                  <figure style={{ margin: "auto" }} className="image is-96x96">
-                    <div style={{
-                      display: "flex",
-                      alignItems: "center",
-                      fontSize: 46,
-                      color: "white",
-                      justifyContent: "center",
-                      height: 96,
-                      width: 96,
-                      backgroundColor: "rgb(50, 115, 220)",
-                      borderRadius: 200
-                    }}>
-                      <i className="fas fa-user-alt"></i>
-                    </div>
-                    {/* <img class="is-rounded" src="https://bulma.io/images/placeholders/96x96.png" /> */}
+          <div className='card box'>
+            <div class='card-content'>
+              <div class='media'>
+                <div class='media-left'>
+                  <figure class='image is-48x48'>
+                    <img
+                      src='https://bulma.io/images/placeholders/96x96.png'
+                      alt='Placeholder image'
+                    />
                   </figure>
-                  <h5 style={{ marginTop: 11 }} className="title is-5">
-                    Helliot Thimothé
-                  </h5>
+                </div>
+                <div class='media-content'>
+                  <p class='title is-4'>
+                    {data[type].name ||
+                      `${data[type].firstName} ${data[type].lastName}`}
+                  </p>
+                  <p class='subtitle is-6'>Secteur {data[type].sector.zone}</p>
                 </div>
               </div>
-              <div style={{ height: 1, backgroundColor: '#F3F3F3', margin: "14px 0px" }}></div>
-              <div style={{ height: 55 }}>
-                <h6 className="title is-6">Téléphone</h6>
-                <h6 className="subtitle is-6">0434928433</h6>
-              </div>
-              <div style={{ height: 55 }}>
-                <h6 className="title is-6">Email</h6>
-                <h6 className="subtitle is-6">Helliot.Thimothé@gmail.com</h6>
-              </div>
-              <div style={{ height: 55 }}>
-                <h6 className="title is-6">Adresse</h6>
-                <h6 className="subtitle is-6">30 rue de la pépiniète</h6>
+
+              <div class='content'>
+                {Object.keys(data[type]).map((el) => {
+                  const properKey = keys.find((key) => key.name === el)
+                  if (
+                    !properKey ||
+                    el === 'name' ||
+                    el === 'firstName' ||
+                    el === 'lastName' ||
+                    el === 'sector'
+                  ) {
+                    return
+                  }
+
+                  let value = data[type][el]
+
+                  return (
+                    <div className='details-info'>
+                      <Title size='is-6' tag='h5'>
+                        {properKey.label}
+                      </Title>
+                      <p>{value}</p>
+                    </div>
+                  )
+                })}
               </div>
             </div>
+          </div>
+        </div>
+        <div class='column'>
+          <Title size='is-3' tag='h3'>
+            Visites
+          </Title>
+          <div class='box tabs is-small'>
+            <ul>
+              <li class='is-active'>
+                <a href='/'>À venir</a>
+              </li>
+              <li>
+                <a href='/'>Passées</a>
+              </li>
+            </ul>
           </div>
         </div>
       </div>

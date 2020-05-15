@@ -15,6 +15,7 @@ const schema = yup.object({
 const Login = ({ handleLogin }) => {
   const [login, { client, loading, error }] = useMutation(LOGIN, {
     onCompleted({ login }) {
+      console.log('RESPONSE DE API : ', login)
       //TODO: update context with logged login.user
       handleLogin(login.user)
       console.log(login)
@@ -45,7 +46,7 @@ const Login = ({ handleLogin }) => {
     <section className='login'>
       <div className='box'>
         <Logo />
-        <Form data={form} callback={login} schema={schema} withIcon={true} />
+        <Form data={form} callback={loginFn} schema={schema} withIcon={true} />
       </div>
     </section>
   )

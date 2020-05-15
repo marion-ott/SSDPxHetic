@@ -6,22 +6,20 @@ import Loading from './Loading'
 import { Filters } from './../organisms'
 import { List } from './../organisms'
 
-const Employees = () => {
-  return (
-    <section className='section columns'>
-      <Filters />
-      <List
-        get={GET_USERS}
-        update={UPDATE_USER}
-        type='users'
-        title='Liste des intervenants'
-        buttonProps={{
-          text: 'Ajouter un intervenant',
-          icon: 'fa-user-plus'
-        }}
-      />
-    </section>
-  )
-}
+const Employees = () => (
+  <section className='section columns'>
+    <Filters />
+    <List
+      getMany={GET_USERS}
+      update={UPDATE_USER}
+      type='users'
+      title='Liste des intervenants'
+      buttonProps={{
+        text: 'Ajouter un intervenant',
+        icon: 'fa-user-plus'
+      }}
+    />
+  </section>
+)
 
 export default Employees
