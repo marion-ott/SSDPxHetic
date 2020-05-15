@@ -7,7 +7,7 @@ import { Button } from '../atoms'
 import { Icon } from '../atoms'
 import { navEls } from '../global/data'
 
-const Nav = ({ visible }) => {
+const Nav = () => {
   const { pathname } = useLocation()
   return (
     <nav
@@ -21,7 +21,7 @@ const Nav = ({ visible }) => {
             <Logo />
           </Link>
         </div>
-        <div className='navbar-menu' style={{ visibility: visible ? 'visible' : 'hidden' }}>
+        <div className='navbar-menu'>
           <div className='navbar-end'>
             {navEls.links.map(({ label, href }, id) => (
               <Link

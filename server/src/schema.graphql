@@ -10,6 +10,9 @@ type Query {
 		orderBy: UserOrderByInput
 	): [User!]!
 
+	# Check auth
+	checkAuth: User!
+
 	# Hotel
 	hotel(id: ID!): Hotel!
 	hotels(
