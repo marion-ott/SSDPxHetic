@@ -23,3 +23,7 @@
 # ide
 .idea/
 
+# automation
+.terraform*
+.terraform.tfstate*
+terraform.*
