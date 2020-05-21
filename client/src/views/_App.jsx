@@ -8,8 +8,6 @@ import Details from './Details'
 import { Nav } from '../organisms'
 import { UserProvider } from '../context/userContext'
 import useCheckAuth from '../hooks/useCheckAuth'
-import UserContext from '../context/userContext'
-
 
 function App() {
   const {loading, error, data} = useCheckAuth()
@@ -44,7 +42,7 @@ function App() {
   return (
     <UserProvider value={auth}>
       <Router>
-        {auth.loggedIn && <Nav />}
+        {auth.loggedIn && <Nav setAuth={setAuth} />}
         <Switch>
           <Route exact path='/login' render={() => (!auth.loggedIn
             ? <Login handleLogin={handleLogin} />

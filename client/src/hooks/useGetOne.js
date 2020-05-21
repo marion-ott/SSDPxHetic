@@ -1,4 +1,4 @@
-import React from 'react'
+// import React from 'react'
 import { GET_HOTEL } from './../graphql/queries/hotels'
 import { GET_USER } from './../graphql/queries/users'
 import { useQuery } from '@apollo/react-hooks'

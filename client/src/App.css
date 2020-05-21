@@ -36,3 +36,8 @@
     transform: rotate(360deg);
   }
 }
+
+/* STYLE TABLE */
+section.section.columns {
+  height: 100vh !important;
+}

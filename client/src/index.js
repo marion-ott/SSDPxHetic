@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import ReactDOM from 'react-dom'
 import * as serviceWorker from './serviceWorker'
 import ApolloClient from 'apollo-boost'

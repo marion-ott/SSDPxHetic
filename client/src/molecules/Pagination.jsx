@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { useQuery } from '@apollo/react-hooks'
 import PropTypes from 'prop-types'
 
 const LEFT_PAGE = 'LEFT';
@@ -27,9 +26,6 @@ const Pagination = ({ totalRecords, itemPerPage, pageNeighbours, handlePageChang
   const [pages, setPages] = useState(null)
   const currentPage = useRef(null)
   const totalPages = useRef(null)
-
-  // console.log(`nombre total d'entrées : ${totalRecords}`)
-  // console.log(pages)
 
   useEffect(() => {
     totalPages.current = Math.ceil(totalRecords / itemPerPage)
@@ -134,8 +130,6 @@ const Pagination = ({ totalRecords, itemPerPage, pageNeighbours, handlePageChang
       className='pagination is-centered is-small'
       role='navigation'
       aria-label='pagination'>
-      {/* <a className='pagination-previous' onClick={handleMoveLeft}>Précédent</a>
-      <a className='pagination-next' onClick={handleMoveRight}>Suivant</a> */}
       <ul className='pagination-list'>
 
         {pages && pages.map((page, index) => {

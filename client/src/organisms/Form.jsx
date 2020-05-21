@@ -1,12 +1,9 @@
-import React, { useState, useContext } from 'react'
+import React from 'react'
 import { Formik, Form as FormElement } from 'formik'
 import { InputGroup } from './../molecules'
 import { Button } from './../atoms'
-import { userContext } from '../context/userContext';
 
 const Form = ({ data, callback, schema, id, withIcon }) => {
-
-
   return (
     <Formik
       initialValues={data.initialValues}

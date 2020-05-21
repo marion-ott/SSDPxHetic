@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import * as yup from 'yup'
 import { useMutation } from '@apollo/react-hooks'
 import { LOGIN } from './../graphql/mutations/auth'
@@ -14,8 +14,6 @@ const schema = yup.object({
 const Login = ({ handleLogin }) => {
   const [login, { client, loading, error }] = useMutation(LOGIN, {
     onCompleted({ login }) {
-      //TODO: update context with logged login.user
-      console.log(login)
       handleLogin(login.user)
       localStorage.setItem('token', login.token)
       client.resetStore()

@@ -1,4 +1,4 @@
-import React, {useContext} from 'react'
+import React from 'react'
 import { useLocation } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 import { Dropdown } from '../molecules'
@@ -6,14 +6,15 @@ import { Logo } from '../atoms'
 import { Button } from '../atoms'
 import { Icon } from '../atoms'
 import { navEls } from '../global/data'
-import UserContext from '../context/userContext'
 
-const Nav = () => {
+const Nav = ({setAuth}) => {
   const { pathname } = useLocation()
-  const user = useContext(UserContext)
 
   const handleLogout = () => {
-    user.loggedIn = false
+    setAuth({
+      user: null,
+      loggedIn: false,
+    })
     localStorage.removeItem("token")
   }
 

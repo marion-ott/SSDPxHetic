@@ -1,8 +1,6 @@
 import React from 'react'
-import { useQuery } from '@apollo/react-hooks'
 import { GET_USERS } from './../graphql/queries/users'
 import { UPDATE_USER } from './../graphql/mutations/users'
-import Loading from './Loading'
 import { Filters } from './../organisms'
 import { List } from './../organisms'
 
