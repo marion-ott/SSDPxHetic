@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import { useLocation } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 import { Dropdown } from '../molecules'
@@ -6,9 +6,17 @@ import { Logo } from '../atoms'
 import { Button } from '../atoms'
 import { Icon } from '../atoms'
 import { navEls } from '../global/data'
+import UserContext from '../context/userContext'
 
 const Nav = () => {
   const { pathname } = useLocation()
+  const user = useContext(UserContext)
+
+  const handleLogout = () => {
+    user.loggedIn = false
+    localStorage.removeItem("token")
+  }
+
   return (
     <nav
       style={{ padding: '.5rem 0' }}
@@ -50,7 +58,7 @@ const Nav = () => {
                     Mes visites
                   </Link>
                   <hr className='dropdown-divider'></hr>
-                  <Link to='/' className='dropdown-item'>
+                  <Link onClick={handleLogout} to='/' className='dropdown-item'>
                     Déconnexion
                   </Link>
                 </Dropdown>

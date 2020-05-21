@@ -5,15 +5,6 @@ import { Button } from './../atoms'
 import { userContext } from '../context/userContext';
 
 const Form = ({ data, callback, schema, id, withIcon }) => {
-  const user = useContext(userContext);
-  console.log(user)
-
-
-  // console.log(user)
-  // const loggin = () => {
-  //   // setAuthenticated(true)
-  // }
-
 
 
   return (

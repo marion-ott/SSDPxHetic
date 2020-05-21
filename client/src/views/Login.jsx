@@ -5,7 +5,6 @@ import { LOGIN } from './../graphql/mutations/auth'
 import { getFormProps } from './../global/data'
 import { Form } from './../organisms'
 import { Logo } from './../atoms'
-import UserContext from '../context/userContext'
 
 const schema = yup.object({
   email: yup.string().email('Email invalide').required('Email requis'),
@@ -28,10 +27,6 @@ const Login = ({ handleLogin }) => {
     email: '',
     password: ''
   })
-
-  const user = useContext(UserContext)
-
-  // console.log()
 
   if (error) {
     return <p>there was an error</p>
