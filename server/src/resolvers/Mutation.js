@@ -4,7 +4,8 @@ import {
 	generateToken,
 	hashPassword,
 	generateSearchIndex,
-	publishVisit
+	publishVisit,
+	getPlaceInfo
 } from './../utils'
 
 const Mutation = {
@@ -34,7 +35,7 @@ const Mutation = {
 	async createUser(parent, {data}, {prisma}) {
 		data.password = await hashPassword(data.password)
 		data.searchIndex = generateSearchIndex(data.firstName, data.lastName)
-		console.log(data)
+
 		const user = await prisma.createUser(data)
 
 		return {
@@ -100,10 +101,13 @@ const Mutation = {
 	},
 
 	/** HOTELS */
-	createHotel(parent, {data}, {prisma, request}) {
+	async createHotel(parent, {data}, {prisma, request}) {
 		data.searchIndex = generateSearchIndex(data.name)
 		data.zipCode = data.zipCode * 1
 		data.rooms = data.rooms * 1
+		const info = await getPlaceInfo(entry.address, entry.zipCode)
+		data.long = info.features[0].geometry.coordinates[0] * 1
+		data.lat = info.features[0].geometry.coordinates[1] * 1
 		return prisma.createHotel(data)
 	},
 	updateHotel(parent, {id, data}, {prisma}) {
