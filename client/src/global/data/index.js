@@ -24,12 +24,20 @@ const filters = {
 
 const listKeys = [
   {
+    name: 'uuid',
+    label: 'UUID',
+    type: 'text',
+    inTable: false,
+    inForm: true,
+    yupVal: yup.string('La valeur est invalide').required('UUID requis')
+  },
+  {
     name: 'name',
     label: 'Nom',
     type: 'text',
     inTable: true,
     inForm: true,
-    yupVal: yup.string('La valeur est invalide')
+    yupVal: yup.string('La valeur est invalide').required('Le nom est requis')
   },
   {
     name: 'firstName',
@@ -37,7 +45,9 @@ const listKeys = [
     type: 'text',
     inTable: true,
     inForm: true,
-    yupVal: yup.string('La valeur est invalide')
+    yupVal: yup
+      .string('La valeur est invalide')
+      .required('Le prénom est requis')
   },
   {
     name: 'lastName',
@@ -45,7 +55,7 @@ const listKeys = [
     type: 'text',
     inTable: true,
     inForm: true,
-    yupVal: yup.string('La valeur est invalide')
+    yupVal: yup.string('La valeur est invalide').required('Le nom est requis')
   },
   {
     name: 'email',
@@ -54,7 +64,10 @@ const listKeys = [
     icon: 'fa-envelope',
     inTable: true,
     inForm: true,
-    yupVal: yup.string().email('Email invalide')
+    yupVal: yup
+      .string()
+      .email('Email invalide')
+      .required("L'adresse email est requise")
   },
   {
     name: 'password',
@@ -71,7 +84,19 @@ const listKeys = [
     type: 'select',
     inTable: true,
     inForm: true,
-    yupVal: yup.string('La valeur est invalide')
+    yupVal: yup
+      .string('La valeur est invalide')
+      .required('Le secteur est requis'),
+    options: []
+  },
+  {
+    name: 'role',
+    label: 'Rôle',
+    type: 'select',
+    inTable: false,
+    inForm: true,
+    yupVal: yup.string('La valeur est invalide'),
+    options: ['USER', 'ADMIN']
   },
   {
     name: 'rooms',
@@ -119,61 +144,8 @@ const listKeys = [
     inTable: true,
     inForm: false,
     yupVal: null
-  },
-  {
-    name: 'score',
-    label: 'Note'
-  },
-  {
-    name: "date",
-    label: 'Date'
-  },
-  {
-    name: "coop",
-    label: "Binome"
-  },
-  {
-    name: "crit",
-    label: "Criticité"
-  },
-  {
-    name: "destination",
-    label: "Destination"
   }
 ]
-
-const form = {
-  login: {
-    initialValues: {
-      email: '',
-      password: ''
-    },
-    elements: [
-      {
-        name: 'email',
-        icon: 'fa-envelope',
-        inputProps: {
-          placeholder: 'exemple@samu-social.net',
-          type: 'email'
-        },
-        labelProps: {
-          text: 'Email'
-        }
-      },
-      {
-        name: 'password',
-        icon: 'fa-lock',
-        inputProps: {
-          placeholder: '',
-          type: 'password'
-        },
-        labelProps: {
-          text: 'Mot de passe'
-        }
-      }
-    ]
-  }
-}
 
 const getFormProps = (data) => {
   const form = {
@@ -199,7 +171,7 @@ const getFormProps = (data) => {
       }
     }
     if (inputModel.type === 'select') {
-      element.inputProps.options = ['75', '92']
+      element.inputProps.options = inputModel.options
     }
     obj[key] = inputModel.yupVal
     form.elements.push(element)
@@ -209,4 +181,4 @@ const getFormProps = (data) => {
   return [form, schema]
 }
 
-export { navEls, listKeys, filters, form, getFormProps }
+export { navEls, listKeys, filters, getFormProps }

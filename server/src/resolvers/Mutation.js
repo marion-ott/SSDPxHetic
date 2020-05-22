@@ -4,15 +4,16 @@ import {
 	generateToken,
 	hashPassword,
 	generateSearchIndex,
-	publishVisit
+	publishVisit,
+	getPlaceInfo
 } from './../utils'
 
 const Mutation = {
 	/** AUTH */
-	async login(parent, { data }, { prisma }) {
-		const { email, password } = data
+	async login(parent, {data}, {prisma}) {
+		const {email, password} = data
 
-		const user = await prisma.user({ email })
+		const user = await prisma.user({email})
 		if (!user) {
 			throw new Error('user does not exist')
 		}
@@ -31,9 +32,10 @@ const Mutation = {
 	},
 
 	/** USERS */
-	async createUser(parent, { data }, { prisma }) {
+	async createUser(parent, {data}, {prisma}) {
 		data.password = await hashPassword(data.password)
 		data.searchIndex = generateSearchIndex(data.firstName, data.lastName)
+
 		const user = await prisma.createUser(data)
 
 		return {
@@ -41,9 +43,9 @@ const Mutation = {
 			token
 		}
 	},
-	async updateUser(parent, { id, data }, { prisma, request }) {
+	async updateUser(parent, {id, data}, {prisma, request}) {
 		const userId = getAuthUserId(request)
-		const userToUpdate = await prisma.user({ id })
+		const userToUpdate = await prisma.user({id})
 
 		if (userToUpdate.id !== userId && userToUpdate.role !== 'USER') {
 			throw new Error(
@@ -68,15 +70,15 @@ const Mutation = {
 
 		return prisma.updateUser({
 			data,
-			where: { id: userToUpdate.id }
+			where: {id: userToUpdate.id}
 		})
 	},
-	deleteUser(parent, { id }, { prisma }) {
-		return prisma.deleteUser({ id })
+	deleteUser(parent, {id}, {prisma}) {
+		return prisma.deleteUser({id})
 	},
 
 	/** TEAMS */
-	createTeam(parent, { data }, { prisma, request }) {
+	createTeam(parent, {data}, {prisma, request}) {
 		const users = data.users.map(id => ({
 			id
 		}))
@@ -88,55 +90,60 @@ const Mutation = {
 		}
 		return prisma.createTeam(data)
 	},
-	updateTeam(parent, { id, data }, { prisma }) {
+	updateTeam(parent, {id, data}, {prisma}) {
 		return prisma.updateTeam({
 			data,
-			where: { id }
+			where: {id}
 		})
 	},
-	deleteTeam(parent, { id }, { prisma }) {
-		return prisma.deleteTeam({ id })
+	deleteTeam(parent, {id}, {prisma}) {
+		return prisma.deleteTeam({id})
 	},
 
 	/** HOTELS */
-	createHotel(parent, { data }, { prisma, request }) {
+	async createHotel(parent, {data}, {prisma, request}) {
 		data.searchIndex = generateSearchIndex(data.name)
+		data.zipCode = data.zipCode * 1
+		data.rooms = data.rooms * 1
+		const info = await getPlaceInfo(entry.address, entry.zipCode)
+		data.long = info.features[0].geometry.coordinates[0] * 1
+		data.lat = info.features[0].geometry.coordinates[1] * 1
 		return prisma.createHotel(data)
 	},
-	updateHotel(parent, { id, data }, { prisma }) {
+	updateHotel(parent, {id, data}, {prisma}) {
 		if (data.name) {
 			data.searchIndex = generateSearchIndex(data.name)
 		}
 
 		return prisma.updateHotel({
 			data,
-			where: { id }
+			where: {id}
 		})
 	},
-	deleteHotel(parent, { id }, { prisma }) {
-		return prisma.deleteHotel({ id })
+	deleteHotel(parent, {id}, {prisma}) {
+		return prisma.deleteHotel({id})
 	},
 
 	/** RESIDENTS */
-	createResident(parent, { data }, { prisma, request }) {
+	createResident(parent, {data}, {prisma, request}) {
 		return prisma.createResident(data)
 	},
-	updateResident(parent, { id, data }, { prisma }) {
+	updateResident(parent, {id, data}, {prisma}) {
 		if (data.name) {
 			data.searchIndex = generateSearchIndex(data.name)
 		}
 
 		return prisma.updateResident({
 			data,
-			where: { id }
+			where: {id}
 		})
 	},
-	deleteResident(parent, { id }, { prisma }) {
-		return prisma.deleteResident({ id })
+	deleteResident(parent, {id}, {prisma}) {
+		return prisma.deleteResident({id})
 	},
 
 	/** VISIT */
-	async createVisit(parent, { data }, { prisma, pubsub }) {
+	async createVisit(parent, {data}, {prisma, pubsub}) {
 		const formattedData = {
 			...data,
 			team: {
@@ -154,7 +161,7 @@ const Mutation = {
 		await publishVisit('CREATED', visit, pubsub)
 		return visit
 	},
-	async updateVisit(parent, { id, data }, { prisma, pubsub }) {
+	async updateVisit(parent, {id, data}, {prisma, pubsub}) {
 		if (data.team) {
 			data.team = {
 				connect: {
@@ -173,29 +180,29 @@ const Mutation = {
 
 		const visit = prisma.updateVisit({
 			data,
-			where: { id }
+			where: {id}
 		})
 		await publishVisit('UPDATED', visit, pubsub)
 		return visit
 	},
-	async deleteVisit(parent, { id }, { prisma, pubsub }) {
-		const visit = await prisma.deleteVisit({ id })
+	async deleteVisit(parent, {id}, {prisma, pubsub}) {
+		const visit = await prisma.deleteVisit({id})
 		await publishVisit('DELETED', visit, pubsub)
 		return visit
 	},
 
 	/** SECTORS */
-	createSector(parent, { data }, { prisma }) {
+	createSector(parent, {data}, {prisma}) {
 		return prisma.createSector(data)
 	},
-	updateSector(parent, { id, data }, { prisma }) {
+	updateSector(parent, {id, data}, {prisma}) {
 		return prisma.updateSector({
 			data,
-			where: { id }
+			where: {id}
 		})
 	},
-	deleteSector(parent, { id }, { prisma }) {
-		return prisma.deleteSector({ id })
+	deleteSector(parent, {id}, {prisma}) {
+		return prisma.deleteSector({id})
 	}
 	// TODO: create visit type, query & mutations
 	// async deleteVisit(parent, {id}, {prisma, request}) {

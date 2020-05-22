@@ -1,14 +1,13 @@
 import gql from 'graphql-tag'
 
 export const CREATE_HOTEL = gql`
-  mutation CreateHotel($body: CreateHotelInput) {
-    createHotel(data: $body) {
-      firstName
-      lastName
-      role
-      sector
+  mutation CreateHotel($data: CreateHotelInput) {
+    createHotel(data: $data) {
+      name
       address
-      email
+      zipCode
+      city
+      address
     }
   }
 `

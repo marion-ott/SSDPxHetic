@@ -1,4 +1,3 @@
-import React from 'react'
 import { useQuery } from '@apollo/react-hooks'
 import { CHECK_AUTH } from './../graphql/queries/auth'
 

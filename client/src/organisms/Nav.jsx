@@ -10,11 +10,7 @@ import { navEls } from '../global/data'
 const Nav = () => {
   const { pathname } = useLocation()
   return (
-    <nav
-      style={{ padding: '.5rem 0' }}
-      className='navbar'
-      role='navigation'
-      aria-label='main navigation'>
+    <nav className='navbar' role='navigation' aria-label='main navigation'>
       <div className='container is-widescreen'>
         <div className='logo-container'>
           <Link to='/'>
@@ -27,7 +23,7 @@ const Nav = () => {
               <Link
                 className={`navbar-item${
                   pathname === href ? ' is-active' : ''
-                  }`}
+                }`}
                 to={href}
                 key={id}>
                 <strong>{label}</strong>

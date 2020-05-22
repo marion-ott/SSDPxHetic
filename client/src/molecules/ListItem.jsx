@@ -1,24 +1,12 @@
-import React, { useState } from 'react'
-import { Modal } from './../organisms'
-import Dropdown from './Dropdown'
-import Icon from '../atoms/Icon'
+import React from 'react'
 import { Link } from 'react-router-dom'
+import useModal from './../hooks/useModal'
+import Dropdown from './Dropdown'
+import { Modal } from './../organisms'
+import Icon from '../atoms/Icon'
 
-const ListItem = ({
-  id,
-  index,
-  type,
-  getOne,
-  data,
-  keys,
-  update,
-  currentPage
-}) => {
-  const [modalIsActive, setModalIsActive] = useState(false)
-
-  const handleClick = () => {
-    setModalIsActive((val) => !val)
-  }
+const ListItem = ({ id, index, type, data, keys, mutation, currentPage }) => {
+  const [isActive, toggle] = useModal(false)
 
   return (
     <>
@@ -40,19 +28,19 @@ const ListItem = ({
             <Link to={`/${type}/${data.id}`} className='dropdown-item'>
               Détails
             </Link>
-            <p onClick={handleClick} className='dropdown-item'>
+            <p onClick={toggle} className='dropdown-item'>
               Modifier
             </p>
             <p className='dropdown-item has-text-danger '>Supprimer</p>
           </Dropdown>
         </td>
       </tr>
-      {modalIsActive && (
+      {isActive && (
         <Modal
-          isActive={modalIsActive}
-          onClick={handleClick}
+          isActive={isActive}
+          onClick={toggle}
           data={data}
-          update={update}
+          mutation={mutation}
           title='Modifier'
         />
       )}

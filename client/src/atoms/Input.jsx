@@ -14,7 +14,7 @@ const Input = ({
   return (
     <div className={`control${icon ? ' has-icons-left' : ''}`}>
       <input
-        className={`input ${size}`}
+        className={`${type !== 'checkbox' ? 'input' : ''} ${size}`}
         name={name}
         type={type}
         placeholder={placeholder}

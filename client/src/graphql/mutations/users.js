@@ -6,7 +6,6 @@ export const CREATE_USER = gql`
       firstName
       lastName
       role
-      sector
       address
       email
     }

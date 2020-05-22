@@ -1,11 +1,10 @@
-import React, { useContext } from 'react'
+import React from 'react'
 import * as yup from 'yup'
 import { useMutation } from '@apollo/react-hooks'
 import { LOGIN } from './../graphql/mutations/auth'
 import { getFormProps } from './../global/data'
 import { Form } from './../organisms'
 import { Logo } from './../atoms'
-import UserContext from '../context/userContext'
 
 const schema = yup.object({
   email: yup.string().email('Email invalide').required('Email requis'),
@@ -16,7 +15,6 @@ const Login = ({ handleLogin }) => {
   const [login, { client, loading, error }] = useMutation(LOGIN, {
     onCompleted({ login }) {
       //TODO: update context with logged login.user
-      console.log(login)
       handleLogin(login.user)
       localStorage.setItem('token', login.token)
       client.resetStore()
@@ -28,10 +26,6 @@ const Login = ({ handleLogin }) => {
     email: '',
     password: ''
   })
-
-  const user = useContext(UserContext)
-
-  // console.log()
 
   if (error) {
     return <p>there was an error</p>

@@ -1,6 +1,10 @@
 const fs = require('fs')
 const {prisma} = require('../src/generated/prisma-client')
-const {generateSearchIndex} = require('./../src/utils/index')
+const {
+	generateSearchIndex,
+	hashPassword,
+	getPlaceInfo
+} = require('./../src/utils/index')
 
 let sectors
 
@@ -24,6 +28,9 @@ const importData = async () => {
 		await dataImport('employees', addUser)
 		await dataImport('hotels', addHotel)
 
+		const count = await prisma.hotels()
+		console.log(count.length, ' HOTELS IMPORTED')
+
 		process.exit()
 	} catch (err) {
 		console.warn(err)
@@ -46,6 +53,29 @@ const dataImport = async (file, callback) => {
 			entry.sector = {
 				connect: {id: sector.id}
 			}
+		}
+
+		if (file === 'hotels') {
+			let info
+
+			if (entry.lat) {
+				info = await getPlaceInfo(entry.address, entry.zipCode, [
+					entry.long,
+					entry.lat
+				])
+			} else {
+				info = await getPlaceInfo(entry.address, entry.zipCode)
+			}
+
+			entry.address = info.features[0].properties.name
+			entry.zipCode = info.features[0].properties.postcode * 1
+			entry.city = info.features[0].properties.city
+			entry.long = info.features[0].geometry.coordinates[0] * 1
+			entry.lat = info.features[0].geometry.coordinates[1] * 1
+		}
+
+		if (entry.password) {
+			entry.password = await hashPassword(entry.password)
 		}
 
 		if (entry.name) {
