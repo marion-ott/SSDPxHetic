@@ -1,6 +1,8 @@
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
 import deburr from 'lodash.deburr'
+import axios from 'axios'
+
 const JWT_SECRET = 'thisisasecret'
 /**
  * Get logged in user id from JWT token
@@ -75,10 +77,29 @@ const publishVisit = async (mutation, data, pubsub) => {
 	return null
 }
 
+/**
+ * Fetch precise long/lat values from data gouv API
+ * @param {String} address
+ * @param {Int} zip
+ * @param {Array} coord
+ * @returns {JSON}
+ */
+const getPlaceInfo = async (address, zip, coord) => {
+	let url = ''
+	if (coord) {
+		url = `https://api-adresse.data.gouv.fr/reverse/?lon=${coord[0]}&lat=${coord[1]}`
+	} else {
+		address = address.toLowerCase().replace(' - ', ' ')
+		url = `https://api-adresse.data.gouv.fr/search/?q=${address.toLowerCase()}&postcode=${zip}`
+	}
+	return await axios(url).then(res => res.data)
+}
+
 export {
 	getAuthUserId,
 	generateToken,
 	hashPassword,
 	generateSearchIndex,
-	publishVisit
+	publishVisit,
+	getPlaceInfo
 }

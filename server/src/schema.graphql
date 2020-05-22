@@ -52,7 +52,7 @@ type Mutation {
 	login(data: LoginInput): AuthPayload!
 
 	# User
-	createUser(data: CreateUserInput): AuthPayload!
+	createUser(data: CreateUserInput): User!
 	updateUser(id: ID!, data: UpdateUserInput): User!
 	deleteUser(id: ID!): User!
 
@@ -225,7 +225,7 @@ input CreateHotelInput {
 	address: String!
 	zipCode: Int!
 	city: String!
-	active: Boolean!
+	active: Boolean
 	rooms: Int!
 	lastVisit: DateTime
 	score: Float

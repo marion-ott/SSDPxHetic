@@ -4,9 +4,10 @@ import { getFormProps } from './../global/data'
 import { Form } from './index'
 import { Title } from './../atoms'
 
-const Modal = ({ isActive, title, data, onClick, update }) => {
-  const [callback, { loading, error }] = useMutation(update, {
-    onCompleted() {
+const Modal = ({ isActive, title, data, onClick, mutation }) => {
+  const [callback, { loading, error }] = useMutation(mutation, {
+    onCompleted(res) {
+      console.log(res)
       onClick()
     },
     onError: (error) => console.error(error)
