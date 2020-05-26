@@ -36,10 +36,6 @@ const generateToken = id => {
  * @returns {String}
  */
 const hashPassword = password => {
-	// TODO: add password requirements check
-	// if (data.password.length < 8) {
-	// 	throw new Error("Password doesn't meet requirements.")
-	// }
 	return bcrypt.hash(password, 10)
 }
 

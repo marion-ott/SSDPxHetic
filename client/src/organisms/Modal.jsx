@@ -6,8 +6,7 @@ import { Title } from './../atoms'
 
 const Modal = ({ isActive, title, data, onClick, mutation }) => {
   const [callback, { loading, error }] = useMutation(mutation, {
-    onCompleted(res) {
-      console.log(res)
+    onCompleted() {
       onClick()
     },
     onError: (error) => console.error(error)
