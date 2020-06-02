@@ -16,6 +16,8 @@ import Employees from './Employees'
 import Hotels from './Hotels'
 import Details from './Details'
 import { Nav } from '../organisms'
+import { UserProvider } from '../context/userContext'
+import useCheckAuth from '../hooks/useCheckAuth'
 
 function App() {
   const { loading: sectorsLoad, error: sectorsErr, data: sectors } = useQuery(
@@ -52,7 +54,7 @@ function App() {
     <UserProvider value={auth}>
       <SectorProvider value={sectors}>
         <Router>
-          {auth.loggedIn && <Nav />}
+          {auth.loggedIn && <Nav setAuth={setAuth} />}
           <Switch>
             <Route
               exact
@@ -80,7 +82,7 @@ function App() {
               }
             />
             <Route
-              path='/users/:id'
+              path='/users/:userId'
               render={() =>
                 auth.loggedIn ? <Details /> : <Redirect to='/login' />
               }
@@ -93,7 +95,7 @@ function App() {
               }
             />
             <Route
-              path='/hotels/:id'
+              path='/hotels/:hotelId'
               render={() =>
                 auth.loggedIn ? <Details /> : <Redirect to='/login' />
               }
