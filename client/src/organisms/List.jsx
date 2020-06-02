@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import { useQuery } from '@apollo/react-hooks'
 import { ListItem, Pagination } from '../molecules'
-import { Input, Title, Button, Icon } from '../atoms'
+import { Input, Title } from '../atoms'
 import { listKeys } from '../global/data'
 
 const List = ({ title, getMany, mutation, type }) => {

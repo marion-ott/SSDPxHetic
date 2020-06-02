@@ -5,7 +5,7 @@ import { Title, Label, Input } from './../atoms'
 const Filters = () => {
   const { sectors } = useContext(sectorContext)
   const [isSector, setSector] = useState([])
-  const [isCritic, setCritic] = useState([])
+  // const [isCritic, setCritic] = useState([])
 
   const data = [
     {
@@ -33,15 +33,15 @@ const Filters = () => {
     }
   }
 
-  const onChangeCrit = (e) => {
-    const val = e.target.value
+  // const onChangeCrit = (e) => {
+  //   const val = e.target.value
 
-    if (e.target.checked) {
-      setCritic([...isCritic, { name: val }])
-    } else {
-      setCritic(isCritic.filter((isCritic) => isCritic.name !== val))
-    }
-  }
+  //   if (e.target.checked) {
+  //     setCritic([...isCritic, { name: val }])
+  //   } else {
+  //     setCritic(isCritic.filter((isCritic) => isCritic.name !== val))
+  //   }
+  // }
 
   return (
     <aside className='filters'>

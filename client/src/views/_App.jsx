@@ -16,8 +16,6 @@ import Employees from './Employees'
 import Hotels from './Hotels'
 import Details from './Details'
 import { Nav } from '../organisms'
-import { UserProvider } from '../context/userContext'
-import useCheckAuth from '../hooks/useCheckAuth'
 
 function App() {
   const { loading: sectorsLoad, error: sectorsErr, data: sectors } = useQuery(
