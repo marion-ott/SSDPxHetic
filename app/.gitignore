@@ -22,6 +22,9 @@
 # ide
 .idea/
 
+# expo
+.expo/
+
 # automation
 .terraform*
 .terraform.tfstate*
