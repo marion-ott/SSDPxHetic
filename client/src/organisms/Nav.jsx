@@ -19,11 +19,7 @@ const Nav = ({setAuth}) => {
   }
 
   return (
-    <nav
-      style={{ padding: '.5rem 0' }}
-      className='navbar'
-      role='navigation'
-      aria-label='main navigation'>
+    <nav className='navbar' role='navigation' aria-label='main navigation'>
       <div className='container is-widescreen'>
         <div className='logo-container'>
           <Link to='/'>
@@ -36,7 +32,7 @@ const Nav = ({setAuth}) => {
               <Link
                 className={`navbar-item${
                   pathname === href ? ' is-active' : ''
-                  }`}
+                }`}
                 to={href}
                 key={id}>
                 <strong>{label}</strong>

@@ -4,7 +4,7 @@ import { ListItem, Pagination } from '../molecules'
 import { Input, Title, Button, Icon } from '../atoms'
 import { listKeys } from '../global/data'
 
-const List = ({ title, getMany, update, type, buttonProps }) => {
+const List = ({ title, getMany, mutation, type }) => {
   const { loading, error, data, fetchMore } = useQuery(getMany, {
     variables: {
       query: '',
@@ -71,16 +71,12 @@ const List = ({ title, getMany, update, type, buttonProps }) => {
   )
 
   return (
-    <div className='column'>
+    <div>
       <div className='list-head'>
         <Title classProp='is-3' tag='h3'>
           {title}
           <span className='subtitle is-6'>&nbsp;({data.count})</span>
         </Title>
-        <Button classProp='is-link'>
-          <Icon classProp={buttonProps.icon} />
-          <p>{buttonProps.text}</p>
-        </Button>
       </div>
       <form onSubmit={handleSearch} className='search-container'>
         <div className='control has-icons-right'>
@@ -115,7 +111,7 @@ const List = ({ title, getMany, update, type, buttonProps }) => {
                 index={index}
                 data={entry}
                 keys={keys}
-                update={update}
+                mutation={mutation}
                 currentPage={currentPage.current || 1}
               />
             ))}

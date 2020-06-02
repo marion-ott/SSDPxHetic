@@ -1,9 +1,9 @@
 {
   "employees": [{
-      "lastName": "Priou",
-      "firstName": "Eric",
+      "lastName": "Admin",
+      "firstName": "Admin",
       "role": "ADMIN",
-      "email": "eric.priou@hetic.net",
+      "email": "admin@samu-social.net",
       "password": "admin"
     },
     {

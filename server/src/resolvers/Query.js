@@ -1,4 +1,4 @@
-import { generateSearchIndex, getAuthUserId } from './../utils'
+import {generateSearchIndex, getAuthUserId} from './../utils'
 
 const Query = {
 	/** USERS */
@@ -7,9 +7,9 @@ const Query = {
 	},
 	users(parent, args, {prisma}) {
 		const opArgs = {
-			where: {
-				role: 'USER'
-			},
+			// where: {
+			// 	role: 'USER'
+			// },
 			first: args.first,
 			skip: args.skip,
 			orderBy: args.orderBy
@@ -23,13 +23,13 @@ const Query = {
 			}
 		}
 		return prisma.users(opArgs)
-  },
+	},
 
-  /** AUTH */
-  checkAuth(parent, args, { prisma, request }) {
-    const id = getAuthUserId(request)
-    return prisma.user({ id })
-  },
+	/** AUTH */
+	checkAuth(parent, args, {prisma, request}) {
+		const id = getAuthUserId(request)
+		return prisma.user({id})
+	},
 
 	/** TEAMS */
 	team(parent, {id}, {prisma, request}) {

@@ -47,7 +47,7 @@ const Details = ({ location, match }) => {
                   <figure class='image is-48x48'>
                     <img
                       src='https://bulma.io/images/placeholders/96x96.png'
-                      alt='Placeholder image'
+                      alt='Placeholder'
                     />
                   </figure>
                 </div>
@@ -56,7 +56,10 @@ const Details = ({ location, match }) => {
                     {data[type].name ||
                       `${data[type].firstName} ${data[type].lastName}`}
                   </p>
-                  <p class='subtitle is-6'>Secteur {data[type].sector.zone}</p>
+                  <p class='subtitle is-6'>
+                    Secteur :{' '}
+                    {data[type].sector ? data[type].sector.zone : 'N/A'}
+                  </p>
                 </div>
               </div>
 
@@ -70,7 +73,7 @@ const Details = ({ location, match }) => {
                     el === 'lastName' ||
                     el === 'sector'
                   ) {
-                    return
+                    return null
                   }
 
                   let value = data[type][el]

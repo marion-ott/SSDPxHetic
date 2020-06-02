@@ -8,6 +8,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background: #E5E5E5;
+  min-height: 860px;
 }
 
 code {
@@ -20,6 +21,10 @@ code {
 .navbar-menu,
 .navbar-start {
   align-items: center;
+}
+
+.navbar-menu.column {
+  display: flex;
 }
 
 a.navbar-item {
@@ -85,6 +90,8 @@ section.section {
 }
 
 .box.menu.column {
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
   height: fit-content;
 }
 
@@ -183,4 +190,52 @@ td.list-dropdown {
 
 .tabs {
   background: white;
+}
+
+.list-head {
+  margin-bottom: 20px;
+  margin-top: -30px;
+}
+
+button.list-add {
+  display: flex;
+  margin-left: auto;
+}
+
+.filters {
+  flex: 0 0 20%;
+  height: -webkit-fit-content;
+  height: -moz-fit-content;
+  height: fit-content;
+  border-radius: 6px;
+}
+
+.filters-section p {
+  margin: 15px 0 5px;
+}
+
+li.panel-block label {
+  flex: 1;
+  font-weight: normal;
+  cursor: pointer;
+}
+
+li.panel-block .control {
+  flex: 0;
+}
+
+li.panel-block,
+li.panel-block:not(:last-child),
+li.panel-tabs:not(:last-child) {
+  border: none;
+}
+
+li.panel-block:hover {
+  border-radius: 6px;
+  background-color: #fafafa;
+}
+
+/* STYLE TABLE */
+section.section.columns {
+  height: 100vh !important;
 }
