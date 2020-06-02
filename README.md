@@ -6,6 +6,8 @@ $ cd client
 $ yarn install
 $ cd server
 $ yarn install
+$ cd app
+$ expo install
 ```
 
 ### Create environment variables file
