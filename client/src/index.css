@@ -234,3 +234,8 @@ li.panel-block:hover {
   border-radius: 6px;
   background-color: #fafafa;
 }
+
+/* STYLE TABLE */
+section.section.columns {
+  height: 100vh !important;
+}

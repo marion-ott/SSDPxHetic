@@ -31,9 +31,6 @@ const Pagination = ({
   const currentPage = useRef(null)
   const totalPages = useRef(null)
 
-  // console.log(`nombre total d'entrées : ${totalRecords}`)
-  // console.log(pages)
-
   useEffect(() => {
     totalPages.current = Math.ceil(totalRecords / itemPerPage)
     currentPage.current = 1
@@ -133,8 +130,6 @@ const Pagination = ({
       className='pagination is-centered is-small'
       role='navigation'
       aria-label='pagination'>
-      {/* <a className='pagination-previous' onClick={handleMoveLeft}>Précédent</a>
-      <a className='pagination-next' onClick={handleMoveRight}>Suivant</a> */}
       <ul className='pagination-list'>
         {pages &&
           pages.map((page, index) => {

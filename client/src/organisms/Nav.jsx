@@ -7,8 +7,17 @@ import { Button } from '../atoms'
 import { Icon } from '../atoms'
 import { navEls } from '../global/data'
 
-const Nav = () => {
+const Nav = ({setAuth}) => {
   const { pathname } = useLocation()
+
+  const handleLogout = () => {
+    setAuth({
+      user: null,
+      loggedIn: false,
+    })
+    localStorage.removeItem("token")
+  }
+
   return (
     <nav className='navbar' role='navigation' aria-label='main navigation'>
       <div className='container is-widescreen'>
@@ -46,7 +55,7 @@ const Nav = () => {
                     Mes visites
                   </Link>
                   <hr className='dropdown-divider'></hr>
-                  <Link to='/' className='dropdown-item'>
+                  <Link onClick={handleLogout} to='/' className='dropdown-item'>
                     Déconnexion
                   </Link>
                 </Dropdown>
