@@ -1,6 +1,8 @@
-import { NavigationContainer } from '@react-navigation/native'
+import { NavigationContainer } from '@react-navigation/native';
+import * as React from 'react';
+import * as eva from '@eva-design/eva';
+import { ApplicationProvider } from '@ui-kitten/components';
 import { createStackNavigator } from '@react-navigation/stack'
-import * as React from 'react'
 import { Platform, StatusBar, StyleSheet, View } from 'react-native'
 import { AppRegistry } from 'react-native'
 import { ApolloClient } from 'apollo-client'
@@ -28,14 +30,16 @@ export default function App(props) {
   } else {
     return (
       <ApolloProvider client={client}>
-        <View style={styles.container}>
-          {Platform.OS === 'ios' && <StatusBar barStyle='dark-content' />}
-          <NavigationContainer linking={LinkingConfiguration}>
-            <Stack.Navigator>
-              <Stack.Screen name='Root' component={BottomTabNavigator} />
-            </Stack.Navigator>
-          </NavigationContainer>
-        </View>
+        <ApplicationProvider {...eva} theme={eva.light} style={styles.container}>
+          <View style={styles.container}>
+            {Platform.OS === 'ios' && <StatusBar barStyle='dark-content' />}
+            <NavigationContainer linking={LinkingConfiguration}>
+              <Stack.Navigator>
+                <Stack.Screen name='Root' component={BottomTabNavigator} />
+              </Stack.Navigator>
+            </NavigationContainer>
+          </View>
+        </ApplicationProvider>
       </ApolloProvider>
     )
   }

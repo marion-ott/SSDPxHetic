@@ -1,28 +1,81 @@
-import * as WebBrowser from 'expo-web-browser';
 import * as React from 'react';
-import { Image, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
-
-import { MonoText } from '../components/StyledText';
+import { StyleSheet, View } from 'react-native';
+import { Text, Input } from '@ui-kitten/components';
 
 export default function ProfileScreen() {
-  return (
-    <View style={styles.container}>
-      <Text style={styles.profile}>PROFILE</Text>
-    </View>
-  );
+    const [value, setValue] = React.useState({
+        firstname: "",
+        lastname: "",
+        mail: "",
+        phone: ""
+    });
+
+    function onChangeProfile(val, name) {
+        setValue({
+            ...value,
+            [name]: val
+        });
+    }
+
+    return (
+        <View style={styles.container}>
+            <Text style={[styles.text, styles.title]} category='h2'>Nicolas Bertaux</Text>
+            <View style={styles.form}>
+                <View style={styles.inputs}>
+                    <Text style={[styles.text, styles.labelInput]} category='s1'>Prénom</Text>
+                    <Input
+                        placeholder='Nicolas'
+                        value={value.firstname}
+                        onChangeText={evt => onChangeProfile(evt, "firstname")}
+                    />
+                </View>
+                <View style={styles.inputs}>
+                    <Text style={[styles.text, styles.labelInput]} category='s1'>Nom</Text>
+                    <Input
+                        placeholder='Bertaux'
+                        value={value.lastname}
+                        onChangeText={evt => onChangeProfile(evt, "lastname")}
+                    />
+                </View>
+                <View style={styles.inputs}>
+                    <Text style={[styles.text, styles.labelInput]} category='s1'>Email</Text>
+                    <Input
+                        placeholder='nicolas.berteaux@gmail.com'
+                        value={value.mail}
+                        onChangeText={evt => onChangeProfile(evt, "mail")}
+                    />
+                </View>
+                <View style={styles.inputs}>
+                    <Text style={[styles.text, styles.labelInput]} category='s1'>Téléphone</Text>
+                    <Input
+                        placeholder='0634239100'
+                        value={value.phone}
+                        onChangeText={evt => onChangeProfile(evt, "phone")}
+                    />
+                </View>
+            </View>
+        </View>
+    );
 }
 
 ProfileScreen.navigationOptions = {
-  header: null,
+
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-  profile: {
-    color: 'blue'
-  }
+    title: {
+        paddingTop: 28,
+        paddingBottom: 28,
+        paddingLeft: 15,
+        backgroundColor: "white"
+    },
+    form: {
+        padding: 14
+    },
+    inputs: {
+        padding: 7
+    },
+    labelInput: {
+        paddingBottom: 7
+    }
 });
