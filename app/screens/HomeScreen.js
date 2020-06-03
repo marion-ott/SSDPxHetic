@@ -33,8 +33,9 @@ export default function HomeScreen() {
           <DevelopmentModeNotice />
 
           <Text style={styles.getStartedText}>
-            Open up the code for this screen:
+            Open up thefor this screen:
           </Text>
+
 
           <View
             style={[styles.codeHighlightContainer, styles.homeScreenFilename]}>
