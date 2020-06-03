@@ -53,7 +53,6 @@ export default function BottomTabNavigator({ navigation, route }) {
         }}
       />
     </BottomTab.Navigator>
-    
   );
 }
 
