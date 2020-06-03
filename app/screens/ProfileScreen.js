@@ -25,7 +25,7 @@ export default function ProfileScreen() {
                     <Text style={[styles.text, styles.labelInput]} category='s1'>Prénom</Text>
                     <Input
                         placeholder='Nicolas'
-                        value={value}
+                        value={value.firstname}
                         onChangeText={evt => onChangeProfile(evt, "firstname")}
                     />
                 </View>
@@ -33,7 +33,7 @@ export default function ProfileScreen() {
                     <Text style={[styles.text, styles.labelInput]} category='s1'>Nom</Text>
                     <Input
                         placeholder='Bertaux'
-                        value={value}
+                        value={value.lastname}
                         onChangeText={evt => onChangeProfile(evt, "lastname")}
                     />
                 </View>
@@ -41,7 +41,7 @@ export default function ProfileScreen() {
                     <Text style={[styles.text, styles.labelInput]} category='s1'>Email</Text>
                     <Input
                         placeholder='nicolas.berteaux@gmail.com'
-                        value={value}
+                        value={value.mail}
                         onChangeText={evt => onChangeProfile(evt, "mail")}
                     />
                 </View>
@@ -49,7 +49,7 @@ export default function ProfileScreen() {
                     <Text style={[styles.text, styles.labelInput]} category='s1'>Téléphone</Text>
                     <Input
                         placeholder='0634239100'
-                        value={value}
+                        value={value.phone}
                         onChangeText={evt => onChangeProfile(evt, "phone")}
                     />
                 </View>
