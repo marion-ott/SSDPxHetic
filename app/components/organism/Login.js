@@ -4,7 +4,9 @@ import { useMutation } from '@apollo/react-hooks'
 import { LOGIN } from '../../graphql/mutations/auth'
 import { getFormProps } from '../../global/data'
 import Form from '../molecules/Form'
-import { View } from 'react-native'
+import { Text, View, Image, StyleSheet } from 'react-native'
+
+import logo from '../../assets/images/logo.png'
 
 const schema = yup.object({
   email: yup.string().email('Email invalide').required('Email requis'),
@@ -36,13 +38,44 @@ const Login = ({ handleLogin }) => {
   }
 
   return (
-    <View>
-      <View>
-        {/* <Logo /> */}
-        <Form data={form} callback={login} schema={schema} withIcon={true} />
-      </View>
+    <View style={styles.container}>
+      <Image
+        style={styles.logo}
+        source={logo}
+      />
+      <Text
+        style={styles.text}
+        source={logo}
+      >
+        Accès agent de terrain
+      </Text>
+      <Form
+        data={form}
+        callback={login}
+        schema={schema}
+        withIcon={true}
+      />
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  container: {
+    padding: 15,
+    flex: 1,
+    justifyContent: "flex-end",
+  },
+  logo: {
+    // marginTop: 216,
+    alignSelf: 'center'
+  },
+  text: {
+    alignSelf: 'center',
+    marginTop: 16,
+    marginBottom: 48,
+    fontWeight: "bold",
+    fontSize: 16
+  }
+})
 
 export default Login

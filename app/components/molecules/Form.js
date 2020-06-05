@@ -1,89 +1,67 @@
 import React from 'react'
 import { Formik } from 'formik'
-import InputGroup from '../atoms/InputGroup'
-import { View, Button } from 'react-native'
-// import { Button } from '../atoms'
+import { View, StyleSheet } from 'react-native'
+import { Input, Button } from '@ui-kitten/components'
 
-const Form = ({ data, callback, schema, id, withIcon }) => (
+export const Form = props => (
   <Formik
-    initialValues={data.initialValues}
-    onSubmit={async (values, { setErrors }) => {
-      schema
-        .validate(values, { abortEarly: false })
-        .then((_) => {
-          const variables = {
-            data: {}
-          }
-
-          for (const key in values) {
-            if (values[key] !== data.initialValues[key]) {
-              variables.data[key] = values[key]
-            }
-          }
-
-          if (!Object.keys(variables.data).length) {
-            return null
-          }
-
-          if (id) {
-            variables.id = id
-          }
-
-          callback({
-            variables
-          })
-        })
-        .catch((error) => {
-          const errors = {}
-          error.inner.forEach((error) => {
-            errors[error.params.path] = error.errors[0]
-          })
-          setErrors(errors)
-        })
-    }}>
-    {({ values, errors, isSubmitting }) => {
-      return (
-        <View>
-          {data.elements.map((el, index) => {
-            return (
-              <InputGroup
-                key={index}
-                name={el.name}
-                icon={withIcon ? el.icon : ''}
-                errors={errors}
-                inputProps={{
-                  value: values[el.name],
-                  ...el.inputProps
-                }}
-                labelProps={el.labelProps}
-              />
-            )
-          })}
-          <View>
-            <Button
-              classProp={`is-link ${isSubmitting} ? 'is-loading' : ''`}
-              type='submit'
-              disabled={isSubmitting}
-              onPress={() => console.log('Valider')}
-              title='Valider'
-              color='#841584'
-              accessibilityLabel='Learn more about this purple button'>
-              Valider
-            </Button>
-            <Button
-              type='submit'
-              disabled={isSubmitting}
-              onPress={() => console.log('Annuler')}
-              title='Annuler'
-              color='#841584'
-              accessibilityLabel='Learn more about this purple button'>
-              Annuler
-            </Button>
-          </View>
-        </View>
-      )
-    }}
+    style={styles.container}
+    initialValues={{ email: '', password: '' }}
+    onSubmit={values => console.log(values)}
+  >
+    {({ handleChange, handleBlur, handleSubmit, values }) => (
+      <View>
+        <Input
+          style={styles.input}
+          size='large'
+          label='E-mail'
+          onChangeText={handleChange('email')}
+          onBlur={handleBlur('email')}
+          value={values.email}
+          placeholder='Email'
+          textContentType='emailAddress'
+          keyboardType='email-address'
+        />
+        <Input
+          style={styles.input}
+          size='large'
+          label='Mot de passe'
+          onChangeText={handleChange('password')}
+          onBlur={handleBlur('password')}
+          value={values.password}
+          placeholder='Mot de passe'
+          textContentType='password'
+          secureTextEntry={true}
+        />
+        <Button
+          style={styles.button}
+          type='submit'
+          onPress={handleSubmit}
+        >
+          Connexion
+        </Button>
+      </View>
+    )}
   </Formik>
-)
+);
+
+const styles = StyleSheet.create({
+  container: {
+    padding: 16
+  },
+  input: {
+    marginBottom: 16,
+    height: 55
+    // borderColor: '#E0E0E0',
+    // borderWidth: 1,
+    // borderStyle: 'solid',
+    // borderRadius: 8
+  },
+  button: {
+    marginTop: 8,
+    backgroundColor: '#3D52D5',
+    height: 55,
+  }
+})
 
 export default Form

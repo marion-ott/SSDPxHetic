@@ -70,7 +70,18 @@ const App = () => {
               // User is signed in
               <Stack.Screen name='Home' component={HomeScreen} />
             )} */}
-            <Stack.Screen name='Root' component={BottomTabNavigator} />
+
+            <Stack.Screen
+              name='Login'
+              component={LoginScreen}
+              options={{
+                title: '',
+                headerShown: false,
+                animationTypeForReplace: auth.loggedIn ? 'pop' : 'push',
+              }}
+              handleLogin={handleLogin}
+            />
+            {/* <Stack.Screen name='Root' component={BottomTabNavigator} /> */}
           </Stack.Navigator>
         </NavigationContainer>
       </View>
