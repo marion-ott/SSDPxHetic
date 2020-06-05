@@ -1,7 +1,8 @@
-import { NavigationContainer } from '@react-navigation/native'
+import { NavigationContainer } from '@react-navigation/native';
+import React, { useEffect, useState } from 'react'
+import * as eva from '@eva-design/eva';
+import { ApplicationProvider } from '@ui-kitten/components';
 import { createStackNavigator } from '@react-navigation/stack'
-import * as React from 'react'
-import { useEffect, useState } from 'react'
 import { Platform, StatusBar, StyleSheet, View } from 'react-native'
 import { AppRegistry } from 'react-native'
 // APOLLO

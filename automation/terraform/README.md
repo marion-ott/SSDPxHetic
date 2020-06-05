@@ -7,9 +7,10 @@
 ## Ressources créées
 * Une instance staging-application pour simuler l'environnement de production et effectuer différents tests
 * Une instance production-application pour l'environnement de production et déployer notre projet de manière définitive
+* Une instance documentDB pour chaque environnement, acceptant les connexions des instances de son même environnement
 * Deux load balancer ; chacun lié à une instance qui "écoute" sur le port 80 pour le back-office et sur le port 9000 pour l'API
 
-<info>Il est possible de modifier le nombre d'instance pour chaque environnement en modifiant `instance_count` dans le fichier `main.tf`.</info>
+<info>Il est possible de modifier le nombre d'instance pour chaque environnement en modifiant `instance_count` dans le fichier `main.tf.</info>
 
 ## Création d'un user IAM
 
