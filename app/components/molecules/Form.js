@@ -1,7 +1,7 @@
 import React from 'react'
-import { Formik, Form as FormElement } from 'formik'
+import { Formik } from 'formik'
 import InputGroup from '../atoms/InputGroup'
-import { View, Button } from 'react-native';
+import { View, Button } from 'react-native'
 // import { Button } from '../atoms'
 
 const Form = ({ data, callback, schema, id, withIcon }) => (
@@ -43,7 +43,7 @@ const Form = ({ data, callback, schema, id, withIcon }) => (
     }}>
     {({ values, errors, isSubmitting }) => {
       return (
-        <FormElement noValidate>
+        <View>
           {data.elements.map((el, index) => {
             return (
               <InputGroup
@@ -65,23 +65,22 @@ const Form = ({ data, callback, schema, id, withIcon }) => (
               type='submit'
               disabled={isSubmitting}
               onPress={() => console.log('Valider')}
-              title="Valider"
-              color="#841584"
-              accessibilityLabel="Learn more about this purple button"
-            >
+              title='Valider'
+              color='#841584'
+              accessibilityLabel='Learn more about this purple button'>
               Valider
             </Button>
             <Button
               type='submit'
               disabled={isSubmitting}
               onPress={() => console.log('Annuler')}
-              title="Annuler"
-              color="#841584"
-              accessibilityLabel="Learn more about this purple button">
+              title='Annuler'
+              color='#841584'
+              accessibilityLabel='Learn more about this purple button'>
               Annuler
             </Button>
           </View>
-        </FormElement>
+        </View>
       )
     }}
   </Formik>

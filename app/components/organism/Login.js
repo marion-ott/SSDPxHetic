@@ -4,7 +4,7 @@ import { useMutation } from '@apollo/react-hooks'
 import { LOGIN } from '../../graphql/mutations/auth'
 import { getFormProps } from '../../global/data'
 import Form from '../molecules/Form'
-import { View } from 'react-native';
+import { View } from 'react-native'
 
 const schema = yup.object({
   email: yup.string().email('Email invalide').required('Email requis'),
