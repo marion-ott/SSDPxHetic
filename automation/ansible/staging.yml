@@ -1,0 +1,8 @@
+---
+
+- name: Install Common Packages
+  hosts: [tag_stage_staging]
+  become: yes
+  roles:
+    - { role: common, tags: ["common"]}
+    - { role: geerlingguy.docker, tags: ["docker"] }
