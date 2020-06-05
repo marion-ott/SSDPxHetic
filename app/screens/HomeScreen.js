@@ -46,6 +46,10 @@ export default function HomeScreen() {
   )
 }
 
+HomeScreen.navigationOptions = {
+  header: null
+}
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
