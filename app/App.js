@@ -1,7 +1,7 @@
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer } from '@react-navigation/native'
 import React, { useEffect, useState } from 'react'
-import * as eva from '@eva-design/eva';
-import { ApplicationProvider } from '@ui-kitten/components';
+import * as eva from '@eva-design/eva'
+import { ApplicationProvider } from '@ui-kitten/components'
 import { createStackNavigator } from '@react-navigation/stack'
 import { Platform, StatusBar, StyleSheet, View } from 'react-native'
 import { AppRegistry } from 'react-native'
@@ -21,7 +21,6 @@ import LoginScreen from './screens/LoginScreen'
 // CONTEXT
 import { UserProvider } from './context/userContext'
 
-
 const Stack = createStackNavigator()
 
 const client = new ApolloClient({
@@ -32,7 +31,6 @@ const client = new ApolloClient({
 })
 
 const App = () => {
-
   const { loading, error, data } = useCheckAuth()
   const [auth, setAuth] = useState({ user: null, loggedIn: false })
 
@@ -58,21 +56,21 @@ const App = () => {
         {Platform.OS === 'ios' && <StatusBar barStyle='dark-content' />}
         <NavigationContainer linking={LinkingConfiguration}>
           <Stack.Navigator>
-            { !auth.loggedIn ? (
+            {!auth.loggedIn ? (
               // No token found, user isn't signed in
               <Stack.Screen
-                name="Login"
+                name='Login'
                 component={LoginScreen}
                 options={{
                   title: 'Connectez vous',
-                  animationTypeForReplace: auth.loggedIn ? 'pop' : 'push',
+                  animationTypeForReplace: auth.loggedIn ? 'pop' : 'push'
                 }}
               />
             ) : (
-                // User is signed in
-                // <Stack.Screen name="Home" component={HomeScreen} />
-                <Stack.Screen name='Root' component={BottomTabNavigator} />
-              )}
+              // User is signed in
+              <Stack.Screen name='Home' component={HomeScreen} />
+            )}
+            <Stack.Screen name='Root' component={BottomTabNavigator} />
           </Stack.Navigator>
         </NavigationContainer>
       </View>
@@ -84,17 +82,18 @@ export default function Root(props) {
   const isLoadingComplete = useCachedResources()
 
   if (!isLoadingComplete) {
-
     return null
-
   } else {
-
     return (
       <ApolloProvider client={client}>
-        <App/>
+        <ApplicationProvider
+          {...eva}
+          theme={eva.light}
+          style={styles.container}>
+          <App />
+        </ApplicationProvider>
       </ApolloProvider>
     )
-
   }
 }
 
