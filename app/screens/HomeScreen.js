@@ -1,29 +1,47 @@
-import * as WebBrowser from 'expo-web-browser'
 import * as React from 'react'
 import {
-  Image,
-  Platform,
   StyleSheet,
-  Text,
-  TouchableOpacity,
   View
 } from 'react-native'
-import { ScrollView } from 'react-native-gesture-handler'
-
-import { MonoText } from '../components/StyledText'
+import { Text, Layout } from '@ui-kitten/components';
+import Card from '../components/atoms/card';
 
 export default function HomeScreen() {
-  const handleHelpPress = () => {
-    WebBrowser.openBrowserAsync(
-      'https://docs.expo.io/versions/latest/get-started/create-a-new-app/#making-your-first-change'
-    )
+  var smallCardDatas =
+  {
+    hours: {
+      label: "Horaires",
+      sublabel: "8h30 - 16h30"
+    },
+    hostel: {
+      label: "Hotel",
+      sublabel: "5"
+    },
+    room: {
+      label: "Chambres",
+      sublabel: "30"
+    }
   }
+
 
   return (
     <View style={styles.container}>
-      <ScrollView
-        style={styles.container}
-        contentContainerStyle={styles.contentContainer}></ScrollView>
+      <Text style={[styles.currentDay, styles.text]} category='h5'>Mardi 12 Février</Text>
+      <Layout style={styles.layout} level='1'>
+        <View style={styles.layoutContain}>
+          <View style={styles.headContain}>
+            <Text style={[styles.text, styles.labelUser]} category='h5'>Bonjour Vincent,</Text>
+            <Text style={styles.text} appearance='hint'> Voici le récapitulatif de votre journée.</Text>
+          </View>
+          <View style={styles.cards}>
+            {Object.keys(smallCardDatas).map((scard) => {
+              var card = smallCardDatas[scard]
+              return <Card backgroundColor="#F4F4F4" type="small" label={card.label} sublabel={card.sublabel} />
+            })}
+          </View>
+          <Text style={styles.text} category='s1'>S1</Text>
+        </View>
+      </Layout>
     </View>
   )
 }
@@ -35,88 +53,36 @@ HomeScreen.navigationOptions = {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff'
+    backgroundColor: '#FF8139'
   },
-  developmentModeText: {
-    marginBottom: 20,
-    color: 'rgba(0,0,0,0.4)',
-    fontSize: 14,
-    lineHeight: 19,
-    textAlign: 'center'
+  currentDay: {
+    color: "#FFFF",
+    textAlign: 'center',
+    paddingTop: 40,
+    paddingBottom: 20
   },
-  contentContainer: {
-    paddingTop: 30
+  layout: {
+    flex: 1,
+    flexDirection: "column",
+    flexDirection: 'row',
+    borderTopLeftRadius: 30,
+    borderTopRightRadius: 30,
+    paddingLeft: 15,
+    paddingRight: 15
   },
-  welcomeContainer: {
-    alignItems: 'center',
-    marginTop: 10,
+  headContain: {
+    marginTop: 50,
     marginBottom: 20
   },
-  welcomeImage: {
-    width: 100,
-    height: 80,
-    resizeMode: 'contain',
-    marginTop: 3,
-    marginLeft: -10
+  layoutContain: {
+    flex: 1
   },
-  getStartedContainer: {
-    alignItems: 'center',
-    marginHorizontal: 50
+  labelUser: {
+    fontWeight: "bold",
+    marginBottom: 4
   },
-  homeScreenFilename: {
-    marginVertical: 7
-  },
-  codeHighlightText: {
-    color: 'rgba(96,100,109, 0.8)'
-  },
-  codeHighlightContainer: {
-    backgroundColor: 'rgba(0,0,0,0.05)',
-    borderRadius: 3,
-    paddingHorizontal: 4
-  },
-  getStartedText: {
-    fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
-    lineHeight: 24,
-    textAlign: 'center'
-  },
-  tabBarInfoContainer: {
-    position: 'absolute',
-    bottom: 0,
-    left: 0,
-    right: 0,
-    ...Platform.select({
-      ios: {
-        shadowColor: 'black',
-        shadowOffset: { width: 0, height: -3 },
-        shadowOpacity: 0.1,
-        shadowRadius: 3
-      },
-      android: {
-        elevation: 20
-      }
-    }),
-    alignItems: 'center',
-    backgroundColor: '#fbfbfb',
-    paddingVertical: 20
-  },
-  tabBarInfoText: {
-    fontSize: 17,
-    color: 'rgba(96,100,109, 1)',
-    textAlign: 'center'
-  },
-  navigationFilename: {
-    marginTop: 5
-  },
-  helpContainer: {
-    marginTop: 15,
-    alignItems: 'center'
-  },
-  helpLink: {
-    paddingVertical: 15
-  },
-  helpLinkText: {
-    fontSize: 14,
-    color: '#2e78b7'
+  cards: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
   }
 })
