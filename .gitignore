@@ -28,3 +28,4 @@
 .terraform*
 .terraform.tfstate*
 terraform.*
+automation/ansible/.imported-roles
