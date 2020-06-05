@@ -9,7 +9,7 @@ import {
   View
 } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
-import CalendarElement from '../components/Calendar'
+import CalendarElement from '../components/molecules/Calendar'
 import { MonoText } from '../components/StyledText'
 
 export default function CalendarScreen() {
