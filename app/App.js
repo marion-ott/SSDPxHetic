@@ -56,7 +56,7 @@ const App = () => {
         {Platform.OS === 'ios' && <StatusBar barStyle='dark-content' />}
         <NavigationContainer linking={LinkingConfiguration}>
           <Stack.Navigator>
-            {!auth.loggedIn ? (
+            {/* {!auth.loggedIn ? (
               // No token found, user isn't signed in
               <Stack.Screen
                 name='Login'
@@ -69,7 +69,7 @@ const App = () => {
             ) : (
               // User is signed in
               <Stack.Screen name='Home' component={HomeScreen} />
-            )}
+            )} */}
             <Stack.Screen name='Root' component={BottomTabNavigator} />
           </Stack.Navigator>
         </NavigationContainer>
