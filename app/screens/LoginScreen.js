@@ -12,9 +12,6 @@ import { MonoText } from '../components/StyledText';
 import Login from '../components/organism/Login'
 
 export default function LoginScreen( handleLogin ) {
-  
-  console.log(handleLogin)
-
 
   return (
     <View style={styles.container}>
@@ -23,7 +20,7 @@ export default function LoginScreen( handleLogin ) {
         behavior={Platform.OS == "ios" ? "padding" : "height"}
         style={styles.container}
       >
-        <Login />
+        <Login handleLogin={handleLogin} />
       </KeyboardAvoidingView>
 
       {/* <Form data={form} callback={login} schema={schema} withIcon={true} /> */}

@@ -44,6 +44,8 @@ const App = () => {
   }, [error, data])
 
   const handleLogin = (userData) => {
+    console.log('bite')
+
     setAuth({
       user: userData,
       loggedIn: true
@@ -73,14 +75,14 @@ const App = () => {
 
             <Stack.Screen
               name='Login'
-              component={LoginScreen}
               options={{
                 title: '',
                 headerShown: false,
                 animationTypeForReplace: auth.loggedIn ? 'pop' : 'push',
               }}
-              handleLogin={handleLogin}
-            />
+            >
+              {() => <LoginScreen handleLogin={handleLogin} />}
+            </Stack.Screen>
             {/* <Stack.Screen name='Root' component={BottomTabNavigator} /> */}
           </Stack.Navigator>
         </NavigationContainer>

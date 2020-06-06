@@ -3,6 +3,7 @@ import * as yup from 'yup'
 import { useMutation } from '@apollo/react-hooks'
 import { LOGIN } from '../../graphql/mutations/auth'
 import { getFormProps } from '../../global/data'
+import AsyncStorage from '@react-native-community/async-storage';
 import Form from '../molecules/Form'
 import { Text, View, Image, StyleSheet } from 'react-native'
 
@@ -16,13 +17,21 @@ const schema = yup.object({
 const Login = ({ handleLogin }) => {
   const [login, { client, loading, error }] = useMutation(LOGIN, {
     onCompleted({ login }) {
-      //TODO: update context with logged login.user
       handleLogin(login.user)
-      localStorage.setItem('token', login.token)
+      setTokenInStorage(login.user)
+      console.log(login.user)
       client.resetStore()
     },
     onError: (error) => console.log('ERROR MESSAGE : ', error)
   })
+
+  const setTokenInStorage = async (value) => {
+    try {
+      await AsyncStorage.setItem('token', value)
+    } catch (e) {
+      // saving error
+    }
+  }
 
   const [form] = getFormProps({
     email: '',
@@ -39,10 +48,10 @@ const Login = ({ handleLogin }) => {
 
   return (
     <View style={styles.container}>
-      <Image
-        style={styles.logo}
-        source={logo}
-      />
+        <Image
+          style={styles.logo}
+          source={require('../../assets/images/logo.png')}
+        />
       <Text
         style={styles.text}
         source={logo}
@@ -66,8 +75,9 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
   },
   logo: {
-    // marginTop: 216,
-    alignSelf: 'center'
+    height: 50,
+    width: '100%',
+    alignSelf: 'center',
   },
   text: {
     alignSelf: 'center',

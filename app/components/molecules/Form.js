@@ -3,7 +3,7 @@ import { Formik } from 'formik'
 import { View, StyleSheet } from 'react-native'
 import { Input, Button } from '@ui-kitten/components'
 
-export const Form = props => (
+export const Form = (props) => (
   <Formik
     style={styles.container}
     initialValues={{ email: '', password: '' }}
