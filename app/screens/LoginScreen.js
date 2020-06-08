@@ -5,19 +5,23 @@ import { useMutation } from '@apollo/react-hooks'
 import { LOGIN } from './../graphql/mutations/auth'
 import { getFormProps } from './../global/data'
 import AsyncStorage from '@react-native-community/async-storage'
-import { Image, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, Platform, StyleSheet, Text, TouchableOpacity, View, KeyboardAvoidingView } from 'react-native';
 import { ScrollView } from 'react-native-gesture-handler';
 
 import { MonoText } from '../components/StyledText';
 import Login from '../components/organism/Login'
 
-export default function LoginScreen() {
+export default function LoginScreen( handleLogin ) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.getStartedText}>LOGIN</Text>
-
-      <Login />
+      
+      <KeyboardAvoidingView
+        behavior={Platform.OS == "ios" ? "padding" : "height"}
+        style={styles.container}
+      >
+        <Login handleLogin={handleLogin} />
+      </KeyboardAvoidingView>
 
       {/* <Form data={form} callback={login} schema={schema} withIcon={true} /> */}
 
@@ -33,6 +37,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+    // flexDirection: 'column',
+    // alignSelf: 'center'
   },
   input: {
     width: 200,
