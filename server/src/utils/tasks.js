@@ -1,7 +1,7 @@
 const moment = require('moment')
-const fs = require('fs')
 const {prisma} = require('../generated/prisma-client')
 const shuffle = require('lodash.shuffle')
+const fs = require('fs')
 
 // a faire tourner toutes les semaines
 

@@ -1140,6 +1140,11 @@ input ResidentWhereUniqueInput {
   email: String
 }
 
+enum Role {
+  USER
+  ADMIN
+}
+
 type Sector {
   id: ID!
   zone: String!
@@ -1712,7 +1717,7 @@ type User {
   searchIndex: String!
   firstName: String!
   lastName: String!
-  role: String!
+  role: Role!
   sector: Sector
   address: String
   email: String!
@@ -1733,7 +1738,7 @@ input UserCreateInput {
   searchIndex: String!
   firstName: String!
   lastName: String!
-  role: String!
+  role: Role!
   sector: SectorCreateOneWithoutUsersInput
   address: String
   email: String!
@@ -1756,7 +1761,7 @@ input UserCreateWithoutSectorInput {
   searchIndex: String!
   firstName: String!
   lastName: String!
-  role: String!
+  role: Role!
   address: String
   email: String!
   password: String
@@ -1768,7 +1773,7 @@ input UserCreateWithoutTeamsInput {
   searchIndex: String!
   firstName: String!
   lastName: String!
-  role: String!
+  role: Role!
   sector: SectorCreateOneWithoutUsersInput
   address: String
   email: String!
@@ -1808,7 +1813,7 @@ type UserPreviousValues {
   searchIndex: String!
   firstName: String!
   lastName: String!
-  role: String!
+  role: Role!
   address: String
   email: String!
   password: String
@@ -1873,20 +1878,10 @@ input UserScalarWhereInput {
   lastName_not_starts_with: String
   lastName_ends_with: String
   lastName_not_ends_with: String
-  role: String
-  role_not: String
-  role_in: [String!]
-  role_not_in: [String!]
-  role_lt: String
-  role_lte: String
-  role_gt: String
-  role_gte: String
-  role_contains: String
-  role_not_contains: String
-  role_starts_with: String
-  role_not_starts_with: String
-  role_ends_with: String
-  role_not_ends_with: String
+  role: Role
+  role_not: Role
+  role_in: [Role!]
+  role_not_in: [Role!]
   address: String
   address_not: String
   address_in: [String!]
@@ -1972,7 +1967,7 @@ input UserUpdateInput {
   searchIndex: String
   firstName: String
   lastName: String
-  role: String
+  role: Role
   sector: SectorUpdateOneWithoutUsersInput
   address: String
   email: String
@@ -1984,7 +1979,7 @@ input UserUpdateManyDataInput {
   searchIndex: String
   firstName: String
   lastName: String
-  role: String
+  role: Role
   address: String
   email: String
   password: String
@@ -1994,7 +1989,7 @@ input UserUpdateManyMutationInput {
   searchIndex: String
   firstName: String
   lastName: String
-  role: String
+  role: Role
   address: String
   email: String
   password: String
@@ -2033,7 +2028,7 @@ input UserUpdateWithoutSectorDataInput {
   searchIndex: String
   firstName: String
   lastName: String
-  role: String
+  role: Role
   address: String
   email: String
   password: String
@@ -2044,7 +2039,7 @@ input UserUpdateWithoutTeamsDataInput {
   searchIndex: String
   firstName: String
   lastName: String
-  role: String
+  role: Role
   sector: SectorUpdateOneWithoutUsersInput
   address: String
   email: String
@@ -2130,20 +2125,10 @@ input UserWhereInput {
   lastName_not_starts_with: String
   lastName_ends_with: String
   lastName_not_ends_with: String
-  role: String
-  role_not: String
-  role_in: [String!]
-  role_not_in: [String!]
-  role_lt: String
-  role_lte: String
-  role_gt: String
-  role_gte: String
-  role_contains: String
-  role_not_contains: String
-  role_starts_with: String
-  role_not_starts_with: String
-  role_ends_with: String
-  role_not_ends_with: String
+  role: Role
+  role_not: Role
+  role_in: [Role!]
+  role_not_in: [Role!]
   sector: SectorWhereInput
   address: String
   address_not: String
@@ -2221,6 +2206,8 @@ type Visit {
   date: DateTime!
   team: Team!
   hotel: Hotel
+  priority: Boolean!
+  status: VisitStatus!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -2236,6 +2223,8 @@ input VisitCreateInput {
   date: DateTime!
   team: TeamCreateOneWithoutVisitsInput!
   hotel: HotelCreateOneWithoutVisitsInput
+  priority: Boolean!
+  status: VisitStatus!
 }
 
 input VisitCreateManyWithoutHotelInput {
@@ -2252,12 +2241,16 @@ input VisitCreateWithoutHotelInput {
   id: ID
   date: DateTime!
   team: TeamCreateOneWithoutVisitsInput!
+  priority: Boolean!
+  status: VisitStatus!
 }
 
 input VisitCreateWithoutTeamInput {
   id: ID
   date: DateTime!
   hotel: HotelCreateOneWithoutVisitsInput
+  priority: Boolean!
+  status: VisitStatus!
 }
 
 type VisitEdge {
@@ -2270,6 +2263,10 @@ enum VisitOrderByInput {
   id_DESC
   date_ASC
   date_DESC
+  priority_ASC
+  priority_DESC
+  status_ASC
+  status_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -2279,6 +2276,8 @@ enum VisitOrderByInput {
 type VisitPreviousValues {
   id: ID!
   date: DateTime!
+  priority: Boolean!
+  status: VisitStatus!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -2306,6 +2305,12 @@ input VisitScalarWhereInput {
   date_lte: DateTime
   date_gt: DateTime
   date_gte: DateTime
+  priority: Boolean
+  priority_not: Boolean
+  status: VisitStatus
+  status_not: VisitStatus
+  status_in: [VisitStatus!]
+  status_not_in: [VisitStatus!]
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]
@@ -2325,6 +2330,12 @@ input VisitScalarWhereInput {
   AND: [VisitScalarWhereInput!]
   OR: [VisitScalarWhereInput!]
   NOT: [VisitScalarWhereInput!]
+}
+
+enum VisitStatus {
+  UPCOMING
+  ONGOING
+  DONE
 }
 
 type VisitSubscriptionPayload {
@@ -2349,14 +2360,20 @@ input VisitUpdateInput {
   date: DateTime
   team: TeamUpdateOneRequiredWithoutVisitsInput
   hotel: HotelUpdateOneWithoutVisitsInput
+  priority: Boolean
+  status: VisitStatus
 }
 
 input VisitUpdateManyDataInput {
   date: DateTime
+  priority: Boolean
+  status: VisitStatus
 }
 
 input VisitUpdateManyMutationInput {
   date: DateTime
+  priority: Boolean
+  status: VisitStatus
 }
 
 input VisitUpdateManyWithoutHotelInput {
@@ -2391,11 +2408,15 @@ input VisitUpdateManyWithWhereNestedInput {
 input VisitUpdateWithoutHotelDataInput {
   date: DateTime
   team: TeamUpdateOneRequiredWithoutVisitsInput
+  priority: Boolean
+  status: VisitStatus
 }
 
 input VisitUpdateWithoutTeamDataInput {
   date: DateTime
   hotel: HotelUpdateOneWithoutVisitsInput
+  priority: Boolean
+  status: VisitStatus
 }
 
 input VisitUpdateWithWhereUniqueWithoutHotelInput {
@@ -2445,6 +2466,12 @@ input VisitWhereInput {
   date_gte: DateTime
   team: TeamWhereInput
   hotel: HotelWhereInput
+  priority: Boolean
+  priority_not: Boolean
+  status: VisitStatus
+  status_not: VisitStatus
+  status_in: [VisitStatus!]
+  status_not_in: [VisitStatus!]
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]

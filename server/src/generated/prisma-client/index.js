@@ -37,6 +37,10 @@ var models = [
     embedded: false
   },
   {
+    name: "VisitStatus",
+    embedded: false
+  },
+  {
     name: "Gender",
     embedded: false
   }

@@ -3,7 +3,7 @@ type User {
 	searchIndex: String!
 	firstName: String!
 	lastName: String!
-	role: String!
+	role: Role!
 	sector: Sector @relation(name: "UserSector", link: INLINE)
 	address: String
 	email: String! @unique
@@ -29,6 +29,8 @@ type Visit {
 	date: DateTime!
 	team: Team! @relation(name: "TeamVisits")
 	hotel: Hotel @relation(name: "HotelVisits")
+	priority: Boolean!
+	status: VisitStatus!
 	createdAt: DateTime! @createdAt
 	updatedAt: DateTime! @updatedAt
 }
@@ -86,6 +88,12 @@ enum MutationType {
 	CREATED
 	UPDATED
 	DELETED
+}
+
+enum VisitStatus {
+	UPCOMING
+	ONGOING
+	DONE
 }
 
 enum Gender {

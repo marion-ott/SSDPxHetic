@@ -296,6 +296,10 @@ export interface ClientConstructor<T> {
  * Types
  */
 
+export type Role = "USER" | "ADMIN";
+
+export type VisitStatus = "UPCOMING" | "ONGOING" | "DONE";
+
 export type Gender = "MALE" | "FEMALE";
 
 export type UserOrderByInput =
@@ -337,6 +341,10 @@ export type VisitOrderByInput =
   | "id_DESC"
   | "date_ASC"
   | "date_DESC"
+  | "priority_ASC"
+  | "priority_DESC"
+  | "status_ASC"
+  | "status_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
@@ -468,20 +476,10 @@ export interface UserWhereInput {
   lastName_not_starts_with?: Maybe<String>;
   lastName_ends_with?: Maybe<String>;
   lastName_not_ends_with?: Maybe<String>;
-  role?: Maybe<String>;
-  role_not?: Maybe<String>;
-  role_in?: Maybe<String[] | String>;
-  role_not_in?: Maybe<String[] | String>;
-  role_lt?: Maybe<String>;
-  role_lte?: Maybe<String>;
-  role_gt?: Maybe<String>;
-  role_gte?: Maybe<String>;
-  role_contains?: Maybe<String>;
-  role_not_contains?: Maybe<String>;
-  role_starts_with?: Maybe<String>;
-  role_not_starts_with?: Maybe<String>;
-  role_ends_with?: Maybe<String>;
-  role_not_ends_with?: Maybe<String>;
+  role?: Maybe<Role>;
+  role_not?: Maybe<Role>;
+  role_in?: Maybe<Role[] | Role>;
+  role_not_in?: Maybe<Role[] | Role>;
   sector?: Maybe<SectorWhereInput>;
   address?: Maybe<String>;
   address_not?: Maybe<String>;
@@ -790,6 +788,12 @@ export interface VisitWhereInput {
   date_gte?: Maybe<DateTimeInput>;
   team?: Maybe<TeamWhereInput>;
   hotel?: Maybe<HotelWhereInput>;
+  priority?: Maybe<Boolean>;
+  priority_not?: Maybe<Boolean>;
+  status?: Maybe<VisitStatus>;
+  status_not?: Maybe<VisitStatus>;
+  status_in?: Maybe<VisitStatus[] | VisitStatus>;
+  status_not_in?: Maybe<VisitStatus[] | VisitStatus>;
   createdAt?: Maybe<DateTimeInput>;
   createdAt_not?: Maybe<DateTimeInput>;
   createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
@@ -1033,7 +1037,7 @@ export interface UserCreateWithoutSectorInput {
   searchIndex: String;
   firstName: String;
   lastName: String;
-  role: String;
+  role: Role;
   address?: Maybe<String>;
   email: String;
   password?: Maybe<String>;
@@ -1099,6 +1103,8 @@ export interface VisitCreateWithoutHotelInput {
   id?: Maybe<ID_Input>;
   date: DateTimeInput;
   team: TeamCreateOneWithoutVisitsInput;
+  priority: Boolean;
+  status: VisitStatus;
 }
 
 export interface TeamCreateOneWithoutVisitsInput {
@@ -1124,7 +1130,7 @@ export interface UserCreateWithoutTeamsInput {
   searchIndex: String;
   firstName: String;
   lastName: String;
-  role: String;
+  role: Role;
   sector?: Maybe<SectorCreateOneWithoutUsersInput>;
   address?: Maybe<String>;
   email: String;
@@ -1165,6 +1171,8 @@ export interface VisitCreateWithoutTeamInput {
   id?: Maybe<ID_Input>;
   date: DateTimeInput;
   hotel?: Maybe<HotelCreateOneWithoutVisitsInput>;
+  priority: Boolean;
+  status: VisitStatus;
 }
 
 export interface HotelCreateOneWithoutVisitsInput {
@@ -1267,7 +1275,7 @@ export interface UserUpdateWithoutSectorDataInput {
   searchIndex?: Maybe<String>;
   firstName?: Maybe<String>;
   lastName?: Maybe<String>;
-  role?: Maybe<String>;
+  role?: Maybe<Role>;
   address?: Maybe<String>;
   email?: Maybe<String>;
   password?: Maybe<String>;
@@ -1391,6 +1399,8 @@ export interface VisitUpdateWithWhereUniqueWithoutHotelInput {
 export interface VisitUpdateWithoutHotelDataInput {
   date?: Maybe<DateTimeInput>;
   team?: Maybe<TeamUpdateOneRequiredWithoutVisitsInput>;
+  priority?: Maybe<Boolean>;
+  status?: Maybe<VisitStatus>;
 }
 
 export interface TeamUpdateOneRequiredWithoutVisitsInput {
@@ -1436,7 +1446,7 @@ export interface UserUpdateWithoutTeamsDataInput {
   searchIndex?: Maybe<String>;
   firstName?: Maybe<String>;
   lastName?: Maybe<String>;
-  role?: Maybe<String>;
+  role?: Maybe<Role>;
   sector?: Maybe<SectorUpdateOneWithoutUsersInput>;
   address?: Maybe<String>;
   email?: Maybe<String>;
@@ -1518,6 +1528,8 @@ export interface VisitUpdateWithWhereUniqueWithoutTeamInput {
 export interface VisitUpdateWithoutTeamDataInput {
   date?: Maybe<DateTimeInput>;
   hotel?: Maybe<HotelUpdateOneWithoutVisitsInput>;
+  priority?: Maybe<Boolean>;
+  status?: Maybe<VisitStatus>;
 }
 
 export interface HotelUpdateOneWithoutVisitsInput {
@@ -1735,6 +1747,12 @@ export interface VisitScalarWhereInput {
   date_lte?: Maybe<DateTimeInput>;
   date_gt?: Maybe<DateTimeInput>;
   date_gte?: Maybe<DateTimeInput>;
+  priority?: Maybe<Boolean>;
+  priority_not?: Maybe<Boolean>;
+  status?: Maybe<VisitStatus>;
+  status_not?: Maybe<VisitStatus>;
+  status_in?: Maybe<VisitStatus[] | VisitStatus>;
+  status_not_in?: Maybe<VisitStatus[] | VisitStatus>;
   createdAt?: Maybe<DateTimeInput>;
   createdAt_not?: Maybe<DateTimeInput>;
   createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
@@ -1763,6 +1781,8 @@ export interface VisitUpdateManyWithWhereNestedInput {
 
 export interface VisitUpdateManyDataInput {
   date?: Maybe<DateTimeInput>;
+  priority?: Maybe<Boolean>;
+  status?: Maybe<VisitStatus>;
 }
 
 export interface TeamUpsertWithWhereUniqueWithoutSectorInput {
@@ -1901,20 +1921,10 @@ export interface UserScalarWhereInput {
   lastName_not_starts_with?: Maybe<String>;
   lastName_ends_with?: Maybe<String>;
   lastName_not_ends_with?: Maybe<String>;
-  role?: Maybe<String>;
-  role_not?: Maybe<String>;
-  role_in?: Maybe<String[] | String>;
-  role_not_in?: Maybe<String[] | String>;
-  role_lt?: Maybe<String>;
-  role_lte?: Maybe<String>;
-  role_gt?: Maybe<String>;
-  role_gte?: Maybe<String>;
-  role_contains?: Maybe<String>;
-  role_not_contains?: Maybe<String>;
-  role_starts_with?: Maybe<String>;
-  role_not_starts_with?: Maybe<String>;
-  role_ends_with?: Maybe<String>;
-  role_not_ends_with?: Maybe<String>;
+  role?: Maybe<Role>;
+  role_not?: Maybe<Role>;
+  role_in?: Maybe<Role[] | Role>;
+  role_not_in?: Maybe<Role[] | Role>;
   address?: Maybe<String>;
   address_not?: Maybe<String>;
   address_in?: Maybe<String[] | String>;
@@ -1987,7 +1997,7 @@ export interface UserUpdateManyDataInput {
   searchIndex?: Maybe<String>;
   firstName?: Maybe<String>;
   lastName?: Maybe<String>;
-  role?: Maybe<String>;
+  role?: Maybe<Role>;
   address?: Maybe<String>;
   email?: Maybe<String>;
   password?: Maybe<String>;
@@ -2345,7 +2355,7 @@ export interface UserCreateInput {
   searchIndex: String;
   firstName: String;
   lastName: String;
-  role: String;
+  role: Role;
   sector?: Maybe<SectorCreateOneWithoutUsersInput>;
   address?: Maybe<String>;
   email: String;
@@ -2357,7 +2367,7 @@ export interface UserUpdateInput {
   searchIndex?: Maybe<String>;
   firstName?: Maybe<String>;
   lastName?: Maybe<String>;
-  role?: Maybe<String>;
+  role?: Maybe<Role>;
   sector?: Maybe<SectorUpdateOneWithoutUsersInput>;
   address?: Maybe<String>;
   email?: Maybe<String>;
@@ -2369,7 +2379,7 @@ export interface UserUpdateManyMutationInput {
   searchIndex?: Maybe<String>;
   firstName?: Maybe<String>;
   lastName?: Maybe<String>;
-  role?: Maybe<String>;
+  role?: Maybe<Role>;
   address?: Maybe<String>;
   email?: Maybe<String>;
   password?: Maybe<String>;
@@ -2380,16 +2390,22 @@ export interface VisitCreateInput {
   date: DateTimeInput;
   team: TeamCreateOneWithoutVisitsInput;
   hotel?: Maybe<HotelCreateOneWithoutVisitsInput>;
+  priority: Boolean;
+  status: VisitStatus;
 }
 
 export interface VisitUpdateInput {
   date?: Maybe<DateTimeInput>;
   team?: Maybe<TeamUpdateOneRequiredWithoutVisitsInput>;
   hotel?: Maybe<HotelUpdateOneWithoutVisitsInput>;
+  priority?: Maybe<Boolean>;
+  status?: Maybe<VisitStatus>;
 }
 
 export interface VisitUpdateManyMutationInput {
   date?: Maybe<DateTimeInput>;
+  priority?: Maybe<Boolean>;
+  status?: Maybe<VisitStatus>;
 }
 
 export interface HotelSubscriptionWhereInput {
@@ -2717,7 +2733,7 @@ export interface User {
   searchIndex: String;
   firstName: String;
   lastName: String;
-  role: String;
+  role: Role;
   address?: String;
   email: String;
   password?: String;
@@ -2730,7 +2746,7 @@ export interface UserPromise extends Promise<User>, Fragmentable {
   searchIndex: () => Promise<String>;
   firstName: () => Promise<String>;
   lastName: () => Promise<String>;
-  role: () => Promise<String>;
+  role: () => Promise<Role>;
   sector: <T = SectorPromise>() => T;
   address: () => Promise<String>;
   email: () => Promise<String>;
@@ -2755,7 +2771,7 @@ export interface UserSubscription
   searchIndex: () => Promise<AsyncIterator<String>>;
   firstName: () => Promise<AsyncIterator<String>>;
   lastName: () => Promise<AsyncIterator<String>>;
-  role: () => Promise<AsyncIterator<String>>;
+  role: () => Promise<AsyncIterator<Role>>;
   sector: <T = SectorSubscription>() => T;
   address: () => Promise<AsyncIterator<String>>;
   email: () => Promise<AsyncIterator<String>>;
@@ -2780,7 +2796,7 @@ export interface UserNullablePromise
   searchIndex: () => Promise<String>;
   firstName: () => Promise<String>;
   lastName: () => Promise<String>;
-  role: () => Promise<String>;
+  role: () => Promise<Role>;
   sector: <T = SectorPromise>() => T;
   address: () => Promise<String>;
   email: () => Promise<String>;
@@ -2894,6 +2910,8 @@ export interface TeamNullablePromise
 export interface Visit {
   id: ID_Output;
   date: DateTimeOutput;
+  priority: Boolean;
+  status: VisitStatus;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
 }
@@ -2903,6 +2921,8 @@ export interface VisitPromise extends Promise<Visit>, Fragmentable {
   date: () => Promise<DateTimeOutput>;
   team: <T = TeamPromise>() => T;
   hotel: <T = HotelPromise>() => T;
+  priority: () => Promise<Boolean>;
+  status: () => Promise<VisitStatus>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
 }
@@ -2914,6 +2934,8 @@ export interface VisitSubscription
   date: () => Promise<AsyncIterator<DateTimeOutput>>;
   team: <T = TeamSubscription>() => T;
   hotel: <T = HotelSubscription>() => T;
+  priority: () => Promise<AsyncIterator<Boolean>>;
+  status: () => Promise<AsyncIterator<VisitStatus>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
@@ -2925,6 +2947,8 @@ export interface VisitNullablePromise
   date: () => Promise<DateTimeOutput>;
   team: <T = TeamPromise>() => T;
   hotel: <T = HotelPromise>() => T;
+  priority: () => Promise<Boolean>;
+  status: () => Promise<VisitStatus>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
 }
@@ -3630,7 +3654,7 @@ export interface UserPreviousValues {
   searchIndex: String;
   firstName: String;
   lastName: String;
-  role: String;
+  role: Role;
   address?: String;
   email: String;
   password?: String;
@@ -3645,7 +3669,7 @@ export interface UserPreviousValuesPromise
   searchIndex: () => Promise<String>;
   firstName: () => Promise<String>;
   lastName: () => Promise<String>;
-  role: () => Promise<String>;
+  role: () => Promise<Role>;
   address: () => Promise<String>;
   email: () => Promise<String>;
   password: () => Promise<String>;
@@ -3660,7 +3684,7 @@ export interface UserPreviousValuesSubscription
   searchIndex: () => Promise<AsyncIterator<String>>;
   firstName: () => Promise<AsyncIterator<String>>;
   lastName: () => Promise<AsyncIterator<String>>;
-  role: () => Promise<AsyncIterator<String>>;
+  role: () => Promise<AsyncIterator<Role>>;
   address: () => Promise<AsyncIterator<String>>;
   email: () => Promise<AsyncIterator<String>>;
   password: () => Promise<AsyncIterator<String>>;
@@ -3696,6 +3720,8 @@ export interface VisitSubscriptionPayloadSubscription
 export interface VisitPreviousValues {
   id: ID_Output;
   date: DateTimeOutput;
+  priority: Boolean;
+  status: VisitStatus;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
 }
@@ -3705,6 +3731,8 @@ export interface VisitPreviousValuesPromise
     Fragmentable {
   id: () => Promise<ID_Output>;
   date: () => Promise<DateTimeOutput>;
+  priority: () => Promise<Boolean>;
+  status: () => Promise<VisitStatus>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
 }
@@ -3714,6 +3742,8 @@ export interface VisitPreviousValuesSubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   date: () => Promise<AsyncIterator<DateTimeOutput>>;
+  priority: () => Promise<AsyncIterator<Boolean>>;
+  status: () => Promise<AsyncIterator<VisitStatus>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
@@ -3791,6 +3821,10 @@ export const models: Model[] = [
   },
   {
     name: "MutationType",
+    embedded: false
+  },
+  {
+    name: "VisitStatus",
     embedded: false
   },
   {

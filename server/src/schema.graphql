@@ -174,7 +174,9 @@ type Visit {
 	id: ID!
 	date: DateTime!
 	team: Team!
-	hotel: Hotel
+	hotel: Hotel!
+	priority: Boolean!
+	status: VisitStatus!
 	createdAt: DateTime!
 	updatedAt: DateTime!
 }
@@ -183,12 +185,16 @@ input CreateVisitInput {
 	date: DateTime!
 	team: ID!
 	hotel: ID!
+	priority: Boolean!
+	status: VisitStatus!
 }
 
 input UpdateVisitInput {
 	date: DateTime
 	team: ID
 	hotel: ID
+	priority: Boolean
+	status: VisitStatus
 }
 
 type Subscription {
@@ -204,6 +210,12 @@ enum MutationType {
 	CREATED
 	UPDATED
 	DELETED
+}
+
+enum VisitStatus {
+	UPCOMING
+	ONGOING
+	DONE
 }
 
 ##	HOTEL	##
