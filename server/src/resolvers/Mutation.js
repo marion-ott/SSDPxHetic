@@ -84,6 +84,9 @@ const Mutation = {
 		}))
 		data = {
 			...data,
+			sector: {
+				connect: data.sector
+			},
 			users: {
 				connect: users
 			}

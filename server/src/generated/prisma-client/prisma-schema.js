@@ -715,6 +715,7 @@ type Mutation {
   deleteManySectors(where: SectorWhereInput): BatchPayload!
   createTeam(data: TeamCreateInput!): Team!
   updateTeam(data: TeamUpdateInput!, where: TeamWhereUniqueInput!): Team
+  updateManyTeams(data: TeamUpdateManyMutationInput!, where: TeamWhereInput): BatchPayload!
   upsertTeam(where: TeamWhereUniqueInput!, create: TeamCreateInput!, update: TeamUpdateInput!): Team!
   deleteTeam(where: TeamWhereUniqueInput!): Team
   deleteManyTeams(where: TeamWhereInput): BatchPayload!
@@ -1144,6 +1145,7 @@ type Sector {
   zone: String!
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
   hotels(where: HotelWhereInput, orderBy: HotelOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Hotel!]
+  teams(where: TeamWhereInput, orderBy: TeamOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Team!]
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -1159,10 +1161,16 @@ input SectorCreateInput {
   zone: String!
   users: UserCreateManyWithoutSectorInput
   hotels: HotelCreateManyWithoutSectorInput
+  teams: TeamCreateManyWithoutSectorInput
 }
 
 input SectorCreateOneWithoutHotelsInput {
   create: SectorCreateWithoutHotelsInput
+  connect: SectorWhereUniqueInput
+}
+
+input SectorCreateOneWithoutTeamsInput {
+  create: SectorCreateWithoutTeamsInput
   connect: SectorWhereUniqueInput
 }
 
@@ -1175,12 +1183,21 @@ input SectorCreateWithoutHotelsInput {
   id: ID
   zone: String!
   users: UserCreateManyWithoutSectorInput
+  teams: TeamCreateManyWithoutSectorInput
+}
+
+input SectorCreateWithoutTeamsInput {
+  id: ID
+  zone: String!
+  users: UserCreateManyWithoutSectorInput
+  hotels: HotelCreateManyWithoutSectorInput
 }
 
 input SectorCreateWithoutUsersInput {
   id: ID
   zone: String!
   hotels: HotelCreateManyWithoutSectorInput
+  teams: TeamCreateManyWithoutSectorInput
 }
 
 type SectorEdge {
@@ -1228,6 +1245,7 @@ input SectorUpdateInput {
   zone: String
   users: UserUpdateManyWithoutSectorInput
   hotels: HotelUpdateManyWithoutSectorInput
+  teams: TeamUpdateManyWithoutSectorInput
 }
 
 input SectorUpdateManyMutationInput {
@@ -1238,6 +1256,13 @@ input SectorUpdateOneRequiredWithoutHotelsInput {
   create: SectorCreateWithoutHotelsInput
   update: SectorUpdateWithoutHotelsDataInput
   upsert: SectorUpsertWithoutHotelsInput
+  connect: SectorWhereUniqueInput
+}
+
+input SectorUpdateOneRequiredWithoutTeamsInput {
+  create: SectorCreateWithoutTeamsInput
+  update: SectorUpdateWithoutTeamsDataInput
+  upsert: SectorUpsertWithoutTeamsInput
   connect: SectorWhereUniqueInput
 }
 
@@ -1253,16 +1278,29 @@ input SectorUpdateOneWithoutUsersInput {
 input SectorUpdateWithoutHotelsDataInput {
   zone: String
   users: UserUpdateManyWithoutSectorInput
+  teams: TeamUpdateManyWithoutSectorInput
+}
+
+input SectorUpdateWithoutTeamsDataInput {
+  zone: String
+  users: UserUpdateManyWithoutSectorInput
+  hotels: HotelUpdateManyWithoutSectorInput
 }
 
 input SectorUpdateWithoutUsersDataInput {
   zone: String
   hotels: HotelUpdateManyWithoutSectorInput
+  teams: TeamUpdateManyWithoutSectorInput
 }
 
 input SectorUpsertWithoutHotelsInput {
   update: SectorUpdateWithoutHotelsDataInput!
   create: SectorCreateWithoutHotelsInput!
+}
+
+input SectorUpsertWithoutTeamsInput {
+  update: SectorUpdateWithoutTeamsDataInput!
+  create: SectorCreateWithoutTeamsInput!
 }
 
 input SectorUpsertWithoutUsersInput {
@@ -1305,6 +1343,9 @@ input SectorWhereInput {
   hotels_every: HotelWhereInput
   hotels_some: HotelWhereInput
   hotels_none: HotelWhereInput
+  teams_every: TeamWhereInput
+  teams_some: TeamWhereInput
+  teams_none: TeamWhereInput
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]
@@ -1342,8 +1383,11 @@ type Subscription {
 
 type Team {
   id: ID!
+  sector: Sector!
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
   visits(where: VisitWhereInput, orderBy: VisitOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Visit!]
+  startAt: DateTime!
+  endAt: DateTime!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -1356,8 +1400,21 @@ type TeamConnection {
 
 input TeamCreateInput {
   id: ID
-  users: UserCreateManyInput
+  sector: SectorCreateOneWithoutTeamsInput!
+  users: UserCreateManyWithoutTeamsInput
   visits: VisitCreateManyWithoutTeamInput
+  startAt: DateTime!
+  endAt: DateTime!
+}
+
+input TeamCreateManyWithoutSectorInput {
+  create: [TeamCreateWithoutSectorInput!]
+  connect: [TeamWhereUniqueInput!]
+}
+
+input TeamCreateManyWithoutUsersInput {
+  create: [TeamCreateWithoutUsersInput!]
+  connect: [TeamWhereUniqueInput!]
 }
 
 input TeamCreateOneWithoutVisitsInput {
@@ -1365,9 +1422,28 @@ input TeamCreateOneWithoutVisitsInput {
   connect: TeamWhereUniqueInput
 }
 
+input TeamCreateWithoutSectorInput {
+  id: ID
+  users: UserCreateManyWithoutTeamsInput
+  visits: VisitCreateManyWithoutTeamInput
+  startAt: DateTime!
+  endAt: DateTime!
+}
+
+input TeamCreateWithoutUsersInput {
+  id: ID
+  sector: SectorCreateOneWithoutTeamsInput!
+  visits: VisitCreateManyWithoutTeamInput
+  startAt: DateTime!
+  endAt: DateTime!
+}
+
 input TeamCreateWithoutVisitsInput {
   id: ID
-  users: UserCreateManyInput
+  sector: SectorCreateOneWithoutTeamsInput!
+  users: UserCreateManyWithoutTeamsInput
+  startAt: DateTime!
+  endAt: DateTime!
 }
 
 type TeamEdge {
@@ -1378,6 +1454,10 @@ type TeamEdge {
 enum TeamOrderByInput {
   id_ASC
   id_DESC
+  startAt_ASC
+  startAt_DESC
+  endAt_ASC
+  endAt_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -1386,8 +1466,62 @@ enum TeamOrderByInput {
 
 type TeamPreviousValues {
   id: ID!
+  startAt: DateTime!
+  endAt: DateTime!
   createdAt: DateTime!
   updatedAt: DateTime!
+}
+
+input TeamScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  startAt: DateTime
+  startAt_not: DateTime
+  startAt_in: [DateTime!]
+  startAt_not_in: [DateTime!]
+  startAt_lt: DateTime
+  startAt_lte: DateTime
+  startAt_gt: DateTime
+  startAt_gte: DateTime
+  endAt: DateTime
+  endAt_not: DateTime
+  endAt_in: [DateTime!]
+  endAt_not_in: [DateTime!]
+  endAt_lt: DateTime
+  endAt_lte: DateTime
+  endAt_gt: DateTime
+  endAt_gte: DateTime
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  AND: [TeamScalarWhereInput!]
+  OR: [TeamScalarWhereInput!]
+  NOT: [TeamScalarWhereInput!]
 }
 
 type TeamSubscriptionPayload {
@@ -1409,8 +1543,50 @@ input TeamSubscriptionWhereInput {
 }
 
 input TeamUpdateInput {
-  users: UserUpdateManyInput
+  sector: SectorUpdateOneRequiredWithoutTeamsInput
+  users: UserUpdateManyWithoutTeamsInput
   visits: VisitUpdateManyWithoutTeamInput
+  startAt: DateTime
+  endAt: DateTime
+}
+
+input TeamUpdateManyDataInput {
+  startAt: DateTime
+  endAt: DateTime
+}
+
+input TeamUpdateManyMutationInput {
+  startAt: DateTime
+  endAt: DateTime
+}
+
+input TeamUpdateManyWithoutSectorInput {
+  create: [TeamCreateWithoutSectorInput!]
+  delete: [TeamWhereUniqueInput!]
+  connect: [TeamWhereUniqueInput!]
+  set: [TeamWhereUniqueInput!]
+  disconnect: [TeamWhereUniqueInput!]
+  update: [TeamUpdateWithWhereUniqueWithoutSectorInput!]
+  upsert: [TeamUpsertWithWhereUniqueWithoutSectorInput!]
+  deleteMany: [TeamScalarWhereInput!]
+  updateMany: [TeamUpdateManyWithWhereNestedInput!]
+}
+
+input TeamUpdateManyWithoutUsersInput {
+  create: [TeamCreateWithoutUsersInput!]
+  delete: [TeamWhereUniqueInput!]
+  connect: [TeamWhereUniqueInput!]
+  set: [TeamWhereUniqueInput!]
+  disconnect: [TeamWhereUniqueInput!]
+  update: [TeamUpdateWithWhereUniqueWithoutUsersInput!]
+  upsert: [TeamUpsertWithWhereUniqueWithoutUsersInput!]
+  deleteMany: [TeamScalarWhereInput!]
+  updateMany: [TeamUpdateManyWithWhereNestedInput!]
+}
+
+input TeamUpdateManyWithWhereNestedInput {
+  where: TeamScalarWhereInput!
+  data: TeamUpdateManyDataInput!
 }
 
 input TeamUpdateOneRequiredWithoutVisitsInput {
@@ -1420,13 +1596,52 @@ input TeamUpdateOneRequiredWithoutVisitsInput {
   connect: TeamWhereUniqueInput
 }
 
+input TeamUpdateWithoutSectorDataInput {
+  users: UserUpdateManyWithoutTeamsInput
+  visits: VisitUpdateManyWithoutTeamInput
+  startAt: DateTime
+  endAt: DateTime
+}
+
+input TeamUpdateWithoutUsersDataInput {
+  sector: SectorUpdateOneRequiredWithoutTeamsInput
+  visits: VisitUpdateManyWithoutTeamInput
+  startAt: DateTime
+  endAt: DateTime
+}
+
 input TeamUpdateWithoutVisitsDataInput {
-  users: UserUpdateManyInput
+  sector: SectorUpdateOneRequiredWithoutTeamsInput
+  users: UserUpdateManyWithoutTeamsInput
+  startAt: DateTime
+  endAt: DateTime
+}
+
+input TeamUpdateWithWhereUniqueWithoutSectorInput {
+  where: TeamWhereUniqueInput!
+  data: TeamUpdateWithoutSectorDataInput!
+}
+
+input TeamUpdateWithWhereUniqueWithoutUsersInput {
+  where: TeamWhereUniqueInput!
+  data: TeamUpdateWithoutUsersDataInput!
 }
 
 input TeamUpsertWithoutVisitsInput {
   update: TeamUpdateWithoutVisitsDataInput!
   create: TeamCreateWithoutVisitsInput!
+}
+
+input TeamUpsertWithWhereUniqueWithoutSectorInput {
+  where: TeamWhereUniqueInput!
+  update: TeamUpdateWithoutSectorDataInput!
+  create: TeamCreateWithoutSectorInput!
+}
+
+input TeamUpsertWithWhereUniqueWithoutUsersInput {
+  where: TeamWhereUniqueInput!
+  update: TeamUpdateWithoutUsersDataInput!
+  create: TeamCreateWithoutUsersInput!
 }
 
 input TeamWhereInput {
@@ -1444,12 +1659,29 @@ input TeamWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
+  sector: SectorWhereInput
   users_every: UserWhereInput
   users_some: UserWhereInput
   users_none: UserWhereInput
   visits_every: VisitWhereInput
   visits_some: VisitWhereInput
   visits_none: VisitWhereInput
+  startAt: DateTime
+  startAt_not: DateTime
+  startAt_in: [DateTime!]
+  startAt_not_in: [DateTime!]
+  startAt_lt: DateTime
+  startAt_lte: DateTime
+  startAt_gt: DateTime
+  startAt_gte: DateTime
+  endAt: DateTime
+  endAt_not: DateTime
+  endAt_in: [DateTime!]
+  endAt_not_in: [DateTime!]
+  endAt_lt: DateTime
+  endAt_lte: DateTime
+  endAt_gt: DateTime
+  endAt_gte: DateTime
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]
@@ -1485,6 +1717,7 @@ type User {
   address: String
   email: String!
   password: String
+  teams(where: TeamWhereInput, orderBy: TeamOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Team!]
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -1505,15 +1738,16 @@ input UserCreateInput {
   address: String
   email: String!
   password: String
-}
-
-input UserCreateManyInput {
-  create: [UserCreateInput!]
-  connect: [UserWhereUniqueInput!]
+  teams: TeamCreateManyWithoutUsersInput
 }
 
 input UserCreateManyWithoutSectorInput {
   create: [UserCreateWithoutSectorInput!]
+  connect: [UserWhereUniqueInput!]
+}
+
+input UserCreateManyWithoutTeamsInput {
+  create: [UserCreateWithoutTeamsInput!]
   connect: [UserWhereUniqueInput!]
 }
 
@@ -1523,6 +1757,19 @@ input UserCreateWithoutSectorInput {
   firstName: String!
   lastName: String!
   role: String!
+  address: String
+  email: String!
+  password: String
+  teams: TeamCreateManyWithoutUsersInput
+}
+
+input UserCreateWithoutTeamsInput {
+  id: ID
+  searchIndex: String!
+  firstName: String!
+  lastName: String!
+  role: String!
+  sector: SectorCreateOneWithoutUsersInput
   address: String
   email: String!
   password: String
@@ -1721,17 +1968,6 @@ input UserSubscriptionWhereInput {
   NOT: [UserSubscriptionWhereInput!]
 }
 
-input UserUpdateDataInput {
-  searchIndex: String
-  firstName: String
-  lastName: String
-  role: String
-  sector: SectorUpdateOneWithoutUsersInput
-  address: String
-  email: String
-  password: String
-}
-
 input UserUpdateInput {
   searchIndex: String
   firstName: String
@@ -1741,6 +1977,7 @@ input UserUpdateInput {
   address: String
   email: String
   password: String
+  teams: TeamUpdateManyWithoutUsersInput
 }
 
 input UserUpdateManyDataInput {
@@ -1751,18 +1988,6 @@ input UserUpdateManyDataInput {
   address: String
   email: String
   password: String
-}
-
-input UserUpdateManyInput {
-  create: [UserCreateInput!]
-  update: [UserUpdateWithWhereUniqueNestedInput!]
-  upsert: [UserUpsertWithWhereUniqueNestedInput!]
-  delete: [UserWhereUniqueInput!]
-  connect: [UserWhereUniqueInput!]
-  set: [UserWhereUniqueInput!]
-  disconnect: [UserWhereUniqueInput!]
-  deleteMany: [UserScalarWhereInput!]
-  updateMany: [UserUpdateManyWithWhereNestedInput!]
 }
 
 input UserUpdateManyMutationInput {
@@ -1787,6 +2012,18 @@ input UserUpdateManyWithoutSectorInput {
   updateMany: [UserUpdateManyWithWhereNestedInput!]
 }
 
+input UserUpdateManyWithoutTeamsInput {
+  create: [UserCreateWithoutTeamsInput!]
+  delete: [UserWhereUniqueInput!]
+  connect: [UserWhereUniqueInput!]
+  set: [UserWhereUniqueInput!]
+  disconnect: [UserWhereUniqueInput!]
+  update: [UserUpdateWithWhereUniqueWithoutTeamsInput!]
+  upsert: [UserUpsertWithWhereUniqueWithoutTeamsInput!]
+  deleteMany: [UserScalarWhereInput!]
+  updateMany: [UserUpdateManyWithWhereNestedInput!]
+}
+
 input UserUpdateManyWithWhereNestedInput {
   where: UserScalarWhereInput!
   data: UserUpdateManyDataInput!
@@ -1800,11 +2037,18 @@ input UserUpdateWithoutSectorDataInput {
   address: String
   email: String
   password: String
+  teams: TeamUpdateManyWithoutUsersInput
 }
 
-input UserUpdateWithWhereUniqueNestedInput {
-  where: UserWhereUniqueInput!
-  data: UserUpdateDataInput!
+input UserUpdateWithoutTeamsDataInput {
+  searchIndex: String
+  firstName: String
+  lastName: String
+  role: String
+  sector: SectorUpdateOneWithoutUsersInput
+  address: String
+  email: String
+  password: String
 }
 
 input UserUpdateWithWhereUniqueWithoutSectorInput {
@@ -1812,16 +2056,21 @@ input UserUpdateWithWhereUniqueWithoutSectorInput {
   data: UserUpdateWithoutSectorDataInput!
 }
 
-input UserUpsertWithWhereUniqueNestedInput {
+input UserUpdateWithWhereUniqueWithoutTeamsInput {
   where: UserWhereUniqueInput!
-  update: UserUpdateDataInput!
-  create: UserCreateInput!
+  data: UserUpdateWithoutTeamsDataInput!
 }
 
 input UserUpsertWithWhereUniqueWithoutSectorInput {
   where: UserWhereUniqueInput!
   update: UserUpdateWithoutSectorDataInput!
   create: UserCreateWithoutSectorInput!
+}
+
+input UserUpsertWithWhereUniqueWithoutTeamsInput {
+  where: UserWhereUniqueInput!
+  update: UserUpdateWithoutTeamsDataInput!
+  create: UserCreateWithoutTeamsInput!
 }
 
 input UserWhereInput {
@@ -1938,6 +2187,9 @@ input UserWhereInput {
   password_not_starts_with: String
   password_ends_with: String
   password_not_ends_with: String
+  teams_every: TeamWhereInput
+  teams_some: TeamWhereInput
+  teams_none: TeamWhereInput
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]

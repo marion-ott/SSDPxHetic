@@ -93,6 +93,7 @@ type User {
 	address: String
 	email: String!
 	password: String
+	teams: [Team!]
 	createdAt: DateTime!
 	updatedAt: DateTime!
 }
@@ -148,13 +149,20 @@ enum UserOrderByInput {
 ##	TEAM	##
 type Team {
 	id: ID!
+	sector: Sector!
 	users: [User!]!
+	visits: [Visit!]
+	startAt: DateTime!
+	endAt: DateTime!
 	createdAt: DateTime!
 	updatedAt: DateTime!
 }
 
 input CreateTeamInput {
 	users: [ID!]!
+	sector: ID!
+	startAt: DateTime!
+	endAt: DateTime!
 }
 
 input UpdateTeamInput {
@@ -272,6 +280,7 @@ type Sector {
 	zone: String!
 	users: [User!]
 	hotels: [Hotel!]
+	teams: [Team!]
 	createdAt: DateTime!
 	updatedAt: DateTime!
 }
