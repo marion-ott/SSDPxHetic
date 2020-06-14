@@ -93,6 +93,7 @@ type User {
 	address: String
 	email: String!
 	password: String
+	teams: [Team!]
 	createdAt: DateTime!
 	updatedAt: DateTime!
 }
@@ -148,13 +149,20 @@ enum UserOrderByInput {
 ##	TEAM	##
 type Team {
 	id: ID!
+	sector: Sector!
 	users: [User!]!
+	visits: [Visit!]
+	startAt: DateTime!
+	endAt: DateTime!
 	createdAt: DateTime!
 	updatedAt: DateTime!
 }
 
 input CreateTeamInput {
 	users: [ID!]!
+	sector: ID!
+	startAt: DateTime!
+	endAt: DateTime!
 }
 
 input UpdateTeamInput {
@@ -166,7 +174,9 @@ type Visit {
 	id: ID!
 	date: DateTime!
 	team: Team!
-	hotel: Hotel
+	hotel: Hotel!
+	priority: Boolean!
+	status: VisitStatus!
 	createdAt: DateTime!
 	updatedAt: DateTime!
 }
@@ -175,12 +185,16 @@ input CreateVisitInput {
 	date: DateTime!
 	team: ID!
 	hotel: ID!
+	priority: Boolean!
+	status: VisitStatus!
 }
 
 input UpdateVisitInput {
 	date: DateTime
 	team: ID
 	hotel: ID
+	priority: Boolean
+	status: VisitStatus
 }
 
 type Subscription {
@@ -196,6 +210,12 @@ enum MutationType {
 	CREATED
 	UPDATED
 	DELETED
+}
+
+enum VisitStatus {
+	UPCOMING
+	ONGOING
+	DONE
 }
 
 ##	HOTEL	##
@@ -272,6 +292,7 @@ type Sector {
 	zone: String!
 	users: [User!]
 	hotels: [Hotel!]
+	teams: [Team!]
 	createdAt: DateTime!
 	updatedAt: DateTime!
 }
