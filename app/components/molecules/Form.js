@@ -3,12 +3,33 @@ import { Formik } from 'formik'
 import { View, StyleSheet } from 'react-native'
 import { Input, Button } from '@ui-kitten/components'
 
-export const Form = (props) => (
+export const Form = ({ callback, data, id }) => (
   <Formik
     style={styles.container}
-    initialValues={{ email: '', password: '' }}
-    onSubmit={values => console.log(values)}
-  >
+    initialValues={data.initialValues}
+    onSubmit={(values) => {
+      const variables = {
+        data: {}
+      }
+
+      for (const key in values) {
+        if (values[key] !== data.initialValues[key]) {
+          variables.data[key] = values[key]
+        }
+      }
+
+      if (!Object.keys(variables.data).length) {
+        return null
+      }
+
+      if (id) {
+        variables.id = id
+      }
+
+      callback({
+        variables
+      })
+    }}>
     {({ handleChange, handleBlur, handleSubmit, values }) => (
       <View>
         <Input
@@ -21,6 +42,7 @@ export const Form = (props) => (
           placeholder='Email'
           textContentType='emailAddress'
           keyboardType='email-address'
+          autoCapitalize='none'
         />
         <Input
           style={styles.input}
@@ -33,17 +55,13 @@ export const Form = (props) => (
           textContentType='password'
           secureTextEntry={true}
         />
-        <Button
-          style={styles.button}
-          type='submit'
-          onPress={handleSubmit}
-        >
+        <Button style={styles.button} type='submit' onPress={handleSubmit}>
           Connexion
         </Button>
       </View>
     )}
   </Formik>
-);
+)
 
 const styles = StyleSheet.create({
   container: {
@@ -60,7 +78,7 @@ const styles = StyleSheet.create({
   button: {
     marginTop: 8,
     backgroundColor: '#3D52D5',
-    height: 55,
+    height: 55
   }
 })
 

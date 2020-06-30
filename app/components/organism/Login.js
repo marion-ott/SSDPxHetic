@@ -3,7 +3,7 @@ import * as yup from 'yup'
 import { useMutation } from '@apollo/react-hooks'
 import { LOGIN } from '../../graphql/mutations/auth'
 import { getFormProps } from '../../global/data'
-import AsyncStorage from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-community/async-storage'
 import Form from '../molecules/Form'
 import { Text, View, Image, StyleSheet } from 'react-native'
 
@@ -17,9 +17,9 @@ const schema = yup.object({
 const Login = ({ handleLogin }) => {
   const [login, { client, loading, error }] = useMutation(LOGIN, {
     onCompleted({ login }) {
+      console.log('yooo')
       handleLogin(login.user)
       setTokenInStorage(login.user)
-      console.log(login.user)
       client.resetStore()
     },
     onError: (error) => console.log('ERROR MESSAGE : ', error)
@@ -48,22 +48,14 @@ const Login = ({ handleLogin }) => {
 
   return (
     <View style={styles.container}>
-        <Image
-          style={styles.logo}
-          source={require('../../assets/images/logo.png')}
-        />
-      <Text
-        style={styles.text}
-        source={logo}
-      >
+      <Image
+        style={styles.logo}
+        source={require('../../assets/images/logo.png')}
+      />
+      <Text style={styles.text} source={logo}>
         Accès agent de terrain
       </Text>
-      <Form
-        data={form}
-        callback={login}
-        schema={schema}
-        withIcon={true}
-      />
+      <Form data={form} callback={login} schema={schema} withIcon={true} />
     </View>
   )
 }
@@ -72,18 +64,18 @@ const styles = StyleSheet.create({
   container: {
     padding: 15,
     flex: 1,
-    justifyContent: "flex-end",
+    justifyContent: 'flex-end'
   },
   logo: {
     height: 50,
     width: '100%',
-    alignSelf: 'center',
+    alignSelf: 'center'
   },
   text: {
     alignSelf: 'center',
     marginTop: 16,
     marginBottom: 48,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     fontSize: 16
   }
 })
