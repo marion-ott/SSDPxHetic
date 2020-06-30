@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     paddingLeft: 15,
-    paddingRight: 15,
+    paddingRight: 15
   },
   input: {
     width: 200,
@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
     height: 50,
     width: '100%',
     alignSelf: 'center',
-    resizeMode: 'contain',
+    resizeMode: 'contain'
   },
   text: {
     alignSelf: 'center',
