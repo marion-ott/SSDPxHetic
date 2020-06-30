@@ -1,21 +1,20 @@
-import * as WebBrowser from 'expo-web-browser'
-import * as React from 'react'
-import {
-  Image,
-  Platform,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View
-} from 'react-native'
-import { ScrollView } from 'react-native-gesture-handler'
+import React, { useState } from 'react'
+import moment from 'moment'
+import { StyleSheet, View } from 'react-native'
+import { getDateStr } from '../utils/index'
 import CalendarElement from '../components/molecules/Calendar'
-import { MonoText } from '../components/StyledText'
 
 export default function CalendarScreen() {
+  const today = getDateStr(moment())
+  const [selected, setSelected] = useState(today)
+
   return (
     <View style={styles.container}>
-      <CalendarElement />
+      <CalendarElement
+        today={today}
+        selected={selected}
+        setSelected={setSelected}
+      />
     </View>
   )
 }
@@ -27,6 +26,6 @@ CalendarScreen.navigationOptions = {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff'
+    backgroundColor: '#aaa'
   }
 })
