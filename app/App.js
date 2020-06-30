@@ -69,7 +69,6 @@ const App = () => {
   // if (error) {
   //   return <Text>error</Text>
   // }
-  console.log(auth)
 
   return (
     <UserProvider value={auth}>
