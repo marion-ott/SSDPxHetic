@@ -1,21 +1,21 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useLocation } from 'react-router-dom'
 import { Link } from 'react-router-dom'
+import userContext from '../context/userContext'
 import { Dropdown } from '../molecules'
-import { Logo } from '../atoms'
-import { Button } from '../atoms'
-import { Icon } from '../atoms'
+import { Logo, Button, Icon } from '../atoms'
 import { navEls } from '../global/data'
 
-const Nav = ({setAuth}) => {
+const Nav = ({ setAuth }) => {
+  const { user } = useContext(userContext)
   const { pathname } = useLocation()
 
   const handleLogout = () => {
     setAuth({
       user: null,
-      loggedIn: false,
+      loggedIn: false
     })
-    localStorage.removeItem("token")
+    localStorage.removeItem('token')
   }
 
   return (
@@ -47,7 +47,10 @@ const Nav = ({setAuth}) => {
                   <p>Visite d'urgence</p>
                 </Button>
                 {/* <Icon classProp='fa-bell' /> */}
-                <Dropdown downicon={true} title='Marion' titleicon='fa-user'>
+                <Dropdown
+                  downicon={true}
+                  title={user.firstName}
+                  titleicon='fa-user'>
                   <Link to='/' className='dropdown-item'>
                     Mon profile
                   </Link>
