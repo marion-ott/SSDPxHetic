@@ -80,9 +80,9 @@ LoginScreen.navigationOptions = {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff'
-    // flexDirection: 'column',
-    // alignSelf: 'center'
+    backgroundColor: '#fff',
+    paddingLeft: 15,
+    paddingRight: 15,
   },
   input: {
     width: 200,
@@ -93,9 +93,11 @@ const styles = StyleSheet.create({
     marginBottom: 10
   },
   logo: {
+    marginTop: 50,
     height: 50,
     width: '100%',
-    alignSelf: 'center'
+    alignSelf: 'center',
+    resizeMode: 'contain',
   },
   text: {
     alignSelf: 'center',

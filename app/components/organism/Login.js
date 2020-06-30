@@ -62,9 +62,8 @@ const Login = ({ handleLogin }) => {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 15,
     flex: 1,
-    justifyContent: 'flex-end'
+    justifyContent: 'flex-end',
   },
   logo: {
     height: 50,

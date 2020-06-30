@@ -70,15 +70,12 @@ const styles = StyleSheet.create({
   input: {
     marginBottom: 16,
     height: 55
-    // borderColor: '#E0E0E0',
-    // borderWidth: 1,
-    // borderStyle: 'solid',
-    // borderRadius: 8
   },
   button: {
-    marginTop: 8,
+    marginTop: 32,
     backgroundColor: '#3D52D5',
-    height: 55
+    height: 55,
+    borderRadius: 30,
   }
 })
 
