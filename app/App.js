@@ -33,7 +33,16 @@ const client = new ApolloClient({
 
 const App = () => {
   const { loading, error, data } = useCheckAuth()
-  const [auth, setAuth] = useState({ user: null, loggedIn: false })
+  const [auth, setAuth] = useState({
+    user: {
+      email: 'admin@samu-social.net',
+      firstName: 'Admin',
+      id: '5ee62d1cc414790007fb604c',
+      lastName: 'Admin',
+      role: 'ADMIN'
+    },
+    loggedIn: true
+  })
 
   useEffect(() => {
     if (data) {
@@ -60,6 +69,7 @@ const App = () => {
   // if (error) {
   //   return <Text>error</Text>
   // }
+  console.log(auth)
 
   return (
     <UserProvider value={auth}>
