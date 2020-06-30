@@ -1,4 +1,4 @@
-import * as Linking from 'expo-linking';
+import * as Linking from 'expo-linking'
 
 export default {
   prefixes: [Linking.makeUrl('/')],
@@ -7,8 +7,8 @@ export default {
       path: 'root',
       screens: {
         Home: 'home',
-        Links: 'links',
-      },
-    },
-  },
-};
+        Links: 'links'
+      }
+    }
+  }
+}
