@@ -1,7 +1,8 @@
 import * as React from 'react'
 import { StyleSheet, View } from 'react-native'
-import { Text, Layout } from '@ui-kitten/components'
+import { Text, Layout, Divider } from '@ui-kitten/components'
 import Card from '../components/molecules/Card'
+import { ScrollView } from 'react-native-gesture-handler'
 
 export default function HomeScreen() {
   var smallCardDatas = {
@@ -31,7 +32,6 @@ export default function HomeScreen() {
               Bonjour Vincent,
             </Text>
             <Text style={styles.text} appearance='hint'>
-              {' '}
               Voici le récapitulatif de votre journée.
             </Text>
           </View>
@@ -40,6 +40,7 @@ export default function HomeScreen() {
               var card = smallCardDatas[scard]
               return (
                 <Card
+                  key={scard}
                   backgroundColor='#F4F4F4'
                   type='small'
                   label={card.label}
@@ -48,9 +49,26 @@ export default function HomeScreen() {
               )
             })}
           </View>
-          <Text style={styles.text} category='s1'>
-            S1
-          </Text>
+          <View>
+            <Text style={[styles.text, styles.subtitle]} category='s1'>
+              Visites prioritaires
+            </Text>
+            <Divider style={[{ marginBottom: 20 }]} />
+            <View styles={styles.cardsContain}>
+              <ScrollView >
+                {[null, null].map((c, i) => {
+                  return <Card key={i} backgroundColor="#FFF2EB" />
+                })}
+                <View>
+                  <Text style={[styles.text, styles.subtitle]}>Visite standare</Text>
+                  <Divider style={[{ marginBottom: 20 }]} />
+                </View>
+                {[null, null, null, null, null, null].map((c, i) => {
+                  return <Card key={i} backgroundColor="#FFF2EB" />
+                })}
+              </ScrollView>
+            </View>
+          </View>
         </View>
       </Layout>
     </View>
@@ -64,7 +82,7 @@ HomeScreen.navigationOptions = {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FF8139'
+    backgroundColor: '#3D52D5'
   },
   currentDay: {
     color: '#FFFF',
@@ -91,6 +109,13 @@ const styles = StyleSheet.create({
   labelUser: {
     fontWeight: 'bold',
     marginBottom: 4
+  },
+  subtitle: {
+    marginBottom: 7,
+    marginTop: 20
+  },
+  cardsContain: {
+    marginTop: 7
   },
   cards: {
     flexDirection: 'row',
