@@ -18,16 +18,16 @@ import Details from './Details'
 import { Nav } from '../organisms'
 
 function App() {
+  const [auth, setAuth] = useState({ user: null, loggedIn: false })
+  const { loading, error, data } = useCheckAuth()
   const { loading: sectorsLoad, error: sectorsErr, data: sectors } = useQuery(
     GET_SECTORS
   )
-  const { loading, error, data } = useCheckAuth()
-  const [auth, setAuth] = useState({ user: null, loggedIn: false })
 
   useEffect(() => {
     if (data) {
       setAuth({
-        user: data.user,
+        user: data.checkAuth,
         loggedIn: true
       })
     }
@@ -44,7 +44,10 @@ function App() {
     return <p>loading</p>
   }
 
-  if (error || sectorsErr) {
+  if (
+    (error && !error.message.includes('Authentication required')) ||
+    sectorsErr
+  ) {
     return <p>error</p>
   }
 
