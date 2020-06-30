@@ -1,9 +1,15 @@
-import * as React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Card, Text } from '@ui-kitten/components';
 import { Ionicons } from '@expo/vector-icons';
 
 const HostCard = ({ backgroundColor, type, label, sublabel }) => {
+    const [options, setOptions] = useState(false)
+
+    const displayCard = () => {
+        setOptions(!options)
+    }
+
     if (type === "small") {
         return (
             <View style={styles.smallCard(backgroundColor)}>
@@ -23,7 +29,7 @@ const HostCard = ({ backgroundColor, type, label, sublabel }) => {
         )
     }
     return (
-        <Card style={[styles.card, { backgroundColor }]} header={Header}>
+        <Card onPress={() => displayCard()} style={[styles.card, { backgroundColor }]} header={Header}>
             <View style={styles.cardContainer}>
                 <View>
                     <Text style={styles.text} category='s2'>24 rue des petits champs,</Text>
@@ -34,17 +40,20 @@ const HostCard = ({ backgroundColor, type, label, sublabel }) => {
                     <Text style={styles.text} category='s2'>12</Text>
                 </View>
             </View>
-            <View style={styles.cardopen}>
-                <View style={styles.reportContainer}>
-                    <View style={styles.borderLine}>
-                        <Text style={[styles.text, styles.report]} category='h6'>Reporter</Text>
+            {options ?
+                <View style={styles.cardopen}>
+                    <View style={styles.reportContainer}>
+                        <View style={styles.borderLine}>
+                            <Text style={[styles.text, styles.report]} category='h6'>Reporter</Text>
+                        </View>
+                    </View>
+                    <View style={styles.startContainer}>
+                        <Ionicons style={styles.startIcon} name="md-play" size={24} color="black" />
+                        <Text appearance='alternative' style={[styles.text, styles.start]} category='h6'>Commencer</Text>
                     </View>
                 </View>
-                <View style={styles.startContainer}>
-                    <Ionicons style={styles.startIcon} name="md-play" size={24} color="black" />
-                    <Text appearance='alternative' style={[styles.text, styles.start]} category='h6'>Commencer</Text>
-                </View>
-            </View>
+                :
+                null}
         </Card >
     )
 }

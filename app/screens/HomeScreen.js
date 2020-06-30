@@ -1,10 +1,11 @@
-import * as React from 'react'
+import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import { Text, Layout, Divider } from '@ui-kitten/components'
 import Card from '../components/molecules/Card'
 import { ScrollView } from 'react-native-gesture-handler'
 
 export default function HomeScreen() {
+
   var smallCardDatas = {
     hours: {
       label: 'Horaires',
@@ -19,6 +20,7 @@ export default function HomeScreen() {
       sublabel: '30'
     }
   }
+
 
   return (
     <View style={styles.container}>
