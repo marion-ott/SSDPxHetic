@@ -28,6 +28,7 @@ const Query = {
 	/** AUTH */
 	checkAuth(parent, args, {prisma, request}) {
 		const id = getAuthUserId(request)
+		console.log(id)
 		return prisma.user({id})
 	},
 

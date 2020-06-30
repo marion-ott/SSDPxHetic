@@ -1,42 +1,86 @@
-import * as WebBrowser from 'expo-web-browser';
-import * as React from 'react';
+import * as React from 'react'
+import * as WebBrowser from 'expo-web-browser'
 import * as yup from 'yup'
 import { useMutation } from '@apollo/react-hooks'
 import { LOGIN } from './../graphql/mutations/auth'
 import { getFormProps } from './../global/data'
 import AsyncStorage from '@react-native-community/async-storage'
-import { Image, Platform, StyleSheet, Text, TouchableOpacity, View, KeyboardAvoidingView } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+import {
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  Image,
+  KeyboardAvoidingView
+} from 'react-native'
+import Form from '../components/molecules/Form'
 
-import { MonoText } from '../components/StyledText';
-import Login from '../components/organism/Login'
+import logo from '../assets/images/logo.png'
 
-export default function LoginScreen( handleLogin ) {
+const schema = yup.object({
+  email: yup.string().email('Email invalide').required('Email requis'),
+  password: yup.string().required('Mot de passe requis')
+})
+export default function LoginScreen({ handleLogin }) {
+  const [login, { client, loading, error }] = useMutation(LOGIN, {
+    onCompleted({ login }) {
+      handleLogin(login.user)
+      setTokenInStorage(login.user)
+      client.resetStore()
+    },
+    onError: (error) => console.log('ERROR MESSAGE : ', error)
+  })
+
+  const setTokenInStorage = async (value) => {
+    try {
+      await AsyncStorage.setItem('token', value)
+    } catch (e) {
+      // saving error
+    }
+  }
+
+  const [form] = getFormProps({
+    email: '',
+    password: ''
+  })
+
+  if (error) {
+    return <Text>there was an error</Text>
+  }
+
+  if (loading) {
+    return <Text>loading</Text>
+  }
 
   return (
     <View style={styles.container}>
-      
       <KeyboardAvoidingView
-        behavior={Platform.OS == "ios" ? "padding" : "height"}
-        style={styles.container}
-      >
-        <Login handleLogin={handleLogin} />
+        behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
+        style={styles.container}>
+        <View style={styles.container}>
+          <Image
+            style={styles.logo}
+            source={require('../assets/images/logo.png')}
+          />
+          <Text style={styles.text} source={logo}>
+            Accès agent de terrain
+          </Text>
+          <Form data={form} callback={login} schema={schema} withIcon={true} />
+        </View>
       </KeyboardAvoidingView>
-
-      {/* <Form data={form} callback={login} schema={schema} withIcon={true} /> */}
-
     </View>
-  );
+  )
 }
 
 LoginScreen.navigationOptions = {
-  header: null,
-};
+  header: null
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#fff'
     // flexDirection: 'column',
     // alignSelf: 'center'
   },
@@ -46,6 +90,18 @@ const styles = StyleSheet.create({
     padding: 10,
     borderWidth: 1,
     borderColor: 'black',
-    marginBottom: 10,
+    marginBottom: 10
+  },
+  logo: {
+    height: 50,
+    width: '100%',
+    alignSelf: 'center'
+  },
+  text: {
+    alignSelf: 'center',
+    marginTop: 16,
+    marginBottom: 48,
+    fontWeight: 'bold',
+    fontSize: 16
   }
-});
+})

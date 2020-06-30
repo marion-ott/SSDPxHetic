@@ -1,21 +1,24 @@
-import * as React from 'react'
+import React, { useContext } from 'react'
+import userContext from '../context/userContext'
 import { StyleSheet, View } from 'react-native'
 import { Text, Layout } from '@ui-kitten/components'
-import Card from '../components/molecules/Card'
+import Details from '../components/molecules/Details'
 
 export default function HomeScreen() {
+  const { user } = useContext(userContext)
+
   var smallCardDatas = {
     hours: {
       label: 'Horaires',
-      sublabel: '8h30 - 16h30'
+      value: '8h30 - 16h30'
     },
     hostel: {
       label: 'Hotel',
-      sublabel: '5'
+      value: '5'
     },
     room: {
       label: 'Chambres',
-      sublabel: '30'
+      value: '30'
     }
   }
 
@@ -28,7 +31,7 @@ export default function HomeScreen() {
         <View style={styles.layoutContain}>
           <View style={styles.headContain}>
             <Text style={[styles.text, styles.labelUser]} category='h5'>
-              Bonjour Vincent,
+              Bonjour {user.firstName},
             </Text>
             <Text style={styles.text} appearance='hint'>
               {' '}
@@ -39,12 +42,7 @@ export default function HomeScreen() {
             {Object.keys(smallCardDatas).map((scard) => {
               var card = smallCardDatas[scard]
               return (
-                <Card
-                  backgroundColor='#F4F4F4'
-                  type='small'
-                  label={card.label}
-                  sublabel={card.sublabel}
-                />
+                <Details backgroundColor='#F4F4F4' type='small' {...card} />
               )
             })}
           </View>
@@ -64,7 +62,7 @@ HomeScreen.navigationOptions = {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#FF8139'
+    backgroundColor: '#3D52D5'
   },
   currentDay: {
     color: '#FFFF',

@@ -1,14 +1,11 @@
-import * as React from 'react'
+import React, { useContext } from 'react'
 import { StyleSheet, View } from 'react-native'
 import { Text, Input } from '@ui-kitten/components'
+import userContext from '../context/userContext'
 
 export default function ProfileScreen() {
-  const [value, setValue] = React.useState({
-    firstname: '',
-    lastname: '',
-    mail: '',
-    phone: ''
-  })
+  const { user } = useContext(userContext)
+  const [value, setValue] = React.useState(user)
 
   function onChangeProfile(val, name) {
     setValue({
@@ -20,7 +17,7 @@ export default function ProfileScreen() {
   return (
     <View style={styles.container}>
       <Text style={[styles.text, styles.title]} category='h2'>
-        Nicolas Bertaux
+        {value.firstName} {value.lastName}
       </Text>
       <View style={styles.form}>
         <View style={styles.inputs}>
@@ -28,8 +25,8 @@ export default function ProfileScreen() {
             Prénom
           </Text>
           <Input
-            placeholder='Nicolas'
-            value={value.firstname}
+            placeholder={value.firstName}
+            value={value.firstName}
             onChangeText={(evt) => onChangeProfile(evt, 'firstname')}
           />
         </View>
@@ -38,8 +35,8 @@ export default function ProfileScreen() {
             Nom
           </Text>
           <Input
-            placeholder='Bertaux'
-            value={value.lastname}
+            placeholder={value.lastName}
+            value={value.lastName}
             onChangeText={(evt) => onChangeProfile(evt, 'lastname')}
           />
         </View>
@@ -48,8 +45,8 @@ export default function ProfileScreen() {
             Email
           </Text>
           <Input
-            placeholder='nicolas.berteaux@gmail.com'
-            value={value.mail}
+            placeholder={value.email}
+            value={value.email}
             onChangeText={(evt) => onChangeProfile(evt, 'mail')}
           />
         </View>
@@ -59,7 +56,7 @@ export default function ProfileScreen() {
           </Text>
           <Input
             placeholder='0634239100'
-            value={value.phone}
+            value={value.phone || '06000000'}
             onChangeText={(evt) => onChangeProfile(evt, 'phone')}
           />
         </View>
