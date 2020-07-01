@@ -4,7 +4,6 @@ import { StyleSheet, View, Image, TouchableOpacity } from 'react-native'
 import { Text, Layout } from '@ui-kitten/components'
 import Icon from '../components/molecules/CommonIcon'
 
-// import Details from '../components/molecules/Details'
 import Words from '../constants/Words'
 import congrats from '../assets/images/congrats.png'
 
@@ -39,8 +38,8 @@ export default function RecapScreen() {
       <View style={styles.recapInfo}>
         <View style={styles.infoCtn}>
           <Icon fill='#ffffff' style={styles.infoPicto} name='calendar-outline'/>
-          <Text style={[styles.infoTxt, styles.marginTop]}>Mardi 12</Text>
-          <Text style={styles.infoTxt}>Février 2020</Text>
+          <Text style={[styles.infoTxt, styles.marginTop]}>Mercredi 1er</Text>
+          <Text style={styles.infoTxt}>Juillet 2020</Text>
         </View>
 
         <View style={[styles.infoCtn, styles.separator]}>
