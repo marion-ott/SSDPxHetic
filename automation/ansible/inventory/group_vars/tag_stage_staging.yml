@@ -11,5 +11,5 @@ application_server_port: 9000
 application_server_endpoint: http://localhost
 
 application_client_image: paulehair/ssdp_client
-application_client_port: 3000
+application_client_port: 80
 
