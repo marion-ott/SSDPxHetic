@@ -39,10 +39,15 @@ export default function HomeScreen() {
             </Text>
           </View>
           <View style={styles.cards}>
-            {Object.keys(smallCardDatas).map((scard, i) => {
+            {Object.keys(smallCardDatas).map((scard, index) => {
               var card = smallCardDatas[scard]
               return (
-                <Details key={i} backgroundColor='#F4F4F4' type='small' {...card} />
+                <Details
+                  key={index}
+                  backgroundColor='#F4F4F4'
+                  type='small'
+                  {...card}
+                />
               )
             })}
           </View>

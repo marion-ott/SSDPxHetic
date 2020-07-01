@@ -1,12 +1,15 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import * as React from 'react'
+import React from 'react'
+import { StyleSheet } from 'react-native'
 
-import TabBarIcon from '../components/TabBarIcon'
-import HomeScreen from '../screens/HomeScreen'
-import CalendarScreen from '../screens/CalendarScreen'
-import NotificationScreen from '../screens/NotificationScreen'
-import RecapScreen from '../screens/RecapScreen'
-import ProfileScreen from '../screens/ProfileScreen'
+import {
+  HomeScreen,
+  CalendarScreen,
+  NotificationScreen,
+  ProfileScreen,
+  RecapScreen
+} from '../screens'
+import Icon from '../components/molecules/Icon'
 
 const BottomTab = createBottomTabNavigator()
 const INITIAL_ROUTE_NAME = 'Home'
@@ -16,26 +19,27 @@ export default function BottomTabNavigator({ navigation, route }) {
   // currently active tab. Learn more in the documentation:
   // https://reactnavigation.org/docs/en/screen-options-resolution.html
   navigation.setOptions({
-    headerTitle: getHeaderTitle(route),
     headerShown: false
-    // headerStyle: {
-    //   backgroundColor: '#FF8139',
-    // },
-    // headerTintColor: '#fff',
-    // headerTitleStyle: {
-    //   fontWeight: 'light'
-    // },
   })
 
   return (
-    <BottomTab.Navigator initialRouteName={INITIAL_ROUTE_NAME}>
+    <BottomTab.Navigator
+      initialRouteName={INITIAL_ROUTE_NAME}
+      tabBarOptions={{
+        showLabel: false,
+        style: styles.container
+      }}
+      screenOptions={{
+        headerShown: false
+      }}>
       <BottomTab.Screen
-        name='Test'
+        name='Home'
         component={HomeScreen}
         options={{
           title: 'Home',
+          showLabel: false,
           tabBarIcon: ({ focused }) => (
-            <TabBarIcon focused={focused} name='md-home' />
+            <Icon focused={focused} name='home-outline' />
           )
         }}
       />
@@ -57,7 +61,7 @@ export default function BottomTabNavigator({ navigation, route }) {
         options={{
           title: 'Calendar',
           tabBarIcon: ({ focused }) => (
-            <TabBarIcon focused={focused} name='ios-calendar' />
+            <Icon focused={focused} name='calendar-outline' />
           )
         }}
       />
@@ -67,7 +71,7 @@ export default function BottomTabNavigator({ navigation, route }) {
         options={{
           title: 'Profile',
           tabBarIcon: ({ focused }) => (
-            <TabBarIcon focused={focused} name='md-person' />
+            <Icon focused={focused} name='person-outline' />
           )
         }}
       />
@@ -77,7 +81,7 @@ export default function BottomTabNavigator({ navigation, route }) {
         options={{
           title: 'Notification',
           tabBarIcon: ({ focused }) => (
-            <TabBarIcon focused={focused} name='ios-notifications-outline' />
+            <Icon focused={focused} name='bell-outline' />
           )
         }}
       />
@@ -85,16 +89,10 @@ export default function BottomTabNavigator({ navigation, route }) {
   )
 }
 
-function getHeaderTitle(route) {
-  const routeName =
-    route.state?.routes[route.state.index]?.name ?? INITIAL_ROUTE_NAME
-
-  switch (routeName) {
-    case 'Home':
-      return 'How to get started'
-    case 'Links':
-      return 'Links to learn more'
-    case 'Profile':
-      return 'Profile'
+const styles = StyleSheet.create({
+  container: {
+    height: 80,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20
   }
-}
+})
