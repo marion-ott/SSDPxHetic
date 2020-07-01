@@ -25,9 +25,10 @@ function App() {
   )
 
   useEffect(() => {
-    if (data) {
+    console.log(data)
+    if (data && data.checkAuth.success) {
       setAuth({
-        user: data.checkAuth,
+        user: data.checkAuth.user,
         loggedIn: true
       })
     }
@@ -83,7 +84,7 @@ function App() {
               }
             />
             <Route
-              path='/users/:userId'
+              path='/users/:id'
               render={() =>
                 auth.loggedIn ? <Details /> : <Redirect to='/login' />
               }
@@ -96,7 +97,7 @@ function App() {
               }
             />
             <Route
-              path='/hotels/:hotelId'
+              path='/hotels/:id'
               render={() =>
                 auth.loggedIn ? <Details /> : <Redirect to='/login' />
               }

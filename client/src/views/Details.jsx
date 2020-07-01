@@ -6,10 +6,11 @@ import { listKeys } from '../global/data'
 
 const Details = ({ location, match }) => {
   const type = location.pathname.replace(`/${match.params.id}`, '').slice(1, -1)
+  console.log(match.params)
   const { loading, error, data } = useGetOne(type, match.params.id)
 
   if (error) {
-    return <p>{error}</p>
+    return <p>{error.message}</p>
   }
 
   if (loading) {

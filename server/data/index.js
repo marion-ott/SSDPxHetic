@@ -1,4 +1,5 @@
 const fs = require('fs')
+const moment = require('moment')
 const {prisma} = require('../src/generated/prisma-client')
 const {
 	generateSearchIndex,
@@ -6,7 +7,7 @@ const {
 	getPlaceInfo
 } = require('./../src/utils/index')
 
-let sectors
+let sectors, shifts
 
 /**
  * Entry function to import data from json
@@ -23,6 +24,20 @@ const importData = async () => {
 
 		console.log('Sectors successfully imported.')
 		sectors = await prisma.sectors()
+
+		// Sector data import
+		shifts = JSON.parse(fs.readFileSync(`${__dirname}/shifts.json`)).shifts
+		console.log(`Importing ${sectors.length} shifts...`)
+
+		for (const shift of shifts) {
+			await prisma.createShift(shift)
+		}
+		console.log('Shifts successfully imported.')
+		shifts = await prisma.shifts()
+
+		console.log('Importing schedules...')
+		await generateSchedule()
+		console.log('Schedules successfully imported.')
 
 		// Hotel & employees data import
 		await dataImport('employees', addUser)
@@ -91,6 +106,42 @@ const dataImport = async (file, callback) => {
 }
 
 /**
+ * Generate 5 weeks of schedules for all sectors
+ */
+const generateSchedule = async () => {
+	for (const sector of sectors) {
+		const first = shifts.shift()
+		shifts.push(first)
+
+		for (const [index, shift] of shifts.entries()) {
+			const startDate = moment()
+				.add(index, 'weeks')
+				.startOf('week')
+			const endDate = moment(startDate)
+				.add(7, 'days')
+				.startOf('day')
+
+			const schedule = {
+				shift: {
+					connect: {
+						id: shift.id
+					}
+				},
+				sector: {
+					connect: {
+						id: sector.id
+					}
+				},
+				startDate,
+				endDate
+			}
+
+			await prisma.createSchedule(schedule)
+		}
+	}
+}
+
+/**
  * Prisma data import
  * @param {Object} data
  * @returns {void}
@@ -120,12 +171,12 @@ const deleteData = async () => {
 	}
 	console.log(`${hotels.length} hotels deleted.`)
 
-	const sectors = await prisma.sectors()
-	console.log(`Deleting sectors...`)
-	for (const sector of sectors) {
-		await prisma.deleteSector({id: sector.id})
+	const schedules = await prisma.schedules()
+	console.log(`Deleting schedules...`)
+	for (const schedule of schedules) {
+		await prisma.deleteSchedule({id: schedule.id})
 	}
-	console.log(`${sectors.length} sectors deleted.`)
+	console.log(`${schedules.length} schedules deleted.`)
 
 	const teams = await prisma.teams()
 	console.log(`Deleting teams...`)
@@ -141,17 +192,27 @@ const deleteData = async () => {
 	}
 	console.log(`${visits.length} visits deleted.`)
 
+	const sectors = await prisma.sectors()
+	console.log(`Deleting sectors...`)
+	for (const sector of sectors) {
+		await prisma.deleteSector({id: sector.id})
+	}
+	console.log(`${sectors.length} sectors deleted.`)
+
 	const residents = await prisma.residents()
 	console.log(`Deleting residents...`)
 	for (const resident of residents) {
 		await prisma.deleteResident({id: resident.id})
 	}
 	console.log(`${residents.length} residents deleted.`)
-}
 
-/** UNCOMMENT IF YOU WISH TO REMOVE ALL DATA */
-// deleteData()
-// importData()
+	const shifts = await prisma.shifts()
+	console.log(`Deleting shifts...`)
+	for (const shift of shifts) {
+		await prisma.deleteShift({id: shift.id})
+	}
+	console.log(`${shifts.length} shifts deleted.`)
+}
 
 /**
  * Use appropriate node script argument to proceed with the right action
