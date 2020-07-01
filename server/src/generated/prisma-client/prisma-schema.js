@@ -1187,7 +1187,7 @@ type ScheduleConnection {
 
 input ScheduleCreateInput {
   id: ID
-  shift: ShiftCreateOneInput!
+  shift: ShiftCreateOneWithoutSchedulesInput!
   sector: SectorCreateOneWithoutSchedulesInput!
   startDate: DateTime!
   endDate: DateTime!
@@ -1198,9 +1198,21 @@ input ScheduleCreateManyWithoutSectorInput {
   connect: [ScheduleWhereUniqueInput!]
 }
 
+input ScheduleCreateManyWithoutShiftInput {
+  create: [ScheduleCreateWithoutShiftInput!]
+  connect: [ScheduleWhereUniqueInput!]
+}
+
 input ScheduleCreateWithoutSectorInput {
   id: ID
-  shift: ShiftCreateOneInput!
+  shift: ShiftCreateOneWithoutSchedulesInput!
+  startDate: DateTime!
+  endDate: DateTime!
+}
+
+input ScheduleCreateWithoutShiftInput {
+  id: ID
+  sector: SectorCreateOneWithoutSchedulesInput!
   startDate: DateTime!
   endDate: DateTime!
 }
@@ -1280,7 +1292,7 @@ input ScheduleSubscriptionWhereInput {
 }
 
 input ScheduleUpdateInput {
-  shift: ShiftUpdateOneRequiredInput
+  shift: ShiftUpdateOneRequiredWithoutSchedulesInput
   sector: SectorUpdateOneRequiredWithoutSchedulesInput
   startDate: DateTime
   endDate: DateTime
@@ -1308,13 +1320,31 @@ input ScheduleUpdateManyWithoutSectorInput {
   updateMany: [ScheduleUpdateManyWithWhereNestedInput!]
 }
 
+input ScheduleUpdateManyWithoutShiftInput {
+  create: [ScheduleCreateWithoutShiftInput!]
+  delete: [ScheduleWhereUniqueInput!]
+  connect: [ScheduleWhereUniqueInput!]
+  set: [ScheduleWhereUniqueInput!]
+  disconnect: [ScheduleWhereUniqueInput!]
+  update: [ScheduleUpdateWithWhereUniqueWithoutShiftInput!]
+  upsert: [ScheduleUpsertWithWhereUniqueWithoutShiftInput!]
+  deleteMany: [ScheduleScalarWhereInput!]
+  updateMany: [ScheduleUpdateManyWithWhereNestedInput!]
+}
+
 input ScheduleUpdateManyWithWhereNestedInput {
   where: ScheduleScalarWhereInput!
   data: ScheduleUpdateManyDataInput!
 }
 
 input ScheduleUpdateWithoutSectorDataInput {
-  shift: ShiftUpdateOneRequiredInput
+  shift: ShiftUpdateOneRequiredWithoutSchedulesInput
+  startDate: DateTime
+  endDate: DateTime
+}
+
+input ScheduleUpdateWithoutShiftDataInput {
+  sector: SectorUpdateOneRequiredWithoutSchedulesInput
   startDate: DateTime
   endDate: DateTime
 }
@@ -1324,10 +1354,21 @@ input ScheduleUpdateWithWhereUniqueWithoutSectorInput {
   data: ScheduleUpdateWithoutSectorDataInput!
 }
 
+input ScheduleUpdateWithWhereUniqueWithoutShiftInput {
+  where: ScheduleWhereUniqueInput!
+  data: ScheduleUpdateWithoutShiftDataInput!
+}
+
 input ScheduleUpsertWithWhereUniqueWithoutSectorInput {
   where: ScheduleWhereUniqueInput!
   update: ScheduleUpdateWithoutSectorDataInput!
   create: ScheduleCreateWithoutSectorInput!
+}
+
+input ScheduleUpsertWithWhereUniqueWithoutShiftInput {
+  where: ScheduleWhereUniqueInput!
+  update: ScheduleUpdateWithoutShiftDataInput!
+  create: ScheduleCreateWithoutShiftInput!
 }
 
 input ScheduleWhereInput {
@@ -1653,6 +1694,7 @@ type Shift {
   index: Int!
   startTime: String!
   endTime: String!
+  schedules(where: ScheduleWhereInput, orderBy: ScheduleOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Schedule!]
 }
 
 type ShiftConnection {
@@ -1666,11 +1708,19 @@ input ShiftCreateInput {
   index: Int!
   startTime: String!
   endTime: String!
+  schedules: ScheduleCreateManyWithoutShiftInput
 }
 
-input ShiftCreateOneInput {
-  create: ShiftCreateInput
+input ShiftCreateOneWithoutSchedulesInput {
+  create: ShiftCreateWithoutSchedulesInput
   connect: ShiftWhereUniqueInput
+}
+
+input ShiftCreateWithoutSchedulesInput {
+  id: ID
+  index: Int!
+  startTime: String!
+  endTime: String!
 }
 
 type ShiftEdge {
@@ -1714,16 +1764,11 @@ input ShiftSubscriptionWhereInput {
   NOT: [ShiftSubscriptionWhereInput!]
 }
 
-input ShiftUpdateDataInput {
-  index: Int
-  startTime: String
-  endTime: String
-}
-
 input ShiftUpdateInput {
   index: Int
   startTime: String
   endTime: String
+  schedules: ScheduleUpdateManyWithoutShiftInput
 }
 
 input ShiftUpdateManyMutationInput {
@@ -1732,16 +1777,22 @@ input ShiftUpdateManyMutationInput {
   endTime: String
 }
 
-input ShiftUpdateOneRequiredInput {
-  create: ShiftCreateInput
-  update: ShiftUpdateDataInput
-  upsert: ShiftUpsertNestedInput
+input ShiftUpdateOneRequiredWithoutSchedulesInput {
+  create: ShiftCreateWithoutSchedulesInput
+  update: ShiftUpdateWithoutSchedulesDataInput
+  upsert: ShiftUpsertWithoutSchedulesInput
   connect: ShiftWhereUniqueInput
 }
 
-input ShiftUpsertNestedInput {
-  update: ShiftUpdateDataInput!
-  create: ShiftCreateInput!
+input ShiftUpdateWithoutSchedulesDataInput {
+  index: Int
+  startTime: String
+  endTime: String
+}
+
+input ShiftUpsertWithoutSchedulesInput {
+  update: ShiftUpdateWithoutSchedulesDataInput!
+  create: ShiftCreateWithoutSchedulesInput!
 }
 
 input ShiftWhereInput {
@@ -1795,6 +1846,9 @@ input ShiftWhereInput {
   endTime_not_starts_with: String
   endTime_ends_with: String
   endTime_not_ends_with: String
+  schedules_every: ScheduleWhereInput
+  schedules_some: ScheduleWhereInput
+  schedules_none: ScheduleWhereInput
   AND: [ShiftWhereInput!]
   OR: [ShiftWhereInput!]
   NOT: [ShiftWhereInput!]

@@ -53,6 +53,8 @@ type Query {
 
 	# Count
 	count(type: String!, query: String): Int!
+
+	test(id: ID!): String
 }
 
 type Mutation {
@@ -181,8 +183,8 @@ type Team {
 	sector: Sector!
 	users: [User!]!
 	visits: [Visit!]
-	startAt: DateTime!
-	endAt: DateTime!
+	startDate: DateTime!
+	endDate: DateTime!
 	createdAt: DateTime!
 	updatedAt: DateTime!
 }
@@ -253,6 +255,7 @@ type Shift {
 	index: Int!
 	startTime: String!
 	endTime: String!
+	schedules: [Schedule!]
 }
 
 input CreateShiftInput {
@@ -365,6 +368,7 @@ type Sector {
 	users: [User!]
 	hotels: [Hotel!]
 	teams: [Team!]
+	schedules: [Schedule!]
 	createdAt: DateTime!
 	updatedAt: DateTime!
 }
