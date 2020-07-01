@@ -9,6 +9,7 @@
 		"task": "nodemon src/utils/tasks.js --ext js,graphql --exec babel-node",
 		"deploy": "prisma deploy -e config/dev.env && prisma generate -e config/dev.env",
 		"token": "prisma token -e config/dev.env",
+		"delete": "prisma delete -f -e config/dev.env",
 		"data": "nodemon data/index.js --ext js,graphql --exec babel-node"
 	},
 	"dependencies": {

@@ -26,10 +26,32 @@ const Query = {
 	},
 
 	/** AUTH */
-	checkAuth(parent, args, {prisma, request}) {
+	async checkAuth(parent, args, {prisma, request}) {
+		const res = {
+			success: false,
+			user: null
+		}
+		const header = request.request.headers.authorization
+
+		if (!header) {
+			return res
+		}
+
 		const id = getAuthUserId(request)
-		console.log(id)
-		return prisma.user({id})
+
+		if (!id) {
+			return res
+		}
+		const user = await prisma.user({id})
+
+		if (!user) {
+			return res
+		}
+
+		return {
+			success: true,
+			user
+		}
 	},
 
 	/** TEAMS */
@@ -98,6 +120,36 @@ const Query = {
 		}
 
 		return prisma.residents(opArgs)
+	},
+
+	/** SHIFTS */
+	shift(parent, {id}, {prisma, request}) {
+		return prisma.shift({id})
+	},
+	shifts(parent, args, {prisma}) {
+		const opArgs = {
+			where: {},
+			first: args.first,
+			skip: args.skip,
+			orderBy: args.orderBy
+		}
+
+		return prisma.shifts(opArgs)
+	},
+
+	/** SCHEDULES */
+	schedule(parent, {id}, {prisma, request}) {
+		return prisma.schedule({id})
+	},
+	schedules(parent, args, {prisma}) {
+		const opArgs = {
+			where: {},
+			first: args.first,
+			skip: args.skip,
+			orderBy: args.orderBy
+		}
+
+		return prisma.schedules(opArgs)
 	},
 
 	/** COUNT */

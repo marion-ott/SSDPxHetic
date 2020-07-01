@@ -62,8 +62,24 @@ type Sector {
 	users: [User!] @relation(name: "UserSector")
 	hotels: [Hotel!] @relation(name: "HotelSector")
 	teams: [Team!] @relation(name: "TeamSector")
+	schedules: [Schedule!] @relation(name: "SectorSchedules")
 	createdAt: DateTime! @createdAt
 	updatedAt: DateTime! @updatedAt
+}
+
+type Schedule {
+	id: ID! @id
+	shift: Shift! @relation(name: "ShiftSchedule", link: INLINE)
+	sector: Sector! @relation(name: "SectorSchedules", link: INLINE)
+	startDate: DateTime!
+	endDate: DateTime!
+}
+
+type Shift {
+	id: ID! @id
+	index: Int! @unique
+	startTime: String!
+	endTime: String!
 }
 
 type Resident {

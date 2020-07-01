@@ -52,7 +52,7 @@ const Nav = ({ setAuth }) => {
                   title={user.firstName}
                   titleicon='fa-user'>
                   <Link to='/' className='dropdown-item'>
-                    Mon profile
+                    Mon profil
                   </Link>
                   <Link to='/' className='dropdown-item'>
                     Mes visites
