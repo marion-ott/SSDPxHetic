@@ -118,13 +118,13 @@ const CalendarElement = ({ today, selected, setSelected }) => {
           arrowColor: 'orange',
           disabledArrowColor: '#d9e1e8',
           monthTextColor: '#fff',
-          monthTextFontSize: '16px',
+          monthTextFontSize: 16,
           textDayFontWeight: 'bold',
-          textDayFontSize: '15px',
-          textMonthFontSize: '20px',
+          textDayFontSize: 15,
+          textMonthFontSize: 20,
           textMonthFontWeight: 'bold',
           textDayHeaderFontWeight: 'bold',
-          textDayHeaderFontSize: '12px'
+          textDayHeaderFontSize: 12
         }}
         disableAllTouchEventsForDisabledDays={true}
       />
