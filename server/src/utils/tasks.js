@@ -3,152 +3,38 @@ const {prisma} = require('../generated/prisma-client')
 const shuffle = require('lodash.shuffle')
 const fs = require('fs')
 
-// a faire tourner toutes les semaines
-
-// function de creation de shifts
-/*
-* secteur a un shift
-* shift tourne toutes les semaines
-/
-
-// ---------
-
-/* a faire tourner toutes les 5 semaines
-
-/* fonction de suppression des teams passeés
-/*
-* si data passée => supprime le binome
-/
-
-// ---------
-
-/* faire tourner tous les jours en fin de journée */
-
-// faire remonter les hotels
-/*
-* filtre des hotels avec notation et derniere visite (cf ancien script) par secteur
-* faire remonter 5 listes
-/
-
 /**
- * 
- * TYPE SHIFT
- * id
- * rotation -> id
- * sector -> id
- * start_date -> lundi
- * end_date -> dimanche
+ * Generate schedule rotation for an extra week
+ * TODO: CRON -> execute every week
  */
-
-/**
- *
- * TYPE ROTATION
- * id 1 8h
- * id 2 8h
- * id 3 8h
- * id 4 10h
- * id 5 12h
- *
- * for const sector of sectors {
- * 	shift dont la date d'aujourd'hui est comprise entre start et end et sector.id === sector
- *
- *	Secteur 75 le 01/07/2020 est sur la rotation 1
- *	-> Secteur 75 le 03/07/2020 jusqu'au 10/07/2020 est sur la rotation 2
- *
- * 	const current = sector.getShift().id //
- * 	const nextShift = getShift(current + 1)
- * }
- *
- *
- */
-
-const shifts = [
-	{
-		id: 'abc123',
-		index: 1,
-		start_time: '08h30',
-		end_time: '16h30'
-	},
-	{
-		id: 'def456',
-		index: 2,
-		start_time: '08h30',
-		end_time: '16h30'
-	},
-	{
-		id: 'ghi789',
-		index: 3,
-		start_time: '08h30',
-		end_time: '16h30'
-	},
-	{
-		id: 'jkl012',
-		index: 4,
-		start_time: '10h30',
-		end_time: '18h30'
-	},
-	{
-		id: 'mno345',
-		index: 5,
-		start_time: '12h30',
-		end_time: '20h30'
-	}
-]
-
-const schedules = [
-	{
-		shift: 'abc123',
-		sector: '5ee62d1cc414790007fb6047',
-		start_date: '2020-06-24T00:00:00+02:00',
-		end_date: '2020-07-01T00:00:00+02:00'
-	},
-	{
-		rotation: 'def456',
-		sector: '5ee62d1cc414790007fb6048',
-		start_date: '2020-06-24T00:00:00+02:00',
-		end_date: '2020-07-01T00:00:00+02:00'
-	},
-	{
-		rotation: 'ghi789',
-		sector: '5ee62d1cc414790007fb6049',
-		start_date: '2020-06-24T00:00:00+02:00',
-		end_date: '2020-07-01T00:00:00+02:00'
-	},
-	{
-		rotation: 'jkl012',
-		sector: '5ee62d1cc414790007fb604a',
-		start_date: '2020-06-24T00:00:00+02:00',
-		end_date: '2020-07-01T00:00:00+02:00'
-	},
-	{
-		rotation: 'mno345',
-		sector: '5ee62d1cc414790007fb604b',
-		start_date: '2020-06-24T00:00:00+02:00',
-		end_date: '2020-07-01T00:00:00+02:00'
-	}
-]
-
-const setSectorsShift = () => {
-	const sectors = areas
-	//const times = rotations
+const generateSchedules = async () => {
+	const sectors = await prisma.sectors()
 
 	for (const sector of sectors) {
-		/**
-		const current = await prisma.sector({id: sector.id}).shift({
-			where: {
-				end_date: moment().startOf('day')
-			}
-		})*/
-		const sectorSchedule = schedules.find(
-			schedule => schedule.sector === sector.id
-		)
-		const index = shifts.find(shift => shift.id === sectorSchedule.shift).index
+		const now = moment()
+			.add(5, 'weeks')
+			.startOf('week')
+		const startDate = moment(now)
+			.add(1, 'weeks')
+			.startOf('week')
+		const endDate = moment(startDate)
+			.add(7, 'days')
+			.startOf('day')
 
-		let newIndex = index + 1
-		if (shifts.length === index) {
+		const shifts = await prisma.shifts()
+		const schedule = await prisma.sector({id: sector.id}).schedules({
+			where: {
+				endDate: now
+			}
+		})
+
+		const shift = await prisma.schedule({id: schedule[0].id}).shift()
+
+		let newIndex = shift.index + 1
+		if (shifts.length === shift.index) {
 			newIndex = 1
 		} else {
-			newIndex = index + 1
+			newIndex = shift.index + 1
 		}
 
 		const newShift = shifts.find(el => el.index === newIndex)
@@ -160,26 +46,20 @@ const setSectorsShift = () => {
 					id: sector.id
 				}
 			},
-			start_date: moment()
-				.add(1, 'days')
-				.startOf('day'),
-			end_date: moment()
-				.add(8, 'days')
-				.startOf('day')
+			startDate,
+			endDate
 		}
 
-		//await prisma.createShift(entry)
+		// ! UNCOMMENT TO INSERT IN DB
+		//await prisma.createSchedule(entry)
 	}
 }
 
-/* fonction pour associer un binome à un hotel = génération des visites
-/*
-* associer 5 hotels prio à chaque binome dans un secteur
-* */
-
-// -----------------------------
-
-const getUsersList = async () => {
+/**
+ * Generate teams for 5 weeks ahead
+ * TODO: CRON -> execture every 5 weeks
+ */
+const generateTeams = async () => {
 	const sectors = await prisma.sectors()
 	const data = []
 
@@ -194,25 +74,28 @@ const getUsersList = async () => {
 		}
 		data.push(item)
 	}
-	// fs.writeFileSync(`${__dirname}/test.json`, JSON.stringify(users))
 
 	const teams = []
 	for (const entry of data) {
 		let teamAmount = Math.floor(entry.users.length / 2) - 1
 		const users = shuffle(entry.users)
-		const startAt = moment().startOf('day')
-		const endAt = moment()
+		const startDate = moment()
+			.add(5, 'weeks')
+			.startOf('week')
+		const endDate = moment(startDate)
 			.add(5, 'weeks')
 			.startOf('day')
+
 		const team = {
 			sector: {
 				connect: {
 					id: entry.sector
 				}
 			},
-			startAt,
-			endAt
+			startDate,
+			endDate
 		}
+
 		while (teamAmount > 0) {
 			teams.push({
 				...team,
@@ -230,28 +113,36 @@ const getUsersList = async () => {
 		})
 	}
 
+	// ! UNCOMMENT TO INSERT IN DB
 	for (const team of teams) {
 		//await prisma.createTeam(team)
 	}
 }
-getUsersList()
 
-// faire tourner tous les jours en fin de journée
-
-// faire remonter les hotels
-/*
-* filtre des hotels avec notation et derniere visite (cf ancien script) par secteur
-* faire remonter 5 listes
 /**
- * TODO: mettre à jour le statut d'un hôtel lorsqu'une visite est programmée ou en cours
- */
+ * ! PEUT-ETRE NON UTILE SI INDICE D'IMPORTANCE
+ * TODO: METTRE A JOUR LE STATUT D'UN HOTEL QUAND UNE VISITE EST PROGRAMMEE OU EN COURS
+ * ? CREER UN INDICE D'IMPORTANCE EN RAPPORT AVEC LASTVISIT ET NOTE PUIS CLASSER LES HOTELS PAR INDICE_DESC
+ * ? LE CONSERVER EN BASE ET LE METTRE A JOUR A CHAQUE UPDATE
+ * TODO: RECUPERER TOUS LES HOTELS ORDERBY INDICE ET GROUP BY SECTEUR
+ * ? SI INDICE > VALUE ALORS HOTEL EST CONSIDERE COMME PRIORITAIRE
+ **/
 
-/** HOTELS */
-const getHotelsList = async () => {
+const getHotelsToVisit = async () => {
 	const hotels = await prisma.hotels()
 }
 
-// fonction pour associer un binome à un hotel = génération des visites
-/*
- * associer 5 hotels prio à chaque binome dans un secteur
- * */
+/**
+ * TODO: RECUPERER LA LISTE D'HOTELS REALISEE PRECEDEMMENT (OU FAIRE APPEL DIRECTEMENT ICI SI INDICE PRESENT)
+ * ? GROUP BY SECTEUR SI NON FAIT
+ *
+ * ! OPTION 1:
+ * TODO: CREER LES VISITES HORIZONTALEMENT -> LUN. 01 JUIL. 1 VISITE, MAR. 02 JUIL. 1 VISITE, MAR. 03 JUIL. 1 VISITE, ETC.
+ * ? REFLECHIR AU NOMBRE MAX DE VISITES PAR JOUR
+ *
+ * ! OPTION 2:
+ * TODO: REMPLIR JOUR PAR JOUR AVEC UN TABLEAU PRIO ET UN TABLEAU STANDARD
+ * ? POUR CHAQUE JOUR COMMENCER PAR UNE PRIO PUIS REMPLIR AVEC STANDARD? OU 2 PRIO?
+ * * PASSER AU JOUR SUIVANT APRES X HOTELS
+ **/
+const generateVisits = async () => {}

@@ -1161,6 +1161,9 @@ export interface ShiftWhereInput {
   endTime_not_starts_with?: Maybe<String>;
   endTime_ends_with?: Maybe<String>;
   endTime_not_ends_with?: Maybe<String>;
+  schedules_every?: Maybe<ScheduleWhereInput>;
+  schedules_some?: Maybe<ScheduleWhereInput>;
+  schedules_none?: Maybe<ScheduleWhereInput>;
   AND?: Maybe<ShiftWhereInput[] | ShiftWhereInput>;
   OR?: Maybe<ShiftWhereInput[] | ShiftWhereInput>;
   NOT?: Maybe<ShiftWhereInput[] | ShiftWhereInput>;
@@ -1429,17 +1432,17 @@ export interface ScheduleCreateManyWithoutSectorInput {
 
 export interface ScheduleCreateWithoutSectorInput {
   id?: Maybe<ID_Input>;
-  shift: ShiftCreateOneInput;
+  shift: ShiftCreateOneWithoutSchedulesInput;
   startDate: DateTimeInput;
   endDate: DateTimeInput;
 }
 
-export interface ShiftCreateOneInput {
-  create?: Maybe<ShiftCreateInput>;
+export interface ShiftCreateOneWithoutSchedulesInput {
+  create?: Maybe<ShiftCreateWithoutSchedulesInput>;
   connect?: Maybe<ShiftWhereUniqueInput>;
 }
 
-export interface ShiftCreateInput {
+export interface ShiftCreateWithoutSchedulesInput {
   id?: Maybe<ID_Input>;
   index: Int;
   startTime: String;
@@ -2116,27 +2119,27 @@ export interface ScheduleUpdateWithWhereUniqueWithoutSectorInput {
 }
 
 export interface ScheduleUpdateWithoutSectorDataInput {
-  shift?: Maybe<ShiftUpdateOneRequiredInput>;
+  shift?: Maybe<ShiftUpdateOneRequiredWithoutSchedulesInput>;
   startDate?: Maybe<DateTimeInput>;
   endDate?: Maybe<DateTimeInput>;
 }
 
-export interface ShiftUpdateOneRequiredInput {
-  create?: Maybe<ShiftCreateInput>;
-  update?: Maybe<ShiftUpdateDataInput>;
-  upsert?: Maybe<ShiftUpsertNestedInput>;
+export interface ShiftUpdateOneRequiredWithoutSchedulesInput {
+  create?: Maybe<ShiftCreateWithoutSchedulesInput>;
+  update?: Maybe<ShiftUpdateWithoutSchedulesDataInput>;
+  upsert?: Maybe<ShiftUpsertWithoutSchedulesInput>;
   connect?: Maybe<ShiftWhereUniqueInput>;
 }
 
-export interface ShiftUpdateDataInput {
+export interface ShiftUpdateWithoutSchedulesDataInput {
   index?: Maybe<Int>;
   startTime?: Maybe<String>;
   endTime?: Maybe<String>;
 }
 
-export interface ShiftUpsertNestedInput {
-  update: ShiftUpdateDataInput;
-  create: ShiftCreateInput;
+export interface ShiftUpsertWithoutSchedulesInput {
+  update: ShiftUpdateWithoutSchedulesDataInput;
+  create: ShiftCreateWithoutSchedulesInput;
 }
 
 export interface ScheduleUpsertWithWhereUniqueWithoutSectorInput {
@@ -2649,7 +2652,7 @@ export interface ResidentUpdateManyMutationInput {
 
 export interface ScheduleCreateInput {
   id?: Maybe<ID_Input>;
-  shift: ShiftCreateOneInput;
+  shift: ShiftCreateOneWithoutSchedulesInput;
   sector: SectorCreateOneWithoutSchedulesInput;
   startDate: DateTimeInput;
   endDate: DateTimeInput;
@@ -2669,7 +2672,7 @@ export interface SectorCreateWithoutSchedulesInput {
 }
 
 export interface ScheduleUpdateInput {
-  shift?: Maybe<ShiftUpdateOneRequiredInput>;
+  shift?: Maybe<ShiftUpdateOneRequiredWithoutSchedulesInput>;
   sector?: Maybe<SectorUpdateOneRequiredWithoutSchedulesInput>;
   startDate?: Maybe<DateTimeInput>;
   endDate?: Maybe<DateTimeInput>;
@@ -2720,10 +2723,73 @@ export interface SectorUpdateManyMutationInput {
   zone?: Maybe<String>;
 }
 
+export interface ShiftCreateInput {
+  id?: Maybe<ID_Input>;
+  index: Int;
+  startTime: String;
+  endTime: String;
+  schedules?: Maybe<ScheduleCreateManyWithoutShiftInput>;
+}
+
+export interface ScheduleCreateManyWithoutShiftInput {
+  create?: Maybe<
+    ScheduleCreateWithoutShiftInput[] | ScheduleCreateWithoutShiftInput
+  >;
+  connect?: Maybe<ScheduleWhereUniqueInput[] | ScheduleWhereUniqueInput>;
+}
+
+export interface ScheduleCreateWithoutShiftInput {
+  id?: Maybe<ID_Input>;
+  sector: SectorCreateOneWithoutSchedulesInput;
+  startDate: DateTimeInput;
+  endDate: DateTimeInput;
+}
+
 export interface ShiftUpdateInput {
   index?: Maybe<Int>;
   startTime?: Maybe<String>;
   endTime?: Maybe<String>;
+  schedules?: Maybe<ScheduleUpdateManyWithoutShiftInput>;
+}
+
+export interface ScheduleUpdateManyWithoutShiftInput {
+  create?: Maybe<
+    ScheduleCreateWithoutShiftInput[] | ScheduleCreateWithoutShiftInput
+  >;
+  delete?: Maybe<ScheduleWhereUniqueInput[] | ScheduleWhereUniqueInput>;
+  connect?: Maybe<ScheduleWhereUniqueInput[] | ScheduleWhereUniqueInput>;
+  set?: Maybe<ScheduleWhereUniqueInput[] | ScheduleWhereUniqueInput>;
+  disconnect?: Maybe<ScheduleWhereUniqueInput[] | ScheduleWhereUniqueInput>;
+  update?: Maybe<
+    | ScheduleUpdateWithWhereUniqueWithoutShiftInput[]
+    | ScheduleUpdateWithWhereUniqueWithoutShiftInput
+  >;
+  upsert?: Maybe<
+    | ScheduleUpsertWithWhereUniqueWithoutShiftInput[]
+    | ScheduleUpsertWithWhereUniqueWithoutShiftInput
+  >;
+  deleteMany?: Maybe<ScheduleScalarWhereInput[] | ScheduleScalarWhereInput>;
+  updateMany?: Maybe<
+    | ScheduleUpdateManyWithWhereNestedInput[]
+    | ScheduleUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface ScheduleUpdateWithWhereUniqueWithoutShiftInput {
+  where: ScheduleWhereUniqueInput;
+  data: ScheduleUpdateWithoutShiftDataInput;
+}
+
+export interface ScheduleUpdateWithoutShiftDataInput {
+  sector?: Maybe<SectorUpdateOneRequiredWithoutSchedulesInput>;
+  startDate?: Maybe<DateTimeInput>;
+  endDate?: Maybe<DateTimeInput>;
+}
+
+export interface ScheduleUpsertWithWhereUniqueWithoutShiftInput {
+  where: ScheduleWhereUniqueInput;
+  update: ScheduleUpdateWithoutShiftDataInput;
+  create: ScheduleCreateWithoutShiftInput;
 }
 
 export interface ShiftUpdateManyMutationInput {
@@ -3456,6 +3522,15 @@ export interface ShiftPromise extends Promise<Shift>, Fragmentable {
   index: () => Promise<Int>;
   startTime: () => Promise<String>;
   endTime: () => Promise<String>;
+  schedules: <T = FragmentableArray<Schedule>>(args?: {
+    where?: ScheduleWhereInput;
+    orderBy?: ScheduleOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
 export interface ShiftSubscription
@@ -3465,6 +3540,15 @@ export interface ShiftSubscription
   index: () => Promise<AsyncIterator<Int>>;
   startTime: () => Promise<AsyncIterator<String>>;
   endTime: () => Promise<AsyncIterator<String>>;
+  schedules: <T = Promise<AsyncIterator<ScheduleSubscription>>>(args?: {
+    where?: ScheduleWhereInput;
+    orderBy?: ScheduleOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
 export interface ShiftNullablePromise
@@ -3474,6 +3558,15 @@ export interface ShiftNullablePromise
   index: () => Promise<Int>;
   startTime: () => Promise<String>;
   endTime: () => Promise<String>;
+  schedules: <T = FragmentableArray<Schedule>>(args?: {
+    where?: ScheduleWhereInput;
+    orderBy?: ScheduleOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
 export interface Resident {
@@ -4542,11 +4635,11 @@ export const models: Model[] = [
     embedded: false
   },
   {
-    name: "Schedule",
+    name: "Shift",
     embedded: false
   },
   {
-    name: "Shift",
+    name: "Schedule",
     embedded: false
   },
   {

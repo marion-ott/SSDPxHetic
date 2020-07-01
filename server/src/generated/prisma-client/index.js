@@ -25,11 +25,11 @@ var models = [
     embedded: false
   },
   {
-    name: "Schedule",
+    name: "Shift",
     embedded: false
   },
   {
-    name: "Shift",
+    name: "Schedule",
     embedded: false
   },
   {

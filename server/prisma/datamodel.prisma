@@ -18,8 +18,8 @@ type Team {
 	sector: Sector! @relation(name: "TeamSector", link: INLINE)
 	users: [User!]! @relation(name: "UserTeams", link: INLINE)
 	visits: [Visit!] @relation(name: "TeamVisits", link: INLINE)
-	startAt: DateTime!
-	endAt: DateTime!
+	startDate: DateTime!
+	endDate: DateTime!
 	createdAt: DateTime! @createdAt
 	updatedAt: DateTime! @updatedAt
 }
@@ -67,19 +67,20 @@ type Sector {
 	updatedAt: DateTime! @updatedAt
 }
 
+type Shift {
+	id: ID! @id
+	index: Int! @unique
+	startTime: String!
+	endTime: String!
+	schedules: [Schedule!] @relation(name: "ShiftSchedule")
+}
+
 type Schedule {
 	id: ID! @id
 	shift: Shift! @relation(name: "ShiftSchedule", link: INLINE)
 	sector: Sector! @relation(name: "SectorSchedules", link: INLINE)
 	startDate: DateTime!
 	endDate: DateTime!
-}
-
-type Shift {
-	id: ID! @id
-	index: Int! @unique
-	startTime: String!
-	endTime: String!
 }
 
 type Resident {
