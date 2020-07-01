@@ -3,11 +3,11 @@ import { StyleSheet } from 'react-native'
 import { Icon } from '@ui-kitten/components'
 import Colors from '../../constants/Colors'
 
-const IconUI = ({ name, focused }) => (
+const IconUI = ({ name, fill }) => (
   <Icon
     style={styles.icon}
     name={name}
-    fill={focused ? Colors.tabIconSelected : Colors.tabIconDefault}
+    fill={fill}
   />
 )
 

@@ -6,7 +6,8 @@ import {
   HomeScreen,
   CalendarScreen,
   NotificationScreen,
-  ProfileScreen
+  ProfileScreen,
+  RecapScreen
 } from '../screens'
 import Icon from '../components/molecules/Icon'
 
@@ -42,6 +43,18 @@ export default function BottomTabNavigator({ navigation, route }) {
           )
         }}
       />
+
+      <BottomTab.Screen
+        name='Recap'
+        component={RecapScreen}
+        options={{
+          title: 'Home',
+          tabBarIcon: ({ focused }) => (
+            <Icon focused={focused} name='star-outline' />
+          )
+        }}
+      />
+
       <BottomTab.Screen
         name='Calendar'
         component={CalendarScreen}
