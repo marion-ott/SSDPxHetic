@@ -29,7 +29,7 @@ const importData = async () => {
 		await dataImport('hotels', addHotel)
 
 		const count = await prisma.hotels()
-		console.log(count.length, ' HOTELS IMPORTED')
+		console.log(count.length, ' hotels imported.')
 
 		process.exit()
 	} catch (err) {
@@ -159,6 +159,8 @@ const deleteData = async () => {
  */
 if (process.argv[2] === '--import') {
 	importData()
+	console.log('Press ctrl + c to quit the data process.')
 } else if (process.argv[2] === '--delete') {
 	deleteData()
+	console.log('Press ctrl + c to quit the data process.')
 }

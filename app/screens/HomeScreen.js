@@ -1,23 +1,25 @@
-import React from 'react'
+import React, { useContext } from 'react'
+import userContext from '../context/userContext'
 import { StyleSheet, View } from 'react-native'
-import { Text, Layout, Divider } from '@ui-kitten/components'
+import { Text, Layout } from '@ui-kitten/components'
+import Details from '../components/molecules/Details'
 import Card from '../components/molecules/Card'
-import { ScrollView } from 'react-native-gesture-handler'
 
 export default function HomeScreen() {
+  const { user } = useContext(userContext)
 
   var smallCardDatas = {
     hours: {
       label: 'Horaires',
-      sublabel: '8h30 - 16h30'
+      value: '8h30 - 16h30'
     },
     hostel: {
       label: 'Hotel',
-      sublabel: '5'
+      value: '5'
     },
     room: {
       label: 'Chambres',
-      sublabel: '30'
+      value: '30'
     }
   }
 
@@ -31,22 +33,21 @@ export default function HomeScreen() {
         <View style={styles.layoutContain}>
           <View style={styles.headContain}>
             <Text style={[styles.text, styles.labelUser]} category='h5'>
-              Bonjour Vincent,
+              Bonjour {user.firstName},
             </Text>
             <Text style={styles.text} appearance='hint'>
               Voici le récapitulatif de votre journée.
             </Text>
           </View>
           <View style={styles.cards}>
-            {Object.keys(smallCardDatas).map((scard) => {
+            {Object.keys(smallCardDatas).map((scard, index) => {
               var card = smallCardDatas[scard]
               return (
-                <Card
-                  key={scard}
+                <Details
+                  key={index}
                   backgroundColor='#F4F4F4'
                   type='small'
-                  label={card.label}
-                  sublabel={card.sublabel}
+                  {...card}
                 />
               )
             })}

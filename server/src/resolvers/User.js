@@ -7,6 +7,9 @@ const User = {
 	// Never send back user password value
 	password(parent, args, {prisma, request}) {
 		return null
+	},
+	teams(parent, args, {prisma}) {
+		return prisma.user({id: parent.id}).teams()
 	}
 }
 
