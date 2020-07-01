@@ -5,6 +5,7 @@ import TabBarIcon from '../components/TabBarIcon'
 import HomeScreen from '../screens/HomeScreen'
 import CalendarScreen from '../screens/CalendarScreen'
 import NotificationScreen from '../screens/NotificationScreen'
+import RecapScreen from '../screens/RecapScreen'
 import ProfileScreen from '../screens/ProfileScreen'
 
 const BottomTab = createBottomTabNavigator()
@@ -38,6 +39,18 @@ export default function BottomTabNavigator({ navigation, route }) {
           )
         }}
       />
+
+      <BottomTab.Screen
+        name='Recap'
+        component={RecapScreen}
+        options={{
+          title: 'Home',
+          tabBarIcon: ({ focused }) => (
+            <TabBarIcon focused={focused} name='md-home' />
+          )
+        }}
+      />
+
       <BottomTab.Screen
         name='Calendar'
         component={CalendarScreen}

@@ -1,10 +1,13 @@
 import React, { useContext } from 'react'
 import userContext from '../context/userContext'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, View, Image } from 'react-native'
 import { Text, Layout } from '@ui-kitten/components'
-import Details from '../components/molecules/Details'
+// import Details from '../components/molecules/Details'
 
-export default function HomeScreen() {
+import congrats from '../assets/images/congrats.png'
+
+
+export default function RecapScreen() {
   const { user } = useContext(userContext)
 
   var smallCardDatas = {
@@ -23,39 +26,32 @@ export default function HomeScreen() {
   }
 
   return (
-    <View style={styles.container}>
-      <Text style={[styles.currentDay, styles.text]} category='h5'>
+    <Layout style={styles.container}>
+      {/* <Text style={[styles.currentDay, styles.text]} category='h5'>
         Mardi 12 Février
-      </Text>
-      <Layout style={styles.layout} level='1'>
+      </Text> */}
+      {/* <Layout style={styles.layout} level='1'> */}
         <View style={styles.layoutContain}>
+          <Image
+            style={styles.logo}
+            source={congrats}
+          />
           <View style={styles.headContain}>
             <Text style={[styles.text, styles.labelUser]} category='h5'>
-              Bonjour {user.firstName},
+              Félicitation {user.firstName},
             </Text>
             <Text style={styles.text} appearance='hint'>
               {' '}
-              Voici le récapitulatif de votre journée.
+              Vous êtes génial ! 
             </Text>
           </View>
-          <View style={styles.cards}>
-            {Object.keys(smallCardDatas).map((scard, i) => {
-              var card = smallCardDatas[scard]
-              return (
-                <Details key={i} backgroundColor='#F4F4F4' type='small' {...card} />
-              )
-            })}
-          </View>
-          <Text style={styles.text} category='s1'>
-            S1
-          </Text>
         </View>
-      </Layout>
-    </View>
+      {/* </Layout> */}
+    </Layout>
   )
 }
 
-HomeScreen.navigationOptions = {
+RecapScreen.navigationOptions = {
   header: null
 }
 

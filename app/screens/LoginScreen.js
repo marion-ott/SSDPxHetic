@@ -22,6 +22,7 @@ const schema = yup.object({
   email: yup.string().email('Email invalide').required('Email requis'),
   password: yup.string().required('Mot de passe requis')
 })
+
 export default function LoginScreen({ handleLogin }) {
   const [login, { client, loading, error }] = useMutation(LOGIN, {
     onCompleted({ login }) {

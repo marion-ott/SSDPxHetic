@@ -65,10 +65,7 @@ const App = () => {
   if (loading) {
     return <Text>Loading</Text>
   }
-
-  // if (error) {
-  //   return <Text>error</Text>
-  // }
+  
   console.log(auth)
 
   return (
