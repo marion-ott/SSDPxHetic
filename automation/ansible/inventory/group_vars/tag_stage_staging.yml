@@ -12,4 +12,3 @@ application_server_endpoint: http://localhost
 
 application_client_image: paulehair/ssdp_client
 application_client_port: 80
-

@@ -1,1 +1,1 @@
-application_dbgit_host: production-elb-1167210700.eu-west-2.elb.amazonaws.com
+application_db_host: production-elb-1167210700.eu-west-2.elb.amazonaws.com
