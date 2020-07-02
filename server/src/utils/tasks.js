@@ -3,41 +3,63 @@ const {prisma} = require('../generated/prisma-client')
 const shuffle = require('lodash.shuffle')
 const fs = require('fs')
 
-// a faire tourner toutes les semaines
+/**
+ * Generate schedule rotation for an extra week
+ * TODO: CRON -> execute every week
+ */
+const generateSchedules = async () => {
+	const sectors = await prisma.sectors()
 
-// function de creation de shifts
-/*
-* secteur a un shift
-* shift tourne toutes les semaines
-/
+	for (const sector of sectors) {
+		const now = moment()
+			.add(5, 'weeks')
+			.startOf('week')
+		const startDate = moment(now)
+			.add(1, 'weeks')
+			.startOf('week')
+		const endDate = moment(startDate)
+			.add(7, 'days')
+			.startOf('day')
 
-// ---------
+		const shifts = await prisma.shifts()
+		const schedule = await prisma.sector({id: sector.id}).schedules({
+			where: {
+				endDate: now
+			}
+		})
 
-// a faire tourner toutes les 5 semaines
+		const shift = await prisma.schedule({id: schedule[0].id}).shift()
 
-// fonction de suppression des teams passeés
-/*
-* si data passée => supprime le binome
-/
+		let newIndex = shift.index + 1
+		if (shifts.length === shift.index) {
+			newIndex = 1
+		} else {
+			newIndex = shift.index + 1
+		}
 
-// ---------
+		const newShift = shifts.find(el => el.index === newIndex)
 
-// faire tourner tous les jours en fin de journée
+		const entry = {
+			shift: newShift,
+			sector: {
+				connect: {
+					id: sector.id
+				}
+			},
+			startDate,
+			endDate
+		}
 
-// faire remonter les hotels
-/*
-* filtre des hotels avec notation et derniere visite (cf ancien script) par secteur
-* faire remonter 5 listes
-/
+		// ! UNCOMMENT TO INSERT IN DB
+		//await prisma.createSchedule(entry)
+	}
+}
 
-// fonction pour associer un binome à un hotel = génération des visites
-/*
-* associer 5 hotels prio à chaque binome dans un secteur
-* */
-
-// -----------------------------
-
-const getUsersList = async () => {
+/**
+ * Generate teams for 5 weeks ahead
+ * TODO: CRON -> execture every 5 weeks
+ */
+const generateTeams = async () => {
 	const sectors = await prisma.sectors()
 	const data = []
 
@@ -52,23 +74,28 @@ const getUsersList = async () => {
 		}
 		data.push(item)
 	}
-	// fs.writeFileSync(`${__dirname}/test.json`, JSON.stringify(users))
 
 	const teams = []
 	for (const entry of data) {
 		let teamAmount = Math.floor(entry.users.length / 2) - 1
 		const users = shuffle(entry.users)
-		const startAt = moment()
-		const endAt = moment().add(5, 'weeks')
+		const startDate = moment()
+			.add(5, 'weeks')
+			.startOf('week')
+		const endDate = moment(startDate)
+			.add(5, 'weeks')
+			.startOf('day')
+
 		const team = {
 			sector: {
 				connect: {
 					id: entry.sector
 				}
 			},
-			startAt,
-			endAt
+			startDate,
+			endDate
 		}
+
 		while (teamAmount > 0) {
 			teams.push({
 				...team,
@@ -86,28 +113,36 @@ const getUsersList = async () => {
 		})
 	}
 
+	// ! UNCOMMENT TO INSERT IN DB
 	for (const team of teams) {
 		//await prisma.createTeam(team)
 	}
 }
-getUsersList()
 
-// faire tourner tous les jours en fin de journée
-
-// faire remonter les hotels
-/*
-* filtre des hotels avec notation et derniere visite (cf ancien script) par secteur
-* faire remonter 5 listes
 /**
- * TODO: mettre à jour le statut d'un hôtel lorsqu'une visite est programmée ou en cours
- */
+ * ! PEUT-ETRE NON UTILE SI INDICE D'IMPORTANCE
+ * TODO: METTRE A JOUR LE STATUT D'UN HOTEL QUAND UNE VISITE EST PROGRAMMEE OU EN COURS
+ * ? CREER UN INDICE D'IMPORTANCE EN RAPPORT AVEC LASTVISIT ET NOTE PUIS CLASSER LES HOTELS PAR INDICE_DESC
+ * ? LE CONSERVER EN BASE ET LE METTRE A JOUR A CHAQUE UPDATE
+ * TODO: RECUPERER TOUS LES HOTELS ORDERBY INDICE ET GROUP BY SECTEUR
+ * ? SI INDICE > VALUE ALORS HOTEL EST CONSIDERE COMME PRIORITAIRE
+ **/
 
-/** HOTELS */
-const getHotelsList = async () => {
+const getHotelsToVisit = async () => {
 	const hotels = await prisma.hotels()
 }
 
-// fonction pour associer un binome à un hotel = génération des visites
-/*
- * associer 5 hotels prio à chaque binome dans un secteur
- * */
+/**
+ * TODO: RECUPERER LA LISTE D'HOTELS REALISEE PRECEDEMMENT (OU FAIRE APPEL DIRECTEMENT ICI SI INDICE PRESENT)
+ * ? GROUP BY SECTEUR SI NON FAIT
+ *
+ * ! OPTION 1:
+ * TODO: CREER LES VISITES HORIZONTALEMENT -> LUN. 01 JUIL. 1 VISITE, MAR. 02 JUIL. 1 VISITE, MAR. 03 JUIL. 1 VISITE, ETC.
+ * ? REFLECHIR AU NOMBRE MAX DE VISITES PAR JOUR
+ *
+ * ! OPTION 2:
+ * TODO: REMPLIR JOUR PAR JOUR AVEC UN TABLEAU PRIO ET UN TABLEAU STANDARD
+ * ? POUR CHAQUE JOUR COMMENCER PAR UNE PRIO PUIS REMPLIR AVEC STANDARD? OU 2 PRIO?
+ * * PASSER AU JOUR SUIVANT APRES X HOTELS
+ **/
+const generateVisits = async () => {}

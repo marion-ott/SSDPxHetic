@@ -1,0 +1,28 @@
+{
+  "shifts": [{
+      "index": 1,
+      "startTime": "08h30",
+      "endTime": "16h30"
+    },
+    {
+      "index": 2,
+      "startTime": "08h30",
+      "endTime": "16h30"
+    },
+    {
+      "index": 3,
+      "startTime": "08h30",
+      "endTime": "16h30"
+    },
+    {
+      "index": 4,
+      "startTime": "10h30",
+      "endTime": "18h30"
+    },
+    {
+      "index": 5,
+      "startTime": "12h30",
+      "endTime": "20h30"
+    }
+  ]
+}

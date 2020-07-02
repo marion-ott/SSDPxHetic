@@ -7,6 +7,9 @@ const Sector = {
 	},
 	teams(parent, args, {prisma}) {
 		return prisma.sector({id: parent.id}).teams()
+	},
+	schedules(parent, args, {prisma}) {
+		return prisma.sector({id: parent.id}).schedules()
 	}
 }
 

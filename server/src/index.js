@@ -9,6 +9,7 @@ import Visit from './resolvers/Visit'
 import Sector from './resolvers/Sector'
 import Resident from './resolvers/Resident'
 import Subscription from './resolvers/Subscription'
+import Schedule from './resolvers/Schedule'
 
 const resolvers = {
 	Query,
@@ -19,7 +20,8 @@ const resolvers = {
 	Visit,
 	Sector,
 	Resident,
-	Subscription
+	Subscription,
+	Schedule
 }
 
 const pubsub = new PubSub()

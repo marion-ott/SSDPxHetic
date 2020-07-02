@@ -26,6 +26,7 @@ const Mutation = {
 		const token = generateToken(user.id)
 
 		return {
+			success: true,
 			token,
 			user
 		}
@@ -206,22 +207,35 @@ const Mutation = {
 	},
 	deleteSector(parent, {id}, {prisma}) {
 		return prisma.deleteSector({id})
-	}
-	// TODO: create visit type, query & mutations
-	// async deleteVisit(parent, {id}, {prisma, request}) {
-	// 	const userId = getAuthUserId(request)
-	// 	const visitExists = await prisma.exists.Visit({
-	// 		id,
-	// 		user: {
-	// 			id: userId
-	// 		}
-	// 	})
-	// 	if (!visitExists) {
-	// 		throw new Error("You can't delete another team visit.")
-	// 	}
+	},
 
-	// 	return prisma.deleteVisit({id})
-	// }
+	/** SHIFTS */
+	createShift(parent, {data}, {prisma}) {
+		return prisma.createShift(data)
+	},
+	updateShift(parent, {id, data}, {prisma}) {
+		return prisma.updateShift({
+			data,
+			where: {id}
+		})
+	},
+	deleteShift(parent, {id}, {prisma}) {
+		return prisma.deleteShift({id})
+	},
+
+	/** SCHEDULES */
+	createSchedule(parent, {data}, {prisma}) {
+		return prisma.createSchedules(data)
+	},
+	updateSchedule(parent, {id, data}, {prisma}) {
+		return prisma.updateSchedules({
+			data,
+			where: {id}
+		})
+	},
+	deleteSchedule(parent, {id}, {prisma}) {
+		return prisma.deleteSchedules({id})
+	}
 }
 
 export default Mutation
