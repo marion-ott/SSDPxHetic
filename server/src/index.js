@@ -1,5 +1,6 @@
+import esm from 'esm'
 import {GraphQLServer, PubSub} from 'graphql-yoga'
-import {prisma} from './generated/prisma-client'
+import {prisma} from './generated/prisma-client/index'
 import Query from './resolvers/Query'
 import Mutation from './resolvers/Mutation'
 import User from './resolvers/User'
