@@ -33,15 +33,62 @@ export default function NotificationScreen() {
         initialDate: '10/07',
         newDate: '20/07',
       }
-    }
+    },
+    {
+      ico: 'flip-2-outline',
+      color: '#C4DD2A',
+      type: 'Replanification',
+      fresh: true,
+      data: {
+        hotel: 'Akbou',
+        initialDate: '14/07',
+        newDate: '25/07',
+      }
+    },
+    {
+      ico: 'flip-2-outline',
+      color: '#C4DD2A',
+      type: 'Replanification',
+      fresh: true,
+      data: {
+        hotel: 'Novotel Atlantide',
+        initialDate: '10/07',
+        newDate: '20/07',
+      }
+    },
+    {
+      ico: 'flip-2-outline',
+      color: '#C4DD2A',
+      type: 'Replanification',
+      fresh: true,
+      data: {
+        hotel: 'Akbou',
+        initialDate: '14/07',
+        newDate: '25/07',
+      }
+    },
+    {
+      ico: 'flip-2-outline',
+      color: '#C4DD2A',
+      type: 'Replanification',
+      fresh: true,
+      data: {
+        hotel: 'Novotel Atlantide',
+        initialDate: '10/07',
+        newDate: '20/07',
+      }
+    },
+
   ]
 
   return (
     <View style={styles.container}>
       <Text style={[styles.currentDay, styles.text]} category='h5'>
-        Mercredi 1er Juillet
+        Notifications
       </Text>
+
       <Layout style={styles.layout} level='1'>
+        <Text style={styles.title}>Les plus récents</Text>
 
         <View style={styles.layoutContain}>
           <ScrollView style={styles.cards}>
@@ -75,19 +122,28 @@ const styles = StyleSheet.create({
     color: '#FFFF',
     textAlign: 'center',
     fontWeight: 'bold',
+    fontSize: 20,
+    lineHeight: 24,
     paddingTop: 40,
     paddingBottom: 20
   },
   layout: {
     flex: 1,
-    flexDirection: 'row',
+    flexDirection: 'column',
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     paddingLeft: 15,
-    paddingRight: 15
+    paddingRight: 15,
+    paddingTop: 50,
   },
   layoutContain: {
     flex: 1,
-    paddingTop: 30,
   },
+  title: {
+    marginBottom: 16,
+    fontWeight: 'bold',
+    color: '#000000',
+    fontSize: 16,
+    lineHeight: 19,
+  }
 })
