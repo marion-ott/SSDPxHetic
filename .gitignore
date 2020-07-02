@@ -22,7 +22,7 @@
 
 # ide
 .idea/
-.vscode
+.vscode/
 
 # automation
 .terraform*
