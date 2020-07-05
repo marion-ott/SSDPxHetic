@@ -5,10 +5,3 @@ application_prisma_endpoint: http://prisma
 application_prisma_port: 4466
 application_prisma_secret: MySecret1234
 application_jwt_secret: thisisasecret
-
-application_server_image: paulehair/ssdp_api
-application_server_port: 9000
-application_server_endpoint: http://localhost
-
-application_client_image: paulehair/ssdp_client
-application_client_port: 80

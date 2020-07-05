@@ -1,1 +1,7 @@
-application_db_host: production-elb-1167210700.eu-west-2.elb.amazonaws.com
+application_db_host: mongodb://foo:mustbeeightchars@production-docdb.cluster-cozhjmma5lew.eu-west-2.docdb.amazonaws.com:27017/?ssl=true&ssl_ca_certs=rds-combined-ca-bundle.pem&replicaSet=rs0&readPreference=secondaryPreferred&retryWrites=false
+application_db_port: 27017
+
+application_prisma_endpoint: http://prisma
+application_prisma_port: 4466
+application_prisma_secret: MySecret1234
+application_jwt_secret: thisisasecret

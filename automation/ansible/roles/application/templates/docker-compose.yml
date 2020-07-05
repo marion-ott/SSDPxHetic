@@ -14,8 +14,6 @@ services:
     working_dir: /app
     depends_on:
       - prisma
-    volumes:
-      - ./server:/app
     ports:
       - "{{ application_server_port }}:9000"
     entrypoint: ['yarn', 'dev']
@@ -24,12 +22,8 @@ services:
     image: {{ application_client_image }}:latest
     env_file: ./prod.env #TODO
     restart: always
-    volumes:
-      - ./client:/app
     ports:
       - "{{ application_client_port }}:3000"
     environment:
       SSDP_API_URL: "{{application_server_endpoint}}:{{ application_server_port }}"
     stdin_open: true
-    working_dir: /app
-    entrypoint: ['yarn', 'start']
