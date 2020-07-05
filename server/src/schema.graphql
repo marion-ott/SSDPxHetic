@@ -11,7 +11,7 @@ type Query {
 	): [User!]!
 
 	# Check auth
-	checkAuth: User!
+	checkAuth: AuthPayload!
 
 	# Hotel
 	hotel(id: ID!): Hotel!
@@ -43,13 +43,23 @@ type Query {
 	sector(id: ID!): Sector!
 	sectors: [Sector!]!
 
+	# Shifts
+	shift(id: ID!): Shift!
+	shifts: [Shift!]!
+
+	# Schedules
+	schedule(id: ID!): Schedule!
+	schedules: [Schedule!]!
+
 	# Count
 	count(type: String!, query: String): Int!
+
+	test(id: ID!): String
 }
 
 type Mutation {
 	# Auth
-	login(data: LoginInput): AuthPayload!
+	login(data: LoginInput): LoginPayload!
 
 	# User
 	createUser(data: CreateUserInput): User!
@@ -76,6 +86,16 @@ type Mutation {
 	updateSector(id: ID!, data: UpdateSectorInput): Sector!
 	deleteSector(id: ID!): Sector!
 
+	# Shift
+	createShift(data: CreateShiftInput): Shift!
+	updateShift(id: ID!, data: UpdateShiftInput): Shift!
+	deleteShift(id: ID!): Shift!
+
+	# Schedule
+	createSchedule(data: CreateScheduleInput): Schedule!
+	updateSchedule(id: ID!, data: UpdateScheduleInput): Schedule!
+	deleteSchedule(id: ID!): Schedule!
+
 	# Resident
 	createResident(data: CreateResidentInput): Resident!
 	updateResident(id: ID!, data: UpdateResidentInput): Resident!
@@ -98,8 +118,14 @@ type User {
 	updatedAt: DateTime!
 }
 
-type AuthPayload {
+type LoginPayload {
+	success: Boolean
 	token: String
+	user: User
+}
+
+type AuthPayload {
+	success: Boolean
 	user: User
 }
 
@@ -133,6 +159,11 @@ enum Role {
 	ADMIN
 }
 
+enum CheckAuthStatus {
+	SUCCESS
+	FAILURE
+}
+
 enum UserOrderByInput {
 	firstName_ASC
 	firstName_DESC
@@ -152,8 +183,8 @@ type Team {
 	sector: Sector!
 	users: [User!]!
 	visits: [Visit!]
-	startAt: DateTime!
-	endAt: DateTime!
+	startDate: DateTime!
+	endDate: DateTime!
 	createdAt: DateTime!
 	updatedAt: DateTime!
 }
@@ -216,6 +247,50 @@ enum VisitStatus {
 	UPCOMING
 	ONGOING
 	DONE
+}
+
+## SHIFT ##
+type Shift {
+	id: ID!
+	index: Int!
+	startTime: String!
+	endTime: String!
+	schedules: [Schedule!]
+}
+
+input CreateShiftInput {
+	index: Int!
+	startTime: String!
+	endTime: String!
+}
+
+input UpdateShiftInput {
+	index: Int
+	startTime: String
+	endTime: String
+}
+
+## SCHEDULE ##
+type Schedule {
+	id: ID!
+	shift: Shift!
+	sector: Sector!
+	startDate: DateTime!
+	endDate: DateTime!
+}
+
+input CreateScheduleInput {
+	shift: ID!
+	sector: ID!
+	startDate: DateTime!
+	endDate: DateTime!
+}
+
+input UpdateScheduleInput {
+	shift: ID
+	sector: ID
+	startDate: DateTime
+	endDate: DateTime
 }
 
 ##	HOTEL	##
@@ -293,6 +368,7 @@ type Sector {
 	users: [User!]
 	hotels: [Hotel!]
 	teams: [Team!]
+	schedules: [Schedule!]
 	createdAt: DateTime!
 	updatedAt: DateTime!
 }

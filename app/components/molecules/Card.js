@@ -29,13 +29,11 @@ const HostCard = ({ backgroundColor }) => {
                         anchor={renderToggleButton}
                         onBackdropPress={() => setOptions(false)}>
                         <Layout style={styles.content}>
-                            <View style={styles.listview}>
-                                <TouchableOpacity activeOpacity={0.7} style={styles.touchableButton} >
-                                    <Text style={styles.TextStyle}>Itinéraire</Text>
-                                </TouchableOpacity>
-                                <View style={{ marginHorizontal: 10 }}>
-                                    <OpenURLButton url={'tel:${0652033775}'}>Appeler</OpenURLButton>
-                                </View>
+                            <TouchableOpacity activeOpacity={0.7} style={styles.touchableButton} >
+                                <Text style={styles.TextStyle}>Itinéraire</Text>
+                            </TouchableOpacity>
+                            <View style={styles.callButton}>
+                                <OpenURLButton url={'tel:${0652033775}'}>Appeler</OpenURLButton>
                             </View>
                         </Layout>
                     </Popover>
@@ -74,7 +72,14 @@ const HostCard = ({ backgroundColor }) => {
 }
 const styles = StyleSheet.create({
     touchableButton: {
-        marginHorizontal: 10
+        marginHorizontal: 10,
+        paddingVertical: 5,
+        // backgroundColor: "#D1BEB0"
+    },
+    callButton: {
+        marginHorizontal: 10,
+        paddingVertical: 5,
+        // backgroundColor: "#F8BD7F"
     },
     moreIcon: {
         // backgroundColor: "blue",
@@ -86,12 +91,11 @@ const styles = StyleSheet.create({
         maxHeight: 180,
     },
     listview: {
-        width: 85,
+        // width: 85,
+        padding: 10
     },
     content: {
-        flexDirection: 'row',
-        alignItems: "flex-end",
-        width: 100,
+        // backgroundColor: "#DDDBF1",
         paddingLeft: 7,
         paddingVertical: 7,
         borderBottomRightRadius: 3,

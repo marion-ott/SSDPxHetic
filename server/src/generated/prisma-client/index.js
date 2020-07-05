@@ -25,6 +25,14 @@ var models = [
     embedded: false
   },
   {
+    name: "Shift",
+    embedded: false
+  },
+  {
+    name: "Schedule",
+    embedded: false
+  },
+  {
     name: "Resident",
     embedded: false
   },

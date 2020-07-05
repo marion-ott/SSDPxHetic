@@ -13,7 +13,7 @@ import Root from './index'
 
 const client = new ApolloClient({
   link: new HttpLink({
-    uri: 'http://192.168.1.34'
+    uri: 'http://192.168.1.10:9000'
   }),
   cache: new InMemoryCache()
 })

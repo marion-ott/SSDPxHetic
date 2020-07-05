@@ -1,5 +1,6 @@
+import esm from 'esm'
 import {GraphQLServer, PubSub} from 'graphql-yoga'
-import {prisma} from './generated/prisma-client'
+import {prisma} from './generated/prisma-client/index'
 import Query from './resolvers/Query'
 import Mutation from './resolvers/Mutation'
 import User from './resolvers/User'
@@ -9,6 +10,7 @@ import Visit from './resolvers/Visit'
 import Sector from './resolvers/Sector'
 import Resident from './resolvers/Resident'
 import Subscription from './resolvers/Subscription'
+import Schedule from './resolvers/Schedule'
 
 const resolvers = {
 	Query,
@@ -19,7 +21,8 @@ const resolvers = {
 	Visit,
 	Sector,
 	Resident,
-	Subscription
+	Subscription,
+	Schedule
 }
 
 const pubsub = new PubSub()

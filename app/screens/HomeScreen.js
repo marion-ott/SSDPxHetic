@@ -104,7 +104,7 @@ const styles = StyleSheet.create({
     paddingRight: 15
   },
   headContain: {
-    marginTop: 50,
+    marginTop: 40,
     marginBottom: 20
   },
   layoutContain: {
