@@ -79,6 +79,14 @@ resource "aws_security_group" "docdb" {
     security_groups = [aws_security_group.application.id]
   }
 
+  egress {
+    description = "DocumentDB for web apps"
+    from_port       = 27017
+    to_port         = 27017
+    protocol        = "tcp"
+    security_groups = [aws_security_group.application.id]
+  }
+
   tags = {
     Name = "${var.stage}-application"
   }
@@ -100,6 +108,13 @@ resource "aws_elb" "elb" {
     instance_port     = 9000
     instance_protocol = "http"
     lb_port           = 9000
+    lb_protocol       = "http"
+  }
+
+  listener {
+    instance_port     = 4466
+    instance_protocol = "http"
+    lb_port           = 4466
     lb_protocol       = "http"
   }
 
