@@ -4,7 +4,8 @@ const {prisma} = require('../src/generated/prisma-client')
 const {
 	generateSearchIndex,
 	hashPassword,
-	getPlaceInfo
+	getPlaceInfo,
+	generatePriorityIndex
 } = require('./../src/utils/index')
 
 let sectors, shifts
@@ -87,6 +88,7 @@ const dataImport = async (file, callback) => {
 			entry.city = info.features[0].properties.city
 			entry.long = info.features[0].geometry.coordinates[0] * 1
 			entry.lat = info.features[0].geometry.coordinates[1] * 1
+			entry.criticity = generatePriorityIndex(entry)
 		}
 
 		if (entry.password) {
@@ -178,19 +180,19 @@ const deleteData = async () => {
 	}
 	console.log(`${schedules.length} schedules deleted.`)
 
-	const teams = await prisma.teams()
-	console.log(`Deleting teams...`)
-	for (const team of teams) {
-		await prisma.deleteTeam({id: team.id})
-	}
-	console.log(`${teams.length} teams deleted.`)
-
 	const visits = await prisma.visits()
 	console.log(`Deleting visits...`)
 	for (const visit of visits) {
 		await prisma.deleteVisit({id: visit.id})
 	}
 	console.log(`${visits.length} visits deleted.`)
+
+	const teams = await prisma.teams()
+	console.log(`Deleting teams...`)
+	for (const team of teams) {
+		await prisma.deleteTeam({id: team.id})
+	}
+	console.log(`${teams.length} teams deleted.`)
 
 	const sectors = await prisma.sectors()
 	console.log(`Deleting sectors...`)

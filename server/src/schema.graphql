@@ -33,7 +33,7 @@ type Query {
 
 	# Visit
 	visit(id: ID!): Visit!
-	visits: [Visit!]!
+	visits(query: String): [Visit!]!
 
 	# Team
 	team(id: ID!): Team!
@@ -305,6 +305,7 @@ type Hotel {
 	active: Boolean!
 	rooms: Int!
 	lastVisit: DateTime
+	criticity: Float
 	score: Float
 	sector: Sector!
 	lat: Float!
@@ -321,6 +322,7 @@ input CreateHotelInput {
 	zipCode: Int!
 	city: String!
 	active: Boolean
+	criticity: Float
 	rooms: Int!
 	lastVisit: DateTime
 	score: Float
@@ -353,6 +355,8 @@ enum HotelOrderByInput {
 	rooms_DESC
 	lastVisit_ASC
 	lastVisit_DESC
+	criticity_ASC
+	criticity_DESC
 	score_ASC
 	score_DESC
 	createdAt_ASC
