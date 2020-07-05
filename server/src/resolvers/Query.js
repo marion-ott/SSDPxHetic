@@ -97,6 +97,13 @@ const Query = {
 			orderBy: args.orderBy
 		}
 
+		if (args.query) {
+			const input = generateSearchIndex(args.query)
+			opArgs.where = {
+				date: args.query
+			}
+		}
+
 		return prisma.visits(opArgs)
 	},
 

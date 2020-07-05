@@ -2,6 +2,7 @@ import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
 import deburr from 'lodash.deburr'
 import axios from 'axios'
+import moment from 'moment'
 
 const JWT_SECRET = 'thisisasecret'
 /**
@@ -92,11 +93,25 @@ const getPlaceInfo = async (address, zip, coord) => {
 	return await axios(url).then(res => res.data)
 }
 
+const generatePriorityIndex = hotel => {
+	const score = (parseFloat(hotel.score) * 100) / parseFloat(60)
+	const daysDiff = moment().diff(moment(hotel.lastVisit), 'days')
+	let malus = (parseFloat(daysDiff) * 100) / parseFloat(365)
+
+	if (malus > 100) {
+		malus = 100
+	}
+
+	const index = parseFloat(Number(score - malus).toFixed(2))
+	return index
+}
+
 export {
 	getAuthUserId,
 	generateToken,
 	hashPassword,
 	generateSearchIndex,
 	publishVisit,
-	getPlaceInfo
+	getPlaceInfo,
+	generatePriorityIndex
 }

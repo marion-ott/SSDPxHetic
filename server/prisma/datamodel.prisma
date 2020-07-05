@@ -46,6 +46,7 @@ type Hotel {
 	active: Boolean!
 	rooms: Int!
 	lastVisit: DateTime
+	criticity: Float
 	score: Float
 	sector: Sector! @relation(name: "HotelSector", link: INLINE)
 	lat: Float!

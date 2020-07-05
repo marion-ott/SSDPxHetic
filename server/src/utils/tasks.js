@@ -1,6 +1,8 @@
 const moment = require('moment')
 const {prisma} = require('../generated/prisma-client')
-const shuffle = require('lodash.shuffle')
+const _ = require('lodash')
+const _shuffle = require('lodash.shuffle')
+const _groupBy = require('lodash.groupby')
 const fs = require('fs')
 
 /**
@@ -40,7 +42,11 @@ const generateSchedules = async () => {
 		const newShift = shifts.find(el => el.index === newIndex)
 
 		const entry = {
-			shift: newShift,
+			shift: {
+				connect: {
+					id: newShift.id
+				}
+			},
 			sector: {
 				connect: {
 					id: sector.id
@@ -50,8 +56,8 @@ const generateSchedules = async () => {
 			endDate
 		}
 
-		// ! UNCOMMENT TO INSERT IN DB
-		//await prisma.createSchedule(entry)
+		await prisma.createSchedule(entry)
+		console.log('Schedules successfully generated')
 	}
 }
 
@@ -78,7 +84,7 @@ const generateTeams = async () => {
 	const teams = []
 	for (const entry of data) {
 		let teamAmount = Math.floor(entry.users.length / 2) - 1
-		const users = shuffle(entry.users)
+		const users = _shuffle(entry.users)
 		const startDate = moment()
 			.add(5, 'weeks')
 			.startOf('week')
@@ -113,23 +119,10 @@ const generateTeams = async () => {
 		})
 	}
 
-	// ! UNCOMMENT TO INSERT IN DB
 	for (const team of teams) {
-		//await prisma.createTeam(team)
+		await prisma.createTeam(team)
 	}
-}
-
-/**
- * ! PEUT-ETRE NON UTILE SI INDICE D'IMPORTANCE
- * TODO: METTRE A JOUR LE STATUT D'UN HOTEL QUAND UNE VISITE EST PROGRAMMEE OU EN COURS
- * ? CREER UN INDICE D'IMPORTANCE EN RAPPORT AVEC LASTVISIT ET NOTE PUIS CLASSER LES HOTELS PAR INDICE_DESC
- * ? LE CONSERVER EN BASE ET LE METTRE A JOUR A CHAQUE UPDATE
- * TODO: RECUPERER TOUS LES HOTELS ORDERBY INDICE ET GROUP BY SECTEUR
- * ? SI INDICE > VALUE ALORS HOTEL EST CONSIDERE COMME PRIORITAIRE
- **/
-
-const getHotelsToVisit = async () => {
-	const hotels = await prisma.hotels()
+	console.log('Teams successfully generated')
 }
 
 /**
@@ -145,4 +138,82 @@ const getHotelsToVisit = async () => {
  * ? POUR CHAQUE JOUR COMMENCER PAR UNE PRIO PUIS REMPLIR AVEC STANDARD? OU 2 PRIO?
  * * PASSER AU JOUR SUIVANT APRES X HOTELS
  **/
-const generateVisits = async () => {}
+const generateVisits = async () => {
+	const MAX_VISITS_PER_DAY = 3
+	const sectors = await prisma.sectors()
+	const hotelsBySector = []
+	const startDate = moment()
+		.add(5, 'weeks')
+		.startOf('week')
+	const endDate = moment(startDate)
+		.add(5, 'weeks')
+		.startOf('day')
+	const limit = moment(endDate).diff(startDate, 'days')
+
+	for (const sector of sectors) {
+		const hotels = await prisma.sector({id: sector.id}).hotels({
+			orderBy: 'criticity_ASC'
+		})
+		const element = {
+			sector,
+			hotels
+		}
+		hotelsBySector.push(element)
+	}
+
+	for (const {sector, hotels} of hotelsBySector) {
+		const teams = await prisma.teams({
+			where: {
+				sector: {
+					id: sector.id
+				},
+				startDate
+			}
+		})
+
+		let hotelsToSkip = 0
+
+		for (const team of teams) {
+			for (let i = 0; i <= limit; i++) {
+				const date = moment(startDate).add(i, 'days')
+				if (moment(date).day() !== 0 && moment(date).day() !== 6) {
+					const hotelsToSchedule = hotels.slice(
+						hotelsToSkip,
+						MAX_VISITS_PER_DAY * (i + 1)
+					)
+
+					for (const hotel of hotelsToSchedule) {
+						const visit = {
+							team: {
+								connect: {
+									id: team.id
+								}
+							},
+							hotel: {
+								connect: {
+									id: hotel.id
+								}
+							},
+							priority: hotel.criticity < 0,
+							status: 'UPCOMING',
+							date
+						}
+
+						await prisma.createVisit(visit)
+						hotelsToSkip++
+					}
+				}
+			}
+		}
+	}
+	console.log('Visits successfully generated.')
+}
+
+// ! TODO: prevent doublon teams generation
+// ? if user.teams {date: moment + 5weeks} exists skip
+
+const generateAll = (async () => {
+	await generateSchedules()
+	await generateTeams()
+	await generateVisits()
+})()
