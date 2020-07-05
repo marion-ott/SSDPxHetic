@@ -57,18 +57,32 @@ resource "aws_security_group" "application" {
   }
 }
 
-# DocumentDB instance
-resource "aws_docdb_cluster" "docdb" {
-  cluster_identifier      = "${var.stage}-docdb"
-  engine                  = "docdb"
-  master_username         = "foo"
-  master_password         = "mustbeeightchars"
-  skip_final_snapshot     = true
-  vpc_security_group_ids  = [aws_security_group.docdb.id]
+data "aws_subnet_ids" "subnet_ids" {
+  vpc_id = aws_default_vpc.default.id
 }
 
-resource "aws_security_group" "docdb" {
-  name        = "${var.stage}-docdb"
+resource "aws_docdb_subnet_group" "documentdb_subnet" {
+  name       = "${var.stage}-documentdb_subnet"
+  subnet_ids = data.aws_subnet_ids.subnet_ids.ids
+
+  tags = {
+    Name = "Documentdb subnet group"
+  }
+}
+
+# DocumentDB instance
+resource "aws_docdb_cluster" "documentdb" {
+  cluster_identifier      = "${var.stage}-documentdb"
+  engine                 = "docdb"
+  master_username        = "foo"
+  master_password        = "mustbeeightchars"
+  skip_final_snapshot     = true
+  db_subnet_group_name   = aws_docdb_subnet_group.documentdb_subnet.name
+  vpc_security_group_ids = [aws_security_group.documentdb.id]
+}
+
+resource "aws_security_group" "documentdb" {
+  name        = "${var.stage}-documentdb"
   description = "Allow inbound traffic"
 
   ingress {

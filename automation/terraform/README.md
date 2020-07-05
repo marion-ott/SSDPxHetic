@@ -29,6 +29,7 @@ ssh-keygen -f path/id_rsa_aws
 cd project-name/automation/terraform
 export AWS_ACCESS_KEY_ID="mon_id_de_clef_dacces"
 export AWS_SECRET_ACCESS_KEY="ma_clef_dacces_secrete"
+terraform init
 terraform plan
 terraform apply
 ```
