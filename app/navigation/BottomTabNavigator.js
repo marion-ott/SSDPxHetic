@@ -78,7 +78,7 @@ export default function BottomTabNavigator({ navigation, route }) {
 
 const styles = StyleSheet.create({
   container: {
-    height: 80,
+    height: 50,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20
   }

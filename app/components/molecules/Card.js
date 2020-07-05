@@ -1,35 +1,50 @@
 import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
-import { Card, Text } from '@ui-kitten/components';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
+import { Card, Text, Popover, Layout, Button } from '@ui-kitten/components';
 import { Ionicons } from '@expo/vector-icons';
 
-const HostCard = ({ backgroundColor, type, label, sublabel }) => {
+import OpenURLButton from "./OpenURLButton"
+
+const HostCard = ({ backgroundColor }) => {
+    const [actions, setActions] = useState(false)
     const [options, setOptions] = useState(false)
 
-    const displayCard = () => {
-        setOptions(!options)
+    const displayStartOrReport = () => {
+        setActions(!actions)
     }
 
-    if (type === "small") {
-        return (
-            <View style={styles.smallCard(backgroundColor)}>
-                <Text style={styles.text} appearance='hint'>{label}</Text>
-                <Text>{sublabel}</Text>
-            </View>
-        )
-    }
+    const renderToggleButton = () => (
+        <TouchableOpacity onPress={() => setOptions(true)} activeOpacity={0.7} style={styles.moreIcon} >
+            <Ionicons name="md-more" size={24} color="black" />
+        </TouchableOpacity>
+    );
+
     const Header = (props) => {
         return (
             <View {...props}>
                 <View style={styles.cardContainer}>
                     <Text style={styles.text} category='h6'>Hilton Gare d’Austerlitz</Text>
-                    <Ionicons name="md-more" size={24} color="black" />
+                    <Popover
+                        visible={options}
+                        anchor={renderToggleButton}
+                        onBackdropPress={() => setOptions(false)}>
+                        <Layout style={styles.content}>
+                            <View style={styles.listview}>
+                                <TouchableOpacity activeOpacity={0.7} style={styles.touchableButton} >
+                                    <Text style={styles.TextStyle}>Itinéraire</Text>
+                                </TouchableOpacity>
+                                <View style={{ marginHorizontal: 10 }}>
+                                    <OpenURLButton url={'tel:${0652033775}'}>Appeler</OpenURLButton>
+                                </View>
+                            </View>
+                        </Layout>
+                    </Popover>
                 </View>
             </View>
         )
     }
     return (
-        <Card onPress={() => displayCard()} style={[styles.card, { backgroundColor }]} header={Header}>
+        <Card onPress={() => displayStartOrReport()} style={[styles.card, { backgroundColor }]} header={Header}>
             <View style={styles.cardContainer}>
                 <View>
                     <Text style={styles.text} category='s2'>24 rue des petits champs,</Text>
@@ -40,7 +55,7 @@ const HostCard = ({ backgroundColor, type, label, sublabel }) => {
                     <Text style={styles.text} category='s2'>12</Text>
                 </View>
             </View>
-            {options ?
+            {actions ?
                 <View style={styles.cardopen}>
                     <View style={styles.reportContainer}>
                         <View style={styles.borderLine}>
@@ -58,6 +73,32 @@ const HostCard = ({ backgroundColor, type, label, sublabel }) => {
     )
 }
 const styles = StyleSheet.create({
+    touchableButton: {
+        marginHorizontal: 10
+    },
+    moreIcon: {
+        // backgroundColor: "blue",
+        width: 30,
+        alignItems: 'center',
+        marginLeft: 134
+    },
+    container: {
+        maxHeight: 180,
+    },
+    listview: {
+        width: 85,
+    },
+    content: {
+        flexDirection: 'row',
+        alignItems: "flex-end",
+        width: 100,
+        paddingLeft: 7,
+        paddingVertical: 7,
+        borderBottomRightRadius: 3,
+        borderTopRightRadius: 3,
+        borderBottomLeftRadius: 3,
+        borderTopLeftRadius: 3,
+    },
     card: {
         flex: 1,
         backgroundColor: "blue",
@@ -65,13 +106,9 @@ const styles = StyleSheet.create({
         marginBottom: 7,
         borderWidth: 0
     },
-    smallCard: background => ({
-        flex: 1,
-        backgroundColor: background,
-        margin: 2,
-        padding: 9,
-        borderRadius: 8
-    }),
+    moreIconContainer: {
+        // backgroundColor: 'green',
+    },
     headerContain: {
         padding: 12
     },

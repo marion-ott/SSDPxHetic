@@ -13,7 +13,8 @@ const IconUI = ({ name, focused }) => (
 
 const styles = StyleSheet.create({
   icon: {
-    width: 23
+    width: 32,
+    height: 32,
   }
 })
 
