@@ -9,6 +9,7 @@ const JWT_SECRET = 'thisisasecret'
  * @param {Object} req (request)
  * @returns {String}
  */
+
 const getAuthUserId = req => {
 	const header = req.request.headers.authorization
 

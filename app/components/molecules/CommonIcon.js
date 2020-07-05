@@ -3,7 +3,7 @@ import { StyleSheet } from 'react-native'
 import { Icon } from '@ui-kitten/components'
 import Colors from '../../constants/Colors'
 
-const IconUI = ({ name, fill }) => (
+const IconUI = ({ name, fill, width, height }) => (
   <Icon
     style={styles.icon}
     name={name}
