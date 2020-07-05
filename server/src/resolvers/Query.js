@@ -3,8 +3,8 @@ import moment from 'moment'
 
 const Query = {
 	/** USERS */
-	user(parent, {id}, {prisma, request}) {
-		return prisma.user({id})
+	user(parent, args, {prisma, request}) {
+		return prisma.user({id: args.id})
 	},
 	users(parent, args, {prisma}) {
 		const opArgs = {
@@ -107,6 +107,20 @@ const Query = {
 		return prisma.visits(opArgs)
 	},
 
+	async myVisits(parent, args, {prisma}) {
+		const items = []
+		const visits = await prisma.visits()
+		for (const visit of visits) {
+			const visitTeam = await prisma.visit({id: visit.id}).team()
+
+			if (visitTeam.id === args.teamId && visit.date === args.date) {
+				items.push(visit)
+			}
+		}
+
+		return items
+	},
+
 	/** SECTORS */
 	sector(parent, {id}, {prisma}) {
 		return prisma.sector({id})
@@ -194,70 +208,6 @@ const Query = {
 				.count()
 		}
 		return null
-	},
-
-	async test(parent, {id}, {prisma}, info) {
-		// const now = moment().startOf('week')
-		// // const data = await prisma.sector({id}).schedules({
-		// // 	where: {
-		// // 		startDate: now
-		// // 	}
-		// // })
-
-		// const schedule = await prisma.sector({id}).schedules({
-		// 	where: {
-		// 		startDate: now
-		// 	}
-		// })
-
-		// const shift = await prisma.schedule({id: schedule[0].id}).shift()
-		// const test = await prisma.shift({index: shift.index + 1})
-
-		const sectors = await prisma.sectors()
-		for (const sector of sectors) {
-			const now = moment()
-				.add(5, 'weeks')
-				.startOf('week')
-			const startDate = moment(now)
-				.add(1, 'weeks')
-				.startOf('week')
-			const endDate = moment(startDate)
-				.add(7, 'days')
-				.startOf('day')
-
-			const shifts = await prisma.shifts()
-			const schedule = await prisma.sector({id: sector.id}).schedules({
-				where: {
-					endDate: now
-				}
-			})
-
-			const shift = await prisma.schedule({id: schedule[0].id}).shift()
-
-			let newIndex = shift.index + 1
-			if (shifts.length === shift.index) {
-				newIndex = 1
-			} else {
-				newIndex = shift.index + 1
-			}
-
-			const newShift = shifts.find(el => el.index === newIndex)
-
-			const entry = {
-				shift: newShift,
-				sector: {
-					connect: {
-						id: sector.id
-					}
-				},
-				startDate,
-				endDate
-			}
-
-			//await prisma.createSchedule(entry)
-		}
-
-		return 'OK'
 	}
 }
 

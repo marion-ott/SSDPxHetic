@@ -85,9 +85,14 @@ const generateTeams = async () => {
 	for (const entry of data) {
 		let teamAmount = Math.floor(entry.users.length / 2) - 1
 		const users = _shuffle(entry.users)
-		const startDate = moment()
-			.add(5, 'weeks')
-			.startOf('week')
+		// const startDate = moment()
+		// 	.add(5, 'weeks')
+		// 	.startOf('week')
+		// const endDate = moment(startDate)
+		// 	.add(5, 'weeks')
+		// 	.startOf('day')
+
+		const startDate = moment().startOf('week')
 		const endDate = moment(startDate)
 			.add(5, 'weeks')
 			.startOf('day')
@@ -142,9 +147,7 @@ const generateVisits = async () => {
 	const MAX_VISITS_PER_DAY = 3
 	const sectors = await prisma.sectors()
 	const hotelsBySector = []
-	const startDate = moment()
-		.add(5, 'weeks')
-		.startOf('week')
+	const startDate = moment().startOf('week')
 	const endDate = moment(startDate)
 		.add(5, 'weeks')
 		.startOf('day')

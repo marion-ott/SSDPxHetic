@@ -1,14 +1,19 @@
-const tintColor = '#3D52D5'
+const main = '#3D52D5'
+const white = '#fff'
+const black = '#000'
 
 export default {
-  tintColor,
-  tabIconDefault: '#000',
-  tabIconSelected: tintColor,
+  main: main,
+  white: white,
+  offWhite: '#F4F4F4',
+  brightOrange: '#FF8139',
+  tabIconDefault: black,
+  tabIconSelected: main,
   tabBar: '#fefefe',
   errorBackground: 'red',
-  errorText: '#fff',
+  errorText: white,
   warningBackground: '#EAEB5E',
   warningText: '#666804',
-  noticeBackground: tintColor,
-  noticeText: '#fff'
+  noticeBackground: main,
+  noticeText: white
 }

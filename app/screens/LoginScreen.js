@@ -27,8 +27,8 @@ export default function LoginScreen({ handleLogin }) {
   const [login, { client, loading, error }] = useMutation(LOGIN, {
     onCompleted({ login }) {
       handleLogin(login.user)
-      setTokenInStorage(login.user)
-      client.resetStore()
+      // setTokenInStorage(login.user)
+      // client.resetStore()
     },
     onError: (error) => console.log('ERROR MESSAGE : ', error)
   })
@@ -47,7 +47,7 @@ export default function LoginScreen({ handleLogin }) {
   })
 
   if (error) {
-    return <Text>there was an error</Text>
+    return <Text>there was an error: {JSON.stringify(error)}</Text>
   }
 
   if (loading) {

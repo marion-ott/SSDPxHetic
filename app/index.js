@@ -1,79 +1,127 @@
 import React, { useEffect, useState } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
+import moment from 'moment'
 
 import { Platform, StatusBar, StyleSheet, View, Text } from 'react-native'
 import useCheckAuth from './hooks/useCheckAuth'
+import { formatDate } from './utils/index'
 import BottomTabNavigator from './navigation/BottomTabNavigator'
 import LinkingConfiguration from './navigation/LinkingConfiguration'
 import { LoginScreen } from './screens'
 import { UserProvider } from './context/userContext'
+import { DateProvider } from './context/dateContext'
+import Colors from './constants/Colors'
 
 const Stack = createStackNavigator()
 
 export default () => {
-  const { loading, error, data } = useCheckAuth()
+  // const { loading, error, data } = useCheckAuth()
+  const [date, setDate] = useState({
+    today: formatDate(moment())
+  })
+  /**
+   * * temporary loggedin data
+   */
   const [auth, setAuth] = useState({
     user: {
-      email: 'admin@samu-social.net',
-      firstName: 'Admin',
-      id: '5ee62d1cc414790007fb604c',
-      lastName: 'Admin',
-      role: 'ADMIN'
+      email: 'undefined',
+      firstName: 'Youssouf',
+      lastName: 'Salarié 9',
+      mates: [
+        {
+          firstName: 'Flora',
+          lastName: 'nom'
+        },
+        {
+          firstName: 'Ramdane',
+          lastName: 'nom'
+        }
+      ],
+      phone: '060000000'
     },
+    schedule: { startTime: '08h30', endTime: '16h30', __typename: 'Shift' },
+    teamId: '5f022e9b1ed7970008b46531',
     loggedIn: true
   })
-  // const [auth, setAuth] = useState({ user: null, loggedIn: false })
+
+  /**
+   * TODO: check localStorage for already loggedIn user 
+   *
+  const [auth, setAuth] = useState({ user: null, loggedIn: false })
 
   useEffect(() => {
     if (data) {
       setAuth({
-        user: data.checkAuth,
-        loggedIn: true
+        user: data.checkAuth.user,
+        loggedIn: data.checkAuth.success
       })
     }
   }, [error, data])
+  */
 
   const handleLogin = (userData) => {
+    const user = {
+      firstName: userData.firstName,
+      lastName: userData.lastName,
+      email: userData.email,
+      phone: userData.phone
+    }
+    let schedule, teamId
+    userData.teams.forEach(({ id, startDate, endDate, users }) => {
+      if (moment().isBetween(startDate, endDate)) {
+        teamId = id
+        user.mates = users.filter((user) => user.id !== userData.id)
+      }
+    })
+
+    userData.sector.schedules.forEach(({ startDate, endDate, shift }) => {
+      if (moment().isBetween(startDate, endDate)) {
+        schedule = shift
+      }
+    })
+
     setAuth({
-      user: userData,
+      user,
+      teamId,
+      schedule,
       loggedIn: true
     })
   }
 
-  if (loading) {
-    return <Text>Loading</Text>
-  }
+  // if (loading) {
+  //   return <Text>Loading</Text>
+  // }
 
   return (
     <UserProvider value={auth}>
-      <View style={styles.container}>
-        {Platform.OS === 'ios' && <StatusBar barStyle='dark-content' />}
-        <StatusBar barStyle='light-content'/>
-        <NavigationContainer linking={LinkingConfiguration}>
-          <Stack.Navigator
-            screenOptions={{
-              headerShown: false
-            }}>
-            {!auth.loggedIn ? (
-              <Stack.Screen
-                name='Login'
-                component={() => <LoginScreen handleLogin={handleLogin} />}
-              />
-            ) : (
-              <Stack.Screen name='Root' component={BottomTabNavigator} />
-            )}
-          </Stack.Navigator>
-        </NavigationContainer>
-      </View>
+      <DateProvider value={date}>
+        <View style={styles.container}>
+          {Platform.OS === 'ios' && <StatusBar barStyle='dark-content' />}
+          <StatusBar barStyle='light-content' />
+          <NavigationContainer linking={LinkingConfiguration}>
+            <Stack.Navigator
+              screenOptions={{
+                headerShown: false
+              }}>
+              {!auth.loggedIn ? (
+                <Stack.Screen
+                  name='Login'
+                  component={() => <LoginScreen handleLogin={handleLogin} />}
+                />
+              ) : (
+                <Stack.Screen name='Root' component={BottomTabNavigator} />
+              )}
+            </Stack.Navigator>
+          </NavigationContainer>
+        </View>
+      </DateProvider>
     </UserProvider>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    // backgroundColor: '#3D52D5',
-
+    flex: 1
   }
 })

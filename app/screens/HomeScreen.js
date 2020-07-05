@@ -1,33 +1,55 @@
-import React, { useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import userContext from '../context/userContext'
-import { StyleSheet, View, ScrollView } from 'react-native'
-import { Text, Layout, Divider } from '@ui-kitten/components'
+import dateContext from '../context/dateContext'
+import moment from 'moment'
+import useGetVisits from '../hooks/useGetVisits'
+import { StyleSheet, View } from 'react-native'
+import { Text, Layout } from '@ui-kitten/components'
+import CardList from '../components/organisms/CardList'
 import Details from '../components/molecules/Details'
-import Card from '../components/molecules/Card'
+import Colors from '../constants/Colors'
 
 export default function HomeScreen() {
-  const { user } = useContext(userContext)
+  const { user, teamId, schedule } = useContext(userContext)
+  const { today } = useContext(dateContext)
+  const [visits, setVisits] = useState([])
+  const [details, setDetails] = useState([])
 
-  var smallCardDatas = {
-    hours: {
-      label: 'Horaires',
-      value: '8h30 - 16h30'
-    },
-    hostel: {
-      label: 'Hotel',
-      value: '5'
-    },
-    room: {
-      label: 'Chambres',
-      value: '30'
+  const { loading, error, data } = useGetVisits(teamId, today)
+
+  useEffect(() => {
+    if (data) {
+      const { myVisits } = data
+
+      let sum = 0
+      myVisits.forEach(({ hotel }) => (sum += hotel.rooms))
+
+      setVisits(myVisits)
+      setDetails([
+        {
+          label: 'Horaires',
+          value: `${schedule.startTime}-${schedule.endTime}`
+        },
+        {
+          label: 'Hôtels',
+          value: data.myVisits.length
+        },
+        {
+          label: 'Chambres',
+          value: sum
+        }
+      ])
     }
-  }
+  }, [data])
 
+  if (loading) {
+    return <p>loading</p>
+  }
 
   return (
     <View style={styles.container}>
       <Text style={[styles.currentDay, styles.text]} category='h5'>
-        Mardi 12 Février
+        {moment(today).locale('fr').format('dddd Do MMMM')}
       </Text>
       <Layout style={styles.layout} level='1'>
         <View style={styles.layoutContain}>
@@ -39,36 +61,12 @@ export default function HomeScreen() {
               Voici le récapitulatif de votre journée.
             </Text>
           </View>
-          <View style={styles.cards}>
-            {Object.keys(smallCardDatas).map((scard, index) => {
-              var card = smallCardDatas[scard]
-              return (
-                <Details
-                  key={index}
-                  backgroundColor='#F4F4F4'
-                  {...card}
-                />
-              )
-            })}
+          <View style={styles.details}>
+            {details.map((el, index) => (
+              <Details key={index} {...el} />
+            ))}
           </View>
-          <View style={styles.middleContainer}>
-            <Text style={[styles.text, styles.subtitle]} category='s1'>
-              Visites prioritaires
-            </Text>
-            <Divider style={[{ marginBottom: 10 }]} />
-            <ScrollView style={styles.cardsContain}>
-              {[null, null].map((c, i) => {
-                return <Card index={i} key={i} backgroundColor="#FFF2EB" />
-              })}
-              <View>
-                <Text style={[styles.text, styles.subtitle]}>Visite standare</Text>
-                <Divider style={[{ marginBottom: 20 }]} />
-              </View>
-              {[null, null, null, null, null, null].map((c, i) => {
-                return <Card key={i} backgroundColor="#FFF2EB" />
-              })}
-            </ScrollView>
-          </View>
+          {visits && <CardList label={'Visites prioritaires'} cards={visits} />}
         </View>
       </Layout>
     </View>
@@ -81,12 +79,11 @@ HomeScreen.navigationOptions = {
 
 const styles = StyleSheet.create({
   middleContainer: {
-    paddingBottom: 20,
     flex: 1
   },
   container: {
     flex: 1,
-    backgroundColor: '#3D52D5',
+    backgroundColor: Colors.main
   },
   currentDay: {
     color: '#FFFF',
@@ -120,12 +117,10 @@ const styles = StyleSheet.create({
   },
   cardsContain: {
     flex: 1,
-    marginTop: 10,
-    // backgroundColor: 'blue',
-    // paddingBottom: 200
+    marginTop: 10
   },
-  cards: {
+  details: {
     flexDirection: 'row',
-    flexWrap: 'wrap'
+    justifyContent: 'space-between'
   }
 })

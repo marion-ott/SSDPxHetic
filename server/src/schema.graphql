@@ -2,7 +2,7 @@ scalar DateTime
 
 type Query {
 	# User
-	user(id: ID!): User!
+	user(id: ID!, query: String): User!
 	users(
 		query: String
 		first: Int
@@ -34,6 +34,7 @@ type Query {
 	# Visit
 	visit(id: ID!): Visit!
 	visits(query: String): [Visit!]!
+	myVisits(teamId: ID!, date: String): [Visit!]
 
 	# Team
 	team(id: ID!): Team!
@@ -53,8 +54,6 @@ type Query {
 
 	# Count
 	count(type: String!, query: String): Int!
-
-	test(id: ID!): String
 }
 
 type Mutation {
