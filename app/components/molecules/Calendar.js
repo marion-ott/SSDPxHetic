@@ -82,7 +82,6 @@ const CalendarElement = ({ today, selected, setSelected }) => {
             />
           )
         }}
-        style={styles.calendar}
         firstDay={1}
         disableMonthChange={true}
         markingType={'custom'}

@@ -1,8 +1,9 @@
 import React, { useContext } from 'react'
 import userContext from '../context/userContext'
-import { StyleSheet, View } from 'react-native'
-import { Text, Layout } from '@ui-kitten/components'
+import { StyleSheet, View, ScrollView } from 'react-native'
+import { Text, Layout, Divider } from '@ui-kitten/components'
 import Details from '../components/molecules/Details'
+import Card from '../components/molecules/Card'
 
 export default function HomeScreen() {
   const { user } = useContext(userContext)
@@ -22,6 +23,7 @@ export default function HomeScreen() {
     }
   }
 
+
   return (
     <View style={styles.container}>
       <Text style={[styles.currentDay, styles.text]} category='h5'>
@@ -34,7 +36,6 @@ export default function HomeScreen() {
               Bonjour {user.firstName},
             </Text>
             <Text style={styles.text} appearance='hint'>
-              {' '}
               Voici le récapitulatif de votre journée.
             </Text>
           </View>
@@ -45,15 +46,29 @@ export default function HomeScreen() {
                 <Details
                   key={index}
                   backgroundColor='#F4F4F4'
-                  type='small'
                   {...card}
                 />
               )
             })}
           </View>
-          <Text style={styles.text} category='s1'>
-            S1
-          </Text>
+          <View style={styles.middleContainer}>
+            <Text style={[styles.text, styles.subtitle]} category='s1'>
+              Visites prioritaires
+            </Text>
+            <Divider style={[{ marginBottom: 10 }]} />
+            <ScrollView style={styles.cardsContain}>
+              {[null, null].map((c, i) => {
+                return <Card index={i} key={i} backgroundColor="#FFF2EB" />
+              })}
+              <View>
+                <Text style={[styles.text, styles.subtitle]}>Visite standare</Text>
+                <Divider style={[{ marginBottom: 20 }]} />
+              </View>
+              {[null, null, null, null, null, null].map((c, i) => {
+                return <Card key={i} backgroundColor="#FFF2EB" />
+              })}
+            </ScrollView>
+          </View>
         </View>
       </Layout>
     </View>
@@ -65,9 +80,13 @@ HomeScreen.navigationOptions = {
 }
 
 const styles = StyleSheet.create({
+  middleContainer: {
+    paddingBottom: 20,
+    flex: 1
+  },
   container: {
     flex: 1,
-    backgroundColor: '#3D52D5'
+    backgroundColor: '#3D52D5',
   },
   currentDay: {
     color: '#FFFF',
@@ -85,7 +104,7 @@ const styles = StyleSheet.create({
     paddingRight: 15
   },
   headContain: {
-    marginTop: 50,
+    marginTop: 40,
     marginBottom: 20
   },
   layoutContain: {
@@ -94,6 +113,16 @@ const styles = StyleSheet.create({
   labelUser: {
     fontWeight: 'bold',
     marginBottom: 4
+  },
+  subtitle: {
+    marginBottom: 7,
+    marginTop: 20
+  },
+  cardsContain: {
+    flex: 1,
+    marginTop: 10,
+    // backgroundColor: 'blue',
+    // paddingBottom: 200
   },
   cards: {
     flexDirection: 'row',
