@@ -1,11 +1,18 @@
-import * as WebBrowser from 'expo-web-browser';
-import * as React from 'react';
+import * as WebBrowser from 'expo-web-browser'
+import * as React from 'react'
 import { useContext } from 'react'
 import userContext from '../context/userContext'
-import { Image, Platform, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import { ScrollView } from 'react-native-gesture-handler';
+import {
+  Image,
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View
+} from 'react-native'
+import { ScrollView } from 'react-native-gesture-handler'
 import { Layout } from '@ui-kitten/components'
-import { MonoText } from '../components/StyledText';
+import Colors from '../constants/Colors'
 import Notif from '../components/molecules/Notif'
 
 export default function NotificationScreen() {
@@ -20,7 +27,7 @@ export default function NotificationScreen() {
       data: {
         hotel: 'Akbou',
         initialDate: '14/07',
-        newDate: '25/07',
+        newDate: '25/07'
       }
     },
     {
@@ -31,7 +38,7 @@ export default function NotificationScreen() {
       data: {
         hotel: 'Novotel Atlantide',
         initialDate: '10/07',
-        newDate: '20/07',
+        newDate: '20/07'
       }
     },
     {
@@ -42,7 +49,7 @@ export default function NotificationScreen() {
       data: {
         hotel: 'Akbou',
         initialDate: '14/07',
-        newDate: '25/07',
+        newDate: '25/07'
       }
     },
     {
@@ -53,7 +60,7 @@ export default function NotificationScreen() {
       data: {
         hotel: 'Novotel Atlantide',
         initialDate: '10/07',
-        newDate: '20/07',
+        newDate: '20/07'
       }
     },
     {
@@ -64,7 +71,7 @@ export default function NotificationScreen() {
       data: {
         hotel: 'Akbou',
         initialDate: '14/07',
-        newDate: '25/07',
+        newDate: '25/07'
       }
     },
     {
@@ -75,10 +82,9 @@ export default function NotificationScreen() {
       data: {
         hotel: 'Novotel Atlantide',
         initialDate: '10/07',
-        newDate: '20/07',
+        newDate: '20/07'
       }
-    },
-
+    }
   ]
 
   return (
@@ -94,13 +100,7 @@ export default function NotificationScreen() {
           <ScrollView style={styles.cards}>
             {Object.keys(notifs).map((notif) => {
               var notifCard = notifs[notif]
-              return (
-                <Notif
-                  key={ notif }
-                  data={ notifCard }
-                  { ...notifCard }
-                />
-              )
+              return <Notif key={notif} data={notifCard} {...notifCard} />
             })}
           </ScrollView>
         </View>
@@ -110,13 +110,13 @@ export default function NotificationScreen() {
 }
 
 NotificationScreen.navigationOptions = {
-  header: null,
-};
+  header: null
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#3D52D5'
+    backgroundColor: Colors.main
   },
   currentDay: {
     color: '#FFFF',
@@ -134,16 +134,16 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 30,
     paddingLeft: 24,
     paddingRight: 24,
-    paddingTop: 50,
+    paddingTop: 50
   },
   layoutContain: {
-    flex: 1,
+    flex: 1
   },
   title: {
     marginBottom: 16,
     fontWeight: 'bold',
     color: '#241F1F',
     fontSize: 16,
-    lineHeight: 19,
+    lineHeight: 19
   }
 })
