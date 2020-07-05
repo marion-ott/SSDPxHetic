@@ -132,8 +132,8 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
-    paddingLeft: 15,
-    paddingRight: 15,
+    paddingLeft: 24,
+    paddingRight: 24,
     paddingTop: 50,
   },
   layoutContain: {
@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
   title: {
     marginBottom: 16,
     fontWeight: 'bold',
-    color: '#000000',
+    color: '#241F1F',
     fontSize: 16,
     lineHeight: 19,
   }

@@ -49,6 +49,7 @@ export default () => {
     <UserProvider value={auth}>
       <View style={styles.container}>
         {Platform.OS === 'ios' && <StatusBar barStyle='dark-content' />}
+        <StatusBar barStyle='light-content'/>
         <NavigationContainer linking={LinkingConfiguration}>
           <Stack.Navigator
             screenOptions={{
@@ -72,6 +73,7 @@ export default () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff'
+    // backgroundColor: '#3D52D5',
+
   }
 })

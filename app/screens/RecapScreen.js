@@ -7,6 +7,8 @@ import Icon from '../components/molecules/CommonIcon'
 import Words from '../constants/Words'
 import congrats from '../assets/images/congrats.png'
 
+import moment from "moment";
+
 
 export default function RecapScreen() {
   const { user } = useContext(userContext)
@@ -17,8 +19,7 @@ export default function RecapScreen() {
 
     return randomWord
   }
-
-
+  
   return (
     <Layout style={styles.container}>
       <View style={styles.recapMessage}>
@@ -37,19 +38,19 @@ export default function RecapScreen() {
 
       <View style={styles.recapInfo}>
         <View style={styles.infoCtn}>
-          <Icon fill='#ffffff' style={styles.infoPicto} name='calendar-outline'/>
-          <Text style={[styles.infoTxt, styles.marginTop]}>Mercredi 1er</Text>
-          <Text style={styles.infoTxt}>Juillet 2020</Text>
+          <Icon fill='#ffffff' style={styles.infoPicto} name='calendar-outline' width={27} height={27} />
+          <Text style={[styles.infoTxt, styles.marginTop]}>{moment().locale('fr').format("dddd Do")}</Text>
+          <Text style={styles.infoTxt}>{moment().locale('fr').format("MMMM YYYY")}</Text>
         </View>
 
         <View style={[styles.infoCtn, styles.separator]}>
-          <Icon fill='#ffffff' style={styles.infoPicto} name='clock-outline' />
+          <Icon fill='#ffffff' style={styles.infoPicto} name='clock-outline' width={27} height={27} />
           <Text style={[styles.infoTxt, styles.marginTop]}>8h30</Text>
           <Text style={styles.infoTxt}>16h30</Text>
         </View>
 
         <View style={styles.infoCtn}>
-          <Icon fill='#ffffff' style={styles.infoPicto} name='home-outline' />
+          <Icon fill='#ffffff' style={styles.infoPicto} name='home-outline' width={27} height={27} />
           <Text style={[styles.infoTxt, styles.marginTop]}>23</Text>
           <Text style={styles.infoTxt}>chambres</Text>
         </View>
@@ -79,11 +80,13 @@ const styles = StyleSheet.create({
   },
   picto: {
     marginBottom: 40,
+    width: 122,
+    height: 122,
   },
   title: {
     color: '#FFFFFF',
     fontSize: 32,
-    fontWeight: '500',
+    fontWeight: 'bold',
     lineHeight: 40,
     textAlign: 'center',
   },
@@ -94,9 +97,10 @@ const styles = StyleSheet.create({
   recapInfo: {
     flexDirection: 'row',
     justifyContent: 'center',
-    backgroundColor: '#7D8FFF',
+    backgroundColor: '#6E7DE0',
     borderRadius: 20,
     width: '100%',
+    maxWidth: 345,
     height: 176,
     marginBottom: 42,
     paddingTop: 30,
@@ -119,6 +123,7 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 16,
     textAlign: 'center',
+    textTransform: 'capitalize',
     lineHeight: 19,
   },
   button: {
@@ -127,12 +132,13 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     borderRadius: 30,
     width: '100%',
+    maxWidth: 345,
     height: 56,
   },
   buttonLabel: {
-    color: '#000000',
+    color: '#241F1F',
     fontSize: 16,
-    fontWeight: 'bold',
+    fontWeight: '500',
     lineHeight: 19,
   },
   separator: {

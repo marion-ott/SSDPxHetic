@@ -46,20 +46,22 @@ const styles =
     type: {
       marginBottom: 6,
       fontWeight: 'bold',
-      color: '#000000',
+      color: '#241F1F',
       fontSize: 16,
       lineHeight: 19,
     },
     new: {
       color: '#5E3FDA',
       marginLeft: 6,
+      opacity: 0.7,
     },
     details: {
       fontSize: 14,
       lineHeight: 16,
       color: '#241F1F',
       width: 225,
-      flexShrink: 1
+      flexShrink: 1,
+      opacity: 0.7,
     }
   })
 
