@@ -405,10 +405,10 @@ export type UserOrderByInput =
 export type TeamOrderByInput =
   | "id_ASC"
   | "id_DESC"
-  | "startAt_ASC"
-  | "startAt_DESC"
-  | "endAt_ASC"
-  | "endAt_DESC"
+  | "startDate_ASC"
+  | "startDate_DESC"
+  | "endDate_ASC"
+  | "endDate_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
@@ -449,6 +449,8 @@ export type HotelOrderByInput =
   | "rooms_DESC"
   | "lastVisit_ASC"
   | "lastVisit_DESC"
+  | "criticity_ASC"
+  | "criticity_DESC"
   | "score_ASC"
   | "score_DESC"
   | "lat_ASC"
@@ -810,6 +812,14 @@ export interface HotelWhereInput {
   lastVisit_lte?: Maybe<DateTimeInput>;
   lastVisit_gt?: Maybe<DateTimeInput>;
   lastVisit_gte?: Maybe<DateTimeInput>;
+  criticity?: Maybe<Float>;
+  criticity_not?: Maybe<Float>;
+  criticity_in?: Maybe<Float[] | Float>;
+  criticity_not_in?: Maybe<Float[] | Float>;
+  criticity_lt?: Maybe<Float>;
+  criticity_lte?: Maybe<Float>;
+  criticity_gt?: Maybe<Float>;
+  criticity_gte?: Maybe<Float>;
   score?: Maybe<Float>;
   score_not?: Maybe<Float>;
   score_in?: Maybe<Float[] | Float>;
@@ -936,22 +946,22 @@ export interface TeamWhereInput {
   visits_every?: Maybe<VisitWhereInput>;
   visits_some?: Maybe<VisitWhereInput>;
   visits_none?: Maybe<VisitWhereInput>;
-  startAt?: Maybe<DateTimeInput>;
-  startAt_not?: Maybe<DateTimeInput>;
-  startAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  startAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  startAt_lt?: Maybe<DateTimeInput>;
-  startAt_lte?: Maybe<DateTimeInput>;
-  startAt_gt?: Maybe<DateTimeInput>;
-  startAt_gte?: Maybe<DateTimeInput>;
-  endAt?: Maybe<DateTimeInput>;
-  endAt_not?: Maybe<DateTimeInput>;
-  endAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  endAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  endAt_lt?: Maybe<DateTimeInput>;
-  endAt_lte?: Maybe<DateTimeInput>;
-  endAt_gt?: Maybe<DateTimeInput>;
-  endAt_gte?: Maybe<DateTimeInput>;
+  startDate?: Maybe<DateTimeInput>;
+  startDate_not?: Maybe<DateTimeInput>;
+  startDate_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  startDate_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  startDate_lt?: Maybe<DateTimeInput>;
+  startDate_lte?: Maybe<DateTimeInput>;
+  startDate_gt?: Maybe<DateTimeInput>;
+  startDate_gte?: Maybe<DateTimeInput>;
+  endDate?: Maybe<DateTimeInput>;
+  endDate_not?: Maybe<DateTimeInput>;
+  endDate_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  endDate_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  endDate_lt?: Maybe<DateTimeInput>;
+  endDate_lte?: Maybe<DateTimeInput>;
+  endDate_gt?: Maybe<DateTimeInput>;
+  endDate_gte?: Maybe<DateTimeInput>;
   createdAt?: Maybe<DateTimeInput>;
   createdAt_not?: Maybe<DateTimeInput>;
   createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
@@ -1212,6 +1222,7 @@ export interface HotelCreateInput {
   active: Boolean;
   rooms: Int;
   lastVisit?: Maybe<DateTimeInput>;
+  criticity?: Maybe<Float>;
   score?: Maybe<Float>;
   sector: SectorCreateOneWithoutHotelsInput;
   lat: Float;
@@ -1259,8 +1270,8 @@ export interface TeamCreateWithoutUsersInput {
   id?: Maybe<ID_Input>;
   sector: SectorCreateOneWithoutTeamsInput;
   visits?: Maybe<VisitCreateManyWithoutTeamInput>;
-  startAt: DateTimeInput;
-  endAt: DateTimeInput;
+  startDate: DateTimeInput;
+  endDate: DateTimeInput;
 }
 
 export interface SectorCreateOneWithoutTeamsInput {
@@ -1294,6 +1305,7 @@ export interface HotelCreateWithoutSectorInput {
   active: Boolean;
   rooms: Int;
   lastVisit?: Maybe<DateTimeInput>;
+  criticity?: Maybe<Float>;
   score?: Maybe<Float>;
   lat: Float;
   long: Float;
@@ -1323,8 +1335,8 @@ export interface TeamCreateWithoutVisitsInput {
   id?: Maybe<ID_Input>;
   sector: SectorCreateOneWithoutTeamsInput;
   users?: Maybe<UserCreateManyWithoutTeamsInput>;
-  startAt: DateTimeInput;
-  endAt: DateTimeInput;
+  startDate: DateTimeInput;
+  endDate: DateTimeInput;
 }
 
 export interface UserCreateManyWithoutTeamsInput {
@@ -1366,8 +1378,8 @@ export interface TeamCreateWithoutSectorInput {
   id?: Maybe<ID_Input>;
   users?: Maybe<UserCreateManyWithoutTeamsInput>;
   visits?: Maybe<VisitCreateManyWithoutTeamInput>;
-  startAt: DateTimeInput;
-  endAt: DateTimeInput;
+  startDate: DateTimeInput;
+  endDate: DateTimeInput;
 }
 
 export interface VisitCreateManyWithoutTeamInput {
@@ -1399,6 +1411,7 @@ export interface HotelCreateWithoutVisitsInput {
   active: Boolean;
   rooms: Int;
   lastVisit?: Maybe<DateTimeInput>;
+  criticity?: Maybe<Float>;
   score?: Maybe<Float>;
   sector: SectorCreateOneWithoutHotelsInput;
   lat: Float;
@@ -1459,6 +1472,7 @@ export interface HotelUpdateInput {
   active?: Maybe<Boolean>;
   rooms?: Maybe<Int>;
   lastVisit?: Maybe<DateTimeInput>;
+  criticity?: Maybe<Float>;
   score?: Maybe<Float>;
   sector?: Maybe<SectorUpdateOneRequiredWithoutHotelsInput>;
   lat?: Maybe<Float>;
@@ -1545,8 +1559,8 @@ export interface TeamUpdateWithWhereUniqueWithoutUsersInput {
 export interface TeamUpdateWithoutUsersDataInput {
   sector?: Maybe<SectorUpdateOneRequiredWithoutTeamsInput>;
   visits?: Maybe<VisitUpdateManyWithoutTeamInput>;
-  startAt?: Maybe<DateTimeInput>;
-  endAt?: Maybe<DateTimeInput>;
+  startDate?: Maybe<DateTimeInput>;
+  endDate?: Maybe<DateTimeInput>;
 }
 
 export interface SectorUpdateOneRequiredWithoutTeamsInput {
@@ -1600,6 +1614,7 @@ export interface HotelUpdateWithoutSectorDataInput {
   active?: Maybe<Boolean>;
   rooms?: Maybe<Int>;
   lastVisit?: Maybe<DateTimeInput>;
+  criticity?: Maybe<Float>;
   score?: Maybe<Float>;
   lat?: Maybe<Float>;
   long?: Maybe<Float>;
@@ -1649,8 +1664,8 @@ export interface TeamUpdateOneRequiredWithoutVisitsInput {
 export interface TeamUpdateWithoutVisitsDataInput {
   sector?: Maybe<SectorUpdateOneRequiredWithoutTeamsInput>;
   users?: Maybe<UserUpdateManyWithoutTeamsInput>;
-  startAt?: Maybe<DateTimeInput>;
-  endAt?: Maybe<DateTimeInput>;
+  startDate?: Maybe<DateTimeInput>;
+  endDate?: Maybe<DateTimeInput>;
 }
 
 export interface UserUpdateManyWithoutTeamsInput {
@@ -1733,8 +1748,8 @@ export interface TeamUpdateWithWhereUniqueWithoutSectorInput {
 export interface TeamUpdateWithoutSectorDataInput {
   users?: Maybe<UserUpdateManyWithoutTeamsInput>;
   visits?: Maybe<VisitUpdateManyWithoutTeamInput>;
-  startAt?: Maybe<DateTimeInput>;
-  endAt?: Maybe<DateTimeInput>;
+  startDate?: Maybe<DateTimeInput>;
+  endDate?: Maybe<DateTimeInput>;
 }
 
 export interface VisitUpdateManyWithoutTeamInput {
@@ -1788,6 +1803,7 @@ export interface HotelUpdateWithoutVisitsDataInput {
   active?: Maybe<Boolean>;
   rooms?: Maybe<Int>;
   lastVisit?: Maybe<DateTimeInput>;
+  criticity?: Maybe<Float>;
   score?: Maybe<Float>;
   sector?: Maybe<SectorUpdateOneRequiredWithoutHotelsInput>;
   lat?: Maybe<Float>;
@@ -2043,22 +2059,22 @@ export interface TeamScalarWhereInput {
   id_not_starts_with?: Maybe<ID_Input>;
   id_ends_with?: Maybe<ID_Input>;
   id_not_ends_with?: Maybe<ID_Input>;
-  startAt?: Maybe<DateTimeInput>;
-  startAt_not?: Maybe<DateTimeInput>;
-  startAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  startAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  startAt_lt?: Maybe<DateTimeInput>;
-  startAt_lte?: Maybe<DateTimeInput>;
-  startAt_gt?: Maybe<DateTimeInput>;
-  startAt_gte?: Maybe<DateTimeInput>;
-  endAt?: Maybe<DateTimeInput>;
-  endAt_not?: Maybe<DateTimeInput>;
-  endAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  endAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  endAt_lt?: Maybe<DateTimeInput>;
-  endAt_lte?: Maybe<DateTimeInput>;
-  endAt_gt?: Maybe<DateTimeInput>;
-  endAt_gte?: Maybe<DateTimeInput>;
+  startDate?: Maybe<DateTimeInput>;
+  startDate_not?: Maybe<DateTimeInput>;
+  startDate_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  startDate_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  startDate_lt?: Maybe<DateTimeInput>;
+  startDate_lte?: Maybe<DateTimeInput>;
+  startDate_gt?: Maybe<DateTimeInput>;
+  startDate_gte?: Maybe<DateTimeInput>;
+  endDate?: Maybe<DateTimeInput>;
+  endDate_not?: Maybe<DateTimeInput>;
+  endDate_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  endDate_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  endDate_lt?: Maybe<DateTimeInput>;
+  endDate_lte?: Maybe<DateTimeInput>;
+  endDate_gt?: Maybe<DateTimeInput>;
+  endDate_gte?: Maybe<DateTimeInput>;
   createdAt?: Maybe<DateTimeInput>;
   createdAt_not?: Maybe<DateTimeInput>;
   createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
@@ -2086,8 +2102,8 @@ export interface TeamUpdateManyWithWhereNestedInput {
 }
 
 export interface TeamUpdateManyDataInput {
-  startAt?: Maybe<DateTimeInput>;
-  endAt?: Maybe<DateTimeInput>;
+  startDate?: Maybe<DateTimeInput>;
+  endDate?: Maybe<DateTimeInput>;
 }
 
 export interface ScheduleUpdateManyWithoutSectorInput {
@@ -2466,6 +2482,14 @@ export interface HotelScalarWhereInput {
   lastVisit_lte?: Maybe<DateTimeInput>;
   lastVisit_gt?: Maybe<DateTimeInput>;
   lastVisit_gte?: Maybe<DateTimeInput>;
+  criticity?: Maybe<Float>;
+  criticity_not?: Maybe<Float>;
+  criticity_in?: Maybe<Float[] | Float>;
+  criticity_not_in?: Maybe<Float[] | Float>;
+  criticity_lt?: Maybe<Float>;
+  criticity_lte?: Maybe<Float>;
+  criticity_gt?: Maybe<Float>;
+  criticity_gte?: Maybe<Float>;
   score?: Maybe<Float>;
   score_not?: Maybe<Float>;
   score_in?: Maybe<Float[] | Float>;
@@ -2526,6 +2550,7 @@ export interface HotelUpdateManyDataInput {
   active?: Maybe<Boolean>;
   rooms?: Maybe<Int>;
   lastVisit?: Maybe<DateTimeInput>;
+  criticity?: Maybe<Float>;
   score?: Maybe<Float>;
   lat?: Maybe<Float>;
   long?: Maybe<Float>;
@@ -2563,6 +2588,7 @@ export interface HotelUpdateManyMutationInput {
   active?: Maybe<Boolean>;
   rooms?: Maybe<Int>;
   lastVisit?: Maybe<DateTimeInput>;
+  criticity?: Maybe<Float>;
   score?: Maybe<Float>;
   lat?: Maybe<Float>;
   long?: Maybe<Float>;
@@ -2595,6 +2621,7 @@ export interface HotelCreateWithoutResidentsInput {
   active: Boolean;
   rooms: Int;
   lastVisit?: Maybe<DateTimeInput>;
+  criticity?: Maybe<Float>;
   score?: Maybe<Float>;
   sector: SectorCreateOneWithoutHotelsInput;
   lat: Float;
@@ -2629,6 +2656,7 @@ export interface HotelUpdateWithoutResidentsDataInput {
   active?: Maybe<Boolean>;
   rooms?: Maybe<Int>;
   lastVisit?: Maybe<DateTimeInput>;
+  criticity?: Maybe<Float>;
   score?: Maybe<Float>;
   sector?: Maybe<SectorUpdateOneRequiredWithoutHotelsInput>;
   lat?: Maybe<Float>;
@@ -2803,21 +2831,21 @@ export interface TeamCreateInput {
   sector: SectorCreateOneWithoutTeamsInput;
   users?: Maybe<UserCreateManyWithoutTeamsInput>;
   visits?: Maybe<VisitCreateManyWithoutTeamInput>;
-  startAt: DateTimeInput;
-  endAt: DateTimeInput;
+  startDate: DateTimeInput;
+  endDate: DateTimeInput;
 }
 
 export interface TeamUpdateInput {
   sector?: Maybe<SectorUpdateOneRequiredWithoutTeamsInput>;
   users?: Maybe<UserUpdateManyWithoutTeamsInput>;
   visits?: Maybe<VisitUpdateManyWithoutTeamInput>;
-  startAt?: Maybe<DateTimeInput>;
-  endAt?: Maybe<DateTimeInput>;
+  startDate?: Maybe<DateTimeInput>;
+  endDate?: Maybe<DateTimeInput>;
 }
 
 export interface TeamUpdateManyMutationInput {
-  startAt?: Maybe<DateTimeInput>;
-  endAt?: Maybe<DateTimeInput>;
+  startDate?: Maybe<DateTimeInput>;
+  endDate?: Maybe<DateTimeInput>;
 }
 
 export interface UserCreateInput {
@@ -2989,6 +3017,7 @@ export interface Hotel {
   active: Boolean;
   rooms: Int;
   lastVisit?: DateTimeOutput;
+  criticity?: Float;
   score?: Float;
   lat: Float;
   long: Float;
@@ -3007,6 +3036,7 @@ export interface HotelPromise extends Promise<Hotel>, Fragmentable {
   active: () => Promise<Boolean>;
   rooms: () => Promise<Int>;
   lastVisit: () => Promise<DateTimeOutput>;
+  criticity: () => Promise<Float>;
   score: () => Promise<Float>;
   sector: <T = SectorPromise>() => T;
   lat: () => Promise<Float>;
@@ -3046,6 +3076,7 @@ export interface HotelSubscription
   active: () => Promise<AsyncIterator<Boolean>>;
   rooms: () => Promise<AsyncIterator<Int>>;
   lastVisit: () => Promise<AsyncIterator<DateTimeOutput>>;
+  criticity: () => Promise<AsyncIterator<Float>>;
   score: () => Promise<AsyncIterator<Float>>;
   sector: <T = SectorSubscription>() => T;
   lat: () => Promise<AsyncIterator<Float>>;
@@ -3085,6 +3116,7 @@ export interface HotelNullablePromise
   active: () => Promise<Boolean>;
   rooms: () => Promise<Int>;
   lastVisit: () => Promise<DateTimeOutput>;
+  criticity: () => Promise<Float>;
   score: () => Promise<Float>;
   sector: <T = SectorPromise>() => T;
   lat: () => Promise<Float>;
@@ -3339,8 +3371,8 @@ export interface UserNullablePromise
 
 export interface Team {
   id: ID_Output;
-  startAt: DateTimeOutput;
-  endAt: DateTimeOutput;
+  startDate: DateTimeOutput;
+  endDate: DateTimeOutput;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
 }
@@ -3366,8 +3398,8 @@ export interface TeamPromise extends Promise<Team>, Fragmentable {
     first?: Int;
     last?: Int;
   }) => T;
-  startAt: () => Promise<DateTimeOutput>;
-  endAt: () => Promise<DateTimeOutput>;
+  startDate: () => Promise<DateTimeOutput>;
+  endDate: () => Promise<DateTimeOutput>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
 }
@@ -3395,8 +3427,8 @@ export interface TeamSubscription
     first?: Int;
     last?: Int;
   }) => T;
-  startAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  endAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  startDate: () => Promise<AsyncIterator<DateTimeOutput>>;
+  endDate: () => Promise<AsyncIterator<DateTimeOutput>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
@@ -3424,8 +3456,8 @@ export interface TeamNullablePromise
     first?: Int;
     last?: Int;
   }) => T;
-  startAt: () => Promise<DateTimeOutput>;
-  endAt: () => Promise<DateTimeOutput>;
+  startDate: () => Promise<DateTimeOutput>;
+  endDate: () => Promise<DateTimeOutput>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
 }
@@ -4135,6 +4167,7 @@ export interface HotelPreviousValues {
   active: Boolean;
   rooms: Int;
   lastVisit?: DateTimeOutput;
+  criticity?: Float;
   score?: Float;
   lat: Float;
   long: Float;
@@ -4155,6 +4188,7 @@ export interface HotelPreviousValuesPromise
   active: () => Promise<Boolean>;
   rooms: () => Promise<Int>;
   lastVisit: () => Promise<DateTimeOutput>;
+  criticity: () => Promise<Float>;
   score: () => Promise<Float>;
   lat: () => Promise<Float>;
   long: () => Promise<Float>;
@@ -4175,6 +4209,7 @@ export interface HotelPreviousValuesSubscription
   active: () => Promise<AsyncIterator<Boolean>>;
   rooms: () => Promise<AsyncIterator<Int>>;
   lastVisit: () => Promise<AsyncIterator<DateTimeOutput>>;
+  criticity: () => Promise<AsyncIterator<Float>>;
   score: () => Promise<AsyncIterator<Float>>;
   lat: () => Promise<AsyncIterator<Float>>;
   long: () => Promise<AsyncIterator<Float>>;
@@ -4421,8 +4456,8 @@ export interface TeamSubscriptionPayloadSubscription
 
 export interface TeamPreviousValues {
   id: ID_Output;
-  startAt: DateTimeOutput;
-  endAt: DateTimeOutput;
+  startDate: DateTimeOutput;
+  endDate: DateTimeOutput;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
 }
@@ -4431,8 +4466,8 @@ export interface TeamPreviousValuesPromise
   extends Promise<TeamPreviousValues>,
     Fragmentable {
   id: () => Promise<ID_Output>;
-  startAt: () => Promise<DateTimeOutput>;
-  endAt: () => Promise<DateTimeOutput>;
+  startDate: () => Promise<DateTimeOutput>;
+  endDate: () => Promise<DateTimeOutput>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
 }
@@ -4441,8 +4476,8 @@ export interface TeamPreviousValuesSubscription
   extends Promise<AsyncIterator<TeamPreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
-  startAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  endAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  startDate: () => Promise<AsyncIterator<DateTimeOutput>>;
+  endDate: () => Promise<AsyncIterator<DateTimeOutput>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }

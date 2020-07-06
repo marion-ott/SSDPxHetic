@@ -2,31 +2,27 @@ import React, { useContext } from 'react'
 import userContext from '../context/userContext'
 import { StyleSheet, View, Image, TouchableOpacity } from 'react-native'
 import { Text, Layout } from '@ui-kitten/components'
-import Icon from '../components/molecules/CommonIcon'
-
-// import Details from '../components/molecules/Details'
+import Icon from '../components/atoms/Icon'
+import Colors from '../constants/Colors'
 import Words from '../constants/Words'
 import congrats from '../assets/images/congrats.png'
 
+import moment from 'moment'
 
 export default function RecapScreen() {
   const { user } = useContext(userContext)
 
   const getRandomWording = (array) => {
-    const sample = arr => arr[Math.floor(Math.random() * arr.length)]
+    const sample = (arr) => arr[Math.floor(Math.random() * arr.length)]
     let randomWord = sample(array)
 
     return randomWord
   }
 
-
   return (
     <Layout style={styles.container}>
       <View style={styles.recapMessage}>
-        <Image
-          style={styles.picto}
-          source={congrats}
-        />
+        <Image style={styles.picto} source={congrats} />
         <Text style={[styles.title, styles.labelUser]} category='h5'>
           {getRandomWording(Words.congratWords)} {user.firstName},
         </Text>
@@ -38,19 +34,41 @@ export default function RecapScreen() {
 
       <View style={styles.recapInfo}>
         <View style={styles.infoCtn}>
-          <Icon fill='#ffffff' style={styles.infoPicto} name='calendar-outline'/>
-          <Text style={[styles.infoTxt, styles.marginTop]}>Mardi 12</Text>
-          <Text style={styles.infoTxt}>Février 2020</Text>
+          <Icon
+            fill={Colors.white}
+            style={styles.infoPicto}
+            name='calendar-outline'
+            width={27}
+            height={27}
+          />
+          <Text style={[styles.infoTxt, styles.marginTop]}>
+            {moment().locale('fr').format('dddd Do')}
+          </Text>
+          <Text style={styles.infoTxt}>
+            {moment().locale('fr').format('MMMM YYYY')}
+          </Text>
         </View>
 
         <View style={[styles.infoCtn, styles.separator]}>
-          <Icon fill='#ffffff' style={styles.infoPicto} name='clock-outline' />
+          <Icon
+            fill={Colors.white}
+            style={styles.infoPicto}
+            name='clock-outline'
+            width={27}
+            height={27}
+          />
           <Text style={[styles.infoTxt, styles.marginTop]}>8h30</Text>
           <Text style={styles.infoTxt}>16h30</Text>
         </View>
 
         <View style={styles.infoCtn}>
-          <Icon fill='#ffffff' style={styles.infoPicto} name='home-outline' />
+          <Icon
+            fill={Colors.white}
+            style={styles.infoPicto}
+            name='home-outline'
+            width={27}
+            height={27}
+          />
           <Text style={[styles.infoTxt, styles.marginTop]}>23</Text>
           <Text style={styles.infoTxt}>chambres</Text>
         </View>
@@ -75,76 +93,78 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#3D52D5',
-    padding: 16,
+    backgroundColor: Colors.main,
+    padding: 16
   },
   picto: {
     marginBottom: 40,
+    width: 122,
+    height: 122
   },
   title: {
-    color: '#FFFFFF',
+    color: Colors.white,
     fontSize: 32,
-    fontWeight: '500',
+    fontWeight: 'bold',
     lineHeight: 40,
-    textAlign: 'center',
+    textAlign: 'center'
   },
   recapMessage: {
     alignItems: 'center',
-    marginBottom: 40,
+    marginBottom: 40
   },
   recapInfo: {
     flexDirection: 'row',
     justifyContent: 'center',
-    backgroundColor: '#7D8FFF',
+    backgroundColor: '#6E7DE0',
     borderRadius: 20,
     width: '100%',
+    maxWidth: 345,
     height: 176,
     marginBottom: 42,
     paddingTop: 30,
-    paddingBottom: 30,
+    paddingBottom: 30
   },
   infoCtn: {
     width: 115,
     padding: 8,
     justifyContent: 'center',
     alignItems: 'center',
-  height: '100%',
+    height: '100%'
   },
   infoPicto: {
-    backgroundColor: '#FFFFFF',
-    marginBottom: 27,
+    backgroundColor: Colors.white,
+    marginBottom: 27
   },
   infoTxt: {
-    // height: 38,
-    // width: 70,
-    color: '#FFFFFF',
+    color: Colors.white,
     fontSize: 16,
     textAlign: 'center',
-    lineHeight: 19,
+    textTransform: 'capitalize',
+    lineHeight: 19
   },
   button: {
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: Colors.white,
     borderRadius: 30,
     width: '100%',
-    height: 56,
+    maxWidth: 345,
+    height: 56
   },
   buttonLabel: {
-    color: '#000000',
+    color: '#241F1F',
     fontSize: 16,
-    fontWeight: 'bold',
-    lineHeight: 19,
+    fontWeight: '500',
+    lineHeight: 19
   },
   separator: {
     borderWidth: 3,
     borderTopWidth: 0,
     borderBottomWidth: 0,
     borderLeftColor: 'rgba(255, 255, 255, 0.3)',
-    borderRightColor: 'rgba(255, 255, 255, 0.3)',
+    borderRightColor: 'rgba(255, 255, 255, 0.3)'
   },
   marginTop: {
-    marginTop: 27,
+    marginTop: 27
   }
-
 })

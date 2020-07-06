@@ -2,7 +2,7 @@ scalar DateTime
 
 type Query {
 	# User
-	user(id: ID!): User!
+	user(id: ID!, query: String): User!
 	users(
 		query: String
 		first: Int
@@ -33,7 +33,8 @@ type Query {
 
 	# Visit
 	visit(id: ID!): Visit!
-	visits: [Visit!]!
+	visits(query: String): [Visit!]!
+	myVisits(teamId: ID!, date: String): [Visit!]
 
 	# Team
 	team(id: ID!): Team!
@@ -53,8 +54,6 @@ type Query {
 
 	# Count
 	count(type: String!, query: String): Int!
-
-	test(id: ID!): String
 }
 
 type Mutation {
@@ -305,6 +304,7 @@ type Hotel {
 	active: Boolean!
 	rooms: Int!
 	lastVisit: DateTime
+	criticity: Float
 	score: Float
 	sector: Sector!
 	lat: Float!
@@ -321,6 +321,7 @@ input CreateHotelInput {
 	zipCode: Int!
 	city: String!
 	active: Boolean
+	criticity: Float
 	rooms: Int!
 	lastVisit: DateTime
 	score: Float
@@ -353,6 +354,8 @@ enum HotelOrderByInput {
 	rooms_DESC
 	lastVisit_ASC
 	lastVisit_DESC
+	criticity_ASC
+	criticity_DESC
 	score_ASC
 	score_DESC
 	createdAt_ASC

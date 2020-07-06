@@ -13,7 +13,7 @@ export const CREATE_HOTEL = gql`
 `
 
 export const UPDATE_HOTEL = gql`
-  mutation UpdateUser($id: ID, $data: UpdateHotelInput) {
+  mutation UpdateHotel($id: ID, $data: UpdateHotelInput) {
     updateHotel(id: $id, data: $data) {
       id
       firstName

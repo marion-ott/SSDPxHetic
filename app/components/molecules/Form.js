@@ -2,6 +2,7 @@ import React from 'react'
 import { Formik } from 'formik'
 import { View, StyleSheet } from 'react-native'
 import { Input, Button } from '@ui-kitten/components'
+import Colors from '../../constants/Colors'
 
 export const Form = ({ callback, data, id }) => (
   <Formik
@@ -73,9 +74,9 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 32,
-    backgroundColor: '#3D52D5',
+    backgroundColor: Colors.main,
     height: 55,
-    borderRadius: 30,
+    borderRadius: 30
   }
 })
 

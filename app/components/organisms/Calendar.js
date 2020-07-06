@@ -1,10 +1,11 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { View, StyleSheet } from 'react-native'
 import moment from 'moment'
 import { getDateStr } from '../../utils/index'
 import { Calendar } from 'react-native-calendars'
 import Day from 'react-native-calendars/src/calendar/day/basic'
 import { LocaleConfig } from 'react-native-calendars'
+import Colors from '../../constants/Colors'
 
 LocaleConfig.locales['fr'] = {
   monthNames: [
@@ -61,12 +62,12 @@ const CustomDay = ({ today, minDate, maxDate, ...props }) => {
   return <Day {...props} />
 }
 
-const CalendarElement = ({ today, selected, setSelected }) => {
+const CalendarElement = ({ today, selected, onChange }) => {
   const minDate = getDateStr(moment().subtract(5, 'weeks'))
   const maxDate = getDateStr(moment().add(5, 'weeks'))
 
   const onDayPress = (day) => {
-    setSelected(day.dateString)
+    onChange(day.dateString)
   }
 
   return (
@@ -106,17 +107,17 @@ const CalendarElement = ({ today, selected, setSelected }) => {
         hideArrows={false}
         onDayPress={onDayPress}
         theme={{
-          calendarBackground: '#3D52D5',
+          calendarBackground: Colors.main,
           selectedDayBackgroundColor: 'rgba(255, 255, 255, 0.25)',
-          selectedDayTextColor: '#ffffff',
-          todayTextColor: '#fff',
+          selectedDayTextColor: Colors.white,
+          todayTextColor: Colors.white,
           todayBackgroundColor: 'rgba(255, 255, 255, 0.15)',
-          dayTextColor: '#fff',
+          dayTextColor: Colors.white,
           textDisabledColor: 'rgba(255, 255, 255, 0.15)',
-          selectedDotColor: '#ffffff',
-          arrowColor: 'orange',
+          selectedDotColor: Colors.white,
+          arrowColor: Colors.white,
           disabledArrowColor: '#d9e1e8',
-          monthTextColor: '#fff',
+          monthTextColor: Colors.white,
           monthTextFontSize: 16,
           textDayFontWeight: 'bold',
           textDayFontSize: 15,
@@ -134,9 +135,9 @@ const CalendarElement = ({ today, selected, setSelected }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#3D52D5',
+    backgroundColor: Colors.main,
     paddingTop: 34,
-    paddingBottom: 44,
+    paddingBottom: 24,
     paddingLeft: 14,
     paddingRight: 14
   },

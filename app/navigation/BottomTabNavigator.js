@@ -9,7 +9,7 @@ import {
   ProfileScreen,
   RecapScreen
 } from '../screens'
-import Icon from '../components/molecules/Icon'
+import Icon from '../components/atoms/Icon'
 
 const BottomTab = createBottomTabNavigator()
 const INITIAL_ROUTE_NAME = 'Home'
@@ -91,8 +91,8 @@ export default function BottomTabNavigator({ navigation, route }) {
 
 const styles = StyleSheet.create({
   container: {
-    height: 50,
-    borderTopLeftRadius: 20,
-    borderTopRightRadius: 20
+    height: 80
+    // borderTopLeftRadius: 20,
+    // borderTopRightRadius: 20,
   }
 })

@@ -12,7 +12,6 @@ const Mutation = {
 	/** AUTH */
 	async login(parent, {data}, {prisma}) {
 		const {email, password} = data
-
 		const user = await prisma.user({email})
 		if (!user) {
 			throw new Error('user does not exist')

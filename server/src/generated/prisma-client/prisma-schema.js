@@ -57,6 +57,7 @@ type Hotel {
   active: Boolean!
   rooms: Int!
   lastVisit: DateTime
+  criticity: Float
   score: Float
   sector: Sector!
   lat: Float!
@@ -84,6 +85,7 @@ input HotelCreateInput {
   active: Boolean!
   rooms: Int!
   lastVisit: DateTime
+  criticity: Float
   score: Float
   sector: SectorCreateOneWithoutHotelsInput!
   lat: Float!
@@ -118,6 +120,7 @@ input HotelCreateWithoutResidentsInput {
   active: Boolean!
   rooms: Int!
   lastVisit: DateTime
+  criticity: Float
   score: Float
   sector: SectorCreateOneWithoutHotelsInput!
   lat: Float!
@@ -136,6 +139,7 @@ input HotelCreateWithoutSectorInput {
   active: Boolean!
   rooms: Int!
   lastVisit: DateTime
+  criticity: Float
   score: Float
   lat: Float!
   long: Float!
@@ -154,6 +158,7 @@ input HotelCreateWithoutVisitsInput {
   active: Boolean!
   rooms: Int!
   lastVisit: DateTime
+  criticity: Float
   score: Float
   sector: SectorCreateOneWithoutHotelsInput!
   lat: Float!
@@ -187,6 +192,8 @@ enum HotelOrderByInput {
   rooms_DESC
   lastVisit_ASC
   lastVisit_DESC
+  criticity_ASC
+  criticity_DESC
   score_ASC
   score_DESC
   lat_ASC
@@ -210,6 +217,7 @@ type HotelPreviousValues {
   active: Boolean!
   rooms: Int!
   lastVisit: DateTime
+  criticity: Float
   score: Float
   lat: Float!
   long: Float!
@@ -322,6 +330,14 @@ input HotelScalarWhereInput {
   lastVisit_lte: DateTime
   lastVisit_gt: DateTime
   lastVisit_gte: DateTime
+  criticity: Float
+  criticity_not: Float
+  criticity_in: [Float!]
+  criticity_not_in: [Float!]
+  criticity_lt: Float
+  criticity_lte: Float
+  criticity_gt: Float
+  criticity_gte: Float
   score: Float
   score_not: Float
   score_in: [Float!]
@@ -395,6 +411,7 @@ input HotelUpdateInput {
   active: Boolean
   rooms: Int
   lastVisit: DateTime
+  criticity: Float
   score: Float
   sector: SectorUpdateOneRequiredWithoutHotelsInput
   lat: Float
@@ -413,6 +430,7 @@ input HotelUpdateManyDataInput {
   active: Boolean
   rooms: Int
   lastVisit: DateTime
+  criticity: Float
   score: Float
   lat: Float
   long: Float
@@ -428,6 +446,7 @@ input HotelUpdateManyMutationInput {
   active: Boolean
   rooms: Int
   lastVisit: DateTime
+  criticity: Float
   score: Float
   lat: Float
   long: Float
@@ -476,6 +495,7 @@ input HotelUpdateWithoutResidentsDataInput {
   active: Boolean
   rooms: Int
   lastVisit: DateTime
+  criticity: Float
   score: Float
   sector: SectorUpdateOneRequiredWithoutHotelsInput
   lat: Float
@@ -493,6 +513,7 @@ input HotelUpdateWithoutSectorDataInput {
   active: Boolean
   rooms: Int
   lastVisit: DateTime
+  criticity: Float
   score: Float
   lat: Float
   long: Float
@@ -510,6 +531,7 @@ input HotelUpdateWithoutVisitsDataInput {
   active: Boolean
   rooms: Int
   lastVisit: DateTime
+  criticity: Float
   score: Float
   sector: SectorUpdateOneRequiredWithoutHotelsInput
   lat: Float
@@ -643,6 +665,14 @@ input HotelWhereInput {
   lastVisit_lte: DateTime
   lastVisit_gt: DateTime
   lastVisit_gte: DateTime
+  criticity: Float
+  criticity_not: Float
+  criticity_in: [Float!]
+  criticity_not_in: [Float!]
+  criticity_lt: Float
+  criticity_lte: Float
+  criticity_gt: Float
+  criticity_gte: Float
   score: Float
   score_not: Float
   score_in: [Float!]
@@ -1875,8 +1905,8 @@ type Team {
   sector: Sector!
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
   visits(where: VisitWhereInput, orderBy: VisitOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Visit!]
-  startAt: DateTime!
-  endAt: DateTime!
+  startDate: DateTime!
+  endDate: DateTime!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -1892,8 +1922,8 @@ input TeamCreateInput {
   sector: SectorCreateOneWithoutTeamsInput!
   users: UserCreateManyWithoutTeamsInput
   visits: VisitCreateManyWithoutTeamInput
-  startAt: DateTime!
-  endAt: DateTime!
+  startDate: DateTime!
+  endDate: DateTime!
 }
 
 input TeamCreateManyWithoutSectorInput {
@@ -1915,24 +1945,24 @@ input TeamCreateWithoutSectorInput {
   id: ID
   users: UserCreateManyWithoutTeamsInput
   visits: VisitCreateManyWithoutTeamInput
-  startAt: DateTime!
-  endAt: DateTime!
+  startDate: DateTime!
+  endDate: DateTime!
 }
 
 input TeamCreateWithoutUsersInput {
   id: ID
   sector: SectorCreateOneWithoutTeamsInput!
   visits: VisitCreateManyWithoutTeamInput
-  startAt: DateTime!
-  endAt: DateTime!
+  startDate: DateTime!
+  endDate: DateTime!
 }
 
 input TeamCreateWithoutVisitsInput {
   id: ID
   sector: SectorCreateOneWithoutTeamsInput!
   users: UserCreateManyWithoutTeamsInput
-  startAt: DateTime!
-  endAt: DateTime!
+  startDate: DateTime!
+  endDate: DateTime!
 }
 
 type TeamEdge {
@@ -1943,10 +1973,10 @@ type TeamEdge {
 enum TeamOrderByInput {
   id_ASC
   id_DESC
-  startAt_ASC
-  startAt_DESC
-  endAt_ASC
-  endAt_DESC
+  startDate_ASC
+  startDate_DESC
+  endDate_ASC
+  endDate_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -1955,8 +1985,8 @@ enum TeamOrderByInput {
 
 type TeamPreviousValues {
   id: ID!
-  startAt: DateTime!
-  endAt: DateTime!
+  startDate: DateTime!
+  endDate: DateTime!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -1976,22 +2006,22 @@ input TeamScalarWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
-  startAt: DateTime
-  startAt_not: DateTime
-  startAt_in: [DateTime!]
-  startAt_not_in: [DateTime!]
-  startAt_lt: DateTime
-  startAt_lte: DateTime
-  startAt_gt: DateTime
-  startAt_gte: DateTime
-  endAt: DateTime
-  endAt_not: DateTime
-  endAt_in: [DateTime!]
-  endAt_not_in: [DateTime!]
-  endAt_lt: DateTime
-  endAt_lte: DateTime
-  endAt_gt: DateTime
-  endAt_gte: DateTime
+  startDate: DateTime
+  startDate_not: DateTime
+  startDate_in: [DateTime!]
+  startDate_not_in: [DateTime!]
+  startDate_lt: DateTime
+  startDate_lte: DateTime
+  startDate_gt: DateTime
+  startDate_gte: DateTime
+  endDate: DateTime
+  endDate_not: DateTime
+  endDate_in: [DateTime!]
+  endDate_not_in: [DateTime!]
+  endDate_lt: DateTime
+  endDate_lte: DateTime
+  endDate_gt: DateTime
+  endDate_gte: DateTime
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]
@@ -2035,18 +2065,18 @@ input TeamUpdateInput {
   sector: SectorUpdateOneRequiredWithoutTeamsInput
   users: UserUpdateManyWithoutTeamsInput
   visits: VisitUpdateManyWithoutTeamInput
-  startAt: DateTime
-  endAt: DateTime
+  startDate: DateTime
+  endDate: DateTime
 }
 
 input TeamUpdateManyDataInput {
-  startAt: DateTime
-  endAt: DateTime
+  startDate: DateTime
+  endDate: DateTime
 }
 
 input TeamUpdateManyMutationInput {
-  startAt: DateTime
-  endAt: DateTime
+  startDate: DateTime
+  endDate: DateTime
 }
 
 input TeamUpdateManyWithoutSectorInput {
@@ -2088,22 +2118,22 @@ input TeamUpdateOneRequiredWithoutVisitsInput {
 input TeamUpdateWithoutSectorDataInput {
   users: UserUpdateManyWithoutTeamsInput
   visits: VisitUpdateManyWithoutTeamInput
-  startAt: DateTime
-  endAt: DateTime
+  startDate: DateTime
+  endDate: DateTime
 }
 
 input TeamUpdateWithoutUsersDataInput {
   sector: SectorUpdateOneRequiredWithoutTeamsInput
   visits: VisitUpdateManyWithoutTeamInput
-  startAt: DateTime
-  endAt: DateTime
+  startDate: DateTime
+  endDate: DateTime
 }
 
 input TeamUpdateWithoutVisitsDataInput {
   sector: SectorUpdateOneRequiredWithoutTeamsInput
   users: UserUpdateManyWithoutTeamsInput
-  startAt: DateTime
-  endAt: DateTime
+  startDate: DateTime
+  endDate: DateTime
 }
 
 input TeamUpdateWithWhereUniqueWithoutSectorInput {
@@ -2155,22 +2185,22 @@ input TeamWhereInput {
   visits_every: VisitWhereInput
   visits_some: VisitWhereInput
   visits_none: VisitWhereInput
-  startAt: DateTime
-  startAt_not: DateTime
-  startAt_in: [DateTime!]
-  startAt_not_in: [DateTime!]
-  startAt_lt: DateTime
-  startAt_lte: DateTime
-  startAt_gt: DateTime
-  startAt_gte: DateTime
-  endAt: DateTime
-  endAt_not: DateTime
-  endAt_in: [DateTime!]
-  endAt_not_in: [DateTime!]
-  endAt_lt: DateTime
-  endAt_lte: DateTime
-  endAt_gt: DateTime
-  endAt_gte: DateTime
+  startDate: DateTime
+  startDate_not: DateTime
+  startDate_in: [DateTime!]
+  startDate_not_in: [DateTime!]
+  startDate_lt: DateTime
+  startDate_lte: DateTime
+  startDate_gt: DateTime
+  startDate_gte: DateTime
+  endDate: DateTime
+  endDate_not: DateTime
+  endDate_in: [DateTime!]
+  endDate_not_in: [DateTime!]
+  endDate_lt: DateTime
+  endDate_lte: DateTime
+  endDate_gt: DateTime
+  endDate_gte: DateTime
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]
