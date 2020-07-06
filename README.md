@@ -39,6 +39,7 @@ $ docker exec ssdpxhetic_server_1 yarn deploy
 
 ```shell
 $ docker exec ssdpxhetic_server_1 yarn data --import
+$ docker exec ssdpxhetic_server_1 yarn deploy
 ```
 
 ###### Quit process (ctrl+c) once import is complete
