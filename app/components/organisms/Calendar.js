@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.main,
     paddingTop: 34,
-    paddingBottom: 44,
+    paddingBottom: 24,
     paddingLeft: 14,
     paddingRight: 14
   },

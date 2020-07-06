@@ -2,9 +2,9 @@ import React from 'react'
 import { StyleSheet, View, ScrollView } from 'react-native'
 import { Text, Divider } from '@ui-kitten/components'
 import Colors from '../../constants/Colors'
-import HotelCard from '../molecules/HotelCard'
+import { HotelCard } from '../molecules'
 
-const CardList = ({ label, cards }) => {
+const CardList = ({ label, cards, hasCta }) => {
   return (
     <View style={styles.middleContainer}>
       {label && (
@@ -15,7 +15,12 @@ const CardList = ({ label, cards }) => {
       <Divider style={[{ marginBottom: 10 }]} />
       <ScrollView style={styles.cardsContain}>
         {cards.map(({ id, hotel }) => (
-          <HotelCard key={id} {...hotel} backgroundColor='#FFF2EB' />
+          <HotelCard
+            hasCta={hasCta}
+            key={id}
+            {...hotel}
+            backgroundColor='#FFF2EB'
+          />
         ))}
         {/* 
           //TODO: Chunk results in 2 array (prio & standard)
@@ -72,8 +77,7 @@ const styles = StyleSheet.create({
     marginTop: 20
   },
   cardsContain: {
-    flex: 1,
-    marginTop: 10
+    flex: 1
   },
   details: {
     flexDirection: 'row',

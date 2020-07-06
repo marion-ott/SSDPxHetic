@@ -5,8 +5,8 @@ import moment from 'moment'
 import useGetVisits from '../hooks/useGetVisits'
 import { StyleSheet, View } from 'react-native'
 import { Text, Layout } from '@ui-kitten/components'
-import CardList from '../components/organisms/CardList'
-import Details from '../components/molecules/Details'
+import { CardList } from '../components/organisms'
+import { Details } from '../components/molecules'
 import Colors from '../constants/Colors'
 
 export default function HomeScreen() {
@@ -43,7 +43,7 @@ export default function HomeScreen() {
   }, [data])
 
   if (loading) {
-    return <p>loading</p>
+    return <Text>loading</Text>
   }
 
   return (
@@ -66,7 +66,13 @@ export default function HomeScreen() {
               <Details key={index} {...el} />
             ))}
           </View>
-          {visits && <CardList label={'Visites prioritaires'} cards={visits} />}
+          {visits && (
+            <CardList
+              hasCta={true}
+              label={'Visites prioritaires'}
+              cards={visits}
+            />
+          )}
         </View>
       </Layout>
     </View>

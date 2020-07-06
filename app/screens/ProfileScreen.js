@@ -3,7 +3,7 @@ import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import { Text, Input, Layout } from '@ui-kitten/components'
 import userContext from '../context/userContext'
-import Icon from '../components/atoms/Icon'
+import { Icon } from '../components/atoms'
 import Colors from '../constants/Colors'
 import { useMutation } from '@apollo/react-hooks'
 // import { UPDATE_USER } from './../graphql/mutations/users'
@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
     marginLeft: 18,
     textAlign: 'left',
     fontSize: 16,
-    fontWeight: 600,
+    fontWeight: '600',
     textDecorationLine: 'underline'
   },
   form: {
