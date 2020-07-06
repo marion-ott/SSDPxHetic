@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, TouchableOpacity } from 'react-native';
-import { Card, Text, Popover, Layout, Button } from '@ui-kitten/components';
+import { StyleSheet, View, TouchableOpacity, Linking, Platform } from 'react-native';
+import { Card, Text, Popover, Layout } from '@ui-kitten/components';
 import { Ionicons } from '@expo/vector-icons';
 
 import OpenURLButton from "./OpenURLButton"
@@ -19,6 +19,26 @@ const HostCard = ({ backgroundColor }) => {
         </TouchableOpacity>
     );
 
+    const openMap = () => {
+        let m = Platform.select({
+            ios: () => {
+                Linking.openURL('http://maps.apple.com/maps?daddr=38.7875851,-9.3906089');
+            },
+            android: () => {
+                Linking.openURL('http://maps.google.com/maps?daddr=38.7875851,-9.3906089').catch(err => console.error('An error occurred', err));;
+            }
+        });
+
+        m();
+    }
+
+    const startTicket = () => {
+        console.log("start")
+    }
+    const reportTicket = () => {
+        console.log("report")
+    }
+
     const Header = (props) => {
         return (
             <View {...props}>
@@ -29,7 +49,7 @@ const HostCard = ({ backgroundColor }) => {
                         anchor={renderToggleButton}
                         onBackdropPress={() => setOptions(false)}>
                         <Layout style={styles.content}>
-                            <TouchableOpacity activeOpacity={0.7} style={styles.touchableButton} >
+                            <TouchableOpacity onPress={openMap} activeOpacity={0.7} style={styles.touchableButton} >
                                 <Text style={styles.TextStyle}>Itinéraire</Text>
                             </TouchableOpacity>
                             <View style={styles.callButton}>
@@ -55,15 +75,17 @@ const HostCard = ({ backgroundColor }) => {
             </View>
             {actions ?
                 <View style={styles.cardopen}>
-                    <View style={styles.reportContainer}>
+                    <TouchableOpacity onPress={() => reportTicket()} activeOpacity={0.7} style={styles.reportContainer}>
                         <View style={styles.borderLine}>
                             <Text style={[styles.text, styles.report]} category='h6'>Reporter</Text>
                         </View>
-                    </View>
-                    <View style={styles.startContainer}>
-                        <Ionicons style={styles.startIcon} name="md-play" size={24} color="black" />
-                        <Text appearance='alternative' style={[styles.text, styles.start]} category='h6'>Commencer</Text>
-                    </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => startTicket()} activeOpacity={0.7} style={styles.touchableButton} >
+                        <View style={styles.startContainer}>
+                            <Ionicons style={styles.startIcon} name="md-play" size={24} color="black" />
+                            <Text appearance='alternative' style={[styles.text, styles.start]} category='h6'>Commencer</Text>
+                        </View>
+                    </TouchableOpacity>
                 </View>
                 :
                 null}

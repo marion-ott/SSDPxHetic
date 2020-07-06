@@ -45,7 +45,6 @@ export default function HomeScreen() {
               return (
                 <Details
                   key={index}
-                  backgroundColor='#F4F4F4'
                   {...card}
                 />
               )
