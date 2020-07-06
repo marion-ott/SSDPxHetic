@@ -7,6 +7,7 @@ type User {
 	sector: Sector @relation(name: "UserSector", link: INLINE)
 	address: String
 	email: String! @unique
+	phone: String
 	password: String
 	teams: [Team!] @relation(name: "UserTeams")
 	createdAt: DateTime! @createdAt
@@ -43,6 +44,7 @@ type Hotel {
 	address: String!
 	zipCode: Int!
 	city: String!
+	phone: String
 	active: Boolean!
 	rooms: Int!
 	lastVisit: DateTime

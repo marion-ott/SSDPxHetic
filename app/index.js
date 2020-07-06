@@ -41,7 +41,7 @@ export default () => {
       phone: '060000000'
     },
     schedule: { startTime: '08h30', endTime: '16h30', __typename: 'Shift' },
-    teamId: '5f022e9b1ed7970008b46531',
+    teamId: '5f03013924aa9a0007167c21',
     loggedIn: true
   })
 
