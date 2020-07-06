@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react'
 import userContext from '../context/userContext'
 import dateContext from '../context/dateContext'
+import recapContext from '../context/recapContext'
 import moment from 'moment'
 import useGetVisits from '../hooks/useGetVisits'
 import { StyleSheet, View } from 'react-native'
@@ -11,9 +12,11 @@ import Colors from '../constants/Colors'
 
 export default function HomeScreen() {
   const { user, teamId, schedule } = useContext(userContext)
+  const { hotels, rooms } = useContext(recapContext)
   const { today } = useContext(dateContext)
   const [visits, setVisits] = useState([])
   const [details, setDetails] = useState([])
+  const [recap, setRecap] = useState([])
 
   const { loading, error, data } = useGetVisits(teamId, today)
 
@@ -24,6 +27,10 @@ export default function HomeScreen() {
       let sum = 0
       myVisits.forEach(({ hotel }) => (sum += hotel.rooms))
 
+      setRecap({
+        hotels: data.myVisits.length,
+        rooms: sum
+      })
       setVisits(myVisits)
       setDetails([
         {
@@ -67,11 +74,7 @@ export default function HomeScreen() {
             ))}
           </View>
           {visits && (
-            <CardList
-              hasCta={true}
-              label={'Visites prioritaires'}
-              cards={visits}
-            />
+            <CardList hasCta={true} label={'Visites'} cards={visits} />
           )}
         </View>
       </Layout>

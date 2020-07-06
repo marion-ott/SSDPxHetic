@@ -1,5 +1,6 @@
 import React, { useContext } from 'react'
 import userContext from '../context/userContext'
+import recapContext from '../context/recapContext'
 import { StyleSheet, View, Image, TouchableOpacity } from 'react-native'
 import { Text, Layout } from '@ui-kitten/components'
 import Icon from '../components/atoms/Icon'
@@ -10,7 +11,8 @@ import congrats from '../assets/images/congrats.png'
 import moment from 'moment'
 
 export default function RecapScreen() {
-  const { user } = useContext(userContext)
+  const { user, schedule } = useContext(userContext)
+  const { hotels, rooms } = useContext(recapContext)
 
   const getRandomWording = (array) => {
     const sample = (arr) => arr[Math.floor(Math.random() * arr.length)]
@@ -57,8 +59,10 @@ export default function RecapScreen() {
             width={27}
             height={27}
           />
-          <Text style={[styles.infoTxt, styles.marginTop]}>8h30</Text>
-          <Text style={styles.infoTxt}>16h30</Text>
+          <Text style={[styles.infoTxt, styles.marginTop]}>
+            {schedule.startTime}
+          </Text>
+          <Text style={styles.infoTxt}>{schedule.endTime}</Text>
         </View>
 
         <View style={styles.infoCtn}>
@@ -69,7 +73,7 @@ export default function RecapScreen() {
             width={27}
             height={27}
           />
-          <Text style={[styles.infoTxt, styles.marginTop]}>23</Text>
+          <Text style={[styles.infoTxt, styles.marginTop]}>{rooms}</Text>
           <Text style={styles.infoTxt}>chambres</Text>
         </View>
       </View>
