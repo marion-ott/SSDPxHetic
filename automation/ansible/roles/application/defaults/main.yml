@@ -4,7 +4,7 @@ application_directory: "/home/{{application_owner}}/application"
 
 application_server_image: paulehair/ssdp-server
 application_server_port: 9000
-application_server_endpoint: http://localhost
+application_server_endpoint: http://3.8.20.81
 
 application_client_image: paulehair/ssdp-client
 application_client_port: 80

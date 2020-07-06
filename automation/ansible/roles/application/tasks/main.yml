@@ -7,6 +7,8 @@
     owner: "{{ application_owner }}"
     group: "{{ application_group }}"
 
+- name: Upload pem
+
 - name: Upload env file
   template:
     src: templates/prod.env
