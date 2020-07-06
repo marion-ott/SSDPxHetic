@@ -3,11 +3,11 @@
 ### Install dependencies
 ```shell
 $ cd client
-$ yarn install
+$ yarn
 $ cd server
-$ yarn install
+$ yarn
 $ cd app
-$ expo install
+$ yarn
 ```
 
 ### Create environment variables file
