@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
 import moment from 'moment'
 import { Button } from '@ui-kitten/components'
-import { Text } from 'react-native'
+import { Text, ActivityIndicator } from 'react-native'
 import userContext from '../context/userContext'
 import dateContext from '../context/dateContext'
 import useGetVisits from '../hooks/useGetVisits'
@@ -34,7 +34,11 @@ export default function CalendarScreen() {
         onChange={(day) => setSelected(day)}
       />
       <View style={styles.visits}>
-        {loading ? <Text>loading</Text> : visits && <CardList cards={visits} />}
+        {loading ? (
+          <ActivityIndicator size='small' color={Colors.main} />
+        ) : (
+          visits && <CardList cards={visits} />
+        )}
       </View>
     </View>
   )

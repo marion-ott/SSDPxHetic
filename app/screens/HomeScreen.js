@@ -4,7 +4,7 @@ import dateContext from '../context/dateContext'
 import recapContext from '../context/recapContext'
 import moment from 'moment'
 import useGetVisits from '../hooks/useGetVisits'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, View, ActivityIndicator } from 'react-native'
 import { Text, Layout } from '@ui-kitten/components'
 import { CardList } from '../components/organisms'
 import { Details } from '../components/molecules'
@@ -50,7 +50,7 @@ export default function HomeScreen() {
   }, [data])
 
   if (loading) {
-    return <Text>loading</Text>
+    return <ActivityIndicator size='small' color={Colors.main} />
   }
 
   return (
