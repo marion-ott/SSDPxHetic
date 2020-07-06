@@ -7,8 +7,6 @@
     owner: "{{ application_owner }}"
     group: "{{ application_group }}"
 
-- name: Upload pem
-
 - name: Upload env file
   template:
     src: templates/prod.env
@@ -24,6 +22,6 @@
     group: "{{ application_group }}"
   notify: Restart docker-compose project
 
-- name: Start docker-compose project
+- name: Start docker-compose
   docker_compose:
     project_src: "{{ application_directory }}"

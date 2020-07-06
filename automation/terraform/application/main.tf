@@ -57,6 +57,7 @@ resource "aws_security_group" "application" {
   }
 }
 
+# DocumentDB instance
 data "aws_subnet_ids" "subnet_ids" {
   vpc_id = aws_default_vpc.default.id
 }
@@ -70,15 +71,26 @@ resource "aws_docdb_subnet_group" "documentdb_subnet" {
   }
 }
 
-# DocumentDB instance
+resource "aws_docdb_cluster_parameter_group" "documentdb_paramgp" {
+  family      = "docdb3.6"
+  name        = "${var.stage}-documentdb-paramgp"
+  description = "docdb cluster parameter group"
+
+  parameter {
+    name  = "tls"
+    value = "disabled"
+  }
+}
+
 resource "aws_docdb_cluster" "documentdb" {
-  cluster_identifier      = "${var.stage}-documentdb"
-  engine                 = "docdb"
-  master_username        = "foo"
-  master_password        = "mustbeeightchars"
-  skip_final_snapshot     = true
-  db_subnet_group_name   = aws_docdb_subnet_group.documentdb_subnet.name
-  vpc_security_group_ids = [aws_security_group.documentdb.id]
+  cluster_identifier               = "${var.stage}-documentdb"
+  engine                          = "docdb"
+  master_username                 = "foo"
+  master_password                 = "mustbeeightchars"
+  skip_final_snapshot              = true
+  db_subnet_group_name            = aws_docdb_subnet_group.documentdb_subnet.name
+  db_cluster_parameter_group_name = aws_docdb_cluster_parameter_group.documentdb_paramgp.name
+  vpc_security_group_ids          = [aws_security_group.documentdb.id]
 }
 
 resource "aws_security_group" "documentdb" {
