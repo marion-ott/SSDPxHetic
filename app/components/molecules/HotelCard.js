@@ -10,6 +10,8 @@ const HotelCard = ({
   address,
   city,
   zipCode,
+  lat,
+  long,
   rooms,
   hasCta = false
 }) => {
@@ -25,7 +27,13 @@ const HotelCard = ({
       onPress={() => displayStartOrReport()}
       style={[styles.card, { backgroundColor }]}
       header={() => (
-        <CardHead name={name} options={options} setOptions={setOptions} />
+        <CardHead
+          name={name}
+          options={options}
+          lat={lat}
+          long={long}
+          setOptions={setOptions}
+        />
       )}>
       <View style={styles.content}>
         <View>
