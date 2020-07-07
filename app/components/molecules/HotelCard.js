@@ -58,27 +58,38 @@ const HotelCard = ({
         </View>
       </View>
       {actions && (
-        <View style={styles.cardopen}>
-          <View style={styles.reportContainer}>
-            <Text style={[styles.text, styles.report]} category='h6'>
-              Reporter
+        <View
+          style={styles.cardopen}
+        >
+          <TouchableOpacity
+            onPress={() => reportTicket()}
+            activeOpacity={0.7}
+            style={styles.reportContainer}>
+            <View style={styles.borderLine}>
+              <Text style={[styles.text, styles.report]} category='h6'>Reporter</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => startTicket()}
+            activeOpacity={0.7}
+            style={styles.touchableButton}
+          >
+            <View style={styles.startContainer}>
+              <Icon
+                style={styles.startIcon}
+                name='play-circle-outline'
+                width={24}
+                height={24}
+                fill='white'
+              />
+              <Text
+                appearance='alternative'
+                style={[styles.text, styles.startLabel]}
+                category='h6'>
+                Commencer
             </Text>
-          </View>
-          <View style={styles.startContainer}>
-            <Icon
-              style={styles.startIcon}
-              name='play-circle-outline'
-              width={24}
-              height={24}
-              fill='white'
-            />
-            <Text
-              appearance='alternative'
-              style={[styles.text, styles.startLabel]}
-              category='h6'>
-              Commencer
-            </Text>
-          </View>
+            </View>
+          </TouchableOpacity>
         </View>
       )}
     </Card>
@@ -136,6 +147,12 @@ const styles = StyleSheet.create({
   startLabel: {
     color: 'white',
     textAlign: 'center'
+  },
+  borderLine: {
+    borderBottomWidth: 1,
+    textAlign: 'center',
+    borderBottomColor: "#FF8139",
+    width: 70
   }
 })
 
