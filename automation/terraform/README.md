@@ -1,5 +1,9 @@
 # Création d'une infrastructure AWS avec terraform
 
+## Vue d'ensemble
+
+![architecture screenshot](./assets/architecture.png)
+
 ## Prérequis
 * Terraform
 * un compte AWS
