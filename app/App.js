@@ -20,9 +20,7 @@ const httpLink = createHttpLink({ uri: devApiUrl })
 /* Configuration du header pour l'API */
 const authLink = setContext(async (_, { headers }) => {
   const token = await SecureStore.getItemAsync('token')
-  
-  // console.log(token)
-
+  console.log(token)
   return {
     headers: {
       ...headers,

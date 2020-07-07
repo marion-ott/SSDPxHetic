@@ -5,7 +5,6 @@ import { useMutation } from '@apollo/react-hooks'
 import { LOGIN } from './../graphql/mutations/auth'
 import { getFormProps } from './../global/data'
 import { setTokenInStorage } from '../utils/index'
-// import * as SecureStore from 'expo-secure-store'
 
 import {
   Platform,

@@ -5,6 +5,7 @@ import { Text, Input, Layout } from '@ui-kitten/components'
 import userContext from '../context/userContext'
 import { Icon } from '../components/atoms'
 import Colors from '../constants/Colors'
+import * as SecureStore from 'expo-secure-store'
 // import { useMutation } from '@apollo/react-hooks'
 import { deleteTokenInStorage } from '../utils/index'
 
@@ -95,7 +96,7 @@ export default function ProfileScreen() {
 
             <TouchableOpacity
               style={styles.button}
-              onPress={deleteTokenInStorage('token')}>
+              onPress={() => SecureStore.deleteItemAsync('token', value)}>
               <Text style={styles.buttonLabel}>
                 Se déconnecter
               </Text>

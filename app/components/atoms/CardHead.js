@@ -1,29 +1,41 @@
 import React from 'react'
-import { StyleSheet, View, TouchableOpacity } from 'react-native'
+import { StyleSheet, View, TouchableOpacity, Linking } from 'react-native'
 import { Text, Popover, Layout } from '@ui-kitten/components'
 import { Icon, OpenURLButton } from '../atoms'
 import Colors from '../../constants/Colors'
 
-const CardHead = ({ name, options, setOptions }) => {
+const CardHead = ({ name, options, phone, lat, long, setOptions }) => {
   const openMap = () => {
-    let m = Platform.select({
+    let url = ''
+    Platform.select({
       ios: () => {
-        Linking.openURL('http://maps.apple.com/maps?daddr=38.7875851,-9.3906089');
+        url = `maps:${lat},${long}?=Custom Label`
       },
       android: () => {
-        Linking.openURL('http://maps.google.com/maps?daddr=38.7875851,-9.3906089').catch(err => console.error('An error occurred', err));;
+        url = `geo:${lat},${long}?=Custom Label`
       }
-    });
+    })
 
-    m();
+    Linking.canOpenURL(url).then((supported) => {
+      if (supported) {
+        Linking.openURL(url)
+      } else {
+        console.log("Impossible d'ouvrir cet url.")
+      }
+    })
   }
 
   const renderToggleButton = () => (
     <TouchableOpacity
       onPress={() => setOptions(true)}
       activeOpacity={0.7}
-      style={styles.moreIcon}>
-      <Icon name='more-horizontal-outline' size={24} fill={Colors.black} />
+      style={styles.more}>
+      <Icon
+        name='more-vertical-outline'
+        width={16}
+        height={16}
+        fill={Colors.brightOrange}
+      />
     </TouchableOpacity>
   )
 
@@ -33,16 +45,35 @@ const CardHead = ({ name, options, setOptions }) => {
         {name}
       </Text>
       <Popover
+        style={styles.popoverContainer}
         visible={options}
         anchor={renderToggleButton}
+        placement='left start'
         onBackdropPress={() => setOptions(false)}>
-        <Layout style={styles.content}>
-          <TouchableOpacity onPress={openMap} activeOpacity={0.7} style={styles.touchableButton}>
-            <Text>Itinéraire</Text>
+        <Layout style={styles.popover}>
+          <TouchableOpacity
+            onPress={openMap}
+            activeOpacity={0.7}
+            style={styles.options}>
+            <Icon
+              name='pin-outline'
+              width={18}
+              height={18}
+              fill={Colors.black}
+            />
+            <Text style={styles.optionsText}>Itinéraire</Text>
           </TouchableOpacity>
-          <View style={styles.callButton}>
-            <OpenURLButton url={'tel:${0652033775}'}>Appeler</OpenURLButton>
-          </View>
+          <OpenURLButton url={`tel:${phone}`}>
+            <View style={[styles.options, styles.optionsNoBorder]}>
+              <Icon
+                name='phone-outline'
+                width={18}
+                height={18}
+                fill={Colors.black}
+              />
+              <Text style={styles.optionsText}>Appeler l'hôtel</Text>
+            </View>
+          </OpenURLButton>
         </Layout>
       </Popover>
     </View>
@@ -58,16 +89,44 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
     paddingVertical: 12
   },
+  popoverContainer: {
+    borderWidth: 0,
+    shadowColor: 'rgba(0, 0, 0, 0.25)',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4
+  },
+  popover: {
+    paddingHorizontal: 16,
+    borderRadius: 8,
+    paddingVertical: 16,
+    fontSize: 16
+  },
   touchableButton: {
     marginHorizontal: 10,
     paddingVertical: 5
   },
-  callButton: {
-    marginHorizontal: 10,
-    paddingVertical: 5
+  options: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginBottom: 16
+  },
+  optionsNoBorder: {
+    marginBottom: 0
+  },
+  optionsText: {
+    fontSize: 16,
+    marginLeft: 5,
+    fontWeight: '500'
   },
   title: {
     fontSize: 16
+  },
+  more: {
+    backgroundColor: '#FFE5D7',
+    borderRadius: 5,
+    paddingVertical: 4,
+    paddingHorizontal: 4
   }
 })
 
