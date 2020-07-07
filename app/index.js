@@ -12,7 +12,6 @@ import { LoginScreen } from './screens'
 import { AppProvider } from './context/appContext'
 import { UserProvider } from './context/userContext'
 import { DateProvider } from './context/dateContext'
-import { RecapProvider } from './context/recapContext'
 
 const Stack = createStackNavigator()
 
@@ -22,25 +21,7 @@ export default () => {
     today: formatDate(moment())
   })
 
-  const [context, setContext] = useState({
-    user: {
-      firstName: 'Stéphane',
-      lastName: 'Borgia',
-      email: 'stephane.borgia@samu-social.net',
-      phone: '0612345678',
-      mates: [
-        {
-          firstName: 'Paule',
-          lastName: 'Herman'
-        }
-      ]
-    },
-    teamId: '5f03013924aa9a0007167c21',
-    schedule: {
-      startTime: '08h30',
-      endTime: '16h30'
-    }
-  })
+  const [context, setContext] = useState({})
 
   const updateContext = (obj) => {
     setContext({
@@ -50,11 +31,8 @@ export default () => {
   }
 
   useEffect(() => {
-    //TODO: get additionnal data (schedule, teams)
     if (data) {
-      updateContext({
-        user: data.checkAuth.user
-      })
+      handleLogin(data.checkAuth.user)
     }
   }, [error, data])
 
@@ -66,6 +44,7 @@ export default () => {
       phone: userData.phone
     }
     let schedule, teamId
+
     userData.teams.forEach(({ id, startDate, endDate, users }) => {
       if (moment().isBetween(startDate, endDate)) {
         teamId = id
@@ -90,29 +69,27 @@ export default () => {
     <AppProvider value={{ context, updateContext }}>
       <UserProvider value={context}>
         <DateProvider value={date}>
-          <RecapProvider value={{}}>
-            <View style={styles.container}>
-              {Platform.OS === 'ios' && <StatusBar barStyle='dark-content' />}
-              <StatusBar barStyle='light-content' />
-              <NavigationContainer linking={LinkingConfiguration}>
-                <Stack.Navigator
-                  screenOptions={{
-                    headerShown: false
-                  }}>
-                  {!context.user ? (
-                    <Stack.Screen
-                      name='Login'
-                      component={() => (
-                        <LoginScreen handleLogin={handleLogin} />
-                      )}
-                    />
-                  ) : (
-                    <Stack.Screen name='Root' component={BottomTabNavigator} />
-                  )}
-                </Stack.Navigator>
-              </NavigationContainer>
-            </View>
-          </RecapProvider>
+          <View style={styles.container}>
+            {Platform.OS === 'ios' && <StatusBar barStyle='dark-content' />}
+            <StatusBar barStyle='light-content' />
+            <NavigationContainer linking={LinkingConfiguration}>
+              <Stack.Navigator
+                screenOptions={{
+                  headerShown: false
+                }}>
+                {!context.user ? (
+                  <Stack.Screen
+                    name='Login'
+                    component={() => (
+                      <LoginScreen handleLogin={handleLogin} />
+                    )}
+                  />
+                ) : (
+                  <Stack.Screen name='Root' component={BottomTabNavigator} />
+                )}
+              </Stack.Navigator>
+            </NavigationContainer>
+          </View>
         </DateProvider>
       </UserProvider>
     </AppProvider>
