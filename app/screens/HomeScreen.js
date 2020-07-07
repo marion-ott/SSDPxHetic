@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect, useReducer } from 'react'
 import moment from 'moment'
-import { StyleSheet, View, ActivityIndicator } from 'react-native'
+import { StyleSheet, View, ScrollView } from 'react-native'
 import { Text, Layout } from '@ui-kitten/components'
 import appContext from '../context/appContext'
 import dateContext from '../context/dateContext'
@@ -23,15 +23,17 @@ export default function HomeScreen() {
       <Text style={[styles.currentDay, styles.text]} category='h5'>
         {moment(today).locale('fr').format('dddd Do MMMM')}
       </Text>
-      <Layout style={styles.layout} level='1'>
-        <View style={styles.wrapper}>
-          <CardList
-            onComplete={onVisitsCompleted}
-            startable={true}
-            label={'Visites'}
-          />
-        </View>
-      </Layout>
+      <ScrollView>
+        <Layout style={styles.layout} level='1'>
+          <View style={styles.wrapper}>
+            <CardList
+              onComplete={onVisitsCompleted}
+              startable={true}
+              label={'Visites'}
+            />
+          </View>
+        </Layout>
+      </ScrollView>
     </View>
   )
 }
@@ -46,12 +48,18 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.main
   },
   currentDay: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
     color: Colors.white,
     textAlign: 'center',
     paddingTop: 40,
     paddingBottom: 20
   },
   layout: {
+    marginTop: 100,
     flex: 1,
     flexDirection: 'column',
     flexDirection: 'row',
