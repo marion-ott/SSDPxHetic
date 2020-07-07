@@ -46,12 +46,10 @@ const importData = async () => {
 
 		const count = await prisma.hotels()
 		console.log(count.length, ' hotels imported.')
-
-		process.exit()
 	} catch (err) {
 		console.warn(err)
-		process.exit()
 	}
+	process.exit()
 }
 
 /**
@@ -215,6 +213,7 @@ const deleteData = async () => {
 		await prisma.deleteShift({id: shift.id})
 	}
 	console.log(`${shifts.length} shifts deleted.`)
+	process.exit()
 }
 
 /**

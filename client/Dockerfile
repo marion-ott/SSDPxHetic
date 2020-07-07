@@ -18,7 +18,7 @@ RUN rm /etc/nginx/conf.d/default.conf
 
 COPY --from=0 /home/node/build /usr/share/nginx/html
 
-COPY --from=0 /home/node/nginx/nginx.conf /etc/nginx/conf.d
+COPY --from=0 /home/node/nginx/default.conf /etc/nginx/conf.d
 
 EXPOSE 80
 

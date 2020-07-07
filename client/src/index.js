@@ -7,7 +7,7 @@ import App from './views/_App'
 import './index.css'
 
 const client = new ApolloClient({
-  uri: 'http://localhost:9000',
+  uri: 'http://3.8.20.81:9000',
   request: (operation) => {
     const token = localStorage.getItem('token')
     operation.setContext({

@@ -6,11 +6,11 @@
 	"scripts": {
 		"start": "node -r esm src/index.js --ext js,graphql --exec babel-node",
 		"dev": "nodemon src/index.js --ext js,graphql --exec babel-node",
-		"task": "node src/utils/tasks.js --ext js,graphql --exec babel-node",
+		"task": "node -r esm src/utils/tasks.js",
 		"deploy": "prisma deploy -e config/dev.env && prisma generate -e config/dev.env",
 		"token": "prisma token -e config/dev.env",
 		"delete": "prisma delete -f -e config/dev.env",
-		"data": "nodemon data/index.js --ext js,graphql --exec babel-node"
+		"data": "node -r esm data/index.js"
 	},
 	"dependencies": {
 		"@babel/cli": "^7.8.4",
