@@ -1,10 +1,12 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { StyleSheet, View, TouchableOpacity, Linking } from 'react-native'
 import { Text, Popover, Layout } from '@ui-kitten/components'
 import { Icon, OpenURLButton } from '../atoms'
 import Colors from '../../constants/Colors'
 
-const CardHead = ({ name, options, phone, lat, long, setOptions }) => {
+const CardHead = ({ name, phone, lat, long }) => {
+  const [popover, setPopover] = useState(false)
+
   const openMap = () => {
     let url = ''
     Platform.select({
@@ -25,9 +27,13 @@ const CardHead = ({ name, options, phone, lat, long, setOptions }) => {
     })
   }
 
+  const togglePopover = () => {
+    setPopover(!popover)
+  }
+
   const renderToggleButton = () => (
     <TouchableOpacity
-      onPress={() => setOptions(true)}
+      onPress={togglePopover}
       activeOpacity={0.7}
       style={styles.more}>
       <Icon
@@ -46,10 +52,10 @@ const CardHead = ({ name, options, phone, lat, long, setOptions }) => {
       </Text>
       <Popover
         style={styles.popoverContainer}
-        visible={options}
+        visible={popover}
         anchor={renderToggleButton}
         placement='left start'
-        onBackdropPress={() => setOptions(false)}>
+        onBackdropPress={togglePopover}>
         <Layout style={styles.popover}>
           <TouchableOpacity
             onPress={openMap}

@@ -7,7 +7,6 @@ export const GET_VISITS = gql`
       status
       priority
       hotel {
-        id
         name
         address
         zipCode

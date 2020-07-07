@@ -1,23 +1,45 @@
 import React, { useState } from 'react'
+import { useMutation } from '@apollo/react-hooks'
+import { UPDATE_VISIT } from '../../graphql/mutations/visits'
 import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import { Card, Text, Popover, Layout, Button } from '@ui-kitten/components'
 import { Icon, OpenURLButton, CardHead } from '../atoms'
 import Colors from '../../constants/Colors'
 
-const HotelCard = ({ complete, inProgress, onChange, startable, ...hotel }) => {
-  const [options, setOptions] = useState(false)
+const HotelCard = ({
+  id,
+  onChange,
+  startable,
+  status: originalStatus,
+  ...hotel
+}) => {
+  const [status, setStatus] = useState(originalStatus)
 
-  const updateVisit = (id) => {
-    //onChange && onChange(event)
-    console.log(id)
+  const [updateVisit, { loading, data, error }] = useMutation(UPDATE_VISIT, {
+    onCompleted: ({ updateVisit: { status } }) => {
+      onChange(id, status)
+      setStatus(status)
+    },
+    onError: (error) => console.error('ERREUR: ', error.message)
+  })
+
+  const onUpdate = () => {
+    const variables = {
+      id,
+      data: {
+        status: ''
+      }
+    }
+
+    if (status === 'UPCOMING') variables.data.status = 'ONGOING'
+    if (status === 'ONGOING') variables.data.status = 'DONE'
+    if (status === 'DONE') variables.data.status = 'UPCOMING'
+
+    updateVisit({ variables })
   }
 
   return (
-    <Card
-      style={styles.card}
-      header={() => (
-        <CardHead options={options} setOptions={setOptions} {...hotel} />
-      )}>
+    <Card style={styles.card} header={() => <CardHead {...hotel} />}>
       <View style={styles.content}>
         <View>
           <Text style={styles.text} category='s2'>
@@ -53,9 +75,7 @@ const HotelCard = ({ complete, inProgress, onChange, startable, ...hotel }) => {
             </View>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() =>
-              onChange(hotel.id, inProgress ? 'complete' : 'inProgress')
-            }
+            onPress={onUpdate}
             activeOpacity={0.7}
             style={styles.touchableButton}>
             <View style={[styles.startContainer, styles.button]}>
@@ -70,7 +90,7 @@ const HotelCard = ({ complete, inProgress, onChange, startable, ...hotel }) => {
                 appearance='alternative'
                 style={[styles.text, styles.startLabel]}
                 category='h6'>
-                {complete ? 'FINI!' : inProgress ? 'en cours' : 'Commencer'}
+                {status}
               </Text>
             </View>
           </TouchableOpacity>

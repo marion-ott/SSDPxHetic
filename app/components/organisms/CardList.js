@@ -1,104 +1,73 @@
 import React, { useReducer, useContext, useEffect, useState } from 'react'
 import { StyleSheet, View, ScrollView, ActivityIndicator } from 'react-native'
-import { useMutation } from '@apollo/react-hooks'
-import { UPDATE_VISIT } from '../../graphql/mutations/visits'
-import { Text, Divider, Layout } from '@ui-kitten/components'
+import { Text, Divider } from '@ui-kitten/components'
+import { useLazyQuery } from '@apollo/react-hooks'
+import { GET_VISITS } from '../../graphql/queries/visits'
 import appContext from '../../context/appContext'
 import dateContext from '../../context/dateContext'
-import useGetVisits from '../../hooks/useGetVisits'
-import Colors from '../../constants/Colors'
 import { HotelCard, ListHead } from '../molecules'
-
-// UPCOMING
-// ONGOING
-// DONE
-
-const status = {
-  upcoming: 'UPCOMING',
-  inProgress: 'ONGOING',
-  complete: 'DONE'
-}
+import Colors from '../../constants/Colors'
 
 function reducer(state, { type, payload }) {
   switch (type) {
-    case 'upcoming':
-      return { ...state, visits: payload.visits }
-    case 'inProgress':
+    case 'SET_VISITS':
+      return { ...state, ...payload }
+    case 'UPCOMING':
+      return { ...state }
+    case 'ONGOING':
       return { ...state, visitInProgress: payload.id }
-    case 'complete':
+    case 'DONE':
       return {
         ...state,
         visitInProgress: null,
         visitsCompleted: [...state.visitsCompleted, payload.id]
-      }
-    case 'onDayEnd':
-      return {
-        ...state,
-        isDayOver: true
       }
     default:
       throw new Error()
   }
 }
 
-const CardList = ({ label, cards, startable, onComplete }) => {
-  const [fetching, setFetching] = useState(false)
+const CardList = ({ label, startable, onComplete }) => {
   const { today } = useContext(dateContext)
   const { context, updateContext } = useContext(appContext)
 
   const [state, dispatch] = useReducer(reducer, {
     visits: [],
     visitsCompleted: [],
-    visitInProgress: null,
-    isDayOver: false
+    visitInProgress: null
   })
-  // '5f03013a24aa9a0007167c30'
 
-  const { loading, error, data } = useGetVisits(context.teamId, today, [
-    state.visits
-  ])
-  const [updateVisit, { loading: test, data: cc, error: err }] = useMutation(
-    UPDATE_VISIT,
-    {
-      onCompleted() {
-        //onClick()
-        setFetching(false)
-      },
-      onError: (error) => console.error('ERREUR: ', error.message)
-    }
-  )
-
-  useEffect(() => {
-    if (data) {
-      const { myVisits } = data
-
-      updateContext({
-        hotels: data.myVisits.length,
-        rooms: data.myVisits.reduce(
-          (total, { hotel }) => total + hotel.rooms,
-          0
-        )
-      })
-
+  const [getVisits, { loading }] = useLazyQuery(GET_VISITS, {
+    onCompleted: ({ myVisits }) => {
+      const visitInProgress = myVisits.find(
+        (visit) => visit.status === 'ONGOING'
+      )
       dispatch({
-        type: 'upcoming',
+        type: 'SET_VISITS',
         payload: {
-          visits: myVisits
+          visits: myVisits,
+          visitsCompleted: myVisits.filter((visit) => visit.status === 'DONE'),
+          visitInProgress: visitInProgress ? visitInProgress.id : null
         }
       })
-    }
-  }, [data])
+    },
+    onError: (error) => console.warn(error)
+  })
 
-  const onDayEnd = () => {
-    dispatch({
-      type: 'onDayEnd'
+  useEffect(() => {
+    getVisits({
+      variables: {
+        teamId: context.teamId,
+        date: today
+      }
     })
-    onComplete()
-  }
+  }, [])
 
-  const onChange = () => {
-    //TODO: dispatch proper action & payload
-  }
+  // useEffect(() => {
+  //   if (state.visits.length === state.visitsCompleted.length) {
+  //     onComplete()
+  //   }
+  // }, [state.visitsCompleted])
 
   if (loading) {
     return <ActivityIndicator size='small' color={Colors.main} />
@@ -121,27 +90,21 @@ const CardList = ({ label, cards, startable, onComplete }) => {
         )}
         <Divider style={[{ marginBottom: 10 }]} />
         <View style={styles.cardsWrapper}>
-          {state.visits.map(({ id, hotel }) => (
+          {state.visits.map(({ id, status, hotel }) => (
             <HotelCard
-              complete={state.visitsCompleted.some(
-                (visit) => visit === hotel.id
-              )}
-              inProgress={hotel.id === state.visitInProgress}
-              startable={startable}
               key={id}
+              id={id}
+              startable={startable}
+              status={status}
               {...hotel}
-              onChange={(id, action) => {
-                // updateVisit({
-                //   variables: { id, data: { status: status[action] } }
-                // })
-
+              onChange={(id, action) =>
                 dispatch({
                   type: action,
                   payload: {
                     id
                   }
                 })
-              }}
+              }
             />
           ))}
         </View>

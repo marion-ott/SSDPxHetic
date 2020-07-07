@@ -2,8 +2,16 @@ import React, { useEffect, useState } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import moment from 'moment'
-
-import { Platform, StatusBar, StyleSheet, View, Text } from 'react-native'
+import { GET_USER } from './graphql/queries/users'
+import { CHECK_AUTH } from './graphql/queries/auth'
+import { useLazyQuery, useQuery } from '@apollo/react-hooks'
+import {
+  Platform,
+  StatusBar,
+  StyleSheet,
+  View,
+  ActivityIndicator
+} from 'react-native'
 import useCheckAuth from './hooks/useCheckAuth'
 import { formatDate } from './utils/index'
 import BottomTabNavigator from './navigation/BottomTabNavigator'
@@ -12,16 +20,43 @@ import { LoginScreen } from './screens'
 import { AppProvider } from './context/appContext'
 import { UserProvider } from './context/userContext'
 import { DateProvider } from './context/dateContext'
+import { Colors } from 'react-native/Libraries/NewAppScreen'
 
 const Stack = createStackNavigator()
 
 export default () => {
-  const { loading, error, data } = useCheckAuth()
+  const { loading: authLoading, error: authError, data: auth } = useCheckAuth()
+
+  const [getData, { loading, data, error }] = useLazyQuery(GET_USER, {
+    onCompleted: ({ user }) => {
+      handleLogin(user)
+    },
+    onError: (error) => console.warn(error)
+  })
+
   const [date, setDate] = useState({
     today: formatDate(moment())
   })
 
-  const [context, setContext] = useState({})
+  const [context, setContext] = useState({
+    user: {
+      firstName: 'Stéphane',
+      lastName: 'Borgia',
+      email: 'stephane.borgia@samu-social.net',
+      phone: '0612345678',
+      mates: [
+        {
+          firstName: 'Paule',
+          lastName: 'Herman'
+        }
+      ]
+    },
+    teamId: '5f03013924aa9a0007167c21',
+    schedule: {
+      startTime: '08h30',
+      endTime: '16h30'
+    }
+  })
 
   const updateContext = (obj) => {
     setContext({
@@ -31,10 +66,16 @@ export default () => {
   }
 
   useEffect(() => {
-    if (data) {
-      handleLogin(data.checkAuth.user)
+    if (auth && auth.checkAuth.success) {
+      getData({
+        variables: {
+          id: auth.checkAuth.user.id
+        }
+      })
     }
-  }, [error, data])
+  }, [authError, auth, authLoading])
+
+  useEffect(() => {}, [loading, data, error])
 
   const handleLogin = (userData) => {
     const user = {
@@ -58,12 +99,18 @@ export default () => {
       }
     })
 
-    updateContext({
-      user,
-      teamId,
-      schedule
-    })
+    // updateContext({
+    //   user,
+    //   teamId,
+    //   schedule
+    // })
   }
+
+  // console.log(loading, authLoading, auth, data)
+
+  // if (loading || authLoading) {
+  //   return <ActivityIndicator size='small' color={Colors.main} />
+  // }
 
   return (
     <AppProvider value={{ context, updateContext }}>
@@ -80,9 +127,7 @@ export default () => {
                 {!context.user ? (
                   <Stack.Screen
                     name='Login'
-                    component={() => (
-                      <LoginScreen handleLogin={handleLogin} />
-                    )}
+                    component={() => <LoginScreen handleLogin={handleLogin} />}
                   />
                 ) : (
                   <Stack.Screen name='Root' component={BottomTabNavigator} />
