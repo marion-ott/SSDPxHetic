@@ -11,3 +11,8 @@
   hosts: tag_component_application:&tag_stage_staging
   roles:
     - { role: application, tags: ["application"] }
+
+- name: Import data
+  hosts: [tag_stage_staging]
+  roles:
+    - { role: database, tags: ["database"] }

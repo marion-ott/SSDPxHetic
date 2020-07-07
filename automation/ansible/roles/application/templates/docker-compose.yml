@@ -29,10 +29,10 @@ services:
 
   client:
     image: {{ application_client_image }}:latest
-    env_file: ./prod.env #TODO
+    env_file: ./prod.env
     restart: always
     ports:
-      - "{{ application_client_port }}:3000"
+      - "{{ application_client_port }}:{{ application_client_port }}"
     environment:
-      SSDP_API_URL: "{{application_server_endpoint}}:{{ application_server_port }}"
+      SSDP_API_URL: "{{application_host}}:{{ application_server_port }}"
     stdin_open: true

@@ -1,5 +1,12 @@
-application_db_host: mongodb://foo:mustbeeightchars@staging-documentdb.cozhjmma5lew.eu-west-2.docdb.amazonaws.com:27017/?retryWrites=false
+application_owner: ubuntu
+application_group: "{{ application_owner }}"
+application_directory_name: "application"
+application_directory: "/home/{{application_owner}}/{{application_directory_name}}"
+
+application_db_host: mongodb://{{ lookup('env','TF_VAR_db_user') }}:{{ lookup('env','TF_VAR_db_password') }}@staging-documentdb-instance-0.cozhjmma5lew.eu-west-2.docdb.amazonaws.com:27017/?retryWrites=false
 application_db_port: 27017
+
+application_host: http://3.8.20.81
 
 application_prisma_endpoint: http://prisma
 application_prisma_port: 4466

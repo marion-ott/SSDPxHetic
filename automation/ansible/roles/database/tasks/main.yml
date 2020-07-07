@@ -1,0 +1,28 @@
+---
+
+- name: Create log directory to check for data import & delete
+  file:
+    path: "{{ application_directory }}/logs"
+    state: directory
+    owner: "{{ application_owner }}"
+    group: "{{ application_group }}"
+
+- name: Delete data
+  shell: docker exec {{ application_directory_name }}_server_1 yarn data --delete >> logs/data_delete_log.txt
+  args:
+    chdir: "{{ application_directory }}/"
+
+- name: Deploy and generate prisma schema
+  shell: docker exec {{ application_directory_name }}_server_1 yarn deploy >> logs/data_deploy_log.txt
+  args:
+    chdir: "{{ application_directory }}/"
+
+- name: Import data
+  shell: docker exec {{ application_directory_name }}_server_1 yarn data --import >> logs/data_import_log.txt
+  args:
+    chdir: "{{ application_directory }}/"
+
+- name: Generate data from database
+  shell: docker exec {{ application_directory_name }}_server_1 yarn task >> logs/data_task_log.txt
+  args:
+    chdir: "{{ application_directory }}/"
