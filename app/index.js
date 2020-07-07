@@ -17,12 +17,11 @@ import { RecapProvider } from './context/recapContext'
 const Stack = createStackNavigator()
 
 export default () => {
-  // const { loading, error, data } = useCheckAuth()
+  const { loading, error, data } = useCheckAuth()
   const [date, setDate] = useState({
     today: formatDate(moment())
   })
 
-  //const [auth, setAuth] = useState({ user: null })
   const [context, setContext] = useState({
     user: {
       firstName: 'Stéphane',
@@ -50,14 +49,14 @@ export default () => {
     })
   }
 
-  // useEffect(() => {
-  //   //TODO: get additionnal data (schedule, teams)
-  //   if (data) {
-  //     updateContext({
-  //       user: data.checkAuth.user
-  //     })
-  //   }
-  // }, [error, data])
+  useEffect(() => {
+    //TODO: get additionnal data (schedule, teams)
+    if (data) {
+      updateContext({
+        user: data.checkAuth.user
+      })
+    }
+  }, [error, data])
 
   const handleLogin = (userData) => {
     const user = {
