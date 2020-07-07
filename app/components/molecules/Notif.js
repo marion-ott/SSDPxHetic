@@ -3,7 +3,6 @@ import { StyleSheet, View, Text } from 'react-native'
 import Icon from '../atoms/Icon'
 
 const Notif = ({ ico, color, type, fresh, data }) => {
-  console.log(data)
   return (
     <View style={styles.container}>
       <Icon fill={color} name={ico} />

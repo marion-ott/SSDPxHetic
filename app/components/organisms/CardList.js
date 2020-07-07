@@ -131,9 +131,9 @@ const CardList = ({ label, cards, startable, onComplete }) => {
               key={id}
               {...hotel}
               onChange={(id, action) => {
-                updateVisit({
-                  variables: { id, data: { status: status[action] } }
-                })
+                // updateVisit({
+                //   variables: { id, data: { status: status[action] } }
+                // })
 
                 dispatch({
                   type: action,
