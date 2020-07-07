@@ -1,5 +1,5 @@
 import React from 'react'
-import { StyleSheet, View, TouchableOpacity } from 'react-native'
+import { StyleSheet, View, TouchableOpacity, Linking } from 'react-native'
 import { Text, Popover, Layout } from '@ui-kitten/components'
 import { Icon, OpenURLButton } from '../atoms'
 import Colors from '../../constants/Colors'
@@ -8,14 +8,24 @@ const CardHead = ({ name, options, setOptions }) => {
   const openMap = () => {
     let m = Platform.select({
       ios: () => {
-        Linking.openURL(
-          'http://maps.apple.com/maps?daddr=38.7875851,-9.3906089'
-        )
+        const url = 'maps:38.7875851,-9.3906089?=Custom Label'
+        Linking.canOpenURL(url).then((supported) => {
+          if (supported) {
+            Linking.openURL(url)
+          } else {
+            console.log("Don't know how to open URI: " + url)
+          }
+        })
       },
       android: () => {
-        Linking.openURL(
-          'http://maps.google.com/maps?daddr=38.7875851,-9.3906089'
-        ).catch((err) => console.error('An error occurred', err))
+        const url = 'geo:38.7875851,-9.3906089?=Custom Label'
+        Linking.canOpenURL(url).then((supported) => {
+          if (supported) {
+            Linking.openURL(url)
+          } else {
+            console.log("Don't know how to open URI: " + url)
+          }
+        })
       }
     })
 
