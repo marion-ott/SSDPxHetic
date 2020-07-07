@@ -1,15 +1,16 @@
-import {generateSearchIndex} from './../utils'
+import {generateSearchIndex, getAuthUserId} from './../utils'
+import moment from 'moment'
 
 const Query = {
 	/** USERS */
-	user(parent, {id}, {prisma, request}) {
-		return prisma.user({id})
+	user(parent, args, {prisma, request}) {
+		return prisma.user({id: args.id})
 	},
 	users(parent, args, {prisma}) {
 		const opArgs = {
-			where: {
-				role: 'USER'
-			},
+			// where: {
+			// 	role: 'USER'
+			// },
 			first: args.first,
 			skip: args.skip,
 			orderBy: args.orderBy
@@ -23,6 +24,35 @@ const Query = {
 			}
 		}
 		return prisma.users(opArgs)
+	},
+
+	/** AUTH */
+	async checkAuth(parent, args, {prisma, request}) {
+		const res = {
+			success: false,
+			user: null
+		}
+		const header = request.request.headers.authorization
+
+		if (!header) {
+			return res
+		}
+
+		const id = getAuthUserId(request)
+
+		if (!id) {
+			return res
+		}
+		const user = await prisma.user({id})
+
+		if (!user) {
+			return res
+		}
+
+		return {
+			success: true,
+			user
+		}
 	},
 
 	/** TEAMS */
@@ -67,7 +97,28 @@ const Query = {
 			orderBy: args.orderBy
 		}
 
+		if (args.query) {
+			const input = generateSearchIndex(args.query)
+			opArgs.where = {
+				date: args.query
+			}
+		}
+
 		return prisma.visits(opArgs)
+	},
+
+	async myVisits(parent, args, {prisma}) {
+		const items = []
+		const visits = await prisma.visits()
+		for (const visit of visits) {
+			const visitTeam = await prisma.visit({id: visit.id}).team()
+
+			if (visitTeam.id === args.teamId && visit.date === args.date) {
+				items.push(visit)
+			}
+		}
+
+		return items
 	},
 
 	/** SECTORS */
@@ -91,6 +142,36 @@ const Query = {
 		}
 
 		return prisma.residents(opArgs)
+	},
+
+	/** SHIFTS */
+	shift(parent, {id}, {prisma, request}) {
+		return prisma.shift({id})
+	},
+	shifts(parent, args, {prisma}) {
+		const opArgs = {
+			where: {},
+			first: args.first,
+			skip: args.skip,
+			orderBy: args.orderBy
+		}
+
+		return prisma.shifts(opArgs)
+	},
+
+	/** SCHEDULES */
+	schedule(parent, {id}, {prisma, request}) {
+		return prisma.schedule({id})
+	},
+	schedules(parent, args, {prisma}) {
+		const opArgs = {
+			where: {},
+			first: args.first,
+			skip: args.skip,
+			orderBy: args.orderBy
+		}
+
+		return prisma.schedules(opArgs)
 	},
 
 	/** COUNT */

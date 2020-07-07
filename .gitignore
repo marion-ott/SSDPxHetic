@@ -20,3 +20,12 @@
 .env.test.local
 .env.production.local
 
+# ide
+.idea/
+.vscode/
+
+# automation
+.terraform*
+.terraform.tfstate*
+terraform.*
+automation/ansible/.imported-roles

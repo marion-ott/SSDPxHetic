@@ -1,0 +1,10 @@
+application_owner: ubuntu
+application_group: "{{ application_owner }}"
+application_directory: "/home/{{application_owner}}/application"
+
+application_server_image: paulehair/ssdp-server
+application_server_port: 9000
+application_server_endpoint: http://localhost
+
+application_client_image: paulehair/ssdp-client
+application_client_port: 80

@@ -1,18 +1,23 @@
 import jwt from 'jsonwebtoken'
 import bcrypt from 'bcryptjs'
 import deburr from 'lodash.deburr'
+import axios from 'axios'
+import moment from 'moment'
+
 const JWT_SECRET = 'thisisasecret'
 /**
  * Get logged in user id from JWT token
  * @param {Object} req (request)
  * @returns {String}
  */
+
 const getAuthUserId = req => {
 	const header = req.request.headers.authorization
 
 	if (!header) {
 		throw new Error('Authentication required')
 	}
+
 	const token = header.replace('Bearer ', '')
 	const decoded = jwt.verify(token, JWT_SECRET)
 
@@ -34,10 +39,6 @@ const generateToken = id => {
  * @returns {String}
  */
 const hashPassword = password => {
-	// TODO: add password requirements check
-	// if (data.password.length < 8) {
-	// 	throw new Error("Password doesn't meet requirements.")
-	// }
 	return bcrypt.hash(password, 10)
 }
 
@@ -75,10 +76,43 @@ const publishVisit = async (mutation, data, pubsub) => {
 	return null
 }
 
+/**
+ * Fetch precise long/lat values from data gouv API
+ * @param {String} address
+ * @param {Int} zip
+ * @param {Array} coord
+ * @returns {JSON}
+ */
+const getPlaceInfo = async (address, zip, coord) => {
+	let url = ''
+	if (coord) {
+		url = `https://api-adresse.data.gouv.fr/reverse/?lon=${coord[0]}&lat=${coord[1]}`
+	} else {
+		address = address.toLowerCase().replace(' - ', ' ')
+		url = `https://api-adresse.data.gouv.fr/search/?q=${address.toLowerCase()}&postcode=${zip}`
+	}
+	return await axios(url).then(res => res.data)
+}
+
+const generatePriorityIndex = hotel => {
+	const score = (parseFloat(hotel.score) * 100) / parseFloat(60)
+	const daysDiff = moment().diff(moment(hotel.lastVisit), 'days')
+	let malus = (parseFloat(daysDiff) * 100) / parseFloat(365)
+
+	if (malus > 100) {
+		malus = 100
+	}
+
+	const index = parseFloat(Number(score - malus).toFixed(2))
+	return index
+}
+
 export {
 	getAuthUserId,
 	generateToken,
 	hashPassword,
 	generateSearchIndex,
-	publishVisit
+	publishVisit,
+	getPlaceInfo,
+	generatePriorityIndex
 }

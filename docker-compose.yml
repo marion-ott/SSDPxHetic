@@ -38,7 +38,6 @@ services:
     entrypoint: ['yarn', 'dev']
 
   client:
-    env_file: ./client/src/.env
     image: node:alpine
     restart: always
     volumes:

@@ -18,7 +18,9 @@ export type Maybe<T> = T | undefined | null;
 export interface Exists {
   hotel: (where?: HotelWhereInput) => Promise<boolean>;
   resident: (where?: ResidentWhereInput) => Promise<boolean>;
+  schedule: (where?: ScheduleWhereInput) => Promise<boolean>;
   sector: (where?: SectorWhereInput) => Promise<boolean>;
+  shift: (where?: ShiftWhereInput) => Promise<boolean>;
   team: (where?: TeamWhereInput) => Promise<boolean>;
   user: (where?: UserWhereInput) => Promise<boolean>;
   visit: (where?: VisitWhereInput) => Promise<boolean>;
@@ -81,6 +83,25 @@ export interface Prisma {
     first?: Int;
     last?: Int;
   }) => ResidentConnectionPromise;
+  schedule: (where: ScheduleWhereUniqueInput) => ScheduleNullablePromise;
+  schedules: (args?: {
+    where?: ScheduleWhereInput;
+    orderBy?: ScheduleOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FragmentableArray<Schedule>;
+  schedulesConnection: (args?: {
+    where?: ScheduleWhereInput;
+    orderBy?: ScheduleOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => ScheduleConnectionPromise;
   sector: (where: SectorWhereUniqueInput) => SectorNullablePromise;
   sectors: (args?: {
     where?: SectorWhereInput;
@@ -100,6 +121,25 @@ export interface Prisma {
     first?: Int;
     last?: Int;
   }) => SectorConnectionPromise;
+  shift: (where: ShiftWhereUniqueInput) => ShiftNullablePromise;
+  shifts: (args?: {
+    where?: ShiftWhereInput;
+    orderBy?: ShiftOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => FragmentableArray<Shift>;
+  shiftsConnection: (args?: {
+    where?: ShiftWhereInput;
+    orderBy?: ShiftOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => ShiftConnectionPromise;
   team: (where: TeamWhereUniqueInput) => TeamNullablePromise;
   teams: (args?: {
     where?: TeamWhereInput;
@@ -195,6 +235,22 @@ export interface Prisma {
   }) => ResidentPromise;
   deleteResident: (where: ResidentWhereUniqueInput) => ResidentPromise;
   deleteManyResidents: (where?: ResidentWhereInput) => BatchPayloadPromise;
+  createSchedule: (data: ScheduleCreateInput) => SchedulePromise;
+  updateSchedule: (args: {
+    data: ScheduleUpdateInput;
+    where: ScheduleWhereUniqueInput;
+  }) => SchedulePromise;
+  updateManySchedules: (args: {
+    data: ScheduleUpdateManyMutationInput;
+    where?: ScheduleWhereInput;
+  }) => BatchPayloadPromise;
+  upsertSchedule: (args: {
+    where: ScheduleWhereUniqueInput;
+    create: ScheduleCreateInput;
+    update: ScheduleUpdateInput;
+  }) => SchedulePromise;
+  deleteSchedule: (where: ScheduleWhereUniqueInput) => SchedulePromise;
+  deleteManySchedules: (where?: ScheduleWhereInput) => BatchPayloadPromise;
   createSector: (data: SectorCreateInput) => SectorPromise;
   updateSector: (args: {
     data: SectorUpdateInput;
@@ -211,11 +267,31 @@ export interface Prisma {
   }) => SectorPromise;
   deleteSector: (where: SectorWhereUniqueInput) => SectorPromise;
   deleteManySectors: (where?: SectorWhereInput) => BatchPayloadPromise;
+  createShift: (data: ShiftCreateInput) => ShiftPromise;
+  updateShift: (args: {
+    data: ShiftUpdateInput;
+    where: ShiftWhereUniqueInput;
+  }) => ShiftPromise;
+  updateManyShifts: (args: {
+    data: ShiftUpdateManyMutationInput;
+    where?: ShiftWhereInput;
+  }) => BatchPayloadPromise;
+  upsertShift: (args: {
+    where: ShiftWhereUniqueInput;
+    create: ShiftCreateInput;
+    update: ShiftUpdateInput;
+  }) => ShiftPromise;
+  deleteShift: (where: ShiftWhereUniqueInput) => ShiftPromise;
+  deleteManyShifts: (where?: ShiftWhereInput) => BatchPayloadPromise;
   createTeam: (data: TeamCreateInput) => TeamPromise;
   updateTeam: (args: {
     data: TeamUpdateInput;
     where: TeamWhereUniqueInput;
   }) => TeamPromise;
+  updateManyTeams: (args: {
+    data: TeamUpdateManyMutationInput;
+    where?: TeamWhereInput;
+  }) => BatchPayloadPromise;
   upsertTeam: (args: {
     where: TeamWhereUniqueInput;
     create: TeamCreateInput;
@@ -270,9 +346,15 @@ export interface Subscription {
   resident: (
     where?: ResidentSubscriptionWhereInput
   ) => ResidentSubscriptionPayloadSubscription;
+  schedule: (
+    where?: ScheduleSubscriptionWhereInput
+  ) => ScheduleSubscriptionPayloadSubscription;
   sector: (
     where?: SectorSubscriptionWhereInput
   ) => SectorSubscriptionPayloadSubscription;
+  shift: (
+    where?: ShiftSubscriptionWhereInput
+  ) => ShiftSubscriptionPayloadSubscription;
   team: (
     where?: TeamSubscriptionWhereInput
   ) => TeamSubscriptionPayloadSubscription;
@@ -292,6 +374,10 @@ export interface ClientConstructor<T> {
  * Types
  */
 
+export type Role = "USER" | "ADMIN";
+
+export type VisitStatus = "UPCOMING" | "ONGOING" | "DONE";
+
 export type Gender = "MALE" | "FEMALE";
 
 export type UserOrderByInput =
@@ -309,8 +395,36 @@ export type UserOrderByInput =
   | "address_DESC"
   | "email_ASC"
   | "email_DESC"
+  | "phone_ASC"
+  | "phone_DESC"
   | "password_ASC"
   | "password_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
+
+export type TeamOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "startDate_ASC"
+  | "startDate_DESC"
+  | "endDate_ASC"
+  | "endDate_DESC"
+  | "createdAt_ASC"
+  | "createdAt_DESC"
+  | "updatedAt_ASC"
+  | "updatedAt_DESC";
+
+export type VisitOrderByInput =
+  | "id_ASC"
+  | "id_DESC"
+  | "date_ASC"
+  | "date_DESC"
+  | "priority_ASC"
+  | "priority_DESC"
+  | "status_ASC"
+  | "status_DESC"
   | "createdAt_ASC"
   | "createdAt_DESC"
   | "updatedAt_ASC"
@@ -331,12 +445,16 @@ export type HotelOrderByInput =
   | "zipCode_DESC"
   | "city_ASC"
   | "city_DESC"
+  | "phone_ASC"
+  | "phone_DESC"
   | "active_ASC"
   | "active_DESC"
   | "rooms_ASC"
   | "rooms_DESC"
   | "lastVisit_ASC"
   | "lastVisit_DESC"
+  | "criticity_ASC"
+  | "criticity_DESC"
   | "score_ASC"
   | "score_DESC"
   | "lat_ASC"
@@ -348,15 +466,13 @@ export type HotelOrderByInput =
   | "updatedAt_ASC"
   | "updatedAt_DESC";
 
-export type VisitOrderByInput =
+export type ScheduleOrderByInput =
   | "id_ASC"
   | "id_DESC"
-  | "date_ASC"
-  | "date_DESC"
-  | "createdAt_ASC"
-  | "createdAt_DESC"
-  | "updatedAt_ASC"
-  | "updatedAt_DESC";
+  | "startDate_ASC"
+  | "startDate_DESC"
+  | "endDate_ASC"
+  | "endDate_DESC";
 
 export type ResidentOrderByInput =
   | "id_ASC"
@@ -388,13 +504,15 @@ export type SectorOrderByInput =
   | "updatedAt_ASC"
   | "updatedAt_DESC";
 
-export type TeamOrderByInput =
+export type ShiftOrderByInput =
   | "id_ASC"
   | "id_DESC"
-  | "createdAt_ASC"
-  | "createdAt_DESC"
-  | "updatedAt_ASC"
-  | "updatedAt_DESC";
+  | "index_ASC"
+  | "index_DESC"
+  | "startTime_ASC"
+  | "startTime_DESC"
+  | "endTime_ASC"
+  | "endTime_DESC";
 
 export type MutationType = "CREATED" | "UPDATED" | "DELETED";
 
@@ -460,20 +578,10 @@ export interface UserWhereInput {
   lastName_not_starts_with?: Maybe<String>;
   lastName_ends_with?: Maybe<String>;
   lastName_not_ends_with?: Maybe<String>;
-  role?: Maybe<String>;
-  role_not?: Maybe<String>;
-  role_in?: Maybe<String[] | String>;
-  role_not_in?: Maybe<String[] | String>;
-  role_lt?: Maybe<String>;
-  role_lte?: Maybe<String>;
-  role_gt?: Maybe<String>;
-  role_gte?: Maybe<String>;
-  role_contains?: Maybe<String>;
-  role_not_contains?: Maybe<String>;
-  role_starts_with?: Maybe<String>;
-  role_not_starts_with?: Maybe<String>;
-  role_ends_with?: Maybe<String>;
-  role_not_ends_with?: Maybe<String>;
+  role?: Maybe<Role>;
+  role_not?: Maybe<Role>;
+  role_in?: Maybe<Role[] | Role>;
+  role_not_in?: Maybe<Role[] | Role>;
   sector?: Maybe<SectorWhereInput>;
   address?: Maybe<String>;
   address_not?: Maybe<String>;
@@ -503,6 +611,20 @@ export interface UserWhereInput {
   email_not_starts_with?: Maybe<String>;
   email_ends_with?: Maybe<String>;
   email_not_ends_with?: Maybe<String>;
+  phone?: Maybe<String>;
+  phone_not?: Maybe<String>;
+  phone_in?: Maybe<String[] | String>;
+  phone_not_in?: Maybe<String[] | String>;
+  phone_lt?: Maybe<String>;
+  phone_lte?: Maybe<String>;
+  phone_gt?: Maybe<String>;
+  phone_gte?: Maybe<String>;
+  phone_contains?: Maybe<String>;
+  phone_not_contains?: Maybe<String>;
+  phone_starts_with?: Maybe<String>;
+  phone_not_starts_with?: Maybe<String>;
+  phone_ends_with?: Maybe<String>;
+  phone_not_ends_with?: Maybe<String>;
   password?: Maybe<String>;
   password_not?: Maybe<String>;
   password_in?: Maybe<String[] | String>;
@@ -517,6 +639,9 @@ export interface UserWhereInput {
   password_not_starts_with?: Maybe<String>;
   password_ends_with?: Maybe<String>;
   password_not_ends_with?: Maybe<String>;
+  teams_every?: Maybe<TeamWhereInput>;
+  teams_some?: Maybe<TeamWhereInput>;
+  teams_none?: Maybe<TeamWhereInput>;
   createdAt?: Maybe<DateTimeInput>;
   createdAt_not?: Maybe<DateTimeInput>;
   createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
@@ -573,6 +698,12 @@ export interface SectorWhereInput {
   hotels_every?: Maybe<HotelWhereInput>;
   hotels_some?: Maybe<HotelWhereInput>;
   hotels_none?: Maybe<HotelWhereInput>;
+  teams_every?: Maybe<TeamWhereInput>;
+  teams_some?: Maybe<TeamWhereInput>;
+  teams_none?: Maybe<TeamWhereInput>;
+  schedules_every?: Maybe<ScheduleWhereInput>;
+  schedules_some?: Maybe<ScheduleWhereInput>;
+  schedules_none?: Maybe<ScheduleWhereInput>;
   createdAt?: Maybe<DateTimeInput>;
   createdAt_not?: Maybe<DateTimeInput>;
   createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
@@ -681,6 +812,20 @@ export interface HotelWhereInput {
   city_not_starts_with?: Maybe<String>;
   city_ends_with?: Maybe<String>;
   city_not_ends_with?: Maybe<String>;
+  phone?: Maybe<String>;
+  phone_not?: Maybe<String>;
+  phone_in?: Maybe<String[] | String>;
+  phone_not_in?: Maybe<String[] | String>;
+  phone_lt?: Maybe<String>;
+  phone_lte?: Maybe<String>;
+  phone_gt?: Maybe<String>;
+  phone_gte?: Maybe<String>;
+  phone_contains?: Maybe<String>;
+  phone_not_contains?: Maybe<String>;
+  phone_starts_with?: Maybe<String>;
+  phone_not_starts_with?: Maybe<String>;
+  phone_ends_with?: Maybe<String>;
+  phone_not_ends_with?: Maybe<String>;
   active?: Maybe<Boolean>;
   active_not?: Maybe<Boolean>;
   rooms?: Maybe<Int>;
@@ -699,6 +844,14 @@ export interface HotelWhereInput {
   lastVisit_lte?: Maybe<DateTimeInput>;
   lastVisit_gt?: Maybe<DateTimeInput>;
   lastVisit_gte?: Maybe<DateTimeInput>;
+  criticity?: Maybe<Float>;
+  criticity_not?: Maybe<Float>;
+  criticity_in?: Maybe<Float[] | Float>;
+  criticity_not_in?: Maybe<Float[] | Float>;
+  criticity_lt?: Maybe<Float>;
+  criticity_lte?: Maybe<Float>;
+  criticity_gt?: Maybe<Float>;
+  criticity_gte?: Maybe<Float>;
   score?: Maybe<Float>;
   score_not?: Maybe<Float>;
   score_in?: Maybe<Float[] | Float>;
@@ -776,6 +929,12 @@ export interface VisitWhereInput {
   date_gte?: Maybe<DateTimeInput>;
   team?: Maybe<TeamWhereInput>;
   hotel?: Maybe<HotelWhereInput>;
+  priority?: Maybe<Boolean>;
+  priority_not?: Maybe<Boolean>;
+  status?: Maybe<VisitStatus>;
+  status_not?: Maybe<VisitStatus>;
+  status_in?: Maybe<VisitStatus[] | VisitStatus>;
+  status_not_in?: Maybe<VisitStatus[] | VisitStatus>;
   createdAt?: Maybe<DateTimeInput>;
   createdAt_not?: Maybe<DateTimeInput>;
   createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
@@ -812,12 +971,29 @@ export interface TeamWhereInput {
   id_not_starts_with?: Maybe<ID_Input>;
   id_ends_with?: Maybe<ID_Input>;
   id_not_ends_with?: Maybe<ID_Input>;
+  sector?: Maybe<SectorWhereInput>;
   users_every?: Maybe<UserWhereInput>;
   users_some?: Maybe<UserWhereInput>;
   users_none?: Maybe<UserWhereInput>;
   visits_every?: Maybe<VisitWhereInput>;
   visits_some?: Maybe<VisitWhereInput>;
   visits_none?: Maybe<VisitWhereInput>;
+  startDate?: Maybe<DateTimeInput>;
+  startDate_not?: Maybe<DateTimeInput>;
+  startDate_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  startDate_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  startDate_lt?: Maybe<DateTimeInput>;
+  startDate_lte?: Maybe<DateTimeInput>;
+  startDate_gt?: Maybe<DateTimeInput>;
+  startDate_gte?: Maybe<DateTimeInput>;
+  endDate?: Maybe<DateTimeInput>;
+  endDate_not?: Maybe<DateTimeInput>;
+  endDate_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  endDate_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  endDate_lt?: Maybe<DateTimeInput>;
+  endDate_lte?: Maybe<DateTimeInput>;
+  endDate_gt?: Maybe<DateTimeInput>;
+  endDate_gte?: Maybe<DateTimeInput>;
   createdAt?: Maybe<DateTimeInput>;
   createdAt_not?: Maybe<DateTimeInput>;
   createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
@@ -938,14 +1114,120 @@ export interface ResidentWhereInput {
   NOT?: Maybe<ResidentWhereInput[] | ResidentWhereInput>;
 }
 
+export interface ScheduleWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  shift?: Maybe<ShiftWhereInput>;
+  sector?: Maybe<SectorWhereInput>;
+  startDate?: Maybe<DateTimeInput>;
+  startDate_not?: Maybe<DateTimeInput>;
+  startDate_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  startDate_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  startDate_lt?: Maybe<DateTimeInput>;
+  startDate_lte?: Maybe<DateTimeInput>;
+  startDate_gt?: Maybe<DateTimeInput>;
+  startDate_gte?: Maybe<DateTimeInput>;
+  endDate?: Maybe<DateTimeInput>;
+  endDate_not?: Maybe<DateTimeInput>;
+  endDate_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  endDate_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  endDate_lt?: Maybe<DateTimeInput>;
+  endDate_lte?: Maybe<DateTimeInput>;
+  endDate_gt?: Maybe<DateTimeInput>;
+  endDate_gte?: Maybe<DateTimeInput>;
+  AND?: Maybe<ScheduleWhereInput[] | ScheduleWhereInput>;
+  OR?: Maybe<ScheduleWhereInput[] | ScheduleWhereInput>;
+  NOT?: Maybe<ScheduleWhereInput[] | ScheduleWhereInput>;
+}
+
+export interface ShiftWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  index?: Maybe<Int>;
+  index_not?: Maybe<Int>;
+  index_in?: Maybe<Int[] | Int>;
+  index_not_in?: Maybe<Int[] | Int>;
+  index_lt?: Maybe<Int>;
+  index_lte?: Maybe<Int>;
+  index_gt?: Maybe<Int>;
+  index_gte?: Maybe<Int>;
+  startTime?: Maybe<String>;
+  startTime_not?: Maybe<String>;
+  startTime_in?: Maybe<String[] | String>;
+  startTime_not_in?: Maybe<String[] | String>;
+  startTime_lt?: Maybe<String>;
+  startTime_lte?: Maybe<String>;
+  startTime_gt?: Maybe<String>;
+  startTime_gte?: Maybe<String>;
+  startTime_contains?: Maybe<String>;
+  startTime_not_contains?: Maybe<String>;
+  startTime_starts_with?: Maybe<String>;
+  startTime_not_starts_with?: Maybe<String>;
+  startTime_ends_with?: Maybe<String>;
+  startTime_not_ends_with?: Maybe<String>;
+  endTime?: Maybe<String>;
+  endTime_not?: Maybe<String>;
+  endTime_in?: Maybe<String[] | String>;
+  endTime_not_in?: Maybe<String[] | String>;
+  endTime_lt?: Maybe<String>;
+  endTime_lte?: Maybe<String>;
+  endTime_gt?: Maybe<String>;
+  endTime_gte?: Maybe<String>;
+  endTime_contains?: Maybe<String>;
+  endTime_not_contains?: Maybe<String>;
+  endTime_starts_with?: Maybe<String>;
+  endTime_not_starts_with?: Maybe<String>;
+  endTime_ends_with?: Maybe<String>;
+  endTime_not_ends_with?: Maybe<String>;
+  schedules_every?: Maybe<ScheduleWhereInput>;
+  schedules_some?: Maybe<ScheduleWhereInput>;
+  schedules_none?: Maybe<ScheduleWhereInput>;
+  AND?: Maybe<ShiftWhereInput[] | ShiftWhereInput>;
+  OR?: Maybe<ShiftWhereInput[] | ShiftWhereInput>;
+  NOT?: Maybe<ShiftWhereInput[] | ShiftWhereInput>;
+}
+
 export type ResidentWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
   email?: Maybe<String>;
 }>;
 
+export type ScheduleWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+}>;
+
 export type SectorWhereUniqueInput = AtLeastOne<{
   id: Maybe<ID_Input>;
   zone?: Maybe<String>;
+}>;
+
+export type ShiftWhereUniqueInput = AtLeastOne<{
+  id: Maybe<ID_Input>;
+  index?: Maybe<Int>;
 }>;
 
 export type TeamWhereUniqueInput = AtLeastOne<{
@@ -969,9 +1251,11 @@ export interface HotelCreateInput {
   address: String;
   zipCode: Int;
   city: String;
+  phone?: Maybe<String>;
   active: Boolean;
   rooms: Int;
   lastVisit?: Maybe<DateTimeInput>;
+  criticity?: Maybe<Float>;
   score?: Maybe<Float>;
   sector: SectorCreateOneWithoutHotelsInput;
   lat: Float;
@@ -989,6 +1273,8 @@ export interface SectorCreateWithoutHotelsInput {
   id?: Maybe<ID_Input>;
   zone: String;
   users?: Maybe<UserCreateManyWithoutSectorInput>;
+  teams?: Maybe<TeamCreateManyWithoutSectorInput>;
+  schedules?: Maybe<ScheduleCreateManyWithoutSectorInput>;
 }
 
 export interface UserCreateManyWithoutSectorInput {
@@ -1001,59 +1287,38 @@ export interface UserCreateWithoutSectorInput {
   searchIndex: String;
   firstName: String;
   lastName: String;
-  role: String;
+  role: Role;
   address?: Maybe<String>;
   email: String;
+  phone?: Maybe<String>;
   password?: Maybe<String>;
+  teams?: Maybe<TeamCreateManyWithoutUsersInput>;
 }
 
-export interface VisitCreateManyWithoutHotelInput {
-  create?: Maybe<VisitCreateWithoutHotelInput[] | VisitCreateWithoutHotelInput>;
-  connect?: Maybe<VisitWhereUniqueInput[] | VisitWhereUniqueInput>;
+export interface TeamCreateManyWithoutUsersInput {
+  create?: Maybe<TeamCreateWithoutUsersInput[] | TeamCreateWithoutUsersInput>;
+  connect?: Maybe<TeamWhereUniqueInput[] | TeamWhereUniqueInput>;
 }
 
-export interface VisitCreateWithoutHotelInput {
+export interface TeamCreateWithoutUsersInput {
   id?: Maybe<ID_Input>;
-  date: DateTimeInput;
-  team: TeamCreateOneWithoutVisitsInput;
+  sector: SectorCreateOneWithoutTeamsInput;
+  visits?: Maybe<VisitCreateManyWithoutTeamInput>;
+  startDate: DateTimeInput;
+  endDate: DateTimeInput;
 }
 
-export interface TeamCreateOneWithoutVisitsInput {
-  create?: Maybe<TeamCreateWithoutVisitsInput>;
-  connect?: Maybe<TeamWhereUniqueInput>;
-}
-
-export interface TeamCreateWithoutVisitsInput {
-  id?: Maybe<ID_Input>;
-  users?: Maybe<UserCreateManyInput>;
-}
-
-export interface UserCreateManyInput {
-  create?: Maybe<UserCreateInput[] | UserCreateInput>;
-  connect?: Maybe<UserWhereUniqueInput[] | UserWhereUniqueInput>;
-}
-
-export interface UserCreateInput {
-  id?: Maybe<ID_Input>;
-  searchIndex: String;
-  firstName: String;
-  lastName: String;
-  role: String;
-  sector?: Maybe<SectorCreateOneWithoutUsersInput>;
-  address?: Maybe<String>;
-  email: String;
-  password?: Maybe<String>;
-}
-
-export interface SectorCreateOneWithoutUsersInput {
-  create?: Maybe<SectorCreateWithoutUsersInput>;
+export interface SectorCreateOneWithoutTeamsInput {
+  create?: Maybe<SectorCreateWithoutTeamsInput>;
   connect?: Maybe<SectorWhereUniqueInput>;
 }
 
-export interface SectorCreateWithoutUsersInput {
+export interface SectorCreateWithoutTeamsInput {
   id?: Maybe<ID_Input>;
   zone: String;
+  users?: Maybe<UserCreateManyWithoutSectorInput>;
   hotels?: Maybe<HotelCreateManyWithoutSectorInput>;
+  schedules?: Maybe<ScheduleCreateManyWithoutSectorInput>;
 }
 
 export interface HotelCreateManyWithoutSectorInput {
@@ -1071,13 +1336,123 @@ export interface HotelCreateWithoutSectorInput {
   address: String;
   zipCode: Int;
   city: String;
+  phone?: Maybe<String>;
   active: Boolean;
   rooms: Int;
   lastVisit?: Maybe<DateTimeInput>;
+  criticity?: Maybe<Float>;
   score?: Maybe<Float>;
   lat: Float;
   long: Float;
   visits?: Maybe<VisitCreateManyWithoutHotelInput>;
+  residents?: Maybe<ResidentCreateManyWithoutHotelInput>;
+}
+
+export interface VisitCreateManyWithoutHotelInput {
+  create?: Maybe<VisitCreateWithoutHotelInput[] | VisitCreateWithoutHotelInput>;
+  connect?: Maybe<VisitWhereUniqueInput[] | VisitWhereUniqueInput>;
+}
+
+export interface VisitCreateWithoutHotelInput {
+  id?: Maybe<ID_Input>;
+  date: DateTimeInput;
+  team: TeamCreateOneWithoutVisitsInput;
+  priority: Boolean;
+  status: VisitStatus;
+}
+
+export interface TeamCreateOneWithoutVisitsInput {
+  create?: Maybe<TeamCreateWithoutVisitsInput>;
+  connect?: Maybe<TeamWhereUniqueInput>;
+}
+
+export interface TeamCreateWithoutVisitsInput {
+  id?: Maybe<ID_Input>;
+  sector: SectorCreateOneWithoutTeamsInput;
+  users?: Maybe<UserCreateManyWithoutTeamsInput>;
+  startDate: DateTimeInput;
+  endDate: DateTimeInput;
+}
+
+export interface UserCreateManyWithoutTeamsInput {
+  create?: Maybe<UserCreateWithoutTeamsInput[] | UserCreateWithoutTeamsInput>;
+  connect?: Maybe<UserWhereUniqueInput[] | UserWhereUniqueInput>;
+}
+
+export interface UserCreateWithoutTeamsInput {
+  id?: Maybe<ID_Input>;
+  searchIndex: String;
+  firstName: String;
+  lastName: String;
+  role: Role;
+  sector?: Maybe<SectorCreateOneWithoutUsersInput>;
+  address?: Maybe<String>;
+  email: String;
+  phone?: Maybe<String>;
+  password?: Maybe<String>;
+}
+
+export interface SectorCreateOneWithoutUsersInput {
+  create?: Maybe<SectorCreateWithoutUsersInput>;
+  connect?: Maybe<SectorWhereUniqueInput>;
+}
+
+export interface SectorCreateWithoutUsersInput {
+  id?: Maybe<ID_Input>;
+  zone: String;
+  hotels?: Maybe<HotelCreateManyWithoutSectorInput>;
+  teams?: Maybe<TeamCreateManyWithoutSectorInput>;
+  schedules?: Maybe<ScheduleCreateManyWithoutSectorInput>;
+}
+
+export interface TeamCreateManyWithoutSectorInput {
+  create?: Maybe<TeamCreateWithoutSectorInput[] | TeamCreateWithoutSectorInput>;
+  connect?: Maybe<TeamWhereUniqueInput[] | TeamWhereUniqueInput>;
+}
+
+export interface TeamCreateWithoutSectorInput {
+  id?: Maybe<ID_Input>;
+  users?: Maybe<UserCreateManyWithoutTeamsInput>;
+  visits?: Maybe<VisitCreateManyWithoutTeamInput>;
+  startDate: DateTimeInput;
+  endDate: DateTimeInput;
+}
+
+export interface VisitCreateManyWithoutTeamInput {
+  create?: Maybe<VisitCreateWithoutTeamInput[] | VisitCreateWithoutTeamInput>;
+  connect?: Maybe<VisitWhereUniqueInput[] | VisitWhereUniqueInput>;
+}
+
+export interface VisitCreateWithoutTeamInput {
+  id?: Maybe<ID_Input>;
+  date: DateTimeInput;
+  hotel?: Maybe<HotelCreateOneWithoutVisitsInput>;
+  priority: Boolean;
+  status: VisitStatus;
+}
+
+export interface HotelCreateOneWithoutVisitsInput {
+  create?: Maybe<HotelCreateWithoutVisitsInput>;
+  connect?: Maybe<HotelWhereUniqueInput>;
+}
+
+export interface HotelCreateWithoutVisitsInput {
+  id?: Maybe<ID_Input>;
+  searchIndex: String;
+  uuid: Int;
+  name: String;
+  address: String;
+  zipCode: Int;
+  city: String;
+  phone?: Maybe<String>;
+  active: Boolean;
+  rooms: Int;
+  lastVisit?: Maybe<DateTimeInput>;
+  criticity?: Maybe<Float>;
+  score?: Maybe<Float>;
+  sector: SectorCreateOneWithoutHotelsInput;
+  lat: Float;
+  long: Float;
   residents?: Maybe<ResidentCreateManyWithoutHotelInput>;
 }
 
@@ -1098,6 +1473,32 @@ export interface ResidentCreateWithoutHotelInput {
   gender?: Maybe<Gender>;
 }
 
+export interface ScheduleCreateManyWithoutSectorInput {
+  create?: Maybe<
+    ScheduleCreateWithoutSectorInput[] | ScheduleCreateWithoutSectorInput
+  >;
+  connect?: Maybe<ScheduleWhereUniqueInput[] | ScheduleWhereUniqueInput>;
+}
+
+export interface ScheduleCreateWithoutSectorInput {
+  id?: Maybe<ID_Input>;
+  shift: ShiftCreateOneWithoutSchedulesInput;
+  startDate: DateTimeInput;
+  endDate: DateTimeInput;
+}
+
+export interface ShiftCreateOneWithoutSchedulesInput {
+  create?: Maybe<ShiftCreateWithoutSchedulesInput>;
+  connect?: Maybe<ShiftWhereUniqueInput>;
+}
+
+export interface ShiftCreateWithoutSchedulesInput {
+  id?: Maybe<ID_Input>;
+  index: Int;
+  startTime: String;
+  endTime: String;
+}
+
 export interface HotelUpdateInput {
   searchIndex?: Maybe<String>;
   uuid?: Maybe<Int>;
@@ -1105,9 +1506,11 @@ export interface HotelUpdateInput {
   address?: Maybe<String>;
   zipCode?: Maybe<Int>;
   city?: Maybe<String>;
+  phone?: Maybe<String>;
   active?: Maybe<Boolean>;
   rooms?: Maybe<Int>;
   lastVisit?: Maybe<DateTimeInput>;
+  criticity?: Maybe<Float>;
   score?: Maybe<Float>;
   sector?: Maybe<SectorUpdateOneRequiredWithoutHotelsInput>;
   lat?: Maybe<Float>;
@@ -1126,6 +1529,8 @@ export interface SectorUpdateOneRequiredWithoutHotelsInput {
 export interface SectorUpdateWithoutHotelsDataInput {
   zone?: Maybe<String>;
   users?: Maybe<UserUpdateManyWithoutSectorInput>;
+  teams?: Maybe<TeamUpdateManyWithoutSectorInput>;
+  schedules?: Maybe<ScheduleUpdateManyWithoutSectorInput>;
 }
 
 export interface UserUpdateManyWithoutSectorInput {
@@ -1157,261 +1562,58 @@ export interface UserUpdateWithoutSectorDataInput {
   searchIndex?: Maybe<String>;
   firstName?: Maybe<String>;
   lastName?: Maybe<String>;
-  role?: Maybe<String>;
+  role?: Maybe<Role>;
   address?: Maybe<String>;
   email?: Maybe<String>;
+  phone?: Maybe<String>;
   password?: Maybe<String>;
+  teams?: Maybe<TeamUpdateManyWithoutUsersInput>;
 }
 
-export interface UserUpsertWithWhereUniqueWithoutSectorInput {
-  where: UserWhereUniqueInput;
-  update: UserUpdateWithoutSectorDataInput;
-  create: UserCreateWithoutSectorInput;
-}
-
-export interface UserScalarWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  searchIndex?: Maybe<String>;
-  searchIndex_not?: Maybe<String>;
-  searchIndex_in?: Maybe<String[] | String>;
-  searchIndex_not_in?: Maybe<String[] | String>;
-  searchIndex_lt?: Maybe<String>;
-  searchIndex_lte?: Maybe<String>;
-  searchIndex_gt?: Maybe<String>;
-  searchIndex_gte?: Maybe<String>;
-  searchIndex_contains?: Maybe<String>;
-  searchIndex_not_contains?: Maybe<String>;
-  searchIndex_starts_with?: Maybe<String>;
-  searchIndex_not_starts_with?: Maybe<String>;
-  searchIndex_ends_with?: Maybe<String>;
-  searchIndex_not_ends_with?: Maybe<String>;
-  firstName?: Maybe<String>;
-  firstName_not?: Maybe<String>;
-  firstName_in?: Maybe<String[] | String>;
-  firstName_not_in?: Maybe<String[] | String>;
-  firstName_lt?: Maybe<String>;
-  firstName_lte?: Maybe<String>;
-  firstName_gt?: Maybe<String>;
-  firstName_gte?: Maybe<String>;
-  firstName_contains?: Maybe<String>;
-  firstName_not_contains?: Maybe<String>;
-  firstName_starts_with?: Maybe<String>;
-  firstName_not_starts_with?: Maybe<String>;
-  firstName_ends_with?: Maybe<String>;
-  firstName_not_ends_with?: Maybe<String>;
-  lastName?: Maybe<String>;
-  lastName_not?: Maybe<String>;
-  lastName_in?: Maybe<String[] | String>;
-  lastName_not_in?: Maybe<String[] | String>;
-  lastName_lt?: Maybe<String>;
-  lastName_lte?: Maybe<String>;
-  lastName_gt?: Maybe<String>;
-  lastName_gte?: Maybe<String>;
-  lastName_contains?: Maybe<String>;
-  lastName_not_contains?: Maybe<String>;
-  lastName_starts_with?: Maybe<String>;
-  lastName_not_starts_with?: Maybe<String>;
-  lastName_ends_with?: Maybe<String>;
-  lastName_not_ends_with?: Maybe<String>;
-  role?: Maybe<String>;
-  role_not?: Maybe<String>;
-  role_in?: Maybe<String[] | String>;
-  role_not_in?: Maybe<String[] | String>;
-  role_lt?: Maybe<String>;
-  role_lte?: Maybe<String>;
-  role_gt?: Maybe<String>;
-  role_gte?: Maybe<String>;
-  role_contains?: Maybe<String>;
-  role_not_contains?: Maybe<String>;
-  role_starts_with?: Maybe<String>;
-  role_not_starts_with?: Maybe<String>;
-  role_ends_with?: Maybe<String>;
-  role_not_ends_with?: Maybe<String>;
-  address?: Maybe<String>;
-  address_not?: Maybe<String>;
-  address_in?: Maybe<String[] | String>;
-  address_not_in?: Maybe<String[] | String>;
-  address_lt?: Maybe<String>;
-  address_lte?: Maybe<String>;
-  address_gt?: Maybe<String>;
-  address_gte?: Maybe<String>;
-  address_contains?: Maybe<String>;
-  address_not_contains?: Maybe<String>;
-  address_starts_with?: Maybe<String>;
-  address_not_starts_with?: Maybe<String>;
-  address_ends_with?: Maybe<String>;
-  address_not_ends_with?: Maybe<String>;
-  email?: Maybe<String>;
-  email_not?: Maybe<String>;
-  email_in?: Maybe<String[] | String>;
-  email_not_in?: Maybe<String[] | String>;
-  email_lt?: Maybe<String>;
-  email_lte?: Maybe<String>;
-  email_gt?: Maybe<String>;
-  email_gte?: Maybe<String>;
-  email_contains?: Maybe<String>;
-  email_not_contains?: Maybe<String>;
-  email_starts_with?: Maybe<String>;
-  email_not_starts_with?: Maybe<String>;
-  email_ends_with?: Maybe<String>;
-  email_not_ends_with?: Maybe<String>;
-  password?: Maybe<String>;
-  password_not?: Maybe<String>;
-  password_in?: Maybe<String[] | String>;
-  password_not_in?: Maybe<String[] | String>;
-  password_lt?: Maybe<String>;
-  password_lte?: Maybe<String>;
-  password_gt?: Maybe<String>;
-  password_gte?: Maybe<String>;
-  password_contains?: Maybe<String>;
-  password_not_contains?: Maybe<String>;
-  password_starts_with?: Maybe<String>;
-  password_not_starts_with?: Maybe<String>;
-  password_ends_with?: Maybe<String>;
-  password_not_ends_with?: Maybe<String>;
-  createdAt?: Maybe<DateTimeInput>;
-  createdAt_not?: Maybe<DateTimeInput>;
-  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_lt?: Maybe<DateTimeInput>;
-  createdAt_lte?: Maybe<DateTimeInput>;
-  createdAt_gt?: Maybe<DateTimeInput>;
-  createdAt_gte?: Maybe<DateTimeInput>;
-  updatedAt?: Maybe<DateTimeInput>;
-  updatedAt_not?: Maybe<DateTimeInput>;
-  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_lt?: Maybe<DateTimeInput>;
-  updatedAt_lte?: Maybe<DateTimeInput>;
-  updatedAt_gt?: Maybe<DateTimeInput>;
-  updatedAt_gte?: Maybe<DateTimeInput>;
-  AND?: Maybe<UserScalarWhereInput[] | UserScalarWhereInput>;
-  OR?: Maybe<UserScalarWhereInput[] | UserScalarWhereInput>;
-  NOT?: Maybe<UserScalarWhereInput[] | UserScalarWhereInput>;
-}
-
-export interface UserUpdateManyWithWhereNestedInput {
-  where: UserScalarWhereInput;
-  data: UserUpdateManyDataInput;
-}
-
-export interface UserUpdateManyDataInput {
-  searchIndex?: Maybe<String>;
-  firstName?: Maybe<String>;
-  lastName?: Maybe<String>;
-  role?: Maybe<String>;
-  address?: Maybe<String>;
-  email?: Maybe<String>;
-  password?: Maybe<String>;
-}
-
-export interface SectorUpsertWithoutHotelsInput {
-  update: SectorUpdateWithoutHotelsDataInput;
-  create: SectorCreateWithoutHotelsInput;
-}
-
-export interface VisitUpdateManyWithoutHotelInput {
-  create?: Maybe<VisitCreateWithoutHotelInput[] | VisitCreateWithoutHotelInput>;
-  delete?: Maybe<VisitWhereUniqueInput[] | VisitWhereUniqueInput>;
-  connect?: Maybe<VisitWhereUniqueInput[] | VisitWhereUniqueInput>;
-  set?: Maybe<VisitWhereUniqueInput[] | VisitWhereUniqueInput>;
-  disconnect?: Maybe<VisitWhereUniqueInput[] | VisitWhereUniqueInput>;
+export interface TeamUpdateManyWithoutUsersInput {
+  create?: Maybe<TeamCreateWithoutUsersInput[] | TeamCreateWithoutUsersInput>;
+  delete?: Maybe<TeamWhereUniqueInput[] | TeamWhereUniqueInput>;
+  connect?: Maybe<TeamWhereUniqueInput[] | TeamWhereUniqueInput>;
+  set?: Maybe<TeamWhereUniqueInput[] | TeamWhereUniqueInput>;
+  disconnect?: Maybe<TeamWhereUniqueInput[] | TeamWhereUniqueInput>;
   update?: Maybe<
-    | VisitUpdateWithWhereUniqueWithoutHotelInput[]
-    | VisitUpdateWithWhereUniqueWithoutHotelInput
+    | TeamUpdateWithWhereUniqueWithoutUsersInput[]
+    | TeamUpdateWithWhereUniqueWithoutUsersInput
   >;
   upsert?: Maybe<
-    | VisitUpsertWithWhereUniqueWithoutHotelInput[]
-    | VisitUpsertWithWhereUniqueWithoutHotelInput
+    | TeamUpsertWithWhereUniqueWithoutUsersInput[]
+    | TeamUpsertWithWhereUniqueWithoutUsersInput
   >;
-  deleteMany?: Maybe<VisitScalarWhereInput[] | VisitScalarWhereInput>;
+  deleteMany?: Maybe<TeamScalarWhereInput[] | TeamScalarWhereInput>;
   updateMany?: Maybe<
-    VisitUpdateManyWithWhereNestedInput[] | VisitUpdateManyWithWhereNestedInput
+    TeamUpdateManyWithWhereNestedInput[] | TeamUpdateManyWithWhereNestedInput
   >;
 }
 
-export interface VisitUpdateWithWhereUniqueWithoutHotelInput {
-  where: VisitWhereUniqueInput;
-  data: VisitUpdateWithoutHotelDataInput;
+export interface TeamUpdateWithWhereUniqueWithoutUsersInput {
+  where: TeamWhereUniqueInput;
+  data: TeamUpdateWithoutUsersDataInput;
 }
 
-export interface VisitUpdateWithoutHotelDataInput {
-  date?: Maybe<DateTimeInput>;
-  team?: Maybe<TeamUpdateOneRequiredWithoutVisitsInput>;
+export interface TeamUpdateWithoutUsersDataInput {
+  sector?: Maybe<SectorUpdateOneRequiredWithoutTeamsInput>;
+  visits?: Maybe<VisitUpdateManyWithoutTeamInput>;
+  startDate?: Maybe<DateTimeInput>;
+  endDate?: Maybe<DateTimeInput>;
 }
 
-export interface TeamUpdateOneRequiredWithoutVisitsInput {
-  create?: Maybe<TeamCreateWithoutVisitsInput>;
-  update?: Maybe<TeamUpdateWithoutVisitsDataInput>;
-  upsert?: Maybe<TeamUpsertWithoutVisitsInput>;
-  connect?: Maybe<TeamWhereUniqueInput>;
-}
-
-export interface TeamUpdateWithoutVisitsDataInput {
-  users?: Maybe<UserUpdateManyInput>;
-}
-
-export interface UserUpdateManyInput {
-  create?: Maybe<UserCreateInput[] | UserCreateInput>;
-  update?: Maybe<
-    | UserUpdateWithWhereUniqueNestedInput[]
-    | UserUpdateWithWhereUniqueNestedInput
-  >;
-  upsert?: Maybe<
-    | UserUpsertWithWhereUniqueNestedInput[]
-    | UserUpsertWithWhereUniqueNestedInput
-  >;
-  delete?: Maybe<UserWhereUniqueInput[] | UserWhereUniqueInput>;
-  connect?: Maybe<UserWhereUniqueInput[] | UserWhereUniqueInput>;
-  set?: Maybe<UserWhereUniqueInput[] | UserWhereUniqueInput>;
-  disconnect?: Maybe<UserWhereUniqueInput[] | UserWhereUniqueInput>;
-  deleteMany?: Maybe<UserScalarWhereInput[] | UserScalarWhereInput>;
-  updateMany?: Maybe<
-    UserUpdateManyWithWhereNestedInput[] | UserUpdateManyWithWhereNestedInput
-  >;
-}
-
-export interface UserUpdateWithWhereUniqueNestedInput {
-  where: UserWhereUniqueInput;
-  data: UserUpdateDataInput;
-}
-
-export interface UserUpdateDataInput {
-  searchIndex?: Maybe<String>;
-  firstName?: Maybe<String>;
-  lastName?: Maybe<String>;
-  role?: Maybe<String>;
-  sector?: Maybe<SectorUpdateOneWithoutUsersInput>;
-  address?: Maybe<String>;
-  email?: Maybe<String>;
-  password?: Maybe<String>;
-}
-
-export interface SectorUpdateOneWithoutUsersInput {
-  create?: Maybe<SectorCreateWithoutUsersInput>;
-  update?: Maybe<SectorUpdateWithoutUsersDataInput>;
-  upsert?: Maybe<SectorUpsertWithoutUsersInput>;
-  delete?: Maybe<Boolean>;
-  disconnect?: Maybe<Boolean>;
+export interface SectorUpdateOneRequiredWithoutTeamsInput {
+  create?: Maybe<SectorCreateWithoutTeamsInput>;
+  update?: Maybe<SectorUpdateWithoutTeamsDataInput>;
+  upsert?: Maybe<SectorUpsertWithoutTeamsInput>;
   connect?: Maybe<SectorWhereUniqueInput>;
 }
 
-export interface SectorUpdateWithoutUsersDataInput {
+export interface SectorUpdateWithoutTeamsDataInput {
   zone?: Maybe<String>;
+  users?: Maybe<UserUpdateManyWithoutSectorInput>;
   hotels?: Maybe<HotelUpdateManyWithoutSectorInput>;
+  schedules?: Maybe<ScheduleUpdateManyWithoutSectorInput>;
 }
 
 export interface HotelUpdateManyWithoutSectorInput {
@@ -1448,13 +1650,206 @@ export interface HotelUpdateWithoutSectorDataInput {
   address?: Maybe<String>;
   zipCode?: Maybe<Int>;
   city?: Maybe<String>;
+  phone?: Maybe<String>;
   active?: Maybe<Boolean>;
   rooms?: Maybe<Int>;
   lastVisit?: Maybe<DateTimeInput>;
+  criticity?: Maybe<Float>;
   score?: Maybe<Float>;
   lat?: Maybe<Float>;
   long?: Maybe<Float>;
   visits?: Maybe<VisitUpdateManyWithoutHotelInput>;
+  residents?: Maybe<ResidentUpdateManyWithoutHotelInput>;
+}
+
+export interface VisitUpdateManyWithoutHotelInput {
+  create?: Maybe<VisitCreateWithoutHotelInput[] | VisitCreateWithoutHotelInput>;
+  delete?: Maybe<VisitWhereUniqueInput[] | VisitWhereUniqueInput>;
+  connect?: Maybe<VisitWhereUniqueInput[] | VisitWhereUniqueInput>;
+  set?: Maybe<VisitWhereUniqueInput[] | VisitWhereUniqueInput>;
+  disconnect?: Maybe<VisitWhereUniqueInput[] | VisitWhereUniqueInput>;
+  update?: Maybe<
+    | VisitUpdateWithWhereUniqueWithoutHotelInput[]
+    | VisitUpdateWithWhereUniqueWithoutHotelInput
+  >;
+  upsert?: Maybe<
+    | VisitUpsertWithWhereUniqueWithoutHotelInput[]
+    | VisitUpsertWithWhereUniqueWithoutHotelInput
+  >;
+  deleteMany?: Maybe<VisitScalarWhereInput[] | VisitScalarWhereInput>;
+  updateMany?: Maybe<
+    VisitUpdateManyWithWhereNestedInput[] | VisitUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface VisitUpdateWithWhereUniqueWithoutHotelInput {
+  where: VisitWhereUniqueInput;
+  data: VisitUpdateWithoutHotelDataInput;
+}
+
+export interface VisitUpdateWithoutHotelDataInput {
+  date?: Maybe<DateTimeInput>;
+  team?: Maybe<TeamUpdateOneRequiredWithoutVisitsInput>;
+  priority?: Maybe<Boolean>;
+  status?: Maybe<VisitStatus>;
+}
+
+export interface TeamUpdateOneRequiredWithoutVisitsInput {
+  create?: Maybe<TeamCreateWithoutVisitsInput>;
+  update?: Maybe<TeamUpdateWithoutVisitsDataInput>;
+  upsert?: Maybe<TeamUpsertWithoutVisitsInput>;
+  connect?: Maybe<TeamWhereUniqueInput>;
+}
+
+export interface TeamUpdateWithoutVisitsDataInput {
+  sector?: Maybe<SectorUpdateOneRequiredWithoutTeamsInput>;
+  users?: Maybe<UserUpdateManyWithoutTeamsInput>;
+  startDate?: Maybe<DateTimeInput>;
+  endDate?: Maybe<DateTimeInput>;
+}
+
+export interface UserUpdateManyWithoutTeamsInput {
+  create?: Maybe<UserCreateWithoutTeamsInput[] | UserCreateWithoutTeamsInput>;
+  delete?: Maybe<UserWhereUniqueInput[] | UserWhereUniqueInput>;
+  connect?: Maybe<UserWhereUniqueInput[] | UserWhereUniqueInput>;
+  set?: Maybe<UserWhereUniqueInput[] | UserWhereUniqueInput>;
+  disconnect?: Maybe<UserWhereUniqueInput[] | UserWhereUniqueInput>;
+  update?: Maybe<
+    | UserUpdateWithWhereUniqueWithoutTeamsInput[]
+    | UserUpdateWithWhereUniqueWithoutTeamsInput
+  >;
+  upsert?: Maybe<
+    | UserUpsertWithWhereUniqueWithoutTeamsInput[]
+    | UserUpsertWithWhereUniqueWithoutTeamsInput
+  >;
+  deleteMany?: Maybe<UserScalarWhereInput[] | UserScalarWhereInput>;
+  updateMany?: Maybe<
+    UserUpdateManyWithWhereNestedInput[] | UserUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface UserUpdateWithWhereUniqueWithoutTeamsInput {
+  where: UserWhereUniqueInput;
+  data: UserUpdateWithoutTeamsDataInput;
+}
+
+export interface UserUpdateWithoutTeamsDataInput {
+  searchIndex?: Maybe<String>;
+  firstName?: Maybe<String>;
+  lastName?: Maybe<String>;
+  role?: Maybe<Role>;
+  sector?: Maybe<SectorUpdateOneWithoutUsersInput>;
+  address?: Maybe<String>;
+  email?: Maybe<String>;
+  phone?: Maybe<String>;
+  password?: Maybe<String>;
+}
+
+export interface SectorUpdateOneWithoutUsersInput {
+  create?: Maybe<SectorCreateWithoutUsersInput>;
+  update?: Maybe<SectorUpdateWithoutUsersDataInput>;
+  upsert?: Maybe<SectorUpsertWithoutUsersInput>;
+  delete?: Maybe<Boolean>;
+  disconnect?: Maybe<Boolean>;
+  connect?: Maybe<SectorWhereUniqueInput>;
+}
+
+export interface SectorUpdateWithoutUsersDataInput {
+  zone?: Maybe<String>;
+  hotels?: Maybe<HotelUpdateManyWithoutSectorInput>;
+  teams?: Maybe<TeamUpdateManyWithoutSectorInput>;
+  schedules?: Maybe<ScheduleUpdateManyWithoutSectorInput>;
+}
+
+export interface TeamUpdateManyWithoutSectorInput {
+  create?: Maybe<TeamCreateWithoutSectorInput[] | TeamCreateWithoutSectorInput>;
+  delete?: Maybe<TeamWhereUniqueInput[] | TeamWhereUniqueInput>;
+  connect?: Maybe<TeamWhereUniqueInput[] | TeamWhereUniqueInput>;
+  set?: Maybe<TeamWhereUniqueInput[] | TeamWhereUniqueInput>;
+  disconnect?: Maybe<TeamWhereUniqueInput[] | TeamWhereUniqueInput>;
+  update?: Maybe<
+    | TeamUpdateWithWhereUniqueWithoutSectorInput[]
+    | TeamUpdateWithWhereUniqueWithoutSectorInput
+  >;
+  upsert?: Maybe<
+    | TeamUpsertWithWhereUniqueWithoutSectorInput[]
+    | TeamUpsertWithWhereUniqueWithoutSectorInput
+  >;
+  deleteMany?: Maybe<TeamScalarWhereInput[] | TeamScalarWhereInput>;
+  updateMany?: Maybe<
+    TeamUpdateManyWithWhereNestedInput[] | TeamUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface TeamUpdateWithWhereUniqueWithoutSectorInput {
+  where: TeamWhereUniqueInput;
+  data: TeamUpdateWithoutSectorDataInput;
+}
+
+export interface TeamUpdateWithoutSectorDataInput {
+  users?: Maybe<UserUpdateManyWithoutTeamsInput>;
+  visits?: Maybe<VisitUpdateManyWithoutTeamInput>;
+  startDate?: Maybe<DateTimeInput>;
+  endDate?: Maybe<DateTimeInput>;
+}
+
+export interface VisitUpdateManyWithoutTeamInput {
+  create?: Maybe<VisitCreateWithoutTeamInput[] | VisitCreateWithoutTeamInput>;
+  delete?: Maybe<VisitWhereUniqueInput[] | VisitWhereUniqueInput>;
+  connect?: Maybe<VisitWhereUniqueInput[] | VisitWhereUniqueInput>;
+  set?: Maybe<VisitWhereUniqueInput[] | VisitWhereUniqueInput>;
+  disconnect?: Maybe<VisitWhereUniqueInput[] | VisitWhereUniqueInput>;
+  update?: Maybe<
+    | VisitUpdateWithWhereUniqueWithoutTeamInput[]
+    | VisitUpdateWithWhereUniqueWithoutTeamInput
+  >;
+  upsert?: Maybe<
+    | VisitUpsertWithWhereUniqueWithoutTeamInput[]
+    | VisitUpsertWithWhereUniqueWithoutTeamInput
+  >;
+  deleteMany?: Maybe<VisitScalarWhereInput[] | VisitScalarWhereInput>;
+  updateMany?: Maybe<
+    VisitUpdateManyWithWhereNestedInput[] | VisitUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface VisitUpdateWithWhereUniqueWithoutTeamInput {
+  where: VisitWhereUniqueInput;
+  data: VisitUpdateWithoutTeamDataInput;
+}
+
+export interface VisitUpdateWithoutTeamDataInput {
+  date?: Maybe<DateTimeInput>;
+  hotel?: Maybe<HotelUpdateOneWithoutVisitsInput>;
+  priority?: Maybe<Boolean>;
+  status?: Maybe<VisitStatus>;
+}
+
+export interface HotelUpdateOneWithoutVisitsInput {
+  create?: Maybe<HotelCreateWithoutVisitsInput>;
+  update?: Maybe<HotelUpdateWithoutVisitsDataInput>;
+  upsert?: Maybe<HotelUpsertWithoutVisitsInput>;
+  delete?: Maybe<Boolean>;
+  disconnect?: Maybe<Boolean>;
+  connect?: Maybe<HotelWhereUniqueInput>;
+}
+
+export interface HotelUpdateWithoutVisitsDataInput {
+  searchIndex?: Maybe<String>;
+  uuid?: Maybe<Int>;
+  name?: Maybe<String>;
+  address?: Maybe<String>;
+  zipCode?: Maybe<Int>;
+  city?: Maybe<String>;
+  phone?: Maybe<String>;
+  active?: Maybe<Boolean>;
+  rooms?: Maybe<Int>;
+  lastVisit?: Maybe<DateTimeInput>;
+  criticity?: Maybe<Float>;
+  score?: Maybe<Float>;
+  sector?: Maybe<SectorUpdateOneRequiredWithoutHotelsInput>;
+  lat?: Maybe<Float>;
+  long?: Maybe<Float>;
   residents?: Maybe<ResidentUpdateManyWithoutHotelInput>;
 }
 
@@ -1613,6 +2008,426 @@ export interface ResidentUpdateManyDataInput {
   gender?: Maybe<Gender>;
 }
 
+export interface HotelUpsertWithoutVisitsInput {
+  update: HotelUpdateWithoutVisitsDataInput;
+  create: HotelCreateWithoutVisitsInput;
+}
+
+export interface VisitUpsertWithWhereUniqueWithoutTeamInput {
+  where: VisitWhereUniqueInput;
+  update: VisitUpdateWithoutTeamDataInput;
+  create: VisitCreateWithoutTeamInput;
+}
+
+export interface VisitScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  date?: Maybe<DateTimeInput>;
+  date_not?: Maybe<DateTimeInput>;
+  date_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  date_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  date_lt?: Maybe<DateTimeInput>;
+  date_lte?: Maybe<DateTimeInput>;
+  date_gt?: Maybe<DateTimeInput>;
+  date_gte?: Maybe<DateTimeInput>;
+  priority?: Maybe<Boolean>;
+  priority_not?: Maybe<Boolean>;
+  status?: Maybe<VisitStatus>;
+  status_not?: Maybe<VisitStatus>;
+  status_in?: Maybe<VisitStatus[] | VisitStatus>;
+  status_not_in?: Maybe<VisitStatus[] | VisitStatus>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  updatedAt?: Maybe<DateTimeInput>;
+  updatedAt_not?: Maybe<DateTimeInput>;
+  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_lt?: Maybe<DateTimeInput>;
+  updatedAt_lte?: Maybe<DateTimeInput>;
+  updatedAt_gt?: Maybe<DateTimeInput>;
+  updatedAt_gte?: Maybe<DateTimeInput>;
+  AND?: Maybe<VisitScalarWhereInput[] | VisitScalarWhereInput>;
+  OR?: Maybe<VisitScalarWhereInput[] | VisitScalarWhereInput>;
+  NOT?: Maybe<VisitScalarWhereInput[] | VisitScalarWhereInput>;
+}
+
+export interface VisitUpdateManyWithWhereNestedInput {
+  where: VisitScalarWhereInput;
+  data: VisitUpdateManyDataInput;
+}
+
+export interface VisitUpdateManyDataInput {
+  date?: Maybe<DateTimeInput>;
+  priority?: Maybe<Boolean>;
+  status?: Maybe<VisitStatus>;
+}
+
+export interface TeamUpsertWithWhereUniqueWithoutSectorInput {
+  where: TeamWhereUniqueInput;
+  update: TeamUpdateWithoutSectorDataInput;
+  create: TeamCreateWithoutSectorInput;
+}
+
+export interface TeamScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  startDate?: Maybe<DateTimeInput>;
+  startDate_not?: Maybe<DateTimeInput>;
+  startDate_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  startDate_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  startDate_lt?: Maybe<DateTimeInput>;
+  startDate_lte?: Maybe<DateTimeInput>;
+  startDate_gt?: Maybe<DateTimeInput>;
+  startDate_gte?: Maybe<DateTimeInput>;
+  endDate?: Maybe<DateTimeInput>;
+  endDate_not?: Maybe<DateTimeInput>;
+  endDate_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  endDate_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  endDate_lt?: Maybe<DateTimeInput>;
+  endDate_lte?: Maybe<DateTimeInput>;
+  endDate_gt?: Maybe<DateTimeInput>;
+  endDate_gte?: Maybe<DateTimeInput>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  updatedAt?: Maybe<DateTimeInput>;
+  updatedAt_not?: Maybe<DateTimeInput>;
+  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_lt?: Maybe<DateTimeInput>;
+  updatedAt_lte?: Maybe<DateTimeInput>;
+  updatedAt_gt?: Maybe<DateTimeInput>;
+  updatedAt_gte?: Maybe<DateTimeInput>;
+  AND?: Maybe<TeamScalarWhereInput[] | TeamScalarWhereInput>;
+  OR?: Maybe<TeamScalarWhereInput[] | TeamScalarWhereInput>;
+  NOT?: Maybe<TeamScalarWhereInput[] | TeamScalarWhereInput>;
+}
+
+export interface TeamUpdateManyWithWhereNestedInput {
+  where: TeamScalarWhereInput;
+  data: TeamUpdateManyDataInput;
+}
+
+export interface TeamUpdateManyDataInput {
+  startDate?: Maybe<DateTimeInput>;
+  endDate?: Maybe<DateTimeInput>;
+}
+
+export interface ScheduleUpdateManyWithoutSectorInput {
+  create?: Maybe<
+    ScheduleCreateWithoutSectorInput[] | ScheduleCreateWithoutSectorInput
+  >;
+  delete?: Maybe<ScheduleWhereUniqueInput[] | ScheduleWhereUniqueInput>;
+  connect?: Maybe<ScheduleWhereUniqueInput[] | ScheduleWhereUniqueInput>;
+  set?: Maybe<ScheduleWhereUniqueInput[] | ScheduleWhereUniqueInput>;
+  disconnect?: Maybe<ScheduleWhereUniqueInput[] | ScheduleWhereUniqueInput>;
+  update?: Maybe<
+    | ScheduleUpdateWithWhereUniqueWithoutSectorInput[]
+    | ScheduleUpdateWithWhereUniqueWithoutSectorInput
+  >;
+  upsert?: Maybe<
+    | ScheduleUpsertWithWhereUniqueWithoutSectorInput[]
+    | ScheduleUpsertWithWhereUniqueWithoutSectorInput
+  >;
+  deleteMany?: Maybe<ScheduleScalarWhereInput[] | ScheduleScalarWhereInput>;
+  updateMany?: Maybe<
+    | ScheduleUpdateManyWithWhereNestedInput[]
+    | ScheduleUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface ScheduleUpdateWithWhereUniqueWithoutSectorInput {
+  where: ScheduleWhereUniqueInput;
+  data: ScheduleUpdateWithoutSectorDataInput;
+}
+
+export interface ScheduleUpdateWithoutSectorDataInput {
+  shift?: Maybe<ShiftUpdateOneRequiredWithoutSchedulesInput>;
+  startDate?: Maybe<DateTimeInput>;
+  endDate?: Maybe<DateTimeInput>;
+}
+
+export interface ShiftUpdateOneRequiredWithoutSchedulesInput {
+  create?: Maybe<ShiftCreateWithoutSchedulesInput>;
+  update?: Maybe<ShiftUpdateWithoutSchedulesDataInput>;
+  upsert?: Maybe<ShiftUpsertWithoutSchedulesInput>;
+  connect?: Maybe<ShiftWhereUniqueInput>;
+}
+
+export interface ShiftUpdateWithoutSchedulesDataInput {
+  index?: Maybe<Int>;
+  startTime?: Maybe<String>;
+  endTime?: Maybe<String>;
+}
+
+export interface ShiftUpsertWithoutSchedulesInput {
+  update: ShiftUpdateWithoutSchedulesDataInput;
+  create: ShiftCreateWithoutSchedulesInput;
+}
+
+export interface ScheduleUpsertWithWhereUniqueWithoutSectorInput {
+  where: ScheduleWhereUniqueInput;
+  update: ScheduleUpdateWithoutSectorDataInput;
+  create: ScheduleCreateWithoutSectorInput;
+}
+
+export interface ScheduleScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  startDate?: Maybe<DateTimeInput>;
+  startDate_not?: Maybe<DateTimeInput>;
+  startDate_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  startDate_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  startDate_lt?: Maybe<DateTimeInput>;
+  startDate_lte?: Maybe<DateTimeInput>;
+  startDate_gt?: Maybe<DateTimeInput>;
+  startDate_gte?: Maybe<DateTimeInput>;
+  endDate?: Maybe<DateTimeInput>;
+  endDate_not?: Maybe<DateTimeInput>;
+  endDate_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  endDate_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  endDate_lt?: Maybe<DateTimeInput>;
+  endDate_lte?: Maybe<DateTimeInput>;
+  endDate_gt?: Maybe<DateTimeInput>;
+  endDate_gte?: Maybe<DateTimeInput>;
+  AND?: Maybe<ScheduleScalarWhereInput[] | ScheduleScalarWhereInput>;
+  OR?: Maybe<ScheduleScalarWhereInput[] | ScheduleScalarWhereInput>;
+  NOT?: Maybe<ScheduleScalarWhereInput[] | ScheduleScalarWhereInput>;
+}
+
+export interface ScheduleUpdateManyWithWhereNestedInput {
+  where: ScheduleScalarWhereInput;
+  data: ScheduleUpdateManyDataInput;
+}
+
+export interface ScheduleUpdateManyDataInput {
+  startDate?: Maybe<DateTimeInput>;
+  endDate?: Maybe<DateTimeInput>;
+}
+
+export interface SectorUpsertWithoutUsersInput {
+  update: SectorUpdateWithoutUsersDataInput;
+  create: SectorCreateWithoutUsersInput;
+}
+
+export interface UserUpsertWithWhereUniqueWithoutTeamsInput {
+  where: UserWhereUniqueInput;
+  update: UserUpdateWithoutTeamsDataInput;
+  create: UserCreateWithoutTeamsInput;
+}
+
+export interface UserScalarWhereInput {
+  id?: Maybe<ID_Input>;
+  id_not?: Maybe<ID_Input>;
+  id_in?: Maybe<ID_Input[] | ID_Input>;
+  id_not_in?: Maybe<ID_Input[] | ID_Input>;
+  id_lt?: Maybe<ID_Input>;
+  id_lte?: Maybe<ID_Input>;
+  id_gt?: Maybe<ID_Input>;
+  id_gte?: Maybe<ID_Input>;
+  id_contains?: Maybe<ID_Input>;
+  id_not_contains?: Maybe<ID_Input>;
+  id_starts_with?: Maybe<ID_Input>;
+  id_not_starts_with?: Maybe<ID_Input>;
+  id_ends_with?: Maybe<ID_Input>;
+  id_not_ends_with?: Maybe<ID_Input>;
+  searchIndex?: Maybe<String>;
+  searchIndex_not?: Maybe<String>;
+  searchIndex_in?: Maybe<String[] | String>;
+  searchIndex_not_in?: Maybe<String[] | String>;
+  searchIndex_lt?: Maybe<String>;
+  searchIndex_lte?: Maybe<String>;
+  searchIndex_gt?: Maybe<String>;
+  searchIndex_gte?: Maybe<String>;
+  searchIndex_contains?: Maybe<String>;
+  searchIndex_not_contains?: Maybe<String>;
+  searchIndex_starts_with?: Maybe<String>;
+  searchIndex_not_starts_with?: Maybe<String>;
+  searchIndex_ends_with?: Maybe<String>;
+  searchIndex_not_ends_with?: Maybe<String>;
+  firstName?: Maybe<String>;
+  firstName_not?: Maybe<String>;
+  firstName_in?: Maybe<String[] | String>;
+  firstName_not_in?: Maybe<String[] | String>;
+  firstName_lt?: Maybe<String>;
+  firstName_lte?: Maybe<String>;
+  firstName_gt?: Maybe<String>;
+  firstName_gte?: Maybe<String>;
+  firstName_contains?: Maybe<String>;
+  firstName_not_contains?: Maybe<String>;
+  firstName_starts_with?: Maybe<String>;
+  firstName_not_starts_with?: Maybe<String>;
+  firstName_ends_with?: Maybe<String>;
+  firstName_not_ends_with?: Maybe<String>;
+  lastName?: Maybe<String>;
+  lastName_not?: Maybe<String>;
+  lastName_in?: Maybe<String[] | String>;
+  lastName_not_in?: Maybe<String[] | String>;
+  lastName_lt?: Maybe<String>;
+  lastName_lte?: Maybe<String>;
+  lastName_gt?: Maybe<String>;
+  lastName_gte?: Maybe<String>;
+  lastName_contains?: Maybe<String>;
+  lastName_not_contains?: Maybe<String>;
+  lastName_starts_with?: Maybe<String>;
+  lastName_not_starts_with?: Maybe<String>;
+  lastName_ends_with?: Maybe<String>;
+  lastName_not_ends_with?: Maybe<String>;
+  role?: Maybe<Role>;
+  role_not?: Maybe<Role>;
+  role_in?: Maybe<Role[] | Role>;
+  role_not_in?: Maybe<Role[] | Role>;
+  address?: Maybe<String>;
+  address_not?: Maybe<String>;
+  address_in?: Maybe<String[] | String>;
+  address_not_in?: Maybe<String[] | String>;
+  address_lt?: Maybe<String>;
+  address_lte?: Maybe<String>;
+  address_gt?: Maybe<String>;
+  address_gte?: Maybe<String>;
+  address_contains?: Maybe<String>;
+  address_not_contains?: Maybe<String>;
+  address_starts_with?: Maybe<String>;
+  address_not_starts_with?: Maybe<String>;
+  address_ends_with?: Maybe<String>;
+  address_not_ends_with?: Maybe<String>;
+  email?: Maybe<String>;
+  email_not?: Maybe<String>;
+  email_in?: Maybe<String[] | String>;
+  email_not_in?: Maybe<String[] | String>;
+  email_lt?: Maybe<String>;
+  email_lte?: Maybe<String>;
+  email_gt?: Maybe<String>;
+  email_gte?: Maybe<String>;
+  email_contains?: Maybe<String>;
+  email_not_contains?: Maybe<String>;
+  email_starts_with?: Maybe<String>;
+  email_not_starts_with?: Maybe<String>;
+  email_ends_with?: Maybe<String>;
+  email_not_ends_with?: Maybe<String>;
+  phone?: Maybe<String>;
+  phone_not?: Maybe<String>;
+  phone_in?: Maybe<String[] | String>;
+  phone_not_in?: Maybe<String[] | String>;
+  phone_lt?: Maybe<String>;
+  phone_lte?: Maybe<String>;
+  phone_gt?: Maybe<String>;
+  phone_gte?: Maybe<String>;
+  phone_contains?: Maybe<String>;
+  phone_not_contains?: Maybe<String>;
+  phone_starts_with?: Maybe<String>;
+  phone_not_starts_with?: Maybe<String>;
+  phone_ends_with?: Maybe<String>;
+  phone_not_ends_with?: Maybe<String>;
+  password?: Maybe<String>;
+  password_not?: Maybe<String>;
+  password_in?: Maybe<String[] | String>;
+  password_not_in?: Maybe<String[] | String>;
+  password_lt?: Maybe<String>;
+  password_lte?: Maybe<String>;
+  password_gt?: Maybe<String>;
+  password_gte?: Maybe<String>;
+  password_contains?: Maybe<String>;
+  password_not_contains?: Maybe<String>;
+  password_starts_with?: Maybe<String>;
+  password_not_starts_with?: Maybe<String>;
+  password_ends_with?: Maybe<String>;
+  password_not_ends_with?: Maybe<String>;
+  createdAt?: Maybe<DateTimeInput>;
+  createdAt_not?: Maybe<DateTimeInput>;
+  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  createdAt_lt?: Maybe<DateTimeInput>;
+  createdAt_lte?: Maybe<DateTimeInput>;
+  createdAt_gt?: Maybe<DateTimeInput>;
+  createdAt_gte?: Maybe<DateTimeInput>;
+  updatedAt?: Maybe<DateTimeInput>;
+  updatedAt_not?: Maybe<DateTimeInput>;
+  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
+  updatedAt_lt?: Maybe<DateTimeInput>;
+  updatedAt_lte?: Maybe<DateTimeInput>;
+  updatedAt_gt?: Maybe<DateTimeInput>;
+  updatedAt_gte?: Maybe<DateTimeInput>;
+  AND?: Maybe<UserScalarWhereInput[] | UserScalarWhereInput>;
+  OR?: Maybe<UserScalarWhereInput[] | UserScalarWhereInput>;
+  NOT?: Maybe<UserScalarWhereInput[] | UserScalarWhereInput>;
+}
+
+export interface UserUpdateManyWithWhereNestedInput {
+  where: UserScalarWhereInput;
+  data: UserUpdateManyDataInput;
+}
+
+export interface UserUpdateManyDataInput {
+  searchIndex?: Maybe<String>;
+  firstName?: Maybe<String>;
+  lastName?: Maybe<String>;
+  role?: Maybe<Role>;
+  address?: Maybe<String>;
+  email?: Maybe<String>;
+  phone?: Maybe<String>;
+  password?: Maybe<String>;
+}
+
+export interface TeamUpsertWithoutVisitsInput {
+  update: TeamUpdateWithoutVisitsDataInput;
+  create: TeamCreateWithoutVisitsInput;
+}
+
+export interface VisitUpsertWithWhereUniqueWithoutHotelInput {
+  where: VisitWhereUniqueInput;
+  update: VisitUpdateWithoutHotelDataInput;
+  create: VisitCreateWithoutHotelInput;
+}
+
 export interface HotelUpsertWithWhereUniqueWithoutSectorInput {
   where: HotelWhereUniqueInput;
   update: HotelUpdateWithoutSectorDataInput;
@@ -1706,6 +2521,20 @@ export interface HotelScalarWhereInput {
   city_not_starts_with?: Maybe<String>;
   city_ends_with?: Maybe<String>;
   city_not_ends_with?: Maybe<String>;
+  phone?: Maybe<String>;
+  phone_not?: Maybe<String>;
+  phone_in?: Maybe<String[] | String>;
+  phone_not_in?: Maybe<String[] | String>;
+  phone_lt?: Maybe<String>;
+  phone_lte?: Maybe<String>;
+  phone_gt?: Maybe<String>;
+  phone_gte?: Maybe<String>;
+  phone_contains?: Maybe<String>;
+  phone_not_contains?: Maybe<String>;
+  phone_starts_with?: Maybe<String>;
+  phone_not_starts_with?: Maybe<String>;
+  phone_ends_with?: Maybe<String>;
+  phone_not_ends_with?: Maybe<String>;
   active?: Maybe<Boolean>;
   active_not?: Maybe<Boolean>;
   rooms?: Maybe<Int>;
@@ -1724,6 +2553,14 @@ export interface HotelScalarWhereInput {
   lastVisit_lte?: Maybe<DateTimeInput>;
   lastVisit_gt?: Maybe<DateTimeInput>;
   lastVisit_gte?: Maybe<DateTimeInput>;
+  criticity?: Maybe<Float>;
+  criticity_not?: Maybe<Float>;
+  criticity_in?: Maybe<Float[] | Float>;
+  criticity_not_in?: Maybe<Float[] | Float>;
+  criticity_lt?: Maybe<Float>;
+  criticity_lte?: Maybe<Float>;
+  criticity_gt?: Maybe<Float>;
+  criticity_gte?: Maybe<Float>;
   score?: Maybe<Float>;
   score_not?: Maybe<Float>;
   score_in?: Maybe<Float[] | Float>;
@@ -1781,87 +2618,36 @@ export interface HotelUpdateManyDataInput {
   address?: Maybe<String>;
   zipCode?: Maybe<Int>;
   city?: Maybe<String>;
+  phone?: Maybe<String>;
   active?: Maybe<Boolean>;
   rooms?: Maybe<Int>;
   lastVisit?: Maybe<DateTimeInput>;
+  criticity?: Maybe<Float>;
   score?: Maybe<Float>;
   lat?: Maybe<Float>;
   long?: Maybe<Float>;
 }
 
-export interface SectorUpsertWithoutUsersInput {
-  update: SectorUpdateWithoutUsersDataInput;
-  create: SectorCreateWithoutUsersInput;
+export interface SectorUpsertWithoutTeamsInput {
+  update: SectorUpdateWithoutTeamsDataInput;
+  create: SectorCreateWithoutTeamsInput;
 }
 
-export interface UserUpsertWithWhereUniqueNestedInput {
+export interface TeamUpsertWithWhereUniqueWithoutUsersInput {
+  where: TeamWhereUniqueInput;
+  update: TeamUpdateWithoutUsersDataInput;
+  create: TeamCreateWithoutUsersInput;
+}
+
+export interface UserUpsertWithWhereUniqueWithoutSectorInput {
   where: UserWhereUniqueInput;
-  update: UserUpdateDataInput;
-  create: UserCreateInput;
+  update: UserUpdateWithoutSectorDataInput;
+  create: UserCreateWithoutSectorInput;
 }
 
-export interface TeamUpsertWithoutVisitsInput {
-  update: TeamUpdateWithoutVisitsDataInput;
-  create: TeamCreateWithoutVisitsInput;
-}
-
-export interface VisitUpsertWithWhereUniqueWithoutHotelInput {
-  where: VisitWhereUniqueInput;
-  update: VisitUpdateWithoutHotelDataInput;
-  create: VisitCreateWithoutHotelInput;
-}
-
-export interface VisitScalarWhereInput {
-  id?: Maybe<ID_Input>;
-  id_not?: Maybe<ID_Input>;
-  id_in?: Maybe<ID_Input[] | ID_Input>;
-  id_not_in?: Maybe<ID_Input[] | ID_Input>;
-  id_lt?: Maybe<ID_Input>;
-  id_lte?: Maybe<ID_Input>;
-  id_gt?: Maybe<ID_Input>;
-  id_gte?: Maybe<ID_Input>;
-  id_contains?: Maybe<ID_Input>;
-  id_not_contains?: Maybe<ID_Input>;
-  id_starts_with?: Maybe<ID_Input>;
-  id_not_starts_with?: Maybe<ID_Input>;
-  id_ends_with?: Maybe<ID_Input>;
-  id_not_ends_with?: Maybe<ID_Input>;
-  date?: Maybe<DateTimeInput>;
-  date_not?: Maybe<DateTimeInput>;
-  date_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  date_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  date_lt?: Maybe<DateTimeInput>;
-  date_lte?: Maybe<DateTimeInput>;
-  date_gt?: Maybe<DateTimeInput>;
-  date_gte?: Maybe<DateTimeInput>;
-  createdAt?: Maybe<DateTimeInput>;
-  createdAt_not?: Maybe<DateTimeInput>;
-  createdAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  createdAt_lt?: Maybe<DateTimeInput>;
-  createdAt_lte?: Maybe<DateTimeInput>;
-  createdAt_gt?: Maybe<DateTimeInput>;
-  createdAt_gte?: Maybe<DateTimeInput>;
-  updatedAt?: Maybe<DateTimeInput>;
-  updatedAt_not?: Maybe<DateTimeInput>;
-  updatedAt_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_not_in?: Maybe<DateTimeInput[] | DateTimeInput>;
-  updatedAt_lt?: Maybe<DateTimeInput>;
-  updatedAt_lte?: Maybe<DateTimeInput>;
-  updatedAt_gt?: Maybe<DateTimeInput>;
-  updatedAt_gte?: Maybe<DateTimeInput>;
-  AND?: Maybe<VisitScalarWhereInput[] | VisitScalarWhereInput>;
-  OR?: Maybe<VisitScalarWhereInput[] | VisitScalarWhereInput>;
-  NOT?: Maybe<VisitScalarWhereInput[] | VisitScalarWhereInput>;
-}
-
-export interface VisitUpdateManyWithWhereNestedInput {
-  where: VisitScalarWhereInput;
-  data: VisitUpdateManyDataInput;
-}
-
-export interface VisitUpdateManyDataInput {
-  date?: Maybe<DateTimeInput>;
+export interface SectorUpsertWithoutHotelsInput {
+  update: SectorUpdateWithoutHotelsDataInput;
+  create: SectorCreateWithoutHotelsInput;
 }
 
 export interface HotelUpdateManyMutationInput {
@@ -1871,9 +2657,11 @@ export interface HotelUpdateManyMutationInput {
   address?: Maybe<String>;
   zipCode?: Maybe<Int>;
   city?: Maybe<String>;
+  phone?: Maybe<String>;
   active?: Maybe<Boolean>;
   rooms?: Maybe<Int>;
   lastVisit?: Maybe<DateTimeInput>;
+  criticity?: Maybe<Float>;
   score?: Maybe<Float>;
   lat?: Maybe<Float>;
   long?: Maybe<Float>;
@@ -1903,9 +2691,11 @@ export interface HotelCreateWithoutResidentsInput {
   address: String;
   zipCode: Int;
   city: String;
+  phone?: Maybe<String>;
   active: Boolean;
   rooms: Int;
   lastVisit?: Maybe<DateTimeInput>;
+  criticity?: Maybe<Float>;
   score?: Maybe<Float>;
   sector: SectorCreateOneWithoutHotelsInput;
   lat: Float;
@@ -1937,9 +2727,11 @@ export interface HotelUpdateWithoutResidentsDataInput {
   address?: Maybe<String>;
   zipCode?: Maybe<Int>;
   city?: Maybe<String>;
+  phone?: Maybe<String>;
   active?: Maybe<Boolean>;
   rooms?: Maybe<Int>;
   lastVisit?: Maybe<DateTimeInput>;
+  criticity?: Maybe<Float>;
   score?: Maybe<Float>;
   sector?: Maybe<SectorUpdateOneRequiredWithoutHotelsInput>;
   lat?: Maybe<Float>;
@@ -1961,153 +2753,211 @@ export interface ResidentUpdateManyMutationInput {
   gender?: Maybe<Gender>;
 }
 
+export interface ScheduleCreateInput {
+  id?: Maybe<ID_Input>;
+  shift: ShiftCreateOneWithoutSchedulesInput;
+  sector: SectorCreateOneWithoutSchedulesInput;
+  startDate: DateTimeInput;
+  endDate: DateTimeInput;
+}
+
+export interface SectorCreateOneWithoutSchedulesInput {
+  create?: Maybe<SectorCreateWithoutSchedulesInput>;
+  connect?: Maybe<SectorWhereUniqueInput>;
+}
+
+export interface SectorCreateWithoutSchedulesInput {
+  id?: Maybe<ID_Input>;
+  zone: String;
+  users?: Maybe<UserCreateManyWithoutSectorInput>;
+  hotels?: Maybe<HotelCreateManyWithoutSectorInput>;
+  teams?: Maybe<TeamCreateManyWithoutSectorInput>;
+}
+
+export interface ScheduleUpdateInput {
+  shift?: Maybe<ShiftUpdateOneRequiredWithoutSchedulesInput>;
+  sector?: Maybe<SectorUpdateOneRequiredWithoutSchedulesInput>;
+  startDate?: Maybe<DateTimeInput>;
+  endDate?: Maybe<DateTimeInput>;
+}
+
+export interface SectorUpdateOneRequiredWithoutSchedulesInput {
+  create?: Maybe<SectorCreateWithoutSchedulesInput>;
+  update?: Maybe<SectorUpdateWithoutSchedulesDataInput>;
+  upsert?: Maybe<SectorUpsertWithoutSchedulesInput>;
+  connect?: Maybe<SectorWhereUniqueInput>;
+}
+
+export interface SectorUpdateWithoutSchedulesDataInput {
+  zone?: Maybe<String>;
+  users?: Maybe<UserUpdateManyWithoutSectorInput>;
+  hotels?: Maybe<HotelUpdateManyWithoutSectorInput>;
+  teams?: Maybe<TeamUpdateManyWithoutSectorInput>;
+}
+
+export interface SectorUpsertWithoutSchedulesInput {
+  update: SectorUpdateWithoutSchedulesDataInput;
+  create: SectorCreateWithoutSchedulesInput;
+}
+
+export interface ScheduleUpdateManyMutationInput {
+  startDate?: Maybe<DateTimeInput>;
+  endDate?: Maybe<DateTimeInput>;
+}
+
 export interface SectorCreateInput {
   id?: Maybe<ID_Input>;
   zone: String;
   users?: Maybe<UserCreateManyWithoutSectorInput>;
   hotels?: Maybe<HotelCreateManyWithoutSectorInput>;
+  teams?: Maybe<TeamCreateManyWithoutSectorInput>;
+  schedules?: Maybe<ScheduleCreateManyWithoutSectorInput>;
 }
 
 export interface SectorUpdateInput {
   zone?: Maybe<String>;
   users?: Maybe<UserUpdateManyWithoutSectorInput>;
   hotels?: Maybe<HotelUpdateManyWithoutSectorInput>;
+  teams?: Maybe<TeamUpdateManyWithoutSectorInput>;
+  schedules?: Maybe<ScheduleUpdateManyWithoutSectorInput>;
 }
 
 export interface SectorUpdateManyMutationInput {
   zone?: Maybe<String>;
 }
 
+export interface ShiftCreateInput {
+  id?: Maybe<ID_Input>;
+  index: Int;
+  startTime: String;
+  endTime: String;
+  schedules?: Maybe<ScheduleCreateManyWithoutShiftInput>;
+}
+
+export interface ScheduleCreateManyWithoutShiftInput {
+  create?: Maybe<
+    ScheduleCreateWithoutShiftInput[] | ScheduleCreateWithoutShiftInput
+  >;
+  connect?: Maybe<ScheduleWhereUniqueInput[] | ScheduleWhereUniqueInput>;
+}
+
+export interface ScheduleCreateWithoutShiftInput {
+  id?: Maybe<ID_Input>;
+  sector: SectorCreateOneWithoutSchedulesInput;
+  startDate: DateTimeInput;
+  endDate: DateTimeInput;
+}
+
+export interface ShiftUpdateInput {
+  index?: Maybe<Int>;
+  startTime?: Maybe<String>;
+  endTime?: Maybe<String>;
+  schedules?: Maybe<ScheduleUpdateManyWithoutShiftInput>;
+}
+
+export interface ScheduleUpdateManyWithoutShiftInput {
+  create?: Maybe<
+    ScheduleCreateWithoutShiftInput[] | ScheduleCreateWithoutShiftInput
+  >;
+  delete?: Maybe<ScheduleWhereUniqueInput[] | ScheduleWhereUniqueInput>;
+  connect?: Maybe<ScheduleWhereUniqueInput[] | ScheduleWhereUniqueInput>;
+  set?: Maybe<ScheduleWhereUniqueInput[] | ScheduleWhereUniqueInput>;
+  disconnect?: Maybe<ScheduleWhereUniqueInput[] | ScheduleWhereUniqueInput>;
+  update?: Maybe<
+    | ScheduleUpdateWithWhereUniqueWithoutShiftInput[]
+    | ScheduleUpdateWithWhereUniqueWithoutShiftInput
+  >;
+  upsert?: Maybe<
+    | ScheduleUpsertWithWhereUniqueWithoutShiftInput[]
+    | ScheduleUpsertWithWhereUniqueWithoutShiftInput
+  >;
+  deleteMany?: Maybe<ScheduleScalarWhereInput[] | ScheduleScalarWhereInput>;
+  updateMany?: Maybe<
+    | ScheduleUpdateManyWithWhereNestedInput[]
+    | ScheduleUpdateManyWithWhereNestedInput
+  >;
+}
+
+export interface ScheduleUpdateWithWhereUniqueWithoutShiftInput {
+  where: ScheduleWhereUniqueInput;
+  data: ScheduleUpdateWithoutShiftDataInput;
+}
+
+export interface ScheduleUpdateWithoutShiftDataInput {
+  sector?: Maybe<SectorUpdateOneRequiredWithoutSchedulesInput>;
+  startDate?: Maybe<DateTimeInput>;
+  endDate?: Maybe<DateTimeInput>;
+}
+
+export interface ScheduleUpsertWithWhereUniqueWithoutShiftInput {
+  where: ScheduleWhereUniqueInput;
+  update: ScheduleUpdateWithoutShiftDataInput;
+  create: ScheduleCreateWithoutShiftInput;
+}
+
+export interface ShiftUpdateManyMutationInput {
+  index?: Maybe<Int>;
+  startTime?: Maybe<String>;
+  endTime?: Maybe<String>;
+}
+
 export interface TeamCreateInput {
   id?: Maybe<ID_Input>;
-  users?: Maybe<UserCreateManyInput>;
+  sector: SectorCreateOneWithoutTeamsInput;
+  users?: Maybe<UserCreateManyWithoutTeamsInput>;
   visits?: Maybe<VisitCreateManyWithoutTeamInput>;
-}
-
-export interface VisitCreateManyWithoutTeamInput {
-  create?: Maybe<VisitCreateWithoutTeamInput[] | VisitCreateWithoutTeamInput>;
-  connect?: Maybe<VisitWhereUniqueInput[] | VisitWhereUniqueInput>;
-}
-
-export interface VisitCreateWithoutTeamInput {
-  id?: Maybe<ID_Input>;
-  date: DateTimeInput;
-  hotel?: Maybe<HotelCreateOneWithoutVisitsInput>;
-}
-
-export interface HotelCreateOneWithoutVisitsInput {
-  create?: Maybe<HotelCreateWithoutVisitsInput>;
-  connect?: Maybe<HotelWhereUniqueInput>;
-}
-
-export interface HotelCreateWithoutVisitsInput {
-  id?: Maybe<ID_Input>;
-  searchIndex: String;
-  uuid: Int;
-  name: String;
-  address: String;
-  zipCode: Int;
-  city: String;
-  active: Boolean;
-  rooms: Int;
-  lastVisit?: Maybe<DateTimeInput>;
-  score?: Maybe<Float>;
-  sector: SectorCreateOneWithoutHotelsInput;
-  lat: Float;
-  long: Float;
-  residents?: Maybe<ResidentCreateManyWithoutHotelInput>;
+  startDate: DateTimeInput;
+  endDate: DateTimeInput;
 }
 
 export interface TeamUpdateInput {
-  users?: Maybe<UserUpdateManyInput>;
+  sector?: Maybe<SectorUpdateOneRequiredWithoutTeamsInput>;
+  users?: Maybe<UserUpdateManyWithoutTeamsInput>;
   visits?: Maybe<VisitUpdateManyWithoutTeamInput>;
+  startDate?: Maybe<DateTimeInput>;
+  endDate?: Maybe<DateTimeInput>;
 }
 
-export interface VisitUpdateManyWithoutTeamInput {
-  create?: Maybe<VisitCreateWithoutTeamInput[] | VisitCreateWithoutTeamInput>;
-  delete?: Maybe<VisitWhereUniqueInput[] | VisitWhereUniqueInput>;
-  connect?: Maybe<VisitWhereUniqueInput[] | VisitWhereUniqueInput>;
-  set?: Maybe<VisitWhereUniqueInput[] | VisitWhereUniqueInput>;
-  disconnect?: Maybe<VisitWhereUniqueInput[] | VisitWhereUniqueInput>;
-  update?: Maybe<
-    | VisitUpdateWithWhereUniqueWithoutTeamInput[]
-    | VisitUpdateWithWhereUniqueWithoutTeamInput
-  >;
-  upsert?: Maybe<
-    | VisitUpsertWithWhereUniqueWithoutTeamInput[]
-    | VisitUpsertWithWhereUniqueWithoutTeamInput
-  >;
-  deleteMany?: Maybe<VisitScalarWhereInput[] | VisitScalarWhereInput>;
-  updateMany?: Maybe<
-    VisitUpdateManyWithWhereNestedInput[] | VisitUpdateManyWithWhereNestedInput
-  >;
+export interface TeamUpdateManyMutationInput {
+  startDate?: Maybe<DateTimeInput>;
+  endDate?: Maybe<DateTimeInput>;
 }
 
-export interface VisitUpdateWithWhereUniqueWithoutTeamInput {
-  where: VisitWhereUniqueInput;
-  data: VisitUpdateWithoutTeamDataInput;
-}
-
-export interface VisitUpdateWithoutTeamDataInput {
-  date?: Maybe<DateTimeInput>;
-  hotel?: Maybe<HotelUpdateOneWithoutVisitsInput>;
-}
-
-export interface HotelUpdateOneWithoutVisitsInput {
-  create?: Maybe<HotelCreateWithoutVisitsInput>;
-  update?: Maybe<HotelUpdateWithoutVisitsDataInput>;
-  upsert?: Maybe<HotelUpsertWithoutVisitsInput>;
-  delete?: Maybe<Boolean>;
-  disconnect?: Maybe<Boolean>;
-  connect?: Maybe<HotelWhereUniqueInput>;
-}
-
-export interface HotelUpdateWithoutVisitsDataInput {
-  searchIndex?: Maybe<String>;
-  uuid?: Maybe<Int>;
-  name?: Maybe<String>;
+export interface UserCreateInput {
+  id?: Maybe<ID_Input>;
+  searchIndex: String;
+  firstName: String;
+  lastName: String;
+  role: Role;
+  sector?: Maybe<SectorCreateOneWithoutUsersInput>;
   address?: Maybe<String>;
-  zipCode?: Maybe<Int>;
-  city?: Maybe<String>;
-  active?: Maybe<Boolean>;
-  rooms?: Maybe<Int>;
-  lastVisit?: Maybe<DateTimeInput>;
-  score?: Maybe<Float>;
-  sector?: Maybe<SectorUpdateOneRequiredWithoutHotelsInput>;
-  lat?: Maybe<Float>;
-  long?: Maybe<Float>;
-  residents?: Maybe<ResidentUpdateManyWithoutHotelInput>;
-}
-
-export interface HotelUpsertWithoutVisitsInput {
-  update: HotelUpdateWithoutVisitsDataInput;
-  create: HotelCreateWithoutVisitsInput;
-}
-
-export interface VisitUpsertWithWhereUniqueWithoutTeamInput {
-  where: VisitWhereUniqueInput;
-  update: VisitUpdateWithoutTeamDataInput;
-  create: VisitCreateWithoutTeamInput;
+  email: String;
+  phone?: Maybe<String>;
+  password?: Maybe<String>;
+  teams?: Maybe<TeamCreateManyWithoutUsersInput>;
 }
 
 export interface UserUpdateInput {
   searchIndex?: Maybe<String>;
   firstName?: Maybe<String>;
   lastName?: Maybe<String>;
-  role?: Maybe<String>;
+  role?: Maybe<Role>;
   sector?: Maybe<SectorUpdateOneWithoutUsersInput>;
   address?: Maybe<String>;
   email?: Maybe<String>;
+  phone?: Maybe<String>;
   password?: Maybe<String>;
+  teams?: Maybe<TeamUpdateManyWithoutUsersInput>;
 }
 
 export interface UserUpdateManyMutationInput {
   searchIndex?: Maybe<String>;
   firstName?: Maybe<String>;
   lastName?: Maybe<String>;
-  role?: Maybe<String>;
+  role?: Maybe<Role>;
   address?: Maybe<String>;
   email?: Maybe<String>;
+  phone?: Maybe<String>;
   password?: Maybe<String>;
 }
 
@@ -2116,16 +2966,22 @@ export interface VisitCreateInput {
   date: DateTimeInput;
   team: TeamCreateOneWithoutVisitsInput;
   hotel?: Maybe<HotelCreateOneWithoutVisitsInput>;
+  priority: Boolean;
+  status: VisitStatus;
 }
 
 export interface VisitUpdateInput {
   date?: Maybe<DateTimeInput>;
   team?: Maybe<TeamUpdateOneRequiredWithoutVisitsInput>;
   hotel?: Maybe<HotelUpdateOneWithoutVisitsInput>;
+  priority?: Maybe<Boolean>;
+  status?: Maybe<VisitStatus>;
 }
 
 export interface VisitUpdateManyMutationInput {
   date?: Maybe<DateTimeInput>;
+  priority?: Maybe<Boolean>;
+  status?: Maybe<VisitStatus>;
 }
 
 export interface HotelSubscriptionWhereInput {
@@ -2154,6 +3010,21 @@ export interface ResidentSubscriptionWhereInput {
   >;
 }
 
+export interface ScheduleSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<ScheduleWhereInput>;
+  AND?: Maybe<
+    ScheduleSubscriptionWhereInput[] | ScheduleSubscriptionWhereInput
+  >;
+  OR?: Maybe<ScheduleSubscriptionWhereInput[] | ScheduleSubscriptionWhereInput>;
+  NOT?: Maybe<
+    ScheduleSubscriptionWhereInput[] | ScheduleSubscriptionWhereInput
+  >;
+}
+
 export interface SectorSubscriptionWhereInput {
   mutation_in?: Maybe<MutationType[] | MutationType>;
   updatedFields_contains?: Maybe<String>;
@@ -2163,6 +3034,17 @@ export interface SectorSubscriptionWhereInput {
   AND?: Maybe<SectorSubscriptionWhereInput[] | SectorSubscriptionWhereInput>;
   OR?: Maybe<SectorSubscriptionWhereInput[] | SectorSubscriptionWhereInput>;
   NOT?: Maybe<SectorSubscriptionWhereInput[] | SectorSubscriptionWhereInput>;
+}
+
+export interface ShiftSubscriptionWhereInput {
+  mutation_in?: Maybe<MutationType[] | MutationType>;
+  updatedFields_contains?: Maybe<String>;
+  updatedFields_contains_every?: Maybe<String[] | String>;
+  updatedFields_contains_some?: Maybe<String[] | String>;
+  node?: Maybe<ShiftWhereInput>;
+  AND?: Maybe<ShiftSubscriptionWhereInput[] | ShiftSubscriptionWhereInput>;
+  OR?: Maybe<ShiftSubscriptionWhereInput[] | ShiftSubscriptionWhereInput>;
+  NOT?: Maybe<ShiftSubscriptionWhereInput[] | ShiftSubscriptionWhereInput>;
 }
 
 export interface TeamSubscriptionWhereInput {
@@ -2210,9 +3092,11 @@ export interface Hotel {
   address: String;
   zipCode: Int;
   city: String;
+  phone?: String;
   active: Boolean;
   rooms: Int;
   lastVisit?: DateTimeOutput;
+  criticity?: Float;
   score?: Float;
   lat: Float;
   long: Float;
@@ -2228,9 +3112,11 @@ export interface HotelPromise extends Promise<Hotel>, Fragmentable {
   address: () => Promise<String>;
   zipCode: () => Promise<Int>;
   city: () => Promise<String>;
+  phone: () => Promise<String>;
   active: () => Promise<Boolean>;
   rooms: () => Promise<Int>;
   lastVisit: () => Promise<DateTimeOutput>;
+  criticity: () => Promise<Float>;
   score: () => Promise<Float>;
   sector: <T = SectorPromise>() => T;
   lat: () => Promise<Float>;
@@ -2267,9 +3153,11 @@ export interface HotelSubscription
   address: () => Promise<AsyncIterator<String>>;
   zipCode: () => Promise<AsyncIterator<Int>>;
   city: () => Promise<AsyncIterator<String>>;
+  phone: () => Promise<AsyncIterator<String>>;
   active: () => Promise<AsyncIterator<Boolean>>;
   rooms: () => Promise<AsyncIterator<Int>>;
   lastVisit: () => Promise<AsyncIterator<DateTimeOutput>>;
+  criticity: () => Promise<AsyncIterator<Float>>;
   score: () => Promise<AsyncIterator<Float>>;
   sector: <T = SectorSubscription>() => T;
   lat: () => Promise<AsyncIterator<Float>>;
@@ -2306,9 +3194,11 @@ export interface HotelNullablePromise
   address: () => Promise<String>;
   zipCode: () => Promise<Int>;
   city: () => Promise<String>;
+  phone: () => Promise<String>;
   active: () => Promise<Boolean>;
   rooms: () => Promise<Int>;
   lastVisit: () => Promise<DateTimeOutput>;
+  criticity: () => Promise<Float>;
   score: () => Promise<Float>;
   sector: <T = SectorPromise>() => T;
   lat: () => Promise<Float>;
@@ -2363,6 +3253,24 @@ export interface SectorPromise extends Promise<Sector>, Fragmentable {
     first?: Int;
     last?: Int;
   }) => T;
+  teams: <T = FragmentableArray<Team>>(args?: {
+    where?: TeamWhereInput;
+    orderBy?: TeamOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  schedules: <T = FragmentableArray<Schedule>>(args?: {
+    where?: ScheduleWhereInput;
+    orderBy?: ScheduleOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
 }
@@ -2384,6 +3292,24 @@ export interface SectorSubscription
   hotels: <T = Promise<AsyncIterator<HotelSubscription>>>(args?: {
     where?: HotelWhereInput;
     orderBy?: HotelOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  teams: <T = Promise<AsyncIterator<TeamSubscription>>>(args?: {
+    where?: TeamWhereInput;
+    orderBy?: TeamOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  schedules: <T = Promise<AsyncIterator<ScheduleSubscription>>>(args?: {
+    where?: ScheduleWhereInput;
+    orderBy?: ScheduleOrderByInput;
     skip?: Int;
     after?: String;
     before?: String;
@@ -2417,6 +3343,24 @@ export interface SectorNullablePromise
     first?: Int;
     last?: Int;
   }) => T;
+  teams: <T = FragmentableArray<Team>>(args?: {
+    where?: TeamWhereInput;
+    orderBy?: TeamOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+  schedules: <T = FragmentableArray<Schedule>>(args?: {
+    where?: ScheduleWhereInput;
+    orderBy?: ScheduleOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
 }
@@ -2426,9 +3370,10 @@ export interface User {
   searchIndex: String;
   firstName: String;
   lastName: String;
-  role: String;
+  role: Role;
   address?: String;
   email: String;
+  phone?: String;
   password?: String;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
@@ -2439,11 +3384,21 @@ export interface UserPromise extends Promise<User>, Fragmentable {
   searchIndex: () => Promise<String>;
   firstName: () => Promise<String>;
   lastName: () => Promise<String>;
-  role: () => Promise<String>;
+  role: () => Promise<Role>;
   sector: <T = SectorPromise>() => T;
   address: () => Promise<String>;
   email: () => Promise<String>;
+  phone: () => Promise<String>;
   password: () => Promise<String>;
+  teams: <T = FragmentableArray<Team>>(args?: {
+    where?: TeamWhereInput;
+    orderBy?: TeamOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
 }
@@ -2455,11 +3410,21 @@ export interface UserSubscription
   searchIndex: () => Promise<AsyncIterator<String>>;
   firstName: () => Promise<AsyncIterator<String>>;
   lastName: () => Promise<AsyncIterator<String>>;
-  role: () => Promise<AsyncIterator<String>>;
+  role: () => Promise<AsyncIterator<Role>>;
   sector: <T = SectorSubscription>() => T;
   address: () => Promise<AsyncIterator<String>>;
   email: () => Promise<AsyncIterator<String>>;
+  phone: () => Promise<AsyncIterator<String>>;
   password: () => Promise<AsyncIterator<String>>;
+  teams: <T = Promise<AsyncIterator<TeamSubscription>>>(args?: {
+    where?: TeamWhereInput;
+    orderBy?: TeamOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
@@ -2471,61 +3436,36 @@ export interface UserNullablePromise
   searchIndex: () => Promise<String>;
   firstName: () => Promise<String>;
   lastName: () => Promise<String>;
-  role: () => Promise<String>;
+  role: () => Promise<Role>;
   sector: <T = SectorPromise>() => T;
   address: () => Promise<String>;
   email: () => Promise<String>;
+  phone: () => Promise<String>;
   password: () => Promise<String>;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-}
-
-export interface Visit {
-  id: ID_Output;
-  date: DateTimeOutput;
-  createdAt: DateTimeOutput;
-  updatedAt: DateTimeOutput;
-}
-
-export interface VisitPromise extends Promise<Visit>, Fragmentable {
-  id: () => Promise<ID_Output>;
-  date: () => Promise<DateTimeOutput>;
-  team: <T = TeamPromise>() => T;
-  hotel: <T = HotelPromise>() => T;
-  createdAt: () => Promise<DateTimeOutput>;
-  updatedAt: () => Promise<DateTimeOutput>;
-}
-
-export interface VisitSubscription
-  extends Promise<AsyncIterator<Visit>>,
-    Fragmentable {
-  id: () => Promise<AsyncIterator<ID_Output>>;
-  date: () => Promise<AsyncIterator<DateTimeOutput>>;
-  team: <T = TeamSubscription>() => T;
-  hotel: <T = HotelSubscription>() => T;
-  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
-}
-
-export interface VisitNullablePromise
-  extends Promise<Visit | null>,
-    Fragmentable {
-  id: () => Promise<ID_Output>;
-  date: () => Promise<DateTimeOutput>;
-  team: <T = TeamPromise>() => T;
-  hotel: <T = HotelPromise>() => T;
+  teams: <T = FragmentableArray<Team>>(args?: {
+    where?: TeamWhereInput;
+    orderBy?: TeamOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
 }
 
 export interface Team {
   id: ID_Output;
+  startDate: DateTimeOutput;
+  endDate: DateTimeOutput;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
 }
 
 export interface TeamPromise extends Promise<Team>, Fragmentable {
   id: () => Promise<ID_Output>;
+  sector: <T = SectorPromise>() => T;
   users: <T = FragmentableArray<User>>(args?: {
     where?: UserWhereInput;
     orderBy?: UserOrderByInput;
@@ -2544,6 +3484,8 @@ export interface TeamPromise extends Promise<Team>, Fragmentable {
     first?: Int;
     last?: Int;
   }) => T;
+  startDate: () => Promise<DateTimeOutput>;
+  endDate: () => Promise<DateTimeOutput>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
 }
@@ -2552,6 +3494,7 @@ export interface TeamSubscription
   extends Promise<AsyncIterator<Team>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
+  sector: <T = SectorSubscription>() => T;
   users: <T = Promise<AsyncIterator<UserSubscription>>>(args?: {
     where?: UserWhereInput;
     orderBy?: UserOrderByInput;
@@ -2570,6 +3513,8 @@ export interface TeamSubscription
     first?: Int;
     last?: Int;
   }) => T;
+  startDate: () => Promise<AsyncIterator<DateTimeOutput>>;
+  endDate: () => Promise<AsyncIterator<DateTimeOutput>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
@@ -2578,6 +3523,7 @@ export interface TeamNullablePromise
   extends Promise<Team | null>,
     Fragmentable {
   id: () => Promise<ID_Output>;
+  sector: <T = SectorPromise>() => T;
   users: <T = FragmentableArray<User>>(args?: {
     where?: UserWhereInput;
     orderBy?: UserOrderByInput;
@@ -2596,8 +3542,149 @@ export interface TeamNullablePromise
     first?: Int;
     last?: Int;
   }) => T;
+  startDate: () => Promise<DateTimeOutput>;
+  endDate: () => Promise<DateTimeOutput>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
+}
+
+export interface Visit {
+  id: ID_Output;
+  date: DateTimeOutput;
+  priority: Boolean;
+  status: VisitStatus;
+  createdAt: DateTimeOutput;
+  updatedAt: DateTimeOutput;
+}
+
+export interface VisitPromise extends Promise<Visit>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  date: () => Promise<DateTimeOutput>;
+  team: <T = TeamPromise>() => T;
+  hotel: <T = HotelPromise>() => T;
+  priority: () => Promise<Boolean>;
+  status: () => Promise<VisitStatus>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+}
+
+export interface VisitSubscription
+  extends Promise<AsyncIterator<Visit>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  date: () => Promise<AsyncIterator<DateTimeOutput>>;
+  team: <T = TeamSubscription>() => T;
+  hotel: <T = HotelSubscription>() => T;
+  priority: () => Promise<AsyncIterator<Boolean>>;
+  status: () => Promise<AsyncIterator<VisitStatus>>;
+  createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+  updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
+}
+
+export interface VisitNullablePromise
+  extends Promise<Visit | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  date: () => Promise<DateTimeOutput>;
+  team: <T = TeamPromise>() => T;
+  hotel: <T = HotelPromise>() => T;
+  priority: () => Promise<Boolean>;
+  status: () => Promise<VisitStatus>;
+  createdAt: () => Promise<DateTimeOutput>;
+  updatedAt: () => Promise<DateTimeOutput>;
+}
+
+export interface Schedule {
+  id: ID_Output;
+  startDate: DateTimeOutput;
+  endDate: DateTimeOutput;
+}
+
+export interface SchedulePromise extends Promise<Schedule>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  shift: <T = ShiftPromise>() => T;
+  sector: <T = SectorPromise>() => T;
+  startDate: () => Promise<DateTimeOutput>;
+  endDate: () => Promise<DateTimeOutput>;
+}
+
+export interface ScheduleSubscription
+  extends Promise<AsyncIterator<Schedule>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  shift: <T = ShiftSubscription>() => T;
+  sector: <T = SectorSubscription>() => T;
+  startDate: () => Promise<AsyncIterator<DateTimeOutput>>;
+  endDate: () => Promise<AsyncIterator<DateTimeOutput>>;
+}
+
+export interface ScheduleNullablePromise
+  extends Promise<Schedule | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  shift: <T = ShiftPromise>() => T;
+  sector: <T = SectorPromise>() => T;
+  startDate: () => Promise<DateTimeOutput>;
+  endDate: () => Promise<DateTimeOutput>;
+}
+
+export interface Shift {
+  id: ID_Output;
+  index: Int;
+  startTime: String;
+  endTime: String;
+}
+
+export interface ShiftPromise extends Promise<Shift>, Fragmentable {
+  id: () => Promise<ID_Output>;
+  index: () => Promise<Int>;
+  startTime: () => Promise<String>;
+  endTime: () => Promise<String>;
+  schedules: <T = FragmentableArray<Schedule>>(args?: {
+    where?: ScheduleWhereInput;
+    orderBy?: ScheduleOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface ShiftSubscription
+  extends Promise<AsyncIterator<Shift>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  index: () => Promise<AsyncIterator<Int>>;
+  startTime: () => Promise<AsyncIterator<String>>;
+  endTime: () => Promise<AsyncIterator<String>>;
+  schedules: <T = Promise<AsyncIterator<ScheduleSubscription>>>(args?: {
+    where?: ScheduleWhereInput;
+    orderBy?: ScheduleOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
+}
+
+export interface ShiftNullablePromise
+  extends Promise<Shift | null>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  index: () => Promise<Int>;
+  startTime: () => Promise<String>;
+  endTime: () => Promise<String>;
+  schedules: <T = FragmentableArray<Schedule>>(args?: {
+    where?: ScheduleWhereInput;
+    orderBy?: ScheduleOrderByInput;
+    skip?: Int;
+    after?: String;
+    before?: String;
+    first?: Int;
+    last?: Int;
+  }) => T;
 }
 
 export interface Resident {
@@ -2788,6 +3875,62 @@ export interface AggregateResidentSubscription
   count: () => Promise<AsyncIterator<Int>>;
 }
 
+export interface ScheduleConnection {
+  pageInfo: PageInfo;
+  edges: ScheduleEdge[];
+}
+
+export interface ScheduleConnectionPromise
+  extends Promise<ScheduleConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<ScheduleEdge>>() => T;
+  aggregate: <T = AggregateSchedulePromise>() => T;
+}
+
+export interface ScheduleConnectionSubscription
+  extends Promise<AsyncIterator<ScheduleConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<ScheduleEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateScheduleSubscription>() => T;
+}
+
+export interface ScheduleEdge {
+  node: Schedule;
+  cursor: String;
+}
+
+export interface ScheduleEdgePromise
+  extends Promise<ScheduleEdge>,
+    Fragmentable {
+  node: <T = SchedulePromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface ScheduleEdgeSubscription
+  extends Promise<AsyncIterator<ScheduleEdge>>,
+    Fragmentable {
+  node: <T = ScheduleSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateSchedule {
+  count: Int;
+}
+
+export interface AggregateSchedulePromise
+  extends Promise<AggregateSchedule>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateScheduleSubscription
+  extends Promise<AsyncIterator<AggregateSchedule>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
 export interface SectorConnection {
   pageInfo: PageInfo;
   edges: SectorEdge[];
@@ -2838,6 +3981,60 @@ export interface AggregateSectorPromise
 
 export interface AggregateSectorSubscription
   extends Promise<AsyncIterator<AggregateSector>>,
+    Fragmentable {
+  count: () => Promise<AsyncIterator<Int>>;
+}
+
+export interface ShiftConnection {
+  pageInfo: PageInfo;
+  edges: ShiftEdge[];
+}
+
+export interface ShiftConnectionPromise
+  extends Promise<ShiftConnection>,
+    Fragmentable {
+  pageInfo: <T = PageInfoPromise>() => T;
+  edges: <T = FragmentableArray<ShiftEdge>>() => T;
+  aggregate: <T = AggregateShiftPromise>() => T;
+}
+
+export interface ShiftConnectionSubscription
+  extends Promise<AsyncIterator<ShiftConnection>>,
+    Fragmentable {
+  pageInfo: <T = PageInfoSubscription>() => T;
+  edges: <T = Promise<AsyncIterator<ShiftEdgeSubscription>>>() => T;
+  aggregate: <T = AggregateShiftSubscription>() => T;
+}
+
+export interface ShiftEdge {
+  node: Shift;
+  cursor: String;
+}
+
+export interface ShiftEdgePromise extends Promise<ShiftEdge>, Fragmentable {
+  node: <T = ShiftPromise>() => T;
+  cursor: () => Promise<String>;
+}
+
+export interface ShiftEdgeSubscription
+  extends Promise<AsyncIterator<ShiftEdge>>,
+    Fragmentable {
+  node: <T = ShiftSubscription>() => T;
+  cursor: () => Promise<AsyncIterator<String>>;
+}
+
+export interface AggregateShift {
+  count: Int;
+}
+
+export interface AggregateShiftPromise
+  extends Promise<AggregateShift>,
+    Fragmentable {
+  count: () => Promise<Int>;
+}
+
+export interface AggregateShiftSubscription
+  extends Promise<AsyncIterator<AggregateShift>>,
     Fragmentable {
   count: () => Promise<AsyncIterator<Int>>;
 }
@@ -3053,9 +4250,11 @@ export interface HotelPreviousValues {
   address: String;
   zipCode: Int;
   city: String;
+  phone?: String;
   active: Boolean;
   rooms: Int;
   lastVisit?: DateTimeOutput;
+  criticity?: Float;
   score?: Float;
   lat: Float;
   long: Float;
@@ -3073,9 +4272,11 @@ export interface HotelPreviousValuesPromise
   address: () => Promise<String>;
   zipCode: () => Promise<Int>;
   city: () => Promise<String>;
+  phone: () => Promise<String>;
   active: () => Promise<Boolean>;
   rooms: () => Promise<Int>;
   lastVisit: () => Promise<DateTimeOutput>;
+  criticity: () => Promise<Float>;
   score: () => Promise<Float>;
   lat: () => Promise<Float>;
   long: () => Promise<Float>;
@@ -3093,9 +4294,11 @@ export interface HotelPreviousValuesSubscription
   address: () => Promise<AsyncIterator<String>>;
   zipCode: () => Promise<AsyncIterator<Int>>;
   city: () => Promise<AsyncIterator<String>>;
+  phone: () => Promise<AsyncIterator<String>>;
   active: () => Promise<AsyncIterator<Boolean>>;
   rooms: () => Promise<AsyncIterator<Int>>;
   lastVisit: () => Promise<AsyncIterator<DateTimeOutput>>;
+  criticity: () => Promise<AsyncIterator<Float>>;
   score: () => Promise<AsyncIterator<Float>>;
   lat: () => Promise<AsyncIterator<Float>>;
   long: () => Promise<AsyncIterator<Float>>;
@@ -3168,6 +4371,53 @@ export interface ResidentPreviousValuesSubscription
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
+export interface ScheduleSubscriptionPayload {
+  mutation: MutationType;
+  node: Schedule;
+  updatedFields: String[];
+  previousValues: SchedulePreviousValues;
+}
+
+export interface ScheduleSubscriptionPayloadPromise
+  extends Promise<ScheduleSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = SchedulePromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = SchedulePreviousValuesPromise>() => T;
+}
+
+export interface ScheduleSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<ScheduleSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = ScheduleSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = SchedulePreviousValuesSubscription>() => T;
+}
+
+export interface SchedulePreviousValues {
+  id: ID_Output;
+  startDate: DateTimeOutput;
+  endDate: DateTimeOutput;
+}
+
+export interface SchedulePreviousValuesPromise
+  extends Promise<SchedulePreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  startDate: () => Promise<DateTimeOutput>;
+  endDate: () => Promise<DateTimeOutput>;
+}
+
+export interface SchedulePreviousValuesSubscription
+  extends Promise<AsyncIterator<SchedulePreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  startDate: () => Promise<AsyncIterator<DateTimeOutput>>;
+  endDate: () => Promise<AsyncIterator<DateTimeOutput>>;
+}
+
 export interface SectorSubscriptionPayload {
   mutation: MutationType;
   node: Sector;
@@ -3218,6 +4468,56 @@ export interface SectorPreviousValuesSubscription
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
 
+export interface ShiftSubscriptionPayload {
+  mutation: MutationType;
+  node: Shift;
+  updatedFields: String[];
+  previousValues: ShiftPreviousValues;
+}
+
+export interface ShiftSubscriptionPayloadPromise
+  extends Promise<ShiftSubscriptionPayload>,
+    Fragmentable {
+  mutation: () => Promise<MutationType>;
+  node: <T = ShiftPromise>() => T;
+  updatedFields: () => Promise<String[]>;
+  previousValues: <T = ShiftPreviousValuesPromise>() => T;
+}
+
+export interface ShiftSubscriptionPayloadSubscription
+  extends Promise<AsyncIterator<ShiftSubscriptionPayload>>,
+    Fragmentable {
+  mutation: () => Promise<AsyncIterator<MutationType>>;
+  node: <T = ShiftSubscription>() => T;
+  updatedFields: () => Promise<AsyncIterator<String[]>>;
+  previousValues: <T = ShiftPreviousValuesSubscription>() => T;
+}
+
+export interface ShiftPreviousValues {
+  id: ID_Output;
+  index: Int;
+  startTime: String;
+  endTime: String;
+}
+
+export interface ShiftPreviousValuesPromise
+  extends Promise<ShiftPreviousValues>,
+    Fragmentable {
+  id: () => Promise<ID_Output>;
+  index: () => Promise<Int>;
+  startTime: () => Promise<String>;
+  endTime: () => Promise<String>;
+}
+
+export interface ShiftPreviousValuesSubscription
+  extends Promise<AsyncIterator<ShiftPreviousValues>>,
+    Fragmentable {
+  id: () => Promise<AsyncIterator<ID_Output>>;
+  index: () => Promise<AsyncIterator<Int>>;
+  startTime: () => Promise<AsyncIterator<String>>;
+  endTime: () => Promise<AsyncIterator<String>>;
+}
+
 export interface TeamSubscriptionPayload {
   mutation: MutationType;
   node: Team;
@@ -3245,6 +4545,8 @@ export interface TeamSubscriptionPayloadSubscription
 
 export interface TeamPreviousValues {
   id: ID_Output;
+  startDate: DateTimeOutput;
+  endDate: DateTimeOutput;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
 }
@@ -3253,6 +4555,8 @@ export interface TeamPreviousValuesPromise
   extends Promise<TeamPreviousValues>,
     Fragmentable {
   id: () => Promise<ID_Output>;
+  startDate: () => Promise<DateTimeOutput>;
+  endDate: () => Promise<DateTimeOutput>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
 }
@@ -3261,6 +4565,8 @@ export interface TeamPreviousValuesSubscription
   extends Promise<AsyncIterator<TeamPreviousValues>>,
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
+  startDate: () => Promise<AsyncIterator<DateTimeOutput>>;
+  endDate: () => Promise<AsyncIterator<DateTimeOutput>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
@@ -3295,9 +4601,10 @@ export interface UserPreviousValues {
   searchIndex: String;
   firstName: String;
   lastName: String;
-  role: String;
+  role: Role;
   address?: String;
   email: String;
+  phone?: String;
   password?: String;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
@@ -3310,9 +4617,10 @@ export interface UserPreviousValuesPromise
   searchIndex: () => Promise<String>;
   firstName: () => Promise<String>;
   lastName: () => Promise<String>;
-  role: () => Promise<String>;
+  role: () => Promise<Role>;
   address: () => Promise<String>;
   email: () => Promise<String>;
+  phone: () => Promise<String>;
   password: () => Promise<String>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
@@ -3325,9 +4633,10 @@ export interface UserPreviousValuesSubscription
   searchIndex: () => Promise<AsyncIterator<String>>;
   firstName: () => Promise<AsyncIterator<String>>;
   lastName: () => Promise<AsyncIterator<String>>;
-  role: () => Promise<AsyncIterator<String>>;
+  role: () => Promise<AsyncIterator<Role>>;
   address: () => Promise<AsyncIterator<String>>;
   email: () => Promise<AsyncIterator<String>>;
+  phone: () => Promise<AsyncIterator<String>>;
   password: () => Promise<AsyncIterator<String>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
@@ -3361,6 +4670,8 @@ export interface VisitSubscriptionPayloadSubscription
 export interface VisitPreviousValues {
   id: ID_Output;
   date: DateTimeOutput;
+  priority: Boolean;
+  status: VisitStatus;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
 }
@@ -3370,6 +4681,8 @@ export interface VisitPreviousValuesPromise
     Fragmentable {
   id: () => Promise<ID_Output>;
   date: () => Promise<DateTimeOutput>;
+  priority: () => Promise<Boolean>;
+  status: () => Promise<VisitStatus>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
 }
@@ -3379,6 +4692,8 @@ export interface VisitPreviousValuesSubscription
     Fragmentable {
   id: () => Promise<AsyncIterator<ID_Output>>;
   date: () => Promise<AsyncIterator<DateTimeOutput>>;
+  priority: () => Promise<AsyncIterator<Boolean>>;
+  status: () => Promise<AsyncIterator<VisitStatus>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;
 }
@@ -3447,6 +4762,14 @@ export const models: Model[] = [
     embedded: false
   },
   {
+    name: "Shift",
+    embedded: false
+  },
+  {
+    name: "Schedule",
+    embedded: false
+  },
+  {
     name: "Resident",
     embedded: false
   },
@@ -3456,6 +4779,10 @@ export const models: Model[] = [
   },
   {
     name: "MutationType",
+    embedded: false
+  },
+  {
+    name: "VisitStatus",
     embedded: false
   },
   {

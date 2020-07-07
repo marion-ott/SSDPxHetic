@@ -1,20 +1,25 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import { useLocation } from 'react-router-dom'
 import { Link } from 'react-router-dom'
+import userContext from '../context/userContext'
 import { Dropdown } from '../molecules'
-import { Logo } from '../atoms'
-import { Button } from '../atoms'
-import { Icon } from '../atoms'
+import { Logo, Button, Icon } from '../atoms'
 import { navEls } from '../global/data'
 
-const Nav = () => {
+const Nav = ({ setAuth }) => {
+  const { user } = useContext(userContext)
   const { pathname } = useLocation()
+
+  const handleLogout = () => {
+    setAuth({
+      user: null,
+      loggedIn: false
+    })
+    localStorage.removeItem('token')
+  }
+
   return (
-    <nav
-      style={{ padding: '.5rem 0' }}
-      className='navbar'
-      role='navigation'
-      aria-label='main navigation'>
+    <nav className='navbar' role='navigation' aria-label='main navigation'>
       <div className='container is-widescreen'>
         <div className='logo-container'>
           <Link to='/'>
@@ -42,15 +47,18 @@ const Nav = () => {
                   <p>Visite d'urgence</p>
                 </Button>
                 {/* <Icon classProp='fa-bell' /> */}
-                <Dropdown downicon={true} title='Marion' titleicon='fa-user'>
+                <Dropdown
+                  downicon={true}
+                  title={user.firstName}
+                  titleicon='fa-user'>
                   <Link to='/' className='dropdown-item'>
-                    Mon profile
+                    Mon profil
                   </Link>
                   <Link to='/' className='dropdown-item'>
                     Mes visites
                   </Link>
                   <hr className='dropdown-divider'></hr>
-                  <Link to='/' className='dropdown-item'>
+                  <Link onClick={handleLogout} to='/' className='dropdown-item'>
                     Déconnexion
                   </Link>
                 </Dropdown>

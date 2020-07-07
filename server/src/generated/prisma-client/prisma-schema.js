@@ -11,7 +11,15 @@ type AggregateResident {
   count: Int!
 }
 
+type AggregateSchedule {
+  count: Int!
+}
+
 type AggregateSector {
+  count: Int!
+}
+
+type AggregateShift {
   count: Int!
 }
 
@@ -46,9 +54,11 @@ type Hotel {
   address: String!
   zipCode: Int!
   city: String!
+  phone: String
   active: Boolean!
   rooms: Int!
   lastVisit: DateTime
+  criticity: Float
   score: Float
   sector: Sector!
   lat: Float!
@@ -73,9 +83,11 @@ input HotelCreateInput {
   address: String!
   zipCode: Int!
   city: String!
+  phone: String
   active: Boolean!
   rooms: Int!
   lastVisit: DateTime
+  criticity: Float
   score: Float
   sector: SectorCreateOneWithoutHotelsInput!
   lat: Float!
@@ -107,9 +119,11 @@ input HotelCreateWithoutResidentsInput {
   address: String!
   zipCode: Int!
   city: String!
+  phone: String
   active: Boolean!
   rooms: Int!
   lastVisit: DateTime
+  criticity: Float
   score: Float
   sector: SectorCreateOneWithoutHotelsInput!
   lat: Float!
@@ -125,9 +139,11 @@ input HotelCreateWithoutSectorInput {
   address: String!
   zipCode: Int!
   city: String!
+  phone: String
   active: Boolean!
   rooms: Int!
   lastVisit: DateTime
+  criticity: Float
   score: Float
   lat: Float!
   long: Float!
@@ -143,9 +159,11 @@ input HotelCreateWithoutVisitsInput {
   address: String!
   zipCode: Int!
   city: String!
+  phone: String
   active: Boolean!
   rooms: Int!
   lastVisit: DateTime
+  criticity: Float
   score: Float
   sector: SectorCreateOneWithoutHotelsInput!
   lat: Float!
@@ -173,12 +191,16 @@ enum HotelOrderByInput {
   zipCode_DESC
   city_ASC
   city_DESC
+  phone_ASC
+  phone_DESC
   active_ASC
   active_DESC
   rooms_ASC
   rooms_DESC
   lastVisit_ASC
   lastVisit_DESC
+  criticity_ASC
+  criticity_DESC
   score_ASC
   score_DESC
   lat_ASC
@@ -199,9 +221,11 @@ type HotelPreviousValues {
   address: String!
   zipCode: Int!
   city: String!
+  phone: String
   active: Boolean!
   rooms: Int!
   lastVisit: DateTime
+  criticity: Float
   score: Float
   lat: Float!
   long: Float!
@@ -296,6 +320,20 @@ input HotelScalarWhereInput {
   city_not_starts_with: String
   city_ends_with: String
   city_not_ends_with: String
+  phone: String
+  phone_not: String
+  phone_in: [String!]
+  phone_not_in: [String!]
+  phone_lt: String
+  phone_lte: String
+  phone_gt: String
+  phone_gte: String
+  phone_contains: String
+  phone_not_contains: String
+  phone_starts_with: String
+  phone_not_starts_with: String
+  phone_ends_with: String
+  phone_not_ends_with: String
   active: Boolean
   active_not: Boolean
   rooms: Int
@@ -314,6 +352,14 @@ input HotelScalarWhereInput {
   lastVisit_lte: DateTime
   lastVisit_gt: DateTime
   lastVisit_gte: DateTime
+  criticity: Float
+  criticity_not: Float
+  criticity_in: [Float!]
+  criticity_not_in: [Float!]
+  criticity_lt: Float
+  criticity_lte: Float
+  criticity_gt: Float
+  criticity_gte: Float
   score: Float
   score_not: Float
   score_in: [Float!]
@@ -384,9 +430,11 @@ input HotelUpdateInput {
   address: String
   zipCode: Int
   city: String
+  phone: String
   active: Boolean
   rooms: Int
   lastVisit: DateTime
+  criticity: Float
   score: Float
   sector: SectorUpdateOneRequiredWithoutHotelsInput
   lat: Float
@@ -402,9 +450,11 @@ input HotelUpdateManyDataInput {
   address: String
   zipCode: Int
   city: String
+  phone: String
   active: Boolean
   rooms: Int
   lastVisit: DateTime
+  criticity: Float
   score: Float
   lat: Float
   long: Float
@@ -417,9 +467,11 @@ input HotelUpdateManyMutationInput {
   address: String
   zipCode: Int
   city: String
+  phone: String
   active: Boolean
   rooms: Int
   lastVisit: DateTime
+  criticity: Float
   score: Float
   lat: Float
   long: Float
@@ -465,9 +517,11 @@ input HotelUpdateWithoutResidentsDataInput {
   address: String
   zipCode: Int
   city: String
+  phone: String
   active: Boolean
   rooms: Int
   lastVisit: DateTime
+  criticity: Float
   score: Float
   sector: SectorUpdateOneRequiredWithoutHotelsInput
   lat: Float
@@ -482,9 +536,11 @@ input HotelUpdateWithoutSectorDataInput {
   address: String
   zipCode: Int
   city: String
+  phone: String
   active: Boolean
   rooms: Int
   lastVisit: DateTime
+  criticity: Float
   score: Float
   lat: Float
   long: Float
@@ -499,9 +555,11 @@ input HotelUpdateWithoutVisitsDataInput {
   address: String
   zipCode: Int
   city: String
+  phone: String
   active: Boolean
   rooms: Int
   lastVisit: DateTime
+  criticity: Float
   score: Float
   sector: SectorUpdateOneRequiredWithoutHotelsInput
   lat: Float
@@ -617,6 +675,20 @@ input HotelWhereInput {
   city_not_starts_with: String
   city_ends_with: String
   city_not_ends_with: String
+  phone: String
+  phone_not: String
+  phone_in: [String!]
+  phone_not_in: [String!]
+  phone_lt: String
+  phone_lte: String
+  phone_gt: String
+  phone_gte: String
+  phone_contains: String
+  phone_not_contains: String
+  phone_starts_with: String
+  phone_not_starts_with: String
+  phone_ends_with: String
+  phone_not_ends_with: String
   active: Boolean
   active_not: Boolean
   rooms: Int
@@ -635,6 +707,14 @@ input HotelWhereInput {
   lastVisit_lte: DateTime
   lastVisit_gt: DateTime
   lastVisit_gte: DateTime
+  criticity: Float
+  criticity_not: Float
+  criticity_in: [Float!]
+  criticity_not_in: [Float!]
+  criticity_lt: Float
+  criticity_lte: Float
+  criticity_gt: Float
+  criticity_gte: Float
   score: Float
   score_not: Float
   score_in: [Float!]
@@ -707,14 +787,27 @@ type Mutation {
   upsertResident(where: ResidentWhereUniqueInput!, create: ResidentCreateInput!, update: ResidentUpdateInput!): Resident!
   deleteResident(where: ResidentWhereUniqueInput!): Resident
   deleteManyResidents(where: ResidentWhereInput): BatchPayload!
+  createSchedule(data: ScheduleCreateInput!): Schedule!
+  updateSchedule(data: ScheduleUpdateInput!, where: ScheduleWhereUniqueInput!): Schedule
+  updateManySchedules(data: ScheduleUpdateManyMutationInput!, where: ScheduleWhereInput): BatchPayload!
+  upsertSchedule(where: ScheduleWhereUniqueInput!, create: ScheduleCreateInput!, update: ScheduleUpdateInput!): Schedule!
+  deleteSchedule(where: ScheduleWhereUniqueInput!): Schedule
+  deleteManySchedules(where: ScheduleWhereInput): BatchPayload!
   createSector(data: SectorCreateInput!): Sector!
   updateSector(data: SectorUpdateInput!, where: SectorWhereUniqueInput!): Sector
   updateManySectors(data: SectorUpdateManyMutationInput!, where: SectorWhereInput): BatchPayload!
   upsertSector(where: SectorWhereUniqueInput!, create: SectorCreateInput!, update: SectorUpdateInput!): Sector!
   deleteSector(where: SectorWhereUniqueInput!): Sector
   deleteManySectors(where: SectorWhereInput): BatchPayload!
+  createShift(data: ShiftCreateInput!): Shift!
+  updateShift(data: ShiftUpdateInput!, where: ShiftWhereUniqueInput!): Shift
+  updateManyShifts(data: ShiftUpdateManyMutationInput!, where: ShiftWhereInput): BatchPayload!
+  upsertShift(where: ShiftWhereUniqueInput!, create: ShiftCreateInput!, update: ShiftUpdateInput!): Shift!
+  deleteShift(where: ShiftWhereUniqueInput!): Shift
+  deleteManyShifts(where: ShiftWhereInput): BatchPayload!
   createTeam(data: TeamCreateInput!): Team!
   updateTeam(data: TeamUpdateInput!, where: TeamWhereUniqueInput!): Team
+  updateManyTeams(data: TeamUpdateManyMutationInput!, where: TeamWhereInput): BatchPayload!
   upsertTeam(where: TeamWhereUniqueInput!, create: TeamCreateInput!, update: TeamUpdateInput!): Team!
   deleteTeam(where: TeamWhereUniqueInput!): Team
   deleteManyTeams(where: TeamWhereInput): BatchPayload!
@@ -756,9 +849,15 @@ type Query {
   resident(where: ResidentWhereUniqueInput!): Resident
   residents(where: ResidentWhereInput, orderBy: ResidentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Resident]!
   residentsConnection(where: ResidentWhereInput, orderBy: ResidentOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ResidentConnection!
+  schedule(where: ScheduleWhereUniqueInput!): Schedule
+  schedules(where: ScheduleWhereInput, orderBy: ScheduleOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Schedule]!
+  schedulesConnection(where: ScheduleWhereInput, orderBy: ScheduleOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ScheduleConnection!
   sector(where: SectorWhereUniqueInput!): Sector
   sectors(where: SectorWhereInput, orderBy: SectorOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Sector]!
   sectorsConnection(where: SectorWhereInput, orderBy: SectorOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): SectorConnection!
+  shift(where: ShiftWhereUniqueInput!): Shift
+  shifts(where: ShiftWhereInput, orderBy: ShiftOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Shift]!
+  shiftsConnection(where: ShiftWhereInput, orderBy: ShiftOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): ShiftConnection!
   team(where: TeamWhereUniqueInput!): Team
   teams(where: TeamWhereInput, orderBy: TeamOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Team]!
   teamsConnection(where: TeamWhereInput, orderBy: TeamOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): TeamConnection!
@@ -1139,11 +1238,260 @@ input ResidentWhereUniqueInput {
   email: String
 }
 
+enum Role {
+  USER
+  ADMIN
+}
+
+type Schedule {
+  id: ID!
+  shift: Shift!
+  sector: Sector!
+  startDate: DateTime!
+  endDate: DateTime!
+}
+
+type ScheduleConnection {
+  pageInfo: PageInfo!
+  edges: [ScheduleEdge]!
+  aggregate: AggregateSchedule!
+}
+
+input ScheduleCreateInput {
+  id: ID
+  shift: ShiftCreateOneWithoutSchedulesInput!
+  sector: SectorCreateOneWithoutSchedulesInput!
+  startDate: DateTime!
+  endDate: DateTime!
+}
+
+input ScheduleCreateManyWithoutSectorInput {
+  create: [ScheduleCreateWithoutSectorInput!]
+  connect: [ScheduleWhereUniqueInput!]
+}
+
+input ScheduleCreateManyWithoutShiftInput {
+  create: [ScheduleCreateWithoutShiftInput!]
+  connect: [ScheduleWhereUniqueInput!]
+}
+
+input ScheduleCreateWithoutSectorInput {
+  id: ID
+  shift: ShiftCreateOneWithoutSchedulesInput!
+  startDate: DateTime!
+  endDate: DateTime!
+}
+
+input ScheduleCreateWithoutShiftInput {
+  id: ID
+  sector: SectorCreateOneWithoutSchedulesInput!
+  startDate: DateTime!
+  endDate: DateTime!
+}
+
+type ScheduleEdge {
+  node: Schedule!
+  cursor: String!
+}
+
+enum ScheduleOrderByInput {
+  id_ASC
+  id_DESC
+  startDate_ASC
+  startDate_DESC
+  endDate_ASC
+  endDate_DESC
+}
+
+type SchedulePreviousValues {
+  id: ID!
+  startDate: DateTime!
+  endDate: DateTime!
+}
+
+input ScheduleScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  startDate: DateTime
+  startDate_not: DateTime
+  startDate_in: [DateTime!]
+  startDate_not_in: [DateTime!]
+  startDate_lt: DateTime
+  startDate_lte: DateTime
+  startDate_gt: DateTime
+  startDate_gte: DateTime
+  endDate: DateTime
+  endDate_not: DateTime
+  endDate_in: [DateTime!]
+  endDate_not_in: [DateTime!]
+  endDate_lt: DateTime
+  endDate_lte: DateTime
+  endDate_gt: DateTime
+  endDate_gte: DateTime
+  AND: [ScheduleScalarWhereInput!]
+  OR: [ScheduleScalarWhereInput!]
+  NOT: [ScheduleScalarWhereInput!]
+}
+
+type ScheduleSubscriptionPayload {
+  mutation: MutationType!
+  node: Schedule
+  updatedFields: [String!]
+  previousValues: SchedulePreviousValues
+}
+
+input ScheduleSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: ScheduleWhereInput
+  AND: [ScheduleSubscriptionWhereInput!]
+  OR: [ScheduleSubscriptionWhereInput!]
+  NOT: [ScheduleSubscriptionWhereInput!]
+}
+
+input ScheduleUpdateInput {
+  shift: ShiftUpdateOneRequiredWithoutSchedulesInput
+  sector: SectorUpdateOneRequiredWithoutSchedulesInput
+  startDate: DateTime
+  endDate: DateTime
+}
+
+input ScheduleUpdateManyDataInput {
+  startDate: DateTime
+  endDate: DateTime
+}
+
+input ScheduleUpdateManyMutationInput {
+  startDate: DateTime
+  endDate: DateTime
+}
+
+input ScheduleUpdateManyWithoutSectorInput {
+  create: [ScheduleCreateWithoutSectorInput!]
+  delete: [ScheduleWhereUniqueInput!]
+  connect: [ScheduleWhereUniqueInput!]
+  set: [ScheduleWhereUniqueInput!]
+  disconnect: [ScheduleWhereUniqueInput!]
+  update: [ScheduleUpdateWithWhereUniqueWithoutSectorInput!]
+  upsert: [ScheduleUpsertWithWhereUniqueWithoutSectorInput!]
+  deleteMany: [ScheduleScalarWhereInput!]
+  updateMany: [ScheduleUpdateManyWithWhereNestedInput!]
+}
+
+input ScheduleUpdateManyWithoutShiftInput {
+  create: [ScheduleCreateWithoutShiftInput!]
+  delete: [ScheduleWhereUniqueInput!]
+  connect: [ScheduleWhereUniqueInput!]
+  set: [ScheduleWhereUniqueInput!]
+  disconnect: [ScheduleWhereUniqueInput!]
+  update: [ScheduleUpdateWithWhereUniqueWithoutShiftInput!]
+  upsert: [ScheduleUpsertWithWhereUniqueWithoutShiftInput!]
+  deleteMany: [ScheduleScalarWhereInput!]
+  updateMany: [ScheduleUpdateManyWithWhereNestedInput!]
+}
+
+input ScheduleUpdateManyWithWhereNestedInput {
+  where: ScheduleScalarWhereInput!
+  data: ScheduleUpdateManyDataInput!
+}
+
+input ScheduleUpdateWithoutSectorDataInput {
+  shift: ShiftUpdateOneRequiredWithoutSchedulesInput
+  startDate: DateTime
+  endDate: DateTime
+}
+
+input ScheduleUpdateWithoutShiftDataInput {
+  sector: SectorUpdateOneRequiredWithoutSchedulesInput
+  startDate: DateTime
+  endDate: DateTime
+}
+
+input ScheduleUpdateWithWhereUniqueWithoutSectorInput {
+  where: ScheduleWhereUniqueInput!
+  data: ScheduleUpdateWithoutSectorDataInput!
+}
+
+input ScheduleUpdateWithWhereUniqueWithoutShiftInput {
+  where: ScheduleWhereUniqueInput!
+  data: ScheduleUpdateWithoutShiftDataInput!
+}
+
+input ScheduleUpsertWithWhereUniqueWithoutSectorInput {
+  where: ScheduleWhereUniqueInput!
+  update: ScheduleUpdateWithoutSectorDataInput!
+  create: ScheduleCreateWithoutSectorInput!
+}
+
+input ScheduleUpsertWithWhereUniqueWithoutShiftInput {
+  where: ScheduleWhereUniqueInput!
+  update: ScheduleUpdateWithoutShiftDataInput!
+  create: ScheduleCreateWithoutShiftInput!
+}
+
+input ScheduleWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  shift: ShiftWhereInput
+  sector: SectorWhereInput
+  startDate: DateTime
+  startDate_not: DateTime
+  startDate_in: [DateTime!]
+  startDate_not_in: [DateTime!]
+  startDate_lt: DateTime
+  startDate_lte: DateTime
+  startDate_gt: DateTime
+  startDate_gte: DateTime
+  endDate: DateTime
+  endDate_not: DateTime
+  endDate_in: [DateTime!]
+  endDate_not_in: [DateTime!]
+  endDate_lt: DateTime
+  endDate_lte: DateTime
+  endDate_gt: DateTime
+  endDate_gte: DateTime
+  AND: [ScheduleWhereInput!]
+  OR: [ScheduleWhereInput!]
+  NOT: [ScheduleWhereInput!]
+}
+
+input ScheduleWhereUniqueInput {
+  id: ID
+}
+
 type Sector {
   id: ID!
   zone: String!
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
   hotels(where: HotelWhereInput, orderBy: HotelOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Hotel!]
+  teams(where: TeamWhereInput, orderBy: TeamOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Team!]
+  schedules(where: ScheduleWhereInput, orderBy: ScheduleOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Schedule!]
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -1159,10 +1507,22 @@ input SectorCreateInput {
   zone: String!
   users: UserCreateManyWithoutSectorInput
   hotels: HotelCreateManyWithoutSectorInput
+  teams: TeamCreateManyWithoutSectorInput
+  schedules: ScheduleCreateManyWithoutSectorInput
 }
 
 input SectorCreateOneWithoutHotelsInput {
   create: SectorCreateWithoutHotelsInput
+  connect: SectorWhereUniqueInput
+}
+
+input SectorCreateOneWithoutSchedulesInput {
+  create: SectorCreateWithoutSchedulesInput
+  connect: SectorWhereUniqueInput
+}
+
+input SectorCreateOneWithoutTeamsInput {
+  create: SectorCreateWithoutTeamsInput
   connect: SectorWhereUniqueInput
 }
 
@@ -1175,12 +1535,32 @@ input SectorCreateWithoutHotelsInput {
   id: ID
   zone: String!
   users: UserCreateManyWithoutSectorInput
+  teams: TeamCreateManyWithoutSectorInput
+  schedules: ScheduleCreateManyWithoutSectorInput
+}
+
+input SectorCreateWithoutSchedulesInput {
+  id: ID
+  zone: String!
+  users: UserCreateManyWithoutSectorInput
+  hotels: HotelCreateManyWithoutSectorInput
+  teams: TeamCreateManyWithoutSectorInput
+}
+
+input SectorCreateWithoutTeamsInput {
+  id: ID
+  zone: String!
+  users: UserCreateManyWithoutSectorInput
+  hotels: HotelCreateManyWithoutSectorInput
+  schedules: ScheduleCreateManyWithoutSectorInput
 }
 
 input SectorCreateWithoutUsersInput {
   id: ID
   zone: String!
   hotels: HotelCreateManyWithoutSectorInput
+  teams: TeamCreateManyWithoutSectorInput
+  schedules: ScheduleCreateManyWithoutSectorInput
 }
 
 type SectorEdge {
@@ -1228,6 +1608,8 @@ input SectorUpdateInput {
   zone: String
   users: UserUpdateManyWithoutSectorInput
   hotels: HotelUpdateManyWithoutSectorInput
+  teams: TeamUpdateManyWithoutSectorInput
+  schedules: ScheduleUpdateManyWithoutSectorInput
 }
 
 input SectorUpdateManyMutationInput {
@@ -1238,6 +1620,20 @@ input SectorUpdateOneRequiredWithoutHotelsInput {
   create: SectorCreateWithoutHotelsInput
   update: SectorUpdateWithoutHotelsDataInput
   upsert: SectorUpsertWithoutHotelsInput
+  connect: SectorWhereUniqueInput
+}
+
+input SectorUpdateOneRequiredWithoutSchedulesInput {
+  create: SectorCreateWithoutSchedulesInput
+  update: SectorUpdateWithoutSchedulesDataInput
+  upsert: SectorUpsertWithoutSchedulesInput
+  connect: SectorWhereUniqueInput
+}
+
+input SectorUpdateOneRequiredWithoutTeamsInput {
+  create: SectorCreateWithoutTeamsInput
+  update: SectorUpdateWithoutTeamsDataInput
+  upsert: SectorUpsertWithoutTeamsInput
   connect: SectorWhereUniqueInput
 }
 
@@ -1253,16 +1649,44 @@ input SectorUpdateOneWithoutUsersInput {
 input SectorUpdateWithoutHotelsDataInput {
   zone: String
   users: UserUpdateManyWithoutSectorInput
+  teams: TeamUpdateManyWithoutSectorInput
+  schedules: ScheduleUpdateManyWithoutSectorInput
+}
+
+input SectorUpdateWithoutSchedulesDataInput {
+  zone: String
+  users: UserUpdateManyWithoutSectorInput
+  hotels: HotelUpdateManyWithoutSectorInput
+  teams: TeamUpdateManyWithoutSectorInput
+}
+
+input SectorUpdateWithoutTeamsDataInput {
+  zone: String
+  users: UserUpdateManyWithoutSectorInput
+  hotels: HotelUpdateManyWithoutSectorInput
+  schedules: ScheduleUpdateManyWithoutSectorInput
 }
 
 input SectorUpdateWithoutUsersDataInput {
   zone: String
   hotels: HotelUpdateManyWithoutSectorInput
+  teams: TeamUpdateManyWithoutSectorInput
+  schedules: ScheduleUpdateManyWithoutSectorInput
 }
 
 input SectorUpsertWithoutHotelsInput {
   update: SectorUpdateWithoutHotelsDataInput!
   create: SectorCreateWithoutHotelsInput!
+}
+
+input SectorUpsertWithoutSchedulesInput {
+  update: SectorUpdateWithoutSchedulesDataInput!
+  create: SectorCreateWithoutSchedulesInput!
+}
+
+input SectorUpsertWithoutTeamsInput {
+  update: SectorUpdateWithoutTeamsDataInput!
+  create: SectorCreateWithoutTeamsInput!
 }
 
 input SectorUpsertWithoutUsersInput {
@@ -1305,6 +1729,12 @@ input SectorWhereInput {
   hotels_every: HotelWhereInput
   hotels_some: HotelWhereInput
   hotels_none: HotelWhereInput
+  teams_every: TeamWhereInput
+  teams_some: TeamWhereInput
+  teams_none: TeamWhereInput
+  schedules_every: ScheduleWhereInput
+  schedules_some: ScheduleWhereInput
+  schedules_none: ScheduleWhereInput
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]
@@ -1331,10 +1761,182 @@ input SectorWhereUniqueInput {
   zone: String
 }
 
+type Shift {
+  id: ID!
+  index: Int!
+  startTime: String!
+  endTime: String!
+  schedules(where: ScheduleWhereInput, orderBy: ScheduleOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Schedule!]
+}
+
+type ShiftConnection {
+  pageInfo: PageInfo!
+  edges: [ShiftEdge]!
+  aggregate: AggregateShift!
+}
+
+input ShiftCreateInput {
+  id: ID
+  index: Int!
+  startTime: String!
+  endTime: String!
+  schedules: ScheduleCreateManyWithoutShiftInput
+}
+
+input ShiftCreateOneWithoutSchedulesInput {
+  create: ShiftCreateWithoutSchedulesInput
+  connect: ShiftWhereUniqueInput
+}
+
+input ShiftCreateWithoutSchedulesInput {
+  id: ID
+  index: Int!
+  startTime: String!
+  endTime: String!
+}
+
+type ShiftEdge {
+  node: Shift!
+  cursor: String!
+}
+
+enum ShiftOrderByInput {
+  id_ASC
+  id_DESC
+  index_ASC
+  index_DESC
+  startTime_ASC
+  startTime_DESC
+  endTime_ASC
+  endTime_DESC
+}
+
+type ShiftPreviousValues {
+  id: ID!
+  index: Int!
+  startTime: String!
+  endTime: String!
+}
+
+type ShiftSubscriptionPayload {
+  mutation: MutationType!
+  node: Shift
+  updatedFields: [String!]
+  previousValues: ShiftPreviousValues
+}
+
+input ShiftSubscriptionWhereInput {
+  mutation_in: [MutationType!]
+  updatedFields_contains: String
+  updatedFields_contains_every: [String!]
+  updatedFields_contains_some: [String!]
+  node: ShiftWhereInput
+  AND: [ShiftSubscriptionWhereInput!]
+  OR: [ShiftSubscriptionWhereInput!]
+  NOT: [ShiftSubscriptionWhereInput!]
+}
+
+input ShiftUpdateInput {
+  index: Int
+  startTime: String
+  endTime: String
+  schedules: ScheduleUpdateManyWithoutShiftInput
+}
+
+input ShiftUpdateManyMutationInput {
+  index: Int
+  startTime: String
+  endTime: String
+}
+
+input ShiftUpdateOneRequiredWithoutSchedulesInput {
+  create: ShiftCreateWithoutSchedulesInput
+  update: ShiftUpdateWithoutSchedulesDataInput
+  upsert: ShiftUpsertWithoutSchedulesInput
+  connect: ShiftWhereUniqueInput
+}
+
+input ShiftUpdateWithoutSchedulesDataInput {
+  index: Int
+  startTime: String
+  endTime: String
+}
+
+input ShiftUpsertWithoutSchedulesInput {
+  update: ShiftUpdateWithoutSchedulesDataInput!
+  create: ShiftCreateWithoutSchedulesInput!
+}
+
+input ShiftWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  index: Int
+  index_not: Int
+  index_in: [Int!]
+  index_not_in: [Int!]
+  index_lt: Int
+  index_lte: Int
+  index_gt: Int
+  index_gte: Int
+  startTime: String
+  startTime_not: String
+  startTime_in: [String!]
+  startTime_not_in: [String!]
+  startTime_lt: String
+  startTime_lte: String
+  startTime_gt: String
+  startTime_gte: String
+  startTime_contains: String
+  startTime_not_contains: String
+  startTime_starts_with: String
+  startTime_not_starts_with: String
+  startTime_ends_with: String
+  startTime_not_ends_with: String
+  endTime: String
+  endTime_not: String
+  endTime_in: [String!]
+  endTime_not_in: [String!]
+  endTime_lt: String
+  endTime_lte: String
+  endTime_gt: String
+  endTime_gte: String
+  endTime_contains: String
+  endTime_not_contains: String
+  endTime_starts_with: String
+  endTime_not_starts_with: String
+  endTime_ends_with: String
+  endTime_not_ends_with: String
+  schedules_every: ScheduleWhereInput
+  schedules_some: ScheduleWhereInput
+  schedules_none: ScheduleWhereInput
+  AND: [ShiftWhereInput!]
+  OR: [ShiftWhereInput!]
+  NOT: [ShiftWhereInput!]
+}
+
+input ShiftWhereUniqueInput {
+  id: ID
+  index: Int
+}
+
 type Subscription {
   hotel(where: HotelSubscriptionWhereInput): HotelSubscriptionPayload
   resident(where: ResidentSubscriptionWhereInput): ResidentSubscriptionPayload
+  schedule(where: ScheduleSubscriptionWhereInput): ScheduleSubscriptionPayload
   sector(where: SectorSubscriptionWhereInput): SectorSubscriptionPayload
+  shift(where: ShiftSubscriptionWhereInput): ShiftSubscriptionPayload
   team(where: TeamSubscriptionWhereInput): TeamSubscriptionPayload
   user(where: UserSubscriptionWhereInput): UserSubscriptionPayload
   visit(where: VisitSubscriptionWhereInput): VisitSubscriptionPayload
@@ -1342,8 +1944,11 @@ type Subscription {
 
 type Team {
   id: ID!
+  sector: Sector!
   users(where: UserWhereInput, orderBy: UserOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [User!]
   visits(where: VisitWhereInput, orderBy: VisitOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Visit!]
+  startDate: DateTime!
+  endDate: DateTime!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -1356,8 +1961,21 @@ type TeamConnection {
 
 input TeamCreateInput {
   id: ID
-  users: UserCreateManyInput
+  sector: SectorCreateOneWithoutTeamsInput!
+  users: UserCreateManyWithoutTeamsInput
   visits: VisitCreateManyWithoutTeamInput
+  startDate: DateTime!
+  endDate: DateTime!
+}
+
+input TeamCreateManyWithoutSectorInput {
+  create: [TeamCreateWithoutSectorInput!]
+  connect: [TeamWhereUniqueInput!]
+}
+
+input TeamCreateManyWithoutUsersInput {
+  create: [TeamCreateWithoutUsersInput!]
+  connect: [TeamWhereUniqueInput!]
 }
 
 input TeamCreateOneWithoutVisitsInput {
@@ -1365,9 +1983,28 @@ input TeamCreateOneWithoutVisitsInput {
   connect: TeamWhereUniqueInput
 }
 
+input TeamCreateWithoutSectorInput {
+  id: ID
+  users: UserCreateManyWithoutTeamsInput
+  visits: VisitCreateManyWithoutTeamInput
+  startDate: DateTime!
+  endDate: DateTime!
+}
+
+input TeamCreateWithoutUsersInput {
+  id: ID
+  sector: SectorCreateOneWithoutTeamsInput!
+  visits: VisitCreateManyWithoutTeamInput
+  startDate: DateTime!
+  endDate: DateTime!
+}
+
 input TeamCreateWithoutVisitsInput {
   id: ID
-  users: UserCreateManyInput
+  sector: SectorCreateOneWithoutTeamsInput!
+  users: UserCreateManyWithoutTeamsInput
+  startDate: DateTime!
+  endDate: DateTime!
 }
 
 type TeamEdge {
@@ -1378,6 +2015,10 @@ type TeamEdge {
 enum TeamOrderByInput {
   id_ASC
   id_DESC
+  startDate_ASC
+  startDate_DESC
+  endDate_ASC
+  endDate_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -1386,8 +2027,62 @@ enum TeamOrderByInput {
 
 type TeamPreviousValues {
   id: ID!
+  startDate: DateTime!
+  endDate: DateTime!
   createdAt: DateTime!
   updatedAt: DateTime!
+}
+
+input TeamScalarWhereInput {
+  id: ID
+  id_not: ID
+  id_in: [ID!]
+  id_not_in: [ID!]
+  id_lt: ID
+  id_lte: ID
+  id_gt: ID
+  id_gte: ID
+  id_contains: ID
+  id_not_contains: ID
+  id_starts_with: ID
+  id_not_starts_with: ID
+  id_ends_with: ID
+  id_not_ends_with: ID
+  startDate: DateTime
+  startDate_not: DateTime
+  startDate_in: [DateTime!]
+  startDate_not_in: [DateTime!]
+  startDate_lt: DateTime
+  startDate_lte: DateTime
+  startDate_gt: DateTime
+  startDate_gte: DateTime
+  endDate: DateTime
+  endDate_not: DateTime
+  endDate_in: [DateTime!]
+  endDate_not_in: [DateTime!]
+  endDate_lt: DateTime
+  endDate_lte: DateTime
+  endDate_gt: DateTime
+  endDate_gte: DateTime
+  createdAt: DateTime
+  createdAt_not: DateTime
+  createdAt_in: [DateTime!]
+  createdAt_not_in: [DateTime!]
+  createdAt_lt: DateTime
+  createdAt_lte: DateTime
+  createdAt_gt: DateTime
+  createdAt_gte: DateTime
+  updatedAt: DateTime
+  updatedAt_not: DateTime
+  updatedAt_in: [DateTime!]
+  updatedAt_not_in: [DateTime!]
+  updatedAt_lt: DateTime
+  updatedAt_lte: DateTime
+  updatedAt_gt: DateTime
+  updatedAt_gte: DateTime
+  AND: [TeamScalarWhereInput!]
+  OR: [TeamScalarWhereInput!]
+  NOT: [TeamScalarWhereInput!]
 }
 
 type TeamSubscriptionPayload {
@@ -1409,8 +2104,50 @@ input TeamSubscriptionWhereInput {
 }
 
 input TeamUpdateInput {
-  users: UserUpdateManyInput
+  sector: SectorUpdateOneRequiredWithoutTeamsInput
+  users: UserUpdateManyWithoutTeamsInput
   visits: VisitUpdateManyWithoutTeamInput
+  startDate: DateTime
+  endDate: DateTime
+}
+
+input TeamUpdateManyDataInput {
+  startDate: DateTime
+  endDate: DateTime
+}
+
+input TeamUpdateManyMutationInput {
+  startDate: DateTime
+  endDate: DateTime
+}
+
+input TeamUpdateManyWithoutSectorInput {
+  create: [TeamCreateWithoutSectorInput!]
+  delete: [TeamWhereUniqueInput!]
+  connect: [TeamWhereUniqueInput!]
+  set: [TeamWhereUniqueInput!]
+  disconnect: [TeamWhereUniqueInput!]
+  update: [TeamUpdateWithWhereUniqueWithoutSectorInput!]
+  upsert: [TeamUpsertWithWhereUniqueWithoutSectorInput!]
+  deleteMany: [TeamScalarWhereInput!]
+  updateMany: [TeamUpdateManyWithWhereNestedInput!]
+}
+
+input TeamUpdateManyWithoutUsersInput {
+  create: [TeamCreateWithoutUsersInput!]
+  delete: [TeamWhereUniqueInput!]
+  connect: [TeamWhereUniqueInput!]
+  set: [TeamWhereUniqueInput!]
+  disconnect: [TeamWhereUniqueInput!]
+  update: [TeamUpdateWithWhereUniqueWithoutUsersInput!]
+  upsert: [TeamUpsertWithWhereUniqueWithoutUsersInput!]
+  deleteMany: [TeamScalarWhereInput!]
+  updateMany: [TeamUpdateManyWithWhereNestedInput!]
+}
+
+input TeamUpdateManyWithWhereNestedInput {
+  where: TeamScalarWhereInput!
+  data: TeamUpdateManyDataInput!
 }
 
 input TeamUpdateOneRequiredWithoutVisitsInput {
@@ -1420,13 +2157,52 @@ input TeamUpdateOneRequiredWithoutVisitsInput {
   connect: TeamWhereUniqueInput
 }
 
+input TeamUpdateWithoutSectorDataInput {
+  users: UserUpdateManyWithoutTeamsInput
+  visits: VisitUpdateManyWithoutTeamInput
+  startDate: DateTime
+  endDate: DateTime
+}
+
+input TeamUpdateWithoutUsersDataInput {
+  sector: SectorUpdateOneRequiredWithoutTeamsInput
+  visits: VisitUpdateManyWithoutTeamInput
+  startDate: DateTime
+  endDate: DateTime
+}
+
 input TeamUpdateWithoutVisitsDataInput {
-  users: UserUpdateManyInput
+  sector: SectorUpdateOneRequiredWithoutTeamsInput
+  users: UserUpdateManyWithoutTeamsInput
+  startDate: DateTime
+  endDate: DateTime
+}
+
+input TeamUpdateWithWhereUniqueWithoutSectorInput {
+  where: TeamWhereUniqueInput!
+  data: TeamUpdateWithoutSectorDataInput!
+}
+
+input TeamUpdateWithWhereUniqueWithoutUsersInput {
+  where: TeamWhereUniqueInput!
+  data: TeamUpdateWithoutUsersDataInput!
 }
 
 input TeamUpsertWithoutVisitsInput {
   update: TeamUpdateWithoutVisitsDataInput!
   create: TeamCreateWithoutVisitsInput!
+}
+
+input TeamUpsertWithWhereUniqueWithoutSectorInput {
+  where: TeamWhereUniqueInput!
+  update: TeamUpdateWithoutSectorDataInput!
+  create: TeamCreateWithoutSectorInput!
+}
+
+input TeamUpsertWithWhereUniqueWithoutUsersInput {
+  where: TeamWhereUniqueInput!
+  update: TeamUpdateWithoutUsersDataInput!
+  create: TeamCreateWithoutUsersInput!
 }
 
 input TeamWhereInput {
@@ -1444,12 +2220,29 @@ input TeamWhereInput {
   id_not_starts_with: ID
   id_ends_with: ID
   id_not_ends_with: ID
+  sector: SectorWhereInput
   users_every: UserWhereInput
   users_some: UserWhereInput
   users_none: UserWhereInput
   visits_every: VisitWhereInput
   visits_some: VisitWhereInput
   visits_none: VisitWhereInput
+  startDate: DateTime
+  startDate_not: DateTime
+  startDate_in: [DateTime!]
+  startDate_not_in: [DateTime!]
+  startDate_lt: DateTime
+  startDate_lte: DateTime
+  startDate_gt: DateTime
+  startDate_gte: DateTime
+  endDate: DateTime
+  endDate_not: DateTime
+  endDate_in: [DateTime!]
+  endDate_not_in: [DateTime!]
+  endDate_lt: DateTime
+  endDate_lte: DateTime
+  endDate_gt: DateTime
+  endDate_gte: DateTime
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]
@@ -1480,11 +2273,13 @@ type User {
   searchIndex: String!
   firstName: String!
   lastName: String!
-  role: String!
+  role: Role!
   sector: Sector
   address: String
   email: String!
+  phone: String
   password: String
+  teams(where: TeamWhereInput, orderBy: TeamOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Team!]
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -1500,20 +2295,22 @@ input UserCreateInput {
   searchIndex: String!
   firstName: String!
   lastName: String!
-  role: String!
+  role: Role!
   sector: SectorCreateOneWithoutUsersInput
   address: String
   email: String!
+  phone: String
   password: String
-}
-
-input UserCreateManyInput {
-  create: [UserCreateInput!]
-  connect: [UserWhereUniqueInput!]
+  teams: TeamCreateManyWithoutUsersInput
 }
 
 input UserCreateManyWithoutSectorInput {
   create: [UserCreateWithoutSectorInput!]
+  connect: [UserWhereUniqueInput!]
+}
+
+input UserCreateManyWithoutTeamsInput {
+  create: [UserCreateWithoutTeamsInput!]
   connect: [UserWhereUniqueInput!]
 }
 
@@ -1522,9 +2319,24 @@ input UserCreateWithoutSectorInput {
   searchIndex: String!
   firstName: String!
   lastName: String!
-  role: String!
+  role: Role!
   address: String
   email: String!
+  phone: String
+  password: String
+  teams: TeamCreateManyWithoutUsersInput
+}
+
+input UserCreateWithoutTeamsInput {
+  id: ID
+  searchIndex: String!
+  firstName: String!
+  lastName: String!
+  role: Role!
+  sector: SectorCreateOneWithoutUsersInput
+  address: String
+  email: String!
+  phone: String
   password: String
 }
 
@@ -1548,6 +2360,8 @@ enum UserOrderByInput {
   address_DESC
   email_ASC
   email_DESC
+  phone_ASC
+  phone_DESC
   password_ASC
   password_DESC
   createdAt_ASC
@@ -1561,9 +2375,10 @@ type UserPreviousValues {
   searchIndex: String!
   firstName: String!
   lastName: String!
-  role: String!
+  role: Role!
   address: String
   email: String!
+  phone: String
   password: String
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -1626,20 +2441,10 @@ input UserScalarWhereInput {
   lastName_not_starts_with: String
   lastName_ends_with: String
   lastName_not_ends_with: String
-  role: String
-  role_not: String
-  role_in: [String!]
-  role_not_in: [String!]
-  role_lt: String
-  role_lte: String
-  role_gt: String
-  role_gte: String
-  role_contains: String
-  role_not_contains: String
-  role_starts_with: String
-  role_not_starts_with: String
-  role_ends_with: String
-  role_not_ends_with: String
+  role: Role
+  role_not: Role
+  role_in: [Role!]
+  role_not_in: [Role!]
   address: String
   address_not: String
   address_in: [String!]
@@ -1668,6 +2473,20 @@ input UserScalarWhereInput {
   email_not_starts_with: String
   email_ends_with: String
   email_not_ends_with: String
+  phone: String
+  phone_not: String
+  phone_in: [String!]
+  phone_not_in: [String!]
+  phone_lt: String
+  phone_lte: String
+  phone_gt: String
+  phone_gte: String
+  phone_contains: String
+  phone_not_contains: String
+  phone_starts_with: String
+  phone_not_starts_with: String
+  phone_ends_with: String
+  phone_not_ends_with: String
   password: String
   password_not: String
   password_in: [String!]
@@ -1721,57 +2540,38 @@ input UserSubscriptionWhereInput {
   NOT: [UserSubscriptionWhereInput!]
 }
 
-input UserUpdateDataInput {
-  searchIndex: String
-  firstName: String
-  lastName: String
-  role: String
-  sector: SectorUpdateOneWithoutUsersInput
-  address: String
-  email: String
-  password: String
-}
-
 input UserUpdateInput {
   searchIndex: String
   firstName: String
   lastName: String
-  role: String
+  role: Role
   sector: SectorUpdateOneWithoutUsersInput
   address: String
   email: String
+  phone: String
   password: String
+  teams: TeamUpdateManyWithoutUsersInput
 }
 
 input UserUpdateManyDataInput {
   searchIndex: String
   firstName: String
   lastName: String
-  role: String
+  role: Role
   address: String
   email: String
+  phone: String
   password: String
-}
-
-input UserUpdateManyInput {
-  create: [UserCreateInput!]
-  update: [UserUpdateWithWhereUniqueNestedInput!]
-  upsert: [UserUpsertWithWhereUniqueNestedInput!]
-  delete: [UserWhereUniqueInput!]
-  connect: [UserWhereUniqueInput!]
-  set: [UserWhereUniqueInput!]
-  disconnect: [UserWhereUniqueInput!]
-  deleteMany: [UserScalarWhereInput!]
-  updateMany: [UserUpdateManyWithWhereNestedInput!]
 }
 
 input UserUpdateManyMutationInput {
   searchIndex: String
   firstName: String
   lastName: String
-  role: String
+  role: Role
   address: String
   email: String
+  phone: String
   password: String
 }
 
@@ -1787,6 +2587,18 @@ input UserUpdateManyWithoutSectorInput {
   updateMany: [UserUpdateManyWithWhereNestedInput!]
 }
 
+input UserUpdateManyWithoutTeamsInput {
+  create: [UserCreateWithoutTeamsInput!]
+  delete: [UserWhereUniqueInput!]
+  connect: [UserWhereUniqueInput!]
+  set: [UserWhereUniqueInput!]
+  disconnect: [UserWhereUniqueInput!]
+  update: [UserUpdateWithWhereUniqueWithoutTeamsInput!]
+  upsert: [UserUpsertWithWhereUniqueWithoutTeamsInput!]
+  deleteMany: [UserScalarWhereInput!]
+  updateMany: [UserUpdateManyWithWhereNestedInput!]
+}
+
 input UserUpdateManyWithWhereNestedInput {
   where: UserScalarWhereInput!
   data: UserUpdateManyDataInput!
@@ -1796,15 +2608,24 @@ input UserUpdateWithoutSectorDataInput {
   searchIndex: String
   firstName: String
   lastName: String
-  role: String
+  role: Role
   address: String
   email: String
+  phone: String
   password: String
+  teams: TeamUpdateManyWithoutUsersInput
 }
 
-input UserUpdateWithWhereUniqueNestedInput {
-  where: UserWhereUniqueInput!
-  data: UserUpdateDataInput!
+input UserUpdateWithoutTeamsDataInput {
+  searchIndex: String
+  firstName: String
+  lastName: String
+  role: Role
+  sector: SectorUpdateOneWithoutUsersInput
+  address: String
+  email: String
+  phone: String
+  password: String
 }
 
 input UserUpdateWithWhereUniqueWithoutSectorInput {
@@ -1812,16 +2633,21 @@ input UserUpdateWithWhereUniqueWithoutSectorInput {
   data: UserUpdateWithoutSectorDataInput!
 }
 
-input UserUpsertWithWhereUniqueNestedInput {
+input UserUpdateWithWhereUniqueWithoutTeamsInput {
   where: UserWhereUniqueInput!
-  update: UserUpdateDataInput!
-  create: UserCreateInput!
+  data: UserUpdateWithoutTeamsDataInput!
 }
 
 input UserUpsertWithWhereUniqueWithoutSectorInput {
   where: UserWhereUniqueInput!
   update: UserUpdateWithoutSectorDataInput!
   create: UserCreateWithoutSectorInput!
+}
+
+input UserUpsertWithWhereUniqueWithoutTeamsInput {
+  where: UserWhereUniqueInput!
+  update: UserUpdateWithoutTeamsDataInput!
+  create: UserCreateWithoutTeamsInput!
 }
 
 input UserWhereInput {
@@ -1881,20 +2707,10 @@ input UserWhereInput {
   lastName_not_starts_with: String
   lastName_ends_with: String
   lastName_not_ends_with: String
-  role: String
-  role_not: String
-  role_in: [String!]
-  role_not_in: [String!]
-  role_lt: String
-  role_lte: String
-  role_gt: String
-  role_gte: String
-  role_contains: String
-  role_not_contains: String
-  role_starts_with: String
-  role_not_starts_with: String
-  role_ends_with: String
-  role_not_ends_with: String
+  role: Role
+  role_not: Role
+  role_in: [Role!]
+  role_not_in: [Role!]
   sector: SectorWhereInput
   address: String
   address_not: String
@@ -1924,6 +2740,20 @@ input UserWhereInput {
   email_not_starts_with: String
   email_ends_with: String
   email_not_ends_with: String
+  phone: String
+  phone_not: String
+  phone_in: [String!]
+  phone_not_in: [String!]
+  phone_lt: String
+  phone_lte: String
+  phone_gt: String
+  phone_gte: String
+  phone_contains: String
+  phone_not_contains: String
+  phone_starts_with: String
+  phone_not_starts_with: String
+  phone_ends_with: String
+  phone_not_ends_with: String
   password: String
   password_not: String
   password_in: [String!]
@@ -1938,6 +2768,9 @@ input UserWhereInput {
   password_not_starts_with: String
   password_ends_with: String
   password_not_ends_with: String
+  teams_every: TeamWhereInput
+  teams_some: TeamWhereInput
+  teams_none: TeamWhereInput
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]
@@ -1969,6 +2802,8 @@ type Visit {
   date: DateTime!
   team: Team!
   hotel: Hotel
+  priority: Boolean!
+  status: VisitStatus!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -1984,6 +2819,8 @@ input VisitCreateInput {
   date: DateTime!
   team: TeamCreateOneWithoutVisitsInput!
   hotel: HotelCreateOneWithoutVisitsInput
+  priority: Boolean!
+  status: VisitStatus!
 }
 
 input VisitCreateManyWithoutHotelInput {
@@ -2000,12 +2837,16 @@ input VisitCreateWithoutHotelInput {
   id: ID
   date: DateTime!
   team: TeamCreateOneWithoutVisitsInput!
+  priority: Boolean!
+  status: VisitStatus!
 }
 
 input VisitCreateWithoutTeamInput {
   id: ID
   date: DateTime!
   hotel: HotelCreateOneWithoutVisitsInput
+  priority: Boolean!
+  status: VisitStatus!
 }
 
 type VisitEdge {
@@ -2018,6 +2859,10 @@ enum VisitOrderByInput {
   id_DESC
   date_ASC
   date_DESC
+  priority_ASC
+  priority_DESC
+  status_ASC
+  status_DESC
   createdAt_ASC
   createdAt_DESC
   updatedAt_ASC
@@ -2027,6 +2872,8 @@ enum VisitOrderByInput {
 type VisitPreviousValues {
   id: ID!
   date: DateTime!
+  priority: Boolean!
+  status: VisitStatus!
   createdAt: DateTime!
   updatedAt: DateTime!
 }
@@ -2054,6 +2901,12 @@ input VisitScalarWhereInput {
   date_lte: DateTime
   date_gt: DateTime
   date_gte: DateTime
+  priority: Boolean
+  priority_not: Boolean
+  status: VisitStatus
+  status_not: VisitStatus
+  status_in: [VisitStatus!]
+  status_not_in: [VisitStatus!]
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]
@@ -2073,6 +2926,12 @@ input VisitScalarWhereInput {
   AND: [VisitScalarWhereInput!]
   OR: [VisitScalarWhereInput!]
   NOT: [VisitScalarWhereInput!]
+}
+
+enum VisitStatus {
+  UPCOMING
+  ONGOING
+  DONE
 }
 
 type VisitSubscriptionPayload {
@@ -2097,14 +2956,20 @@ input VisitUpdateInput {
   date: DateTime
   team: TeamUpdateOneRequiredWithoutVisitsInput
   hotel: HotelUpdateOneWithoutVisitsInput
+  priority: Boolean
+  status: VisitStatus
 }
 
 input VisitUpdateManyDataInput {
   date: DateTime
+  priority: Boolean
+  status: VisitStatus
 }
 
 input VisitUpdateManyMutationInput {
   date: DateTime
+  priority: Boolean
+  status: VisitStatus
 }
 
 input VisitUpdateManyWithoutHotelInput {
@@ -2139,11 +3004,15 @@ input VisitUpdateManyWithWhereNestedInput {
 input VisitUpdateWithoutHotelDataInput {
   date: DateTime
   team: TeamUpdateOneRequiredWithoutVisitsInput
+  priority: Boolean
+  status: VisitStatus
 }
 
 input VisitUpdateWithoutTeamDataInput {
   date: DateTime
   hotel: HotelUpdateOneWithoutVisitsInput
+  priority: Boolean
+  status: VisitStatus
 }
 
 input VisitUpdateWithWhereUniqueWithoutHotelInput {
@@ -2193,6 +3062,12 @@ input VisitWhereInput {
   date_gte: DateTime
   team: TeamWhereInput
   hotel: HotelWhereInput
+  priority: Boolean
+  priority_not: Boolean
+  status: VisitStatus
+  status_not: VisitStatus
+  status_in: [VisitStatus!]
+  status_not_in: [VisitStatus!]
   createdAt: DateTime
   createdAt_not: DateTime
   createdAt_in: [DateTime!]

@@ -3,19 +3,24 @@ type User {
 	searchIndex: String!
 	firstName: String!
 	lastName: String!
-	role: String!
+	role: Role!
 	sector: Sector @relation(name: "UserSector", link: INLINE)
 	address: String
 	email: String! @unique
+	phone: String
 	password: String
+	teams: [Team!] @relation(name: "UserTeams")
 	createdAt: DateTime! @createdAt
 	updatedAt: DateTime! @updatedAt
 }
 
 type Team {
 	id: ID! @id
-	users: [User!]! @relation(link: INLINE)
+	sector: Sector! @relation(name: "TeamSector", link: INLINE)
+	users: [User!]! @relation(name: "UserTeams", link: INLINE)
 	visits: [Visit!] @relation(name: "TeamVisits", link: INLINE)
+	startDate: DateTime!
+	endDate: DateTime!
 	createdAt: DateTime! @createdAt
 	updatedAt: DateTime! @updatedAt
 }
@@ -25,6 +30,8 @@ type Visit {
 	date: DateTime!
 	team: Team! @relation(name: "TeamVisits")
 	hotel: Hotel @relation(name: "HotelVisits")
+	priority: Boolean!
+	status: VisitStatus!
 	createdAt: DateTime! @createdAt
 	updatedAt: DateTime! @updatedAt
 }
@@ -37,9 +44,11 @@ type Hotel {
 	address: String!
 	zipCode: Int!
 	city: String!
+	phone: String
 	active: Boolean!
 	rooms: Int!
 	lastVisit: DateTime
+	criticity: Float
 	score: Float
 	sector: Sector! @relation(name: "HotelSector", link: INLINE)
 	lat: Float!
@@ -55,8 +64,26 @@ type Sector {
 	zone: String! @unique
 	users: [User!] @relation(name: "UserSector")
 	hotels: [Hotel!] @relation(name: "HotelSector")
+	teams: [Team!] @relation(name: "TeamSector")
+	schedules: [Schedule!] @relation(name: "SectorSchedules")
 	createdAt: DateTime! @createdAt
 	updatedAt: DateTime! @updatedAt
+}
+
+type Shift {
+	id: ID! @id
+	index: Int! @unique
+	startTime: String!
+	endTime: String!
+	schedules: [Schedule!] @relation(name: "ShiftSchedule")
+}
+
+type Schedule {
+	id: ID! @id
+	shift: Shift! @relation(name: "ShiftSchedule", link: INLINE)
+	sector: Sector! @relation(name: "SectorSchedules", link: INLINE)
+	startDate: DateTime!
+	endDate: DateTime!
 }
 
 type Resident {
@@ -81,6 +108,12 @@ enum MutationType {
 	CREATED
 	UPDATED
 	DELETED
+}
+
+enum VisitStatus {
+	UPCOMING
+	ONGOING
+	DONE
 }
 
 enum Gender {

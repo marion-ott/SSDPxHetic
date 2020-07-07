@@ -11,14 +11,14 @@ const schema = yup.object({
   password: yup.string().required('Mot de passe requis')
 })
 
-const Login = () => {
+const Login = ({ handleLogin }) => {
   const [login, { client, loading, error }] = useMutation(LOGIN, {
     onCompleted({ login }) {
-      //TODO: update context with logged login.user
+      handleLogin(login.user)
       localStorage.setItem('token', login.token)
       client.resetStore()
     },
-    onError: (error) => console.log(error)
+    onError: (error) => console.log('ERROR MESSAGE : ', error)
   })
 
   const [form] = getFormProps({

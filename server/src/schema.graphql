@@ -2,13 +2,16 @@ scalar DateTime
 
 type Query {
 	# User
-	user(id: ID!): User!
+	user(id: ID!, query: String): User!
 	users(
 		query: String
 		first: Int
 		skip: Int
 		orderBy: UserOrderByInput
 	): [User!]!
+
+	# Check auth
+	checkAuth: AuthPayload!
 
 	# Hotel
 	hotel(id: ID!): Hotel!
@@ -30,7 +33,8 @@ type Query {
 
 	# Visit
 	visit(id: ID!): Visit!
-	visits: [Visit!]!
+	visits(query: String): [Visit!]!
+	myVisits(teamId: ID!, date: String): [Visit!]
 
 	# Team
 	team(id: ID!): Team!
@@ -40,16 +44,24 @@ type Query {
 	sector(id: ID!): Sector!
 	sectors: [Sector!]!
 
+	# Shifts
+	shift(id: ID!): Shift!
+	shifts: [Shift!]!
+
+	# Schedules
+	schedule(id: ID!): Schedule!
+	schedules: [Schedule!]!
+
 	# Count
 	count(type: String!, query: String): Int!
 }
 
 type Mutation {
 	# Auth
-	login(data: LoginInput): AuthPayload!
+	login(data: LoginInput): LoginPayload!
 
 	# User
-	createUser(data: CreateUserInput): AuthPayload!
+	createUser(data: CreateUserInput): User!
 	updateUser(id: ID!, data: UpdateUserInput): User!
 	deleteUser(id: ID!): User!
 
@@ -73,6 +85,16 @@ type Mutation {
 	updateSector(id: ID!, data: UpdateSectorInput): Sector!
 	deleteSector(id: ID!): Sector!
 
+	# Shift
+	createShift(data: CreateShiftInput): Shift!
+	updateShift(id: ID!, data: UpdateShiftInput): Shift!
+	deleteShift(id: ID!): Shift!
+
+	# Schedule
+	createSchedule(data: CreateScheduleInput): Schedule!
+	updateSchedule(id: ID!, data: UpdateScheduleInput): Schedule!
+	deleteSchedule(id: ID!): Schedule!
+
 	# Resident
 	createResident(data: CreateResidentInput): Resident!
 	updateResident(id: ID!, data: UpdateResidentInput): Resident!
@@ -90,12 +112,19 @@ type User {
 	address: String
 	email: String!
 	password: String
+	teams: [Team!]
 	createdAt: DateTime!
 	updatedAt: DateTime!
 }
 
-type AuthPayload {
+type LoginPayload {
+	success: Boolean
 	token: String
+	user: User
+}
+
+type AuthPayload {
+	success: Boolean
 	user: User
 }
 
@@ -129,6 +158,11 @@ enum Role {
 	ADMIN
 }
 
+enum CheckAuthStatus {
+	SUCCESS
+	FAILURE
+}
+
 enum UserOrderByInput {
 	firstName_ASC
 	firstName_DESC
@@ -145,13 +179,20 @@ enum UserOrderByInput {
 ##	TEAM	##
 type Team {
 	id: ID!
+	sector: Sector!
 	users: [User!]!
+	visits: [Visit!]
+	startDate: DateTime!
+	endDate: DateTime!
 	createdAt: DateTime!
 	updatedAt: DateTime!
 }
 
 input CreateTeamInput {
 	users: [ID!]!
+	sector: ID!
+	startAt: DateTime!
+	endAt: DateTime!
 }
 
 input UpdateTeamInput {
@@ -163,7 +204,9 @@ type Visit {
 	id: ID!
 	date: DateTime!
 	team: Team!
-	hotel: Hotel
+	hotel: Hotel!
+	priority: Boolean!
+	status: VisitStatus!
 	createdAt: DateTime!
 	updatedAt: DateTime!
 }
@@ -172,12 +215,16 @@ input CreateVisitInput {
 	date: DateTime!
 	team: ID!
 	hotel: ID!
+	priority: Boolean!
+	status: VisitStatus!
 }
 
 input UpdateVisitInput {
 	date: DateTime
 	team: ID
 	hotel: ID
+	priority: Boolean
+	status: VisitStatus
 }
 
 type Subscription {
@@ -195,6 +242,56 @@ enum MutationType {
 	DELETED
 }
 
+enum VisitStatus {
+	UPCOMING
+	ONGOING
+	DONE
+}
+
+## SHIFT ##
+type Shift {
+	id: ID!
+	index: Int!
+	startTime: String!
+	endTime: String!
+	schedules: [Schedule!]
+}
+
+input CreateShiftInput {
+	index: Int!
+	startTime: String!
+	endTime: String!
+}
+
+input UpdateShiftInput {
+	index: Int
+	startTime: String
+	endTime: String
+}
+
+## SCHEDULE ##
+type Schedule {
+	id: ID!
+	shift: Shift!
+	sector: Sector!
+	startDate: DateTime!
+	endDate: DateTime!
+}
+
+input CreateScheduleInput {
+	shift: ID!
+	sector: ID!
+	startDate: DateTime!
+	endDate: DateTime!
+}
+
+input UpdateScheduleInput {
+	shift: ID
+	sector: ID
+	startDate: DateTime
+	endDate: DateTime
+}
+
 ##	HOTEL	##
 type Hotel {
 	id: ID!
@@ -207,6 +304,7 @@ type Hotel {
 	active: Boolean!
 	rooms: Int!
 	lastVisit: DateTime
+	criticity: Float
 	score: Float
 	sector: Sector!
 	lat: Float!
@@ -222,7 +320,8 @@ input CreateHotelInput {
 	address: String!
 	zipCode: Int!
 	city: String!
-	active: Boolean!
+	active: Boolean
+	criticity: Float
 	rooms: Int!
 	lastVisit: DateTime
 	score: Float
@@ -255,6 +354,8 @@ enum HotelOrderByInput {
 	rooms_DESC
 	lastVisit_ASC
 	lastVisit_DESC
+	criticity_ASC
+	criticity_DESC
 	score_ASC
 	score_DESC
 	createdAt_ASC
@@ -269,6 +370,8 @@ type Sector {
 	zone: String!
 	users: [User!]
 	hotels: [Hotel!]
+	teams: [Team!]
+	schedules: [Schedule!]
 	createdAt: DateTime!
 	updatedAt: DateTime!
 }

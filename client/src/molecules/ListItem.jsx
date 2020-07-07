@@ -1,31 +1,17 @@
-import React, { useState } from 'react'
-import { Modal } from './../organisms'
-import Dropdown from './Dropdown'
-import Icon from '../atoms/Icon'
+import React from 'react'
 import { Link } from 'react-router-dom'
+import useModal from './../hooks/useModal'
+import Dropdown from './Dropdown'
+import { Modal } from './../organisms'
+import Icon from '../atoms/Icon'
 
-const ListItem = ({ id, index, data, keys, query }) => {
-  const [modalIsActive, setModalIsActive] = useState(false)
-
-  var type
-
-  if (data.__typename === 'Hotel') {
-    type = 'hotels'
-  }
-  if (data.__typename === 'User') {
-    type = 'users'
-  }
-
-  const handleClick = () => {
-    setModalIsActive((val) => true)
-  }
-
-  const closeModal = () => setModalIsActive(false)
+const ListItem = ({ id, index, type, data, keys, mutation, currentPage }) => {
+  const [isActive, toggle] = useModal(false)
 
   return (
     <>
-      <tr onClick={handleClick}>
-        <th>{index}</th>
+      <tr>
+        <th>{index + 15 * (currentPage - 1) + 1}</th>
         {keys.map((el, i) => {
           if (typeof data[el.name] == 'object') {
             return <td key={i}>{data[el.name] ? data[el.name].zone : 'N/A'}</td>
@@ -42,19 +28,19 @@ const ListItem = ({ id, index, data, keys, query }) => {
             <Link to={`/${type}/${data.id}`} className='dropdown-item'>
               Détails
             </Link>
-            <p onClick={handleClick} className='dropdown-item'>
+            <p onClick={toggle} className='dropdown-item'>
               Modifier
             </p>
-            <p className='dropdown-item has-text-danger	'>Supprimer</p>
+            <p className='dropdown-item has-text-danger '>Supprimer</p>
           </Dropdown>
         </td>
       </tr>
-      {modalIsActive && (
+      {isActive && (
         <Modal
-          isActive={modalIsActive}
-          close={closeModal}
+          isActive={isActive}
+          onClick={toggle}
           data={data}
-          query={query}
+          mutation={mutation}
           title='Modifier'
         />
       )}

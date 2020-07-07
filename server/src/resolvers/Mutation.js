@@ -4,14 +4,14 @@ import {
 	generateToken,
 	hashPassword,
 	generateSearchIndex,
-	publishVisit
+	publishVisit,
+	getPlaceInfo
 } from './../utils'
 
 const Mutation = {
 	/** AUTH */
 	async login(parent, {data}, {prisma}) {
 		const {email, password} = data
-
 		const user = await prisma.user({email})
 		if (!user) {
 			throw new Error('user does not exist')
@@ -22,13 +22,10 @@ const Mutation = {
 			throw new Error('incorrect password')
 		}
 
-		const token = await generateToken()
-		const response = {
-			token,
-			user
-		}
+		const token = generateToken(user.id)
 
 		return {
+			success: true,
 			token,
 			user
 		}
@@ -38,8 +35,8 @@ const Mutation = {
 	async createUser(parent, {data}, {prisma}) {
 		data.password = await hashPassword(data.password)
 		data.searchIndex = generateSearchIndex(data.firstName, data.lastName)
+
 		const user = await prisma.createUser(data)
-		const token = generateToken()
 
 		return {
 			user,
@@ -87,6 +84,9 @@ const Mutation = {
 		}))
 		data = {
 			...data,
+			sector: {
+				connect: data.sector
+			},
 			users: {
 				connect: users
 			}
@@ -104,8 +104,13 @@ const Mutation = {
 	},
 
 	/** HOTELS */
-	createHotel(parent, {data}, {prisma, request}) {
+	async createHotel(parent, {data}, {prisma, request}) {
 		data.searchIndex = generateSearchIndex(data.name)
+		data.zipCode = data.zipCode * 1
+		data.rooms = data.rooms * 1
+		const info = await getPlaceInfo(entry.address, entry.zipCode)
+		data.long = info.features[0].geometry.coordinates[0] * 1
+		data.lat = info.features[0].geometry.coordinates[1] * 1
 		return prisma.createHotel(data)
 	},
 	updateHotel(parent, {id, data}, {prisma}) {
@@ -201,22 +206,35 @@ const Mutation = {
 	},
 	deleteSector(parent, {id}, {prisma}) {
 		return prisma.deleteSector({id})
-	}
-	// TODO: create visit type, query & mutations
-	// async deleteVisit(parent, {id}, {prisma, request}) {
-	// 	const userId = getAuthUserId(request)
-	// 	const visitExists = await prisma.exists.Visit({
-	// 		id,
-	// 		user: {
-	// 			id: userId
-	// 		}
-	// 	})
-	// 	if (!visitExists) {
-	// 		throw new Error("You can't delete another team visit.")
-	// 	}
+	},
 
-	// 	return prisma.deleteVisit({id})
-	// }
+	/** SHIFTS */
+	createShift(parent, {data}, {prisma}) {
+		return prisma.createShift(data)
+	},
+	updateShift(parent, {id, data}, {prisma}) {
+		return prisma.updateShift({
+			data,
+			where: {id}
+		})
+	},
+	deleteShift(parent, {id}, {prisma}) {
+		return prisma.deleteShift({id})
+	},
+
+	/** SCHEDULES */
+	createSchedule(parent, {data}, {prisma}) {
+		return prisma.createSchedules(data)
+	},
+	updateSchedule(parent, {id, data}, {prisma}) {
+		return prisma.updateSchedules({
+			data,
+			where: {id}
+		})
+	},
+	deleteSchedule(parent, {id}, {prisma}) {
+		return prisma.deleteSchedules({id})
+	}
 }
 
 export default Mutation
