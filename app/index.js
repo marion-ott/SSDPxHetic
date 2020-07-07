@@ -9,6 +9,7 @@ import { formatDate } from './utils/index'
 import BottomTabNavigator from './navigation/BottomTabNavigator'
 import LinkingConfiguration from './navigation/LinkingConfiguration'
 import { LoginScreen } from './screens'
+import { AppProvider } from './context/appContext'
 import { UserProvider } from './context/userContext'
 import { DateProvider } from './context/dateContext'
 import { RecapProvider } from './context/recapContext'
@@ -20,41 +21,39 @@ export default () => {
   const [date, setDate] = useState({
     today: formatDate(moment())
   })
-  /**
-   * * temporary loggedin data
-   */
-  // const [auth, setAuth] = useState({
-  //   user: {
-  //     email: 'undefined',
-  //     firstName: 'Youssouf',
-  //     lastName: 'Salarié 9',
-  //     mates: [
-  //       {
-  //         firstName: 'Flora',
-  //         lastName: 'nom'
-  //       },
-  //       {
-  //         firstName: 'Ramdane',
-  //         lastName: 'nom'
-  //       }
-  //     ],
-  //     phone: '060000000'
-  //   },
-  //   schedule: { startTime: '08h30', endTime: '16h30', __typename: 'Shift' },
-  //   teamId: '5f03013924aa9a0007167c21',
-  //   loggedIn: true
-  // })
 
-  /**
-   * TODO: check localStorage for already loggedIn user
-   */
-  const [auth, setAuth] = useState({ user: null, loggedIn: false })
+  const [context, setContext] = useState({
+    user: {
+      firstName: 'Stéphane',
+      lastName: 'Borgia',
+      email: 'stephane.borgia@samu-social.net',
+      phone: '0612345678',
+      mates: [
+        {
+          firstName: 'Paule',
+          lastName: 'Herman'
+        }
+      ]
+    },
+    teamId: '5f03013924aa9a0007167c21',
+    schedule: {
+      startTime: '08h30',
+      endTime: '16h30'
+    }
+  })
+
+  const updateContext = (obj) => {
+    setContext({
+      ...context,
+      ...obj
+    })
+  }
 
   useEffect(() => {
+    //TODO: get additionnal data (schedule, teams)
     if (data) {
-      setAuth({
-        user: data.checkAuth.user,
-        loggedIn: data.checkAuth.success
+      updateContext({
+        user: data.checkAuth.user
       })
     }
   }, [error, data])
@@ -80,40 +79,43 @@ export default () => {
       }
     })
 
-    setAuth({
+    updateContext({
       user,
       teamId,
-      schedule,
-      loggedIn: true
+      schedule
     })
   }
 
   return (
-    <UserProvider value={auth}>
-      <DateProvider value={date}>
-        <RecapProvider value={{}}>
-          <View style={styles.container}>
-            {Platform.OS === 'ios' && <StatusBar barStyle='dark-content' />}
-            <StatusBar barStyle='light-content' />
-            <NavigationContainer linking={LinkingConfiguration}>
-              <Stack.Navigator
-                screenOptions={{
-                  headerShown: false
-                }}>
-                {!auth.loggedIn ? (
-                  <Stack.Screen
-                    name='Login'
-                    component={() => <LoginScreen handleLogin={handleLogin} />}
-                  />
-                ) : (
-                  <Stack.Screen name='Root' component={BottomTabNavigator} />
-                )}
-              </Stack.Navigator>
-            </NavigationContainer>
-          </View>
-        </RecapProvider>
-      </DateProvider>
-    </UserProvider>
+    <AppProvider value={{ context, updateContext }}>
+      <UserProvider value={context}>
+        <DateProvider value={date}>
+          <RecapProvider value={{}}>
+            <View style={styles.container}>
+              {Platform.OS === 'ios' && <StatusBar barStyle='dark-content' />}
+              <StatusBar barStyle='light-content' />
+              <NavigationContainer linking={LinkingConfiguration}>
+                <Stack.Navigator
+                  screenOptions={{
+                    headerShown: false
+                  }}>
+                  {!context.user ? (
+                    <Stack.Screen
+                      name='Login'
+                      component={() => (
+                        <LoginScreen handleLogin={handleLogin} />
+                      )}
+                    />
+                  ) : (
+                    <Stack.Screen name='Root' component={BottomTabNavigator} />
+                  )}
+                </Stack.Navigator>
+              </NavigationContainer>
+            </View>
+          </RecapProvider>
+        </DateProvider>
+      </UserProvider>
+    </AppProvider>
   )
 }
 
