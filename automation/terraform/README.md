@@ -7,7 +7,7 @@
 ## Ressources créées
 * Une instance staging-application pour simuler l'environnement de production et effectuer différents tests
 * Une instance production-application pour l'environnement de production et déployer notre projet de manière définitive
-* Une instance documentDB pour chaque environnement, acceptant les connexions des instances de son même environnement
+* Une instance documentDB pour chaque environnement, acceptant les connexions des instances de son VPC
 * Deux load balancer ; chacun lié à une instance qui "écoute" sur le port 80 pour le back-office et sur le port 9000 pour l'API
 
 <info>Il est possible de modifier le nombre d'instance pour chaque environnement en modifiant `instance_count` dans le fichier `main.tf.</info>
@@ -24,11 +24,24 @@ Générez une clef ssh avec la commande suivante`
 ```sh
 ssh-keygen -f path/id_rsa_aws
 ```
+
+## La base de données 
+#### Nombre d'instances 
+<info>Il est possible de modifier le nombre d'instance dans chaque cluster documentDB en modifiant `db_instance` dans le fichier `application/variables.tf.</info>
+
+#### Les accès
+Pour choisir vos accès à la base de données vous pouvez exporter ces données sous forme de variables d'environnement.
+Ces variables d'environnement prendront le pas sur les variables définies par défaut dans le fichier variables.tf.
+```sh
+export TF_VAR_db_user="db_user_i_want"
+export TF_VAR_db_password="db_password_i_want"
+```
+
 ## Générer l'infrastructure
 ```sh
 cd project-name/automation/terraform
-export AWS_ACCESS_KEY_ID="mon_id_de_clef_dacces"
-export AWS_SECRET_ACCESS_KEY="ma_clef_dacces_secrete"
+export AWS_ACCESS_KEY_ID=mon_id_de_clef_dacces
+export AWS_SECRET_ACCESS_KEY=ma_clef_dacces_secrete
 terraform init
 terraform plan
 terraform apply

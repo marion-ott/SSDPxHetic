@@ -20,6 +20,22 @@ variable "instance_key_name" {
   description = "AWS EC2 Key name to use"
 }
 
+variable "db_user" {
+  type = string
+  description = "Username to use for database connection"
+}
+
+variable "db_password" {
+  type = string
+  description = "Password to use for database connection"
+}
+
+variable "db_instance" {
+  type = number
+  default = 1
+  description = "Number of instance for database"
+}
+
 variable "stage" {
   type = string
   default = "staging"

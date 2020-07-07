@@ -29,6 +29,8 @@ module "staging" {
   source            = "./application"
   instance_type     = var.staging_instance_type
   instance_ami      = data.aws_ami.ubuntu.id
+  db_user           = var.db_user
+  db_password       = var.db_password
   instance_count    = 1 # not necessary, by default is 1
   instance_key_name = aws_key_pair.app-key.key_name
   stage             = "staging"
@@ -38,6 +40,8 @@ module "production" {
   source            = "./application"
   instance_type     = var.staging_instance_type
   instance_ami      = data.aws_ami.ubuntu.id
+  db_user           = var.db_user
+  db_password       = var.db_password
   instance_count    = 1
   instance_key_name = aws_key_pair.app-key.key_name
   stage             = "production"

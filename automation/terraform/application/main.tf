@@ -85,12 +85,19 @@ resource "aws_docdb_cluster_parameter_group" "documentdb_paramgp" {
 resource "aws_docdb_cluster" "documentdb" {
   cluster_identifier               = "${var.stage}-documentdb"
   engine                          = "docdb"
-  master_username                 = "foo"
-  master_password                 = "mustbeeightchars"
+  master_username                 = var.db_user
+  master_password                 = var.db_password
   skip_final_snapshot              = true
   db_subnet_group_name            = aws_docdb_subnet_group.documentdb_subnet.name
   db_cluster_parameter_group_name = aws_docdb_cluster_parameter_group.documentdb_paramgp.name
   vpc_security_group_ids          = [aws_security_group.documentdb.id]
+}
+
+resource "aws_docdb_cluster_instance" "cluster_instances" {
+  count             = var.db_instance
+  identifier         = "${var.stage}-documentdb-instance-${count.index}"
+  cluster_identifier = aws_docdb_cluster.documentdb.id
+  instance_class    = "db.t3.medium"
 }
 
 resource "aws_security_group" "documentdb" {
