@@ -5,7 +5,9 @@ import { Text, Input, Layout } from '@ui-kitten/components'
 import userContext from '../context/userContext'
 import { Icon } from '../components/atoms'
 import Colors from '../constants/Colors'
-import { useMutation } from '@apollo/react-hooks'
+// import { useMutation } from '@apollo/react-hooks'
+import { deleteTokenInStorage } from '../utils/index'
+
 // import { UPDATE_USER } from './../graphql/mutations/users'
 
 export default function ProfileScreen() {
@@ -34,7 +36,7 @@ export default function ProfileScreen() {
   const saveChanges = () => {
     setEditMode(false)
   }
-  console.log(user)
+  // console.log(user)
 
   return (
     <View style={styles.container}>
@@ -90,6 +92,15 @@ export default function ProfileScreen() {
                   : 'Enregistrer les modifications'}
               </Text>
             </TouchableOpacity>
+
+            <TouchableOpacity
+              style={styles.button}
+              onPress={deleteTokenInStorage('token')}>
+              <Text style={styles.buttonLabel}>
+                Se déconnecter
+              </Text>
+            </TouchableOpacity>
+
           </View>
           {/* </View> */}
         </Layout>

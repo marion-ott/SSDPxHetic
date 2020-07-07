@@ -1,17 +1,18 @@
 import React, { useEffect, useState } from 'react'
+import { Platform, StatusBar, StyleSheet, View, Text } from 'react-native'
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
+import LinkingConfiguration from './navigation/LinkingConfiguration'
+import BottomTabNavigator from './navigation/BottomTabNavigator'
 import moment from 'moment'
 
-import { Platform, StatusBar, StyleSheet, View, Text } from 'react-native'
 import useCheckAuth from './hooks/useCheckAuth'
-import { formatDate } from './utils/index'
-import BottomTabNavigator from './navigation/BottomTabNavigator'
-import LinkingConfiguration from './navigation/LinkingConfiguration'
-import { LoginScreen } from './screens'
-import { UserProvider } from './context/userContext'
 import { DateProvider } from './context/dateContext'
+import { UserProvider } from './context/userContext'
 import { RecapProvider } from './context/recapContext'
+import { formatDate } from './utils/index'
+
+import { LoginScreen } from './screens'
 
 const Stack = createStackNavigator()
 
@@ -66,6 +67,7 @@ export default () => {
       email: userData.email,
       phone: userData.phone
     }
+
     let schedule, teamId
     userData.teams.forEach(({ id, startDate, endDate, users }) => {
       if (moment().isBetween(startDate, endDate)) {
@@ -86,7 +88,9 @@ export default () => {
       schedule,
       loggedIn: true
     })
+
   }
+  console.log(auth)
 
   return (
     <UserProvider value={auth}>
