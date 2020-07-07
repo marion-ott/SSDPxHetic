@@ -5,6 +5,19 @@ import { Icon, OpenURLButton } from '../atoms'
 import Colors from '../../constants/Colors'
 
 const CardHead = ({ name, options, setOptions }) => {
+  const openMap = () => {
+    let m = Platform.select({
+      ios: () => {
+        Linking.openURL('http://maps.apple.com/maps?daddr=38.7875851,-9.3906089');
+      },
+      android: () => {
+        Linking.openURL('http://maps.google.com/maps?daddr=38.7875851,-9.3906089').catch(err => console.error('An error occurred', err));;
+      }
+    });
+
+    m();
+  }
+
   const renderToggleButton = () => (
     <TouchableOpacity
       onPress={() => setOptions(true)}
@@ -24,7 +37,7 @@ const CardHead = ({ name, options, setOptions }) => {
         anchor={renderToggleButton}
         onBackdropPress={() => setOptions(false)}>
         <Layout style={styles.content}>
-          <TouchableOpacity activeOpacity={0.7} style={styles.touchableButton}>
+          <TouchableOpacity onPress={openMap} activeOpacity={0.7} style={styles.touchableButton}>
             <Text>Itinéraire</Text>
           </TouchableOpacity>
           <View style={styles.callButton}>
