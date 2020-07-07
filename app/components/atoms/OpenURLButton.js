@@ -14,7 +14,7 @@ const OpenURLButton = ({ url, children }) => {
 
   return (
     <TouchableOpacity activeOpacity={0.7} onPress={handlePress}>
-      <Text>{children}</Text>
+      {children}
     </TouchableOpacity>
   )
 }
