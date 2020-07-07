@@ -19,14 +19,12 @@ import Form from '../components/molecules/Form'
 import { Colors } from 'react-native/Libraries/NewAppScreen'
 import logo from '../assets/images/logo.png'
 
-
 const schema = yup.object({
   email: yup.string().email('Email invalide').required('Email requis'),
   password: yup.string().required('Mot de passe requis')
 })
 
 export default function LoginScreen({ handleLogin }) {
-  
   const [login, { client, loading, error }] = useMutation(LOGIN, {
     onCompleted({ login }) {
       handleLogin(login.user)
@@ -35,7 +33,7 @@ export default function LoginScreen({ handleLogin }) {
     },
     onError: (error) => console.log('ERROR MESSAGE : ', error)
   })
-  
+
   const [form] = getFormProps({
     email: '',
     password: ''

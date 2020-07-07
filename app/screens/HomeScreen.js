@@ -13,13 +13,12 @@ export default function HomeScreen() {
   const { today } = useContext(dateContext)
   const [visitsCompleted, setVisitsCompleted] = useState(false)
 
+  //TODO: trigger recap display
   const onVisitsCompleted = () => {
     setVisitsCompleted(true)
   }
 
-  return visitsCompleted ? (
-    <RecapScreen />
-  ) : (
+  return (
     <View style={styles.container}>
       <Text style={[styles.currentDay, styles.text]} category='h5'>
         {moment(today).locale('fr').format('dddd Do MMMM')}

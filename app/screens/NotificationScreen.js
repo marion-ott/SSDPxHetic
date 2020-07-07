@@ -17,8 +17,6 @@ import Colors from '../constants/Colors'
 import Notif from '../components/molecules/Notif'
 
 export default function NotificationScreen() {
-  const { user } = useContext(userContext)
-
   const notifs = [
     {
       ico: 'flip-2-outline',

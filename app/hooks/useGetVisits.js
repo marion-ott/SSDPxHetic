@@ -13,7 +13,7 @@ const useGetVisits = (teamId, date, deps = []) => {
       }
     })
   }, deps)
-  console.log('!!!!', teamId, date)
+
   return { loading, error, data }
 }
 

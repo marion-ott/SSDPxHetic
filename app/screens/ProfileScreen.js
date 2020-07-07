@@ -37,7 +37,6 @@ export default function ProfileScreen() {
   const saveChanges = () => {
     setEditMode(false)
   }
-  // console.log(user)
 
   return (
     <View style={styles.container}>
@@ -97,11 +96,8 @@ export default function ProfileScreen() {
             <TouchableOpacity
               style={styles.button}
               onPress={() => SecureStore.deleteItemAsync('token', value)}>
-              <Text style={styles.buttonLabel}>
-                Se déconnecter
-              </Text>
+              <Text style={styles.buttonLabel}>Se déconnecter</Text>
             </TouchableOpacity>
-
           </View>
           {/* </View> */}
         </Layout>
