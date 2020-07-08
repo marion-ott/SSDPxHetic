@@ -11,8 +11,8 @@ import { UPDATE_USER } from '../graphql/mutations/users'
 import { deleteTokenInStorage } from '../utils/index'
 import { getFormProps } from './../global/data'
 import Form from '../components/organisms/Form'
-
-// import { UPDATE_USER } from './../graphql/mutations/users'
+import Header from '../components/molecules/Header'
+import CustomScrollView from '../components/molecules/CustomScrollView'
 
 export default function ProfileScreen() {
   const { context, updateContext } = useContext(appContext)
@@ -50,83 +50,62 @@ export default function ProfileScreen() {
   }
 
   return (
-    <View style={styles.container}>
-      <Text style={[styles.text, styles.mainTitle]} category='h2'>
-        Mon profil
-      </Text>
-      <ScrollView>
-        <Layout style={styles.layout}>
-          <View style={styles.profileHeader}>
-            <Text style={[styles.text, styles.title]} category='h2'>
-              {context.user.firstName} {context.user.lastName}
-            </Text>
-            <View style={styles.teamsWrapper}>
-              {context.user.mates.map((mate, index) => (
-                <View style={styles.team} key={index}>
-                  <Icon fill={Colors.black} name='people-outline' />
-                  <Text style={styles.teamText} category='h2'>
-                    {mate.firstName} {mate.lastName}
-                  </Text>
-                </View>
-              ))}
-            </View>
-            <Text style={styles.textInfo} category='h2'>
-              Informations personnelles
-            </Text>
-          </View>
-          <View style={styles.form}>
-            <Form
-              id={context.user.id}
-              data={form}
-              callback={onSubmit}
-              schema={schema}
-              editable={editable}
-              setEditable={setEditable}
-              btnLabel='Enregistrer les modifications'
-            />
-            {editable === false && (
-              <TouchableOpacity
-                style={styles.button}
-                onPress={() => setEditable(true)}>
-                <Text style={styles.buttonLabel}>
-                  {!editable
-                    ? 'Modifier les informations'
-                    : 'Enregistrer les modifications'}
-                </Text>
-              </TouchableOpacity>
-            )}
-
-            <TouchableOpacity
-              style={[styles.button, styles.logout]}
-              onPress={handlePress}>
-              <Text style={[styles.buttonLabel, styles.logoutLabel]}>
-                {editable ? 'Annuler' : 'Se déconnecter'}
+    <CustomScrollView Component={() => <Header text='Mon profil' />}>
+      <View style={styles.profileHeader}>
+        <Text style={[styles.text, styles.title]} category='h2'>
+          {context.user.firstName} {context.user.lastName}
+        </Text>
+        <View style={styles.teamsWrapper}>
+          {context.user.mates.map((mate, index) => (
+            <View style={styles.team} key={index}>
+              <Icon fill={Colors.black} name='people-outline' />
+              <Text style={styles.teamText} category='h2'>
+                {mate.firstName} {mate.lastName}
               </Text>
-            </TouchableOpacity>
-          </View>
-        </Layout>
-      </ScrollView>
-    </View>
+            </View>
+          ))}
+        </View>
+        <Text style={styles.textInfo} category='h2'>
+          Informations personnelles
+        </Text>
+      </View>
+      <View style={styles.form}>
+        <Form
+          id={context.user.id}
+          data={form}
+          callback={onSubmit}
+          schema={schema}
+          editable={editable}
+          setEditable={setEditable}
+          btnLabel='Enregistrer les modifications'
+        />
+        {editable === false && (
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => setEditable(true)}>
+            <Text style={styles.buttonLabel}>
+              {!editable
+                ? 'Modifier les informations'
+                : 'Enregistrer les modifications'}
+            </Text>
+          </TouchableOpacity>
+        )}
+
+        <TouchableOpacity
+          style={[styles.button, styles.logout]}
+          onPress={handlePress}>
+          <Text style={[styles.buttonLabel, styles.logoutLabel]}>
+            {editable ? 'Annuler' : 'Se déconnecter'}
+          </Text>
+        </TouchableOpacity>
+      </View>
+    </CustomScrollView>
   )
 }
 
 ProfileScreen.navigationOptions = {}
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Colors.main
-  },
-  layout: {
-    flex: 1,
-    flexDirection: 'column',
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
-    paddingLeft: 24,
-    paddingRight: 24,
-    paddingBottom: 50,
-    backgroundColor: Colors.white
-  },
   mainTitle: {
     color: Colors.white,
     textAlign: 'center',

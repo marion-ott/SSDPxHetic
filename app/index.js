@@ -19,6 +19,7 @@ import LinkingConfiguration from './navigation/LinkingConfiguration'
 import LoginScreen from './screens/LoginScreen'
 import { AppProvider } from './context/appContext'
 import { DateProvider } from './context/dateContext'
+import { Colors } from 'react-native/Libraries/NewAppScreen'
 
 const Stack = createStackNavigator()
 
@@ -91,7 +92,7 @@ export default () => {
   // if (loading || authLoading) {
   //   return <ActivityIndicator size='small' color={Colors.main} />
   // }
-  if (context.user) console.log('RENDER: ', context.user.firstName)
+  // if (context.user) console.log('RENDER: ', context.user.firstName)
 
   return (
     <AppProvider value={{ context, updateContext }}>
@@ -109,11 +110,6 @@ export default () => {
                   {(props) => (
                     <LoginScreen handleLogin={handleLogin} {...props} />
                   )}
-                  {/* {() => (
-                      <View>
-                        <Text>hello</Text>
-                      </View>
-                    )} */}
                 </Stack.Screen>
               ) : (
                 <Stack.Screen name='Root' component={BottomTabNavigator} />

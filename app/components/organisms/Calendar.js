@@ -1,5 +1,4 @@
 import React from 'react'
-import { View, StyleSheet } from 'react-native'
 import moment from 'moment'
 import { getDateStr } from '../../utils/index'
 import { Calendar } from 'react-native-calendars'
@@ -71,79 +70,63 @@ const CalendarElement = ({ today, selected, onChange }) => {
   }
 
   return (
-    <View style={styles.container}>
-      <Calendar
-        dayComponent={(props) => {
-          return (
-            <CustomDay
-              today={today}
-              minDate={minDate}
-              maxDate={maxDate}
-              {...props}
-            />
-          )
-        }}
-        firstDay={1}
-        disableMonthChange={true}
-        markingType={'custom'}
-        markedDates={{
-          [selected]: {
-            selected: true,
-            disableTouchEvent: true,
-            customStyles: {
-              container: {
-                borderRadius: 8
-              }
-            }
-          },
-          [today]: {
-            customStyles: {
-              container: {
-                borderRadius: 8
-              }
+    <Calendar
+      dayComponent={(props) => {
+        return (
+          <CustomDay
+            today={today}
+            minDate={minDate}
+            maxDate={maxDate}
+            {...props}
+          />
+        )
+      }}
+      firstDay={1}
+      disableMonthChange={true}
+      markingType={'custom'}
+      markedDates={{
+        [selected]: {
+          selected: true,
+          disableTouchEvent: true,
+          customStyles: {
+            container: {
+              borderRadius: 8
             }
           }
-        }}
-        hideArrows={false}
-        onDayPress={onDayPress}
-        theme={{
-          calendarBackground: Colors.main,
-          selectedDayBackgroundColor: 'rgba(255, 255, 255, 0.25)',
-          selectedDayTextColor: Colors.white,
-          todayTextColor: Colors.white,
-          todayBackgroundColor: 'rgba(255, 255, 255, 0.15)',
-          dayTextColor: Colors.white,
-          textDisabledColor: 'rgba(255, 255, 255, 0.15)',
-          selectedDotColor: Colors.white,
-          arrowColor: Colors.white,
-          disabledArrowColor: '#d9e1e8',
-          monthTextColor: Colors.white,
-          monthTextFontSize: 16,
-          textDayFontWeight: 'bold',
-          textDayFontSize: 15,
-          textMonthFontSize: 20,
-          textMonthFontWeight: 'bold',
-          textDayHeaderFontWeight: 'bold',
-          textDayHeaderFontSize: 12
-        }}
-        disableAllTouchEventsForDisabledDays={true}
-      />
-    </View>
+        },
+        [today]: {
+          customStyles: {
+            container: {
+              borderRadius: 8
+            }
+          }
+        }
+      }}
+      hideArrows={false}
+      onDayPress={onDayPress}
+      theme={{
+        calendarBackground: Colors.main,
+        selectedDayBackgroundColor: 'rgba(255, 255, 255, 0.25)',
+        selectedDayTextColor: Colors.white,
+        todayTextColor: Colors.white,
+        todayBackgroundColor: 'rgba(255, 255, 255, 0.15)',
+        dayTextColor: Colors.white,
+        textDisabledColor: 'rgba(255, 255, 255, 0.15)',
+        selectedDotColor: Colors.white,
+        arrowColor: Colors.white,
+        disabledArrowColor: '#d9e1e8',
+        monthTextColor: Colors.white,
+        monthTextFontSize: 16,
+        textDayFontWeight: 'bold',
+        textDayFontSize: 15,
+        textMonthFontSize: 20,
+        textMonthFontWeight: 'bold',
+        textDayHeaderFontWeight: 'bold',
+        textDayHeaderFontSize: 12
+      }}
+      disableAllTouchEventsForDisabledDays={true}
+    />
   )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: Colors.main,
-    paddingTop: 34,
-    paddingBottom: 24,
-    paddingLeft: 14,
-    paddingRight: 14
-  },
-  calendar: {
-    flex: 1
-  }
-})
 
 export default CalendarElement
