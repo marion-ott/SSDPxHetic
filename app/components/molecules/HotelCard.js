@@ -40,7 +40,7 @@ const HotelCard = ({
 
     updateVisit({ variables })
   }
-  console.log(hotel.name, disabled)
+
   return (
     <Card
       style={[styles.card, styles[status]]}

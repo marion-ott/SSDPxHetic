@@ -92,7 +92,7 @@ export default () => {
   // if (loading || authLoading) {
   //   return <ActivityIndicator size='small' color={Colors.main} />
   // }
-  if (context.user) console.log('RENDER: ', context.user.firstName)
+  // if (context.user) console.log('RENDER: ', context.user.firstName)
 
   return (
     <AppProvider value={{ context, updateContext }}>
