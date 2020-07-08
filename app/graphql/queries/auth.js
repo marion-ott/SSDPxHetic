@@ -4,9 +4,7 @@ export const CHECK_AUTH = gql`
   query {
     checkAuth {
       success
-      user {
-        id
-      }
+      id
     }
   }
 `

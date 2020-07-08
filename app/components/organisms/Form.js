@@ -2,7 +2,6 @@ import React from 'react'
 import { Formik } from 'formik'
 import { View, StyleSheet } from 'react-native'
 import { Input, Button } from '@ui-kitten/components'
-import { InputGroup } from '../atoms'
 import Colors from '../../constants/Colors'
 
 const Form = ({ callback, data, id, editMode, setEditMode }) => (

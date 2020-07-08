@@ -15,7 +15,7 @@ import { WebSocketLink } from 'apollo-link-ws'
 import { getMainDefinition } from 'apollo-utilities'
 import Root from './index'
 
-const devApiUrl = 'http://3.8.20.81:9000/'
+const devApiUrl = 'http://192.168.1.39:9000/'
 /* Configuration du endpoint de l'API */
 const httpLink = createHttpLink({ uri: devApiUrl })
 /* Configuration du header pour l'API */
@@ -31,7 +31,7 @@ const authMiddleware = setContext(async (_, { headers }) => {
 })
 
 const wsLink = new WebSocketLink({
-  uri: `ws://3.8.20.81:9000/`,
+  uri: `ws://192.168.1.39:9000/`,
   options: {
     reconnect: true
   }

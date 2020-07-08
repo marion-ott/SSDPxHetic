@@ -10,6 +10,7 @@ export default {
   lightOrange: '#FFF2EB',
   tabIconDefault: black,
   tabIconSelected: main,
+  darkGrey: '#E0E0E0',
   tabBar: '#fefefe',
   errorBackground: 'red',
   errorText: white,

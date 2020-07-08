@@ -3,13 +3,16 @@ import { useMutation } from '@apollo/react-hooks'
 import { UPDATE_VISIT } from '../../graphql/mutations/visits'
 import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import { Card, Text, Popover, Layout, Button } from '@ui-kitten/components'
-import { Icon, OpenURLButton, CardHead } from '../atoms'
+import Icon from '../atoms/Icon'
+import OpenURLButtonfrom from '../atoms/OpenURLButton'
+import CardHead from '../atoms/CardHead'
 import Colors from '../../constants/Colors'
 
 const HotelCard = ({
   id,
   onChange,
   startable,
+  disabled,
   status: originalStatus,
   ...hotel
 }) => {
@@ -37,62 +40,108 @@ const HotelCard = ({
 
     updateVisit({ variables })
   }
-
+  console.log(hotel.name, disabled)
   return (
     <Card
       style={[styles.card, styles[status]]}
-      header={() => <CardHead {...hotel} />}>
-      <View style={styles.content}>
-        <View>
-          <Text style={styles.text} category='s2'>
-            {hotel.address},
-          </Text>
-          <Text style={styles.text} category='s2'>
-            {hotel.zipCode} {hotel.city}
-          </Text>
+      header={() => (
+        <CardHead {...hotel} status={status} disabled={disabled} />
+      )}>
+      {/* DISPLAY INFO */}
+      {status !== 'DONE' && (
+        <View style={styles.content}>
+          <View>
+            <Text
+              style={[
+                styles.text,
+                disabled
+                  ? texts.grey
+                  : status === 'ONGOING'
+                  ? texts.white
+                  : texts.black
+              ]}
+              category='s2'>
+              {hotel.address},
+            </Text>
+            <Text
+              style={[
+                styles.text,
+                status === 'ONGOING' && !disabled ? texts.white : texts.black,
+                disabled ? texts.grey : ''
+              ]}
+              category='s2'>
+              {hotel.zipCode} {hotel.city}
+            </Text>
+          </View>
+          <View style={styles.room}>
+            <Icon
+              style={styles.roomIcon}
+              name='briefcase-outline'
+              fill={status === 'ONGOING' ? '#ffffff' : '#FF8139'}
+              width={18}
+              height={18}
+            />
+            <Text
+              style={[
+                styles.text,
+                { marginLeft: 5, fontWeight: 'bold' },
+                status === 'ONGOING' ? texts.white : texts.black
+              ]}
+              category='s2'>
+              {hotel.rooms}
+            </Text>
+          </View>
         </View>
-        <View style={styles.room}>
-          <Icon
-            style={styles.roomIcon}
-            name='briefcase-outline'
-            fill='#B97D08'
-            width={18}
-            height={18}
-          />
-          <Text style={(styles.text, { marginLeft: 5 })} category='s2'>
-            {hotel.rooms}
-          </Text>
-        </View>
-      </View>
-      {startable && (
+      )}
+      {/* DISPLAY BUTTS */}
+      {startable && status !== 'DONE' && !disabled && (
         <View style={styles.buttons}>
-          <TouchableOpacity
-            // onPress={() => onChange(id, 'startVisit')}
-            activeOpacity={0.7}
-            style={[styles.touchableButton, styles.button]}>
-            <View style={styles.borderLine}>
-              <Text style={[styles.text, styles.report]} category='h6'>
-                Reporter
-              </Text>
-            </View>
-          </TouchableOpacity>
+          {status == 'UPCOMING' && (
+            <TouchableOpacity
+              // onPress={() => onChange(id, 'startVisit')}
+              activeOpacity={0.7}
+              style={[styles.touchableButton, styles.button]}>
+              <View style={styles.borderLine}>
+                <Text
+                  style={[styles.text, styles.report, styles.bold]}
+                  category='h6'>
+                  Reporter
+                </Text>
+              </View>
+            </TouchableOpacity>
+          )}
           <TouchableOpacity
             onPress={onUpdate}
             activeOpacity={0.7}
             style={styles.touchableButton}>
-            <View style={[styles.startContainer, styles.button]}>
-              <Icon
-                style={styles.startIcon}
-                name='play-circle-outline'
-                width={24}
-                height={24}
-                fill='white'
-              />
+            <View
+              style={[
+                styles.startContainer,
+                styles.button,
+                startable && disabled
+                  ? backgrounds.brightOrange
+                  : backgrounds.white
+              ]}>
+              {status == 'UPCOMING' && (
+                <View style={styles.translate}>
+                  <Icon
+                    style={styles.startIcon}
+                    name='play-circle-outline'
+                    width={24}
+                    height={24}
+                    fill={disabled ? Colors.white : Colors.brightOrange}
+                  />
+                </View>
+              )}
               <Text
                 appearance='alternative'
-                style={[styles.text, styles.startLabel]}
+                style={[
+                  styles.text,
+                  styles.startLabel,
+                  disabled ? texts.whiteBold : texts.orangeBold
+                ]}
                 category='h6'>
-                {status}
+                {status == 'UPCOMING' ? 'Commencer' : 'Terminer la visite'}
               </Text>
             </View>
           </TouchableOpacity>
@@ -107,17 +156,17 @@ const styles = StyleSheet.create({
     flex: 1,
     borderRadius: 8,
     marginBottom: 7,
-    borderWidth: 0
-    // backgroundColor: Colors.lightOrange
+    borderWidth: 0,
+    backgroundColor: Colors.lightOrange
   },
   UPCOMING: {
-    backgroundColor: 'red'
+    // backgroundColor: Colors.brightOrange,
   },
   ONGOING: {
-    backgroundColor: 'blue'
+    backgroundColor: Colors.brightOrange
   },
   DONE: {
-    backgroundColor: 'orange'
+    // backgroundColor: Colors.lightOrange,
   },
   content: {
     flex: 1,
@@ -160,17 +209,63 @@ const styles = StyleSheet.create({
     fontSize: 14
   },
   startContainer: {
-    backgroundColor: Colors.brightOrange
+    // backgroundColor: Colors.brightOrange
   },
   startLabel: {
     color: 'white',
     textAlign: 'center'
   },
+  translate: {
+    transform: [{ translateX: -10 }]
+  },
   borderLine: {
     borderBottomWidth: 1,
     textAlign: 'center',
     borderBottomColor: Colors.brightOrange,
-    width: 70
+    width: 48
+  },
+  bold: {
+    fontWeight: 'bold'
+  }
+})
+
+const backgrounds = StyleSheet.create({
+  lightOrange: {
+    backgroundColor: Colors.lightOrange
+  },
+  brightOrange: {
+    backgroundColor: Colors.brightOrange
+  },
+  white: {
+    backgroundColor: Colors.white
+  }
+})
+
+const texts = StyleSheet.create({
+  black: {
+    color: Colors.tabIconDefault
+  },
+  blackBold: {
+    color: Colors.tabIconDefault,
+    fontWeight: 'bold'
+  },
+  white: {
+    color: Colors.white
+  },
+  whiteBold: {
+    color: Colors.white,
+    fontWeight: 'bold'
+  },
+  grey: {
+    color: Colors.tabIconDefault
+  },
+  greyBold: {
+    color: Colors.tabIconDefault,
+    fontWeight: 'bold'
+  },
+  orangeBold: {
+    color: Colors.brightOrange,
+    fontWeight: 'bold'
   }
 })
 

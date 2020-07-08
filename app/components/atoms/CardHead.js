@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
 import { StyleSheet, View, TouchableOpacity, Linking } from 'react-native'
 import { Text, Popover, Layout } from '@ui-kitten/components'
-import { Icon, OpenURLButton } from '../atoms'
+import Icon from './Icon'
+import OpenURLButton from './OpenURLButton'
 import Colors from '../../constants/Colors'
 
-const CardHead = ({ name, phone, lat, long }) => {
+const CardHead = ({ name, phone, lat, long, status, disabled }) => {
   const [popover, setPopover] = useState(false)
 
   const openMap = () => {
@@ -47,9 +48,26 @@ const CardHead = ({ name, phone, lat, long }) => {
 
   return (
     <View style={[styles.container, styles.cardHead]}>
-      <Text style={styles.title} category='h6'>
-        {name}
-      </Text>
+      <View style={styles.flexRow}>
+        {status == 'DONE' && (
+          <View style={styles.slide}>
+            <Icon
+              name='checkmark-outline'
+              width={16}
+              height={16}
+              fill={Colors.brightOrange}
+            />
+          </View>
+        )}
+        <Text
+          style={[
+            styles.title,
+            status === 'ONGOING' ? styles.white : styles.black
+          ]}
+          category='h6'>
+          {name}
+        </Text>
+      </View>
       <Popover
         style={styles.popoverContainer}
         visible={popover}
@@ -126,13 +144,28 @@ const styles = StyleSheet.create({
     fontWeight: '500'
   },
   title: {
-    fontSize: 16
+    fontSize: 16,
+    fontWeight: 'bold'
   },
   more: {
     backgroundColor: '#FFE5D7',
     borderRadius: 5,
     paddingVertical: 4,
     paddingHorizontal: 4
+  },
+  flexRow: {
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+  slide: {
+    marginRight: 10,
+    alignItems: 'center'
+  },
+  black: {
+    color: Colors.tabIconDefault
+  },
+  white: {
+    color: Colors.white
   }
 })
 

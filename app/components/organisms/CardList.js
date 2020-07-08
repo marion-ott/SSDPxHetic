@@ -5,7 +5,8 @@ import { useLazyQuery } from '@apollo/react-hooks'
 import { GET_VISITS } from '../../graphql/queries/visits'
 import appContext from '../../context/appContext'
 import dateContext from '../../context/dateContext'
-import { HotelCard, ListHead } from '../molecules'
+import HotelCard from '../molecules/HotelCard'
+import ListHead from '../molecules/ListHead'
 import Colors from '../../constants/Colors'
 
 function reducer(state, { type, payload }) {
@@ -85,7 +86,6 @@ const CardList = ({ label, startable, onComplete }) => {
   }
 
   return (
-
     <ScrollView>
       <ListHead
         name={context.user.firstName}
@@ -106,6 +106,9 @@ const CardList = ({ label, startable, onComplete }) => {
             <HotelCard
               key={id}
               id={id}
+              disabled={
+                id !== state.visitInProgress && state.visitInProgress !== null
+              }
               startable={startable}
               status={status}
               {...hotel}

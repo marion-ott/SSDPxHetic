@@ -4,7 +4,7 @@ import { StyleSheet, Text, View } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import { Layout } from '@ui-kitten/components'
 import Colors from '../constants/Colors'
-import { Notification } from '../components/molecules'
+import Notification from '../components/molecules/Notification'
 
 export default function NotificationScreen() {
   const { notifications, updateNotifications } = useContext(notificationContext)
