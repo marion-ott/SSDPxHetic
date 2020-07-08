@@ -3,7 +3,17 @@
       "lastName": "Admin",
       "firstName": "Admin",
       "role": "ADMIN",
-      "email": "admin@samu-social.net",
+      "email": "admin@samusocial-75.fr",
+      "password": "admin",
+      "phone": "0612345678"
+    },
+    {
+      "lastName": "Sarlotte",
+      "firstName": "Nicolas",
+      "role": "USER",
+      "sector": "93",
+      "address": "8  RUE AUGUSTE BLANQUI, 93170 BAGNOLET",
+      "email": "n.sarlotte@samusocial-75.fr",
       "password": "admin",
       "phone": "0612345678"
     },
@@ -13,7 +23,7 @@
       "role": "USER",
       "sector": "93",
       "address": "8  RUE AUGUSTE BLANQUI, 93170 BAGNOLET",
-      "email": "anouck.salarie2@samu-social.net",
+      "email": "anouck.salarie2@samusocial-75.fr",
       "password": "admin",
       "phone": "0612345678"
     }, {
@@ -22,7 +32,7 @@
       "role": "USER",
       "sector": "92-94",
       "address": "126  BOULEVARD Jean Jaures, 92110 CLICHY",
-      "email": "quebuathe.salarie4@samu-social.net",
+      "email": "quebuathe.salarie4@samusocial-75.fr",
       "password": "admin",
       "phone": "0612345678"
     }, {
@@ -31,7 +41,7 @@
       "role": "USER",
       "sector": "77-91",
       "address": "15  ALLÉE LEO FERRE, 94450 LIMEIL BREVANNES",
-      "email": "vanessa.salarie5@samu-social.net",
+      "email": "vanessa.salarie5@samusocial-75.fr",
       "password": "admin",
       "phone": "0612345678"
     }, {
@@ -40,7 +50,7 @@
       "role": "USER",
       "sector": "93",
       "address": "7  RUE CHARLES PEGUY, 94460 VALENTON",
-      "email": "mokrane.salarie8@samu-social.net",
+      "email": "mokrane.salarie8@samusocial-75.fr",
       "password": "admin",
       "phone": "0612345678"
     }, {
@@ -49,7 +59,7 @@
       "role": "USER",
       "sector": "75",
       "address": "146  RUE RAYMOND LOSSERAND, 75014 PARIS",
-      "email": "youssouf.salarie9@samu-social.net",
+      "email": "youssouf.salarie9@samusocial-75.fr",
       "password": "admin",
       "phone": "0612345678"
     }, {
@@ -58,7 +68,7 @@
       "role": "USER",
       "sector": "75",
       "address": "26  RUE LA FAYETTE, 91100 CORBEIL ESSONNES",
-      "email": "stephane.salarie11@samu-social.net",
+      "email": "stephane.salarie11@samusocial-75.fr",
       "password": "admin",
       "phone": "0612345678"
     }, {
@@ -67,7 +77,7 @@
       "role": "USER",
       "sector": "92-94",
       "address": "6  RUE MORNAY, 75004 PARIS",
-      "email": "leo.salarie17@samu-social.net",
+      "email": "leo.salarie17@samusocial-75.fr",
       "password": "admin",
       "phone": "0612345678"
     }, {
@@ -76,7 +86,7 @@
       "role": "USER",
       "sector": "92-94",
       "address": "9  RUE DEMANIEUX, 94600 CHOISY LE ROI",
-      "email": "sarah.salarie21@samu-social.net",
+      "email": "sarah.salarie21@samusocial-75.fr",
       "password": "admin",
       "phone": "0612345678"
     }, {
@@ -85,7 +95,7 @@
       "role": "USER",
       "sector": "78-95",
       "address": "14 BIS AVENUE DE BRY, 94170 PERREUX-SUR-MARNE",
-      "email": "patricia.salarie22@samu-social.net",
+      "email": "patricia.salarie22@samusocial-75.fr",
       "password": "admin",
       "phone": "0612345678"
     }, {
@@ -94,7 +104,7 @@
       "role": "USER",
       "sector": "78-95",
       "address": "31  RUE DES JUMELAGES, 10000 TROYES",
-      "email": "oumar.salarie26@samu-social.net",
+      "email": "oumar.salarie26@samusocial-75.fr",
       "password": "admin",
       "phone": "0612345678"
     }, {
@@ -103,7 +113,7 @@
       "role": "USER",
       "sector": "93",
       "address": "5  RUE DU CLOS SAINT-VINCENT, 93460 GOURNAY-SUR-MARNE",
-      "email": "clement.salarie27@samu-social.net",
+      "email": "clement.salarie27@samusocial-75.fr",
       "password": "admin",
       "phone": "0612345678"
     }, {
@@ -112,7 +122,7 @@
       "role": "USER",
       "sector": "75",
       "address": "168  RUE DE CHARENTON, 75012 PARIS",
-      "email": "jeannette.salarie28@samu-social.net",
+      "email": "jeannette.salarie28@samusocial-75.fr",
       "password": "admin",
       "phone": "0612345678"
     }, {
@@ -121,7 +131,7 @@
       "role": "USER",
       "sector": "77-91",
       "address": "7  AVENUE MALLERET JOINVILLE, 94140 ALFORTVILLE",
-      "email": "jonathan.salarie31@samu-social.net",
+      "email": "jonathan.salarie31@samusocial-75.fr",
       "password": "admin",
       "phone": "0612345678"
     }, {
@@ -130,7 +140,7 @@
       "role": "USER",
       "sector": "93",
       "address": "5  RUE JULES HARDOUIN MANSART, 92600 ASNIERES SUR SEINE",
-      "email": "alain.salarie34@samu-social.net",
+      "email": "alain.salarie34@samusocial-75.fr",
       "password": "admin",
       "phone": "0612345678"
     }, {
@@ -139,7 +149,7 @@
       "role": "USER",
       "sector": "75",
       "address": "9 QUATER PLACE DU GÉNÉRAL DE GAULLE, 93100 MONTREUIL",
-      "email": "flora.salarie37@samu-social.net",
+      "email": "flora.salarie37@samusocial-75.fr",
       "password": "admin",
       "phone": "0612345678"
     }, {
@@ -148,7 +158,7 @@
       "role": "USER",
       "sector": "78-95",
       "address": "16  RUE RASPAIL, 94200 IVRY-SUR-SEINE",
-      "email": "dominique.salarie39@samu-social.net",
+      "email": "dominique.salarie39@samusocial-75.fr",
       "password": "admin",
       "phone": "0612345678"
     }, {
@@ -157,7 +167,7 @@
       "role": "USER",
       "sector": "93",
       "address": "112  AVENUE DU GENERAL LECLERC, 75014 PARIS",
-      "email": "rehan.salarie40@samu-social.net",
+      "email": "rehan.salarie40@samusocial-75.fr",
       "password": "admin",
       "phone": "0612345678"
     }, {
@@ -166,7 +176,7 @@
       "role": "USER",
       "sector": "77-91",
       "address": "16 BIS RUE HENRI ROL TANGUY, 91350 GRIGNY",
-      "email": "jacques-philippe.salarie41@samu-social.net",
+      "email": "jacques-philippe.salarie41@samusocial-75.fr",
       "password": "admin",
       "phone": "0612345678"
     }, {
@@ -175,7 +185,7 @@
       "role": "USER",
       "sector": "75",
       "address": "1  RUE DE L HOTEL DE VILLE, 92400 COURBEVOIE",
-      "email": "ramdane.salarie42@samu-social.net",
+      "email": "ramdane.salarie42@samusocial-75.fr",
       "password": "admin",
       "phone": "0612345678"
     }, {
@@ -184,7 +194,7 @@
       "role": "USER",
       "sector": "77-91",
       "address": "62  BOULEVARD Massena, 75013 PARIS",
-      "email": "georgioangelo.salarie43@samu-social.net",
+      "email": "georgioangelo.salarie43@samusocial-75.fr",
       "password": "admin",
       "phone": "0612345678"
     }, {
@@ -193,7 +203,7 @@
       "firstName": "Salarié",
       "sector": "93",
       "address": "8  RUE AUGUSTE BLANQUI, 93170 BAGNOLET",
-      "email": "salarie.admin@samu-social.net",
+      "email": "salarie.admin@samusocial-75.fr",
       "password": "admin",
       "phone": "0612345678"
     }
