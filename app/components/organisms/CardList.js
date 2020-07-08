@@ -75,11 +75,12 @@ const CardList = ({ label, startable, onComplete }) => {
     })
   }, [])
 
-  // useEffect(() => {
-  //   if (state.visits.length === state.visitsCompleted.length) {
-  //     onComplete()
-  //   }
-  // }, [state.visitsCompleted])
+  useEffect(() => {
+    if (state.visits.length === state.visitsCompleted.length) {
+      //TODO: trigger recap display
+      //onComplete()
+    }
+  }, [state.visitsCompleted])
 
   if (loading) {
     return <ActivityIndicator size='small' color={Colors.main} />
