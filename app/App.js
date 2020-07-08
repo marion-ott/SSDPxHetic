@@ -8,17 +8,18 @@ import { setContext } from 'apollo-link-context'
 import { createHttpLink } from 'apollo-link-http'
 import { InMemoryCache } from 'apollo-cache-inmemory'
 import { ApolloProvider } from '@apollo/react-hooks'
-import useCheckAuth from './hooks/useCheckAuth'
 import useCachedResources from './hooks/useCachedResources'
 import * as SecureStore from 'expo-secure-store'
-
+import { split, concat } from 'apollo-link'
+import { WebSocketLink } from 'apollo-link-ws'
+import { getMainDefinition } from 'apollo-utilities'
 import Root from './index'
 
-const devApiUrl = 'http://192.168.1.11:9000'
+const devApiUrl = 'http://3.8.20.81:9000/'
 /* Configuration du endpoint de l'API */
 const httpLink = createHttpLink({ uri: devApiUrl })
 /* Configuration du header pour l'API */
-const authLink = setContext(async (_, { headers }) => {
+const authMiddleware = setContext(async (_, { headers }) => {
   const token = await SecureStore.getItemAsync('token')
 
   return {
@@ -29,9 +30,28 @@ const authLink = setContext(async (_, { headers }) => {
   }
 })
 
+const wsLink = new WebSocketLink({
+  uri: `ws://3.8.20.81:9000/`,
+  options: {
+    reconnect: true
+  }
+})
+
+const link = split(
+  ({ query }) => {
+    const definition = getMainDefinition(query)
+    return (
+      definition.kind === 'OperationDefinition' &&
+      definition.operation === 'subscription'
+    )
+  },
+  wsLink,
+  httpLink
+)
+
 /* Initialidation du client apollo pour l'API */
 const client = new ApolloClient({
-  link: authLink.concat(httpLink),
+  link: concat(authMiddleware, link),
   cache: new InMemoryCache(),
   resolvers: {}
 })

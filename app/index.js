@@ -26,6 +26,7 @@ const Stack = createStackNavigator()
 
 export default () => {
   const { loading: authLoading, error: authError, data: auth } = useCheckAuth()
+  const [render, setRender] = useState(false)
 
   const [getData, { loading, data, error }] = useLazyQuery(GET_USER, {
     onCompleted: ({ user }) => {
@@ -38,13 +39,20 @@ export default () => {
     today: formatDate(moment())
   })
 
+<<<<<<< HEAD
   const [context, setContext] = useState({})
+=======
+  const [context, setContext] = useState({
+    user: null
+  })
+>>>>>>> v2.0
 
   const updateContext = (obj) => {
-    setContext({
-      ...context,
-      ...obj
-    })
+    setRender(true)
+    let state = context
+    state = Object.assign({ ...state, ...obj })
+    setContext(state)
+    setRender(false)
   }
 
   useEffect(() => {
@@ -58,17 +66,16 @@ export default () => {
     }
   }, [authError, auth, authLoading])
 
-  useEffect(() => {}, [loading, data, error])
-
   const handleLogin = (userData) => {
     const user = {
+      id: userData.id,
       firstName: userData.firstName,
       lastName: userData.lastName,
       email: userData.email,
       phone: userData.phone
     }
-    let schedule, teamId
 
+    let schedule, teamId
     userData.teams.forEach(({ id, startDate, endDate, users }) => {
       if (moment().isBetween(startDate, endDate)) {
         teamId = id
@@ -91,9 +98,10 @@ export default () => {
 
   // console.log(loading, authLoading, auth, data)
 
-  if (loading || authLoading) {
-    return <ActivityIndicator size='small' color={Colors.main} />
-  }
+  // if (loading || authLoading) {
+  //   return <ActivityIndicator size='small' color={Colors.main} />
+  // }
+  if (context.user) console.log('RENDER: ', context.user.firstName)
 
   return (
     <AppProvider value={{ context, updateContext }}>

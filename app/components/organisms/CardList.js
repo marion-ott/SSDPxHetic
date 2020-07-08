@@ -42,6 +42,17 @@ const CardList = ({ label, startable, onComplete }) => {
       const visitInProgress = myVisits.find(
         (visit) => visit.status === 'ONGOING'
       )
+
+      const hotels = myVisits.length
+      const rooms = myVisits.reduce(
+        (total, { hotel }) => total + hotel.rooms,
+        0
+      )
+      updateContext({
+        hotels,
+        rooms
+      })
+
       dispatch({
         type: 'SET_VISITS',
         payload: {
@@ -74,6 +85,7 @@ const CardList = ({ label, startable, onComplete }) => {
   }
 
   return (
+
     <ScrollView>
       <ListHead
         name={context.user.firstName}
