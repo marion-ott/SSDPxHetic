@@ -17,8 +17,8 @@ export default function CustomScrollView({ top = 100, Component, children }) {
 
 const styles = StyleSheet.create({
   wrapper: {
-    flex: 1,
-    backgroundColor: 'white'
+    flex: 1
+    // backgroundColor: 'blue'
   },
   scrollWrapper: {
     flex: 1,
@@ -27,6 +27,7 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 24,
     overflow: 'visible'
+    // backgroundColor: 'yellow'
   },
   component: {
     minHeight: 200,
@@ -39,12 +40,14 @@ const styles = StyleSheet.create({
     paddingBottom: 50
   },
   content: {
+    flexGrow: 1,
     flex: 1,
     //height: 500, QUAND CONTENT TROP PETIT BG BLEU
     alignSelf: 'stretch',
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     backgroundColor: Colors.white,
+    position: 'relative',
     paddingTop: 40,
     paddingHorizontal: 16,
     paddingBottom: 20
