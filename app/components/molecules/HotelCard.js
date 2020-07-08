@@ -39,7 +39,9 @@ const HotelCard = ({
   }
 
   return (
-    <Card style={styles.card} header={() => <CardHead {...hotel} />}>
+    <Card
+      style={[styles.card, styles[status]]}
+      header={() => <CardHead {...hotel} />}>
       <View style={styles.content}>
         <View>
           <Text style={styles.text} category='s2'>
@@ -105,8 +107,17 @@ const styles = StyleSheet.create({
     flex: 1,
     borderRadius: 8,
     marginBottom: 7,
-    borderWidth: 0,
-    backgroundColor: Colors.lightOrange
+    borderWidth: 0
+    // backgroundColor: Colors.lightOrange
+  },
+  UPCOMING: {
+    backgroundColor: 'red'
+  },
+  ONGOING: {
+    backgroundColor: 'blue'
+  },
+  DONE: {
+    backgroundColor: 'orange'
   },
   content: {
     flex: 1,
