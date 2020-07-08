@@ -1,13 +1,12 @@
 import React, { useState } from 'react'
 import { StyleSheet, View, TouchableOpacity, Linking } from 'react-native'
 import { Text, Popover, Layout } from '@ui-kitten/components'
-import { Icon, OpenURLButton } from '../atoms'
+import Icon from './Icon'
+import OpenURLButton from './OpenURLButton'
 import Colors from '../../constants/Colors'
 
 const CardHead = ({ name, phone, lat, long, status, disabled }) => {
   const [popover, setPopover] = useState(false)
-  
-  console.log(status)
 
   const openMap = () => {
     let url = ''
@@ -50,7 +49,7 @@ const CardHead = ({ name, phone, lat, long, status, disabled }) => {
   return (
     <View style={[styles.container, styles.cardHead]}>
       <View style={styles.flexRow}>
-        {status == "DONE" && (
+        {status == 'DONE' && (
           <View style={styles.slide}>
             <Icon
               name='checkmark-outline'
@@ -60,7 +59,12 @@ const CardHead = ({ name, phone, lat, long, status, disabled }) => {
             />
           </View>
         )}
-        <Text style={[styles.title, (status === "ONGOING") ? styles.white : styles.black]} category='h6'>
+        <Text
+          style={[
+            styles.title,
+            status === 'ONGOING' ? styles.white : styles.black
+          ]}
+          category='h6'>
           {name}
         </Text>
       </View>
@@ -155,14 +159,14 @@ const styles = StyleSheet.create({
   },
   slide: {
     marginRight: 10,
-    alignItems: 'center',
+    alignItems: 'center'
   },
   black: {
-    color: Colors.tabIconDefault,
+    color: Colors.tabIconDefault
   },
   white: {
-    color: Colors.white,
-  },
+    color: Colors.white
+  }
 })
 
 export default CardHead

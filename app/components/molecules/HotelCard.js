@@ -3,7 +3,9 @@ import { useMutation } from '@apollo/react-hooks'
 import { UPDATE_VISIT } from '../../graphql/mutations/visits'
 import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import { Card, Text, Popover, Layout, Button } from '@ui-kitten/components'
-import { Icon, OpenURLButton, CardHead } from '../atoms'
+import Icon from '../atoms/Icon'
+import OpenURLButtonfrom from '../atoms/OpenURLButton'
+import CardHead from '../atoms/CardHead'
 import Colors from '../../constants/Colors'
 
 const HotelCard = ({
@@ -38,77 +40,111 @@ const HotelCard = ({
 
     updateVisit({ variables })
   }
-
-
+  console.log(hotel.name, disabled)
   return (
     <Card
       style={[styles.card, styles[status]]}
-      header={() => <CardHead {...hotel} status={status} disabled={disabled} />}>
+      header={() => (
+        <CardHead {...hotel} status={status} disabled={disabled} />
+      )}>
       {/* DISPLAY INFO */}
-        {status !== "DONE" && (
-          <View style={styles.content}>
-            <View>
-              <Text style={[styles.text, (disabled) ? texts.grey : (status === "ONGOING") ? texts.white : texts.black]} category='s2'>
-                {hotel.address},
-              </Text>
-            <Text style={[styles.text, (status === "ONGOING" && !disabled) ? texts.white : texts.black, (disabled) ? texts.grey : '' ]} category='s2'>
-                {hotel.zipCode} {hotel.city}
-              </Text>
-            </View>
-            <View style={styles.room}>
-              <Icon
-                style={styles.roomIcon}
-                name='briefcase-outline'
-                fill={status === "ONGOING" ? '#ffffff' : '#FF8139'}
-                width={18}
-                height={18}
-              />
-            <Text style={[styles.text, { marginLeft: 5, fontWeight: 'bold' }, (status === "ONGOING") ? texts.white : texts.black]} category='s2'>
-                {hotel.rooms}
-              </Text>
-            </View>
+      {status !== 'DONE' && (
+        <View style={styles.content}>
+          <View>
+            <Text
+              style={[
+                styles.text,
+                disabled
+                  ? texts.grey
+                  : status === 'ONGOING'
+                  ? texts.white
+                  : texts.black
+              ]}
+              category='s2'>
+              {hotel.address},
+            </Text>
+            <Text
+              style={[
+                styles.text,
+                status === 'ONGOING' && !disabled ? texts.white : texts.black,
+                disabled ? texts.grey : ''
+              ]}
+              category='s2'>
+              {hotel.zipCode} {hotel.city}
+            </Text>
           </View>
+          <View style={styles.room}>
+            <Icon
+              style={styles.roomIcon}
+              name='briefcase-outline'
+              fill={status === 'ONGOING' ? '#ffffff' : '#FF8139'}
+              width={18}
+              height={18}
+            />
+            <Text
+              style={[
+                styles.text,
+                { marginLeft: 5, fontWeight: 'bold' },
+                status === 'ONGOING' ? texts.white : texts.black
+              ]}
+              category='s2'>
+              {hotel.rooms}
+            </Text>
+          </View>
+        </View>
       )}
       {/* DISPLAY BUTTS */}
-      { status !== "DONE" && (
+      {startable && status !== 'DONE' && !disabled && (
         <View style={styles.buttons}>
-          {status == "UPCOMING" && (
+          {status == 'UPCOMING' && (
             <TouchableOpacity
               // onPress={() => onChange(id, 'startVisit')}
               activeOpacity={0.7}
               style={[styles.touchableButton, styles.button]}>
-              
               <View style={styles.borderLine}>
-                <Text style={[styles.text, styles.report, styles.bold]} category='h6'>
+                <Text
+                  style={[styles.text, styles.report, styles.bold]}
+                  category='h6'>
                   Reporter
                 </Text>
               </View>
             </TouchableOpacity>
           )}
-        <TouchableOpacity
-          onPress={onUpdate}
-          activeOpacity={0.7}
-          style={styles.touchableButton}>
-            <View style={[styles.startContainer, styles.button, (startable && disabled) ? backgrounds.brightOrange : backgrounds.white]}>
-              {status == "UPCOMING" && (
+          <TouchableOpacity
+            onPress={onUpdate}
+            activeOpacity={0.7}
+            style={styles.touchableButton}>
+            <View
+              style={[
+                styles.startContainer,
+                styles.button,
+                startable && disabled
+                  ? backgrounds.brightOrange
+                  : backgrounds.white
+              ]}>
+              {status == 'UPCOMING' && (
                 <View style={styles.translate}>
                   <Icon
                     style={styles.startIcon}
                     name='play-circle-outline'
                     width={24}
                     height={24}
-                    fill={(startable && disabled) ? Colors.white : Colors.brightOrange}
+                    fill={disabled ? Colors.white : Colors.brightOrange}
                   />
                 </View>
               )}
-            <Text
-              appearance='alternative'
-              style={[styles.text, styles.startLabel, (startable && disabled) ? texts.whiteBold : texts.orangeBold]}
-              category='h6'>
-              {status == "UPCOMING" ? "Commencer" : "Terminer la visite"}
-            </Text>
-          </View>
-        </TouchableOpacity>
+              <Text
+                appearance='alternative'
+                style={[
+                  styles.text,
+                  styles.startLabel,
+                  disabled ? texts.whiteBold : texts.orangeBold
+                ]}
+                category='h6'>
+                {status == 'UPCOMING' ? 'Commencer' : 'Terminer la visite'}
+              </Text>
+            </View>
+          </TouchableOpacity>
         </View>
       )}
     </Card>
@@ -121,13 +157,13 @@ const styles = StyleSheet.create({
     borderRadius: 8,
     marginBottom: 7,
     borderWidth: 0,
-    backgroundColor: Colors.lightOrange,
+    backgroundColor: Colors.lightOrange
   },
   UPCOMING: {
     // backgroundColor: Colors.brightOrange,
   },
   ONGOING: {
-    backgroundColor: Colors.brightOrange,
+    backgroundColor: Colors.brightOrange
   },
   DONE: {
     // backgroundColor: Colors.lightOrange,
@@ -167,7 +203,7 @@ const styles = StyleSheet.create({
   },
   report: {
     color: Colors.brightOrange,
-    textAlign: 'center',
+    textAlign: 'center'
   },
   text: {
     fontSize: 14
@@ -177,10 +213,10 @@ const styles = StyleSheet.create({
   },
   startLabel: {
     color: 'white',
-    textAlign: 'center',
+    textAlign: 'center'
   },
   translate: {
-    transform: [{translateX: -10}]
+    transform: [{ translateX: -10 }]
   },
   borderLine: {
     borderBottomWidth: 1,
@@ -189,39 +225,39 @@ const styles = StyleSheet.create({
     width: 48
   },
   bold: {
-    fontWeight: 'bold',
+    fontWeight: 'bold'
   }
 })
 
 const backgrounds = StyleSheet.create({
   lightOrange: {
-    backgroundColor: Colors.lightOrange,
+    backgroundColor: Colors.lightOrange
   },
   brightOrange: {
-    backgroundColor: Colors.brightOrange,
+    backgroundColor: Colors.brightOrange
   },
   white: {
-    backgroundColor: Colors.white,
+    backgroundColor: Colors.white
   }
 })
 
 const texts = StyleSheet.create({
   black: {
-    color: Colors.tabIconDefault,
+    color: Colors.tabIconDefault
   },
   blackBold: {
     color: Colors.tabIconDefault,
     fontWeight: 'bold'
   },
   white: {
-    color: Colors.white,
+    color: Colors.white
   },
   whiteBold: {
     color: Colors.white,
     fontWeight: 'bold'
   },
   grey: {
-    color: Colors.tabIconDefault,
+    color: Colors.tabIconDefault
   },
   greyBold: {
     color: Colors.tabIconDefault,

@@ -7,7 +7,8 @@ import dateContext from '../context/dateContext'
 import useGetVisits from '../hooks/useGetVisits'
 import { StyleSheet, View } from 'react-native'
 import { getDateStr, formatDate } from '../utils/index'
-import { CalendarElement, CardList } from '../components/organisms'
+import CalendarElement from '../components/organisms/Calendar'
+import CardList from '../components/organisms/CardList'
 import { Colors } from 'react-native/Libraries/NewAppScreen'
 
 export default function CalendarScreen() {

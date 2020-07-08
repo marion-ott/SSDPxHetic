@@ -126,7 +126,7 @@ type LoginPayload {
 
 type AuthPayload {
 	success: Boolean
-	user: User
+	id: String
 }
 
 input LoginInput {

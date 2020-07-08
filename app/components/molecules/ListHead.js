@@ -1,6 +1,6 @@
 import React from 'react'
 import { StyleSheet, View, Text } from 'react-native'
-import { Details } from '../atoms'
+import Details from '../atoms/Details'
 
 const ListHead = ({ startTime, endTime, hotels, rooms, name }) => {
   const details = [

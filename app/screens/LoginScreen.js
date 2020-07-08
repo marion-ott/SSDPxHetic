@@ -33,14 +33,13 @@ export default function LoginScreen({ handleLogin }) {
     },
     onError: (error) => console.log('ERROR MESSAGE : ', error)
   })
-
   const [form] = getFormProps({
     email: '',
     password: ''
   })
 
   if (error) {
-    return <Text>there was an error: {JSON.stringify(error)}</Text>
+    return <Text>there was an error: {JSON.stringify(error.message)}</Text>
   }
 
   if (loading) {

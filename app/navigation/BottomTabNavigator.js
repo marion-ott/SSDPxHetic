@@ -4,14 +4,12 @@ import { StyleSheet } from 'react-native'
 import { useSubscription } from '@apollo/react-hooks'
 import { SUBSCRIBE_VISITS } from '../graphql/subscriptions/visits'
 import { NotificationProvider } from '../context/notificationContext'
-import {
-  HomeScreen,
-  CalendarScreen,
-  NotificationScreen,
-  ProfileScreen
-} from '../screens'
-import { NotificationIcon } from '../components/molecules'
-import { Icon } from '../components/atoms'
+import HomeScreen from '../screens/HomeScreen'
+import CalendarScreen from '../screens/CalendarScreen'
+import NotificationScreen from '../screens/NotificationScreen'
+import ProfileScreen from '../screens/ProfileScreen'
+import NotificationIcon from '../components/molecules/NotificationIcon'
+import Icon from '../components/atoms/Icon'
 
 const BottomTab = createBottomTabNavigator()
 const INITIAL_ROUTE_NAME = 'Home'
