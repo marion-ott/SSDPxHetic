@@ -4,28 +4,13 @@ import { Text, Popover, Layout } from '@ui-kitten/components'
 import Icon from './Icon'
 import OpenURLButton from './OpenURLButton'
 import Colors from '../../constants/Colors'
+import openMap from 'react-native-open-maps'
 
 const CardHead = ({ name, phone, lat, long, status, disabled }) => {
   const [popover, setPopover] = useState(false)
 
-  const openMap = () => {
-    let url = ''
-    Platform.select({
-      ios: () => {
-        url = `maps:${lat},${long}?=Custom Label`
-      },
-      android: () => {
-        url = `geo:${lat},${long}?=Custom Label`
-      }
-    })
-
-    Linking.canOpenURL(url).then((supported) => {
-      if (supported) {
-        Linking.openURL(url)
-      } else {
-        console.log("Impossible d'ouvrir cet url.")
-      }
-    })
+  const openLoc = () => {
+    openMap({ latitude: lat, longitude: long, navigate_mode: "navigate", end: name })
   }
 
   const togglePopover = () => {
@@ -83,7 +68,7 @@ const CardHead = ({ name, phone, lat, long, status, disabled }) => {
         onBackdropPress={togglePopover}>
         <Layout style={styles.popover}>
           <TouchableOpacity
-            onPress={openMap}
+            onPress={openLoc}
             activeOpacity={0.7}
             style={styles.options}>
             <Icon
