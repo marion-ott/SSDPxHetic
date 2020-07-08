@@ -33,7 +33,7 @@ const Query = {
 			user: null
 		}
 		const header = request.request.headers.authorization
-		console.log('token: ', header)
+
 		if (!header) {
 			return res
 		}
@@ -48,7 +48,7 @@ const Query = {
 		if (!user) {
 			return res
 		}
-		console.log('id user: ', id)
+
 		return {
 			success: true,
 			id

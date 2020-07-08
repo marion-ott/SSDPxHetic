@@ -16,7 +16,7 @@ import Form from '../components/organisms/Form'
 
 export default function ProfileScreen() {
   const { context, updateContext } = useContext(appContext)
-  const [editMode, setEditMode] = useState(false)
+  const [editable, setEditable] = useState(false)
 
   const [updateUser, { loading, error }] = useMutation(UPDATE_USER, {
     onCompleted(res) {
@@ -26,7 +26,7 @@ export default function ProfileScreen() {
           obj[key] = res.updateUser[key]
         }
       }
-      setEditMode(false)
+      setEditable(false)
       updateContext(obj)
     },
     onError: (error) => console.error('ERROR: ', error.message)
@@ -42,8 +42,8 @@ export default function ProfileScreen() {
   const onSubmit = (variables) => updateUser(variables)
 
   const handlePress = () => {
-    if (editMode) {
-      setEditMode(false)
+    if (editable) {
+      setEditable(false)
     } else {
       deleteTokenInStorage()
     }
@@ -80,15 +80,16 @@ export default function ProfileScreen() {
               data={form}
               callback={onSubmit}
               schema={schema}
-              editMode={editMode}
-              setEditMode={setEditMode}
+              editable={editable}
+              setEditable={setEditable}
+              btnLabel='Enregistrer les modifications'
             />
-            {editMode === false && (
+            {editable === false && (
               <TouchableOpacity
                 style={styles.button}
-                onPress={() => setEditMode(true)}>
+                onPress={() => setEditable(true)}>
                 <Text style={styles.buttonLabel}>
-                  {!editMode
+                  {!editable
                     ? 'Modifier les informations'
                     : 'Enregistrer les modifications'}
                 </Text>
@@ -99,7 +100,7 @@ export default function ProfileScreen() {
               style={[styles.button, styles.logout]}
               onPress={handlePress}>
               <Text style={[styles.buttonLabel, styles.logoutLabel]}>
-                {editMode ? 'Annuler' : 'Se déconnecter'}
+                {editable ? 'Annuler' : 'Se déconnecter'}
               </Text>
             </TouchableOpacity>
           </View>
