@@ -45,7 +45,7 @@ export default function ProfileScreen() {
     if (editMode) {
       setEditMode(false)
     } else {
-      SecureStore.deleteItemAsync('token', value)
+      deleteTokenInStorage()
     }
   }
 
