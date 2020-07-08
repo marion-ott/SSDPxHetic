@@ -47,7 +47,7 @@ const CardHead = ({ name, phone, lat, long, status, disabled }) => {
   )
 
   return (
-    <View style={[styles.container, styles.cardHead]}>
+    <View style={[styles.cardHead, status == 'DONE' ? '' : styles.borderNotDone]}>
       <View style={styles.flexRow}>
         {status == 'DONE' && (
           <View style={styles.slide}>
@@ -62,7 +62,14 @@ const CardHead = ({ name, phone, lat, long, status, disabled }) => {
         <Text
           style={[
             styles.title,
-            status === 'ONGOING' ? styles.white : styles.black
+            disabled && (status === 'UPCOMING')
+              ? styles.grey
+              : (status === 'UPCOMING')
+                ? styles.black
+                : status === 'DONE'
+                  ? styles.black
+                  : status === 'ONGOING'
+                    ? styles.white : ''
           ]}
           category='h6'>
           {name}
@@ -108,12 +115,19 @@ const styles = StyleSheet.create({
   cardHead: {
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    // justifyContent: 'flex-start',
     alignItems: 'center',
-    paddingHorizontal: 24,
-    paddingVertical: 12
+    paddingRight: 24,
+    paddingVertical: 12,
+    width: '100%',
+  },
+  borderNotDone: {
+    borderBottomColor: Colors.darkGrey,
+    borderBottomWidth: 1,
   },
   popoverContainer: {
+    borderBottomColor: Colors.darkGrey,
+    borderBottomWidth: 1,
     borderWidth: 0,
     shadowColor: 'rgba(0, 0, 0, 0.25)',
     shadowOffset: { width: 0, height: 2 },
@@ -155,7 +169,9 @@ const styles = StyleSheet.create({
   },
   flexRow: {
     flexDirection: 'row',
-    alignItems: 'center'
+    // justifyContent: 'flex-start',
+    alignItems: 'center',
+    width: '100%',
   },
   slide: {
     marginRight: 10,
@@ -166,6 +182,9 @@ const styles = StyleSheet.create({
   },
   white: {
     color: Colors.white
+  },
+  grey: {
+    color: Colors.darkGrey
   }
 })
 
