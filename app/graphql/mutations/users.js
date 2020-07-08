@@ -7,6 +7,7 @@ export const CREATE_USER = gql`
       lastName
       role
       address
+      phone
       email
     }
   }
@@ -20,10 +21,6 @@ export const UPDATE_USER = gql`
       lastName
       email
       address
-      sector {
-        id
-        zone
-      }
     }
   }
 `

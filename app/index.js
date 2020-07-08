@@ -26,6 +26,7 @@ const Stack = createStackNavigator()
 
 export default () => {
   const { loading: authLoading, error: authError, data: auth } = useCheckAuth()
+  const [render, setRender] = useState(false)
 
   const [getData, { loading, data, error }] = useLazyQuery(GET_USER, {
     onCompleted: ({ user }) => {
@@ -43,10 +44,11 @@ export default () => {
   })
 
   const updateContext = (obj) => {
-    setContext({
-      ...context,
-      ...obj
-    })
+    setRender(true)
+    let state = context
+    state = Object.assign({ ...state, ...obj })
+    setContext(state)
+    setRender(false)
   }
 
   useEffect(() => {
@@ -59,10 +61,9 @@ export default () => {
     }
   }, [authError, auth, authLoading])
 
-  useEffect(() => {}, [loading, data, error])
-
   const handleLogin = (userData) => {
     const user = {
+      id: userData.id,
       firstName: userData.firstName,
       lastName: userData.lastName,
       email: userData.email,
@@ -95,6 +96,7 @@ export default () => {
   // if (loading || authLoading) {
   //   return <ActivityIndicator size='small' color={Colors.main} />
   // }
+  if (context.user) console.log('RENDER: ', context.user.firstName)
 
   return (
     <AppProvider value={{ context, updateContext }}>
