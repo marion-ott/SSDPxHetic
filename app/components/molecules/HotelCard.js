@@ -40,11 +40,9 @@ const HotelCard = ({
 
     updateVisit({ variables })
   }
-z
+
   return (
-    <Card
-      style={[styles.card, styles[status]]}
-    >
+    <Card style={[styles.card, styles[status]]}>
       <CardHead {...hotel} status={status} disabled={disabled} />
       {/* DISPLAY INFO */}
       {status !== 'DONE' && (
@@ -55,7 +53,7 @@ z
                 styles.text,
                 disabled
                   ? texts.grey
-                  : !disabled && (status === 'ONGOING')
+                  : !disabled && status === 'ONGOING'
                   ? texts.white
                   : texts.black
               ]}
@@ -117,7 +115,7 @@ z
               style={[
                 styles.startContainer,
                 styles.button,
-                startable && status === "UPCOMING"
+                startable && status === 'UPCOMING'
                   ? backgrounds.brightOrange
                   : backgrounds.white
               ]}>
@@ -137,7 +135,9 @@ z
                 style={[
                   styles.text,
                   styles.startLabel,
-                  startable && status === "UPCOMING" ? texts.whiteBold : texts.orangeBold
+                  startable && status === 'UPCOMING'
+                    ? texts.whiteBold
+                    : texts.orangeBold
                 ]}
                 category='h6'>
                 {status == 'UPCOMING' ? 'Commencer' : 'Terminer la visite'}
@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingTop: 8,
+    paddingTop: 8
   },
   room: {
     display: 'flex',
@@ -190,7 +190,7 @@ const styles = StyleSheet.create({
   },
   touchableButton: {
     flex: 1,
-    height: 48,
+    height: 48
   },
   button: {
     flex: 1,
