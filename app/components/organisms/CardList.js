@@ -13,7 +13,7 @@ const CardList = ({ label, cards, hasCta }) => {
         </Text>
       )}
       <Divider style={[{ marginBottom: 10 }]} />
-      <ScrollView style={styles.cardsContain}>
+      <View style={styles.cardsContain}>
         {cards.map(({ id, hotel }) => (
           <HotelCard
             hasCta={hasCta}
@@ -33,7 +33,7 @@ const CardList = ({ label, cards, hasCta }) => {
           {[null, null, null, null, null, null].map((c, i) => {
             return <Card key={i} backgroundColor='#FFF2EB' />
           })} */}
-      </ScrollView>
+      </View>
     </View>
   )
 }
