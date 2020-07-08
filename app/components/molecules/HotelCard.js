@@ -40,13 +40,12 @@ const HotelCard = ({
 
     updateVisit({ variables })
   }
-
+z
   return (
     <Card
       style={[styles.card, styles[status]]}
-      header={() => (
-        <CardHead {...hotel} status={status} disabled={disabled} />
-      )}>
+    >
+      <CardHead {...hotel} status={status} disabled={disabled} />
       {/* DISPLAY INFO */}
       {status !== 'DONE' && (
         <View style={styles.content}>
@@ -56,7 +55,7 @@ const HotelCard = ({
                 styles.text,
                 disabled
                   ? texts.grey
-                  : status === 'ONGOING'
+                  : !disabled && (status === 'ONGOING')
                   ? texts.white
                   : texts.black
               ]}
@@ -118,7 +117,7 @@ const HotelCard = ({
               style={[
                 styles.startContainer,
                 styles.button,
-                startable && disabled
+                startable && status === "UPCOMING"
                   ? backgrounds.brightOrange
                   : backgrounds.white
               ]}>
@@ -129,7 +128,7 @@ const HotelCard = ({
                     name='play-circle-outline'
                     width={24}
                     height={24}
-                    fill={disabled ? Colors.white : Colors.brightOrange}
+                    fill={!disabled ? Colors.white : Colors.brightOrange}
                   />
                 </View>
               )}
@@ -138,7 +137,7 @@ const HotelCard = ({
                 style={[
                   styles.text,
                   styles.startLabel,
-                  disabled ? texts.whiteBold : texts.orangeBold
+                  startable && status === "UPCOMING" ? texts.whiteBold : texts.orangeBold
                 ]}
                 category='h6'>
                 {status == 'UPCOMING' ? 'Commencer' : 'Terminer la visite'}
@@ -172,7 +171,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    padding: 0
+    paddingTop: 8,
   },
   room: {
     display: 'flex',
@@ -190,7 +189,8 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   touchableButton: {
-    flex: 1
+    flex: 1,
+    height: 48,
   },
   button: {
     flex: 1,
@@ -257,10 +257,10 @@ const texts = StyleSheet.create({
     fontWeight: 'bold'
   },
   grey: {
-    color: Colors.tabIconDefault
+    color: Colors.darkGrey
   },
   greyBold: {
-    color: Colors.tabIconDefault,
+    color: Colors.darkGrey,
     fontWeight: 'bold'
   },
   orangeBold: {
