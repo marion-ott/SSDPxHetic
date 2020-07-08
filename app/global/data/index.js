@@ -21,6 +21,11 @@ const listKeys = [
     name: 'firstName',
     label: 'Prénom',
     type: 'text',
+    textContentType: 'none',
+    autoCapitalize: 'none',
+    secureTextEntry: false,
+    keyboardType: 'default',
+    autoCapitalize: 'words',
     inTable: true,
     inForm: true,
     yupVal: yup
@@ -31,6 +36,10 @@ const listKeys = [
     name: 'lastName',
     label: 'Nom',
     type: 'text',
+    textContentType: 'none',
+    secureTextEntry: false,
+    keyboardType: 'default',
+    autoCapitalize: 'words',
     inTable: true,
     inForm: true,
     yupVal: yup.string('La valeur est invalide').required('Le nom est requis')
@@ -39,7 +48,10 @@ const listKeys = [
     name: 'email',
     label: 'Email',
     type: 'email',
-    icon: 'fa-envelope',
+    textContentType: 'none',
+    secureTextEntry: false,
+    keyboardType: 'email-address',
+    autoCapitalize: 'none',
     inTable: true,
     inForm: true,
     yupVal: yup
@@ -48,10 +60,25 @@ const listKeys = [
       .required("L'adresse email est requise")
   },
   {
+    name: 'phone',
+    label: 'Téléphone',
+    type: 'phone',
+    textContentType: 'none',
+    secureTextEntry: false,
+    keyboardType: 'default',
+    autoCapitalize: 'none',
+    inTable: true,
+    inForm: true,
+    yupVal: yup.string().required('Le téléphone est requis')
+  },
+  {
     name: 'password',
     label: 'Mot de passe',
     type: 'password',
-    icon: 'fa-lock',
+    textContentType: 'password',
+    autoCapitalize: 'none',
+    secureTextEntry: true,
+    keyboardType: 'default',
     inTable: false,
     inForm: true,
     yupVal: yup.string().email('Email invalide')
@@ -125,7 +152,6 @@ const listKeys = [
   }
 ]
 
-
 const getFormProps = (data) => {
   const form = {
     initialValues: {},
@@ -137,16 +163,20 @@ const getFormProps = (data) => {
     if (key === 'id' || key === '__typename') return
     form.initialValues[key] = data[key] || ''
     const inputModel = listKeys.find((listKey) => listKey.name === key)
+
     if (!inputModel.inForm) return
     const element = {
       name: inputModel.name,
-      icon: inputModel.icon,
       inputProps: {
         placeholder: inputModel.label,
-        type: inputModel.type
+        type: inputModel.type,
+        textContentType: inputModel.textContentType,
+        secureTextEntry: inputModel.secureTextEntry,
+        keyboardType: inputModel.keyboardType,
+        autoCapitalize: inputModel.autoCapitalize
       },
       labelProps: {
-        text: inputModel.label
+        label: inputModel.label
       }
     }
     if (inputModel.type === 'select') {

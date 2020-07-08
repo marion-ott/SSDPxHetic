@@ -2,9 +2,10 @@ import React from 'react'
 import { Formik } from 'formik'
 import { View, StyleSheet } from 'react-native'
 import { Input, Button } from '@ui-kitten/components'
+import { InputGroup } from '../atoms'
 import Colors from '../../constants/Colors'
 
-export const Form = ({ callback, data, id }) => (
+const Form = ({ callback, data, id, editMode, setEditMode }) => (
   <Formik
     style={styles.container}
     initialValues={data.initialValues}
@@ -33,33 +34,26 @@ export const Form = ({ callback, data, id }) => (
     }}>
     {({ handleChange, handleBlur, handleSubmit, values }) => (
       <View>
-        <Input
-          style={styles.input}
-          size='large'
-          label='E-mail'
-          onChangeText={handleChange('email')}
-          onBlur={handleBlur('email')}
-          value={values.email}
-          placeholder='Email'
-          textContentType='emailAddress'
-          keyboardType='email-address'
-          autoCapitalize='none'
-        />
-        <Input
-          style={styles.input}
-          size='large'
-          label='Mot de passe'
-          onChangeText={handleChange('password')}
-          onBlur={handleBlur('password')}
-          value={values.password}
-          placeholder='Mot de passe'
-          textContentType='password'
-          secureTextEntry={true}
-          autoCapitalize='none'
-        />
-        <Button style={styles.button} type='submit' onPress={handleSubmit}>
-          Connexion
-        </Button>
+        {data.elements.map((el, index) => {
+          return (
+            <Input
+              key={index}
+              style={styles.input}
+              size='large'
+              onChangeText={handleChange(el.name)}
+              onBlur={handleBlur(el.name)}
+              value={values[el.name]}
+              disabled={!editMode}
+              {...el.labelProps}
+              {...el.inputProps}
+            />
+          )
+        })}
+        {editMode && (
+          <Button style={styles.button} type='submit' onPress={handleSubmit}>
+            Enregistrer les modifications
+          </Button>
+        )}
       </View>
     )}
   </Formik>

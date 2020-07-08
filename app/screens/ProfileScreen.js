@@ -2,40 +2,51 @@ import React, { useState, useContext, useEffect } from 'react'
 import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import { Text, Input, Layout } from '@ui-kitten/components'
-import userContext from '../context/userContext'
+import appContext from '../context/appContext'
 import { Icon } from '../components/atoms'
 import Colors from '../constants/Colors'
 import * as SecureStore from 'expo-secure-store'
-// import { useMutation } from '@apollo/react-hooks'
+import { useMutation } from '@apollo/react-hooks'
+import { UPDATE_USER } from '../graphql/mutations/users'
 import { deleteTokenInStorage } from '../utils/index'
+import { getFormProps } from './../global/data'
+import { Form } from '../components/organisms'
 
 // import { UPDATE_USER } from './../graphql/mutations/users'
 
 export default function ProfileScreen() {
-  const { user } = useContext(userContext)
-  const [value, setValue] = useState(user)
+  const { context, updateContext } = useContext(appContext)
   const [editMode, setEditMode] = useState(false)
 
-  // const [callback, { loading, error }] = useMutation( mutation, {
-  //   onCompleted() {
-  //     onChangeProfile()
-  //   },
-  //   onError: (error) => console.error(error)
-  // })
+  const [updateUser, { loading, error }] = useMutation(UPDATE_USER, {
+    onCompleted(res) {
+      const obj = {}
+      for (const key in res.updateUser) {
+        if (context.user[key] !== res.updateUser[key]) {
+          obj[key] = res.updateUser[key]
+        }
+      }
+      setEditMode(false)
+      updateContext(obj)
+    },
+    onError: (error) => console.error('ERROR: ', error.message)
+  })
 
-  function onChangeProfile(val, name) {
-    setValue({
-      ...value,
-      [name]: val
-    })
-  }
+  const [form, schema] = getFormProps({
+    firstName: context.user.firstName,
+    lastName: context.user.lastName,
+    email: context.user.email,
+    phone: context.user.phone
+  })
 
-  const toggleEdit = () => {
-    setEditMode(true)
-  }
+  const onSubmit = (variables) => updateUser(variables)
 
-  const saveChanges = () => {
-    setEditMode(false)
+  const handlePress = () => {
+    if (editMode) {
+      setEditMode(false)
+    } else {
+      deleteTokenInStorage()
+    }
   }
 
   return (
@@ -47,10 +58,10 @@ export default function ProfileScreen() {
         <Layout style={styles.layout}>
           <View style={styles.profileHeader}>
             <Text style={[styles.text, styles.title]} category='h2'>
-              {value.firstName} {value.lastName}
+              {context.user.firstName} {context.user.lastName}
             </Text>
             <View style={styles.teamsWrapper}>
-              {user.mates.map((mate, index) => (
+              {context.user.mates.map((mate, index) => (
                 <View style={styles.team} key={index}>
                   <Icon fill={Colors.black} name='people-outline' />
                   <Text style={styles.teamText} category='h2'>
@@ -64,42 +75,34 @@ export default function ProfileScreen() {
             </Text>
           </View>
           <View style={styles.form}>
-            {Object.keys(user).map((key, index) => {
-              if (key !== 'mates') {
-                return (
-                  <View key={index} style={styles.inputs}>
-                    <Text
-                      style={[styles.text, styles.labelInput]}
-                      category='s1'>
-                      {key}
-                    </Text>
-                    <Input
-                      disabled={!editMode}
-                      placeholder={user[key]}
-                      value={user[key]}
-                      onChangeText={(evt) => onChangeProfile(evt, key)}
-                    />
-                  </View>
-                )
-              }
-            })}
-            <TouchableOpacity
-              style={styles.button}
-              onPress={!editMode ? toggleEdit : saveChanges}>
-              <Text style={styles.buttonLabel}>
-                {!editMode
-                  ? 'Modifier les informations'
-                  : 'Enregistrer les modifications'}
-              </Text>
-            </TouchableOpacity>
+            <Form
+              id={context.user.id}
+              data={form}
+              callback={onSubmit}
+              schema={schema}
+              editMode={editMode}
+              setEditMode={setEditMode}
+            />
+            {editMode === false && (
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() => setEditMode(true)}>
+                <Text style={styles.buttonLabel}>
+                  {!editMode
+                    ? 'Modifier les informations'
+                    : 'Enregistrer les modifications'}
+                </Text>
+              </TouchableOpacity>
+            )}
 
             <TouchableOpacity
-              style={styles.button}
-              onPress={() => SecureStore.deleteItemAsync('token', value)}>
-              <Text style={styles.buttonLabel}>Se déconnecter</Text>
+              style={[styles.button, styles.logout]}
+              onPress={handlePress}>
+              <Text style={[styles.buttonLabel, styles.logoutLabel]}>
+                {editMode ? 'Annuler' : 'Se déconnecter'}
+              </Text>
             </TouchableOpacity>
           </View>
-          {/* </View> */}
         </Layout>
       </ScrollView>
     </View>
@@ -120,6 +123,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 30,
     paddingLeft: 24,
     paddingRight: 24,
+    paddingBottom: 50,
     backgroundColor: Colors.white
   },
   mainTitle: {
@@ -177,13 +181,20 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 56,
     width: '100%',
-    marginTop: 20,
-    marginBottom: 20
+    marginTop: 20
   },
   buttonLabel: {
     color: Colors.white,
     fontSize: 16,
     fontWeight: '500',
     lineHeight: 19
+  },
+  logout: {
+    backgroundColor: 'transparent',
+    borderWidth: 1,
+    borderColor: Colors.brightOrange
+  },
+  logoutLabel: {
+    color: Colors.brightOrange
   }
 })
