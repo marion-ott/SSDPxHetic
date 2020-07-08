@@ -28,7 +28,7 @@ function App() {
     GET_SECTORS
   )
 
-  const [getData, { loading, data, error }] = useLazyQuery(GET_USER, {
+  const [getData, { loading, error }] = useLazyQuery(GET_USER, {
     onCompleted: ({ user }) => {
       handleLogin(user)
     },

@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from 'react'
+import React, { useState } from 'react'
 import Board, { onCardClick, onDataChange } from 'react-trello'
 import useGetVisits from '../hooks/useGetVisits'
 import { TableHead, Card } from '../molecules'

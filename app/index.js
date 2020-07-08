@@ -18,7 +18,6 @@ import BottomTabNavigator from './navigation/BottomTabNavigator'
 import LinkingConfiguration from './navigation/LinkingConfiguration'
 import LoginScreen from './screens/LoginScreen'
 import { AppProvider } from './context/appContext'
-import { UserProvider } from './context/userContext'
 import { DateProvider } from './context/dateContext'
 
 const Stack = createStackNavigator()
@@ -96,35 +95,33 @@ export default () => {
 
   return (
     <AppProvider value={{ context, updateContext }}>
-      <UserProvider value={context}>
-        <DateProvider value={date}>
-          <View style={styles.container}>
-            {Platform.OS === 'ios' && <StatusBar barStyle='dark-content' />}
-            <StatusBar barStyle='light-content' />
-            <NavigationContainer linking={LinkingConfiguration}>
-              <Stack.Navigator
-                screenOptions={{
-                  headerShown: false
-                }}>
-                {!context.user ? (
-                  <Stack.Screen name='Login'>
-                    {(props) => (
-                      <LoginScreen handleLogin={handleLogin} {...props} />
-                    )}
-                    {/* {() => (
+      <DateProvider value={date}>
+        <View style={styles.container}>
+          {Platform.OS === 'ios' && <StatusBar barStyle='dark-content' />}
+          <StatusBar barStyle='light-content' />
+          <NavigationContainer linking={LinkingConfiguration}>
+            <Stack.Navigator
+              screenOptions={{
+                headerShown: false
+              }}>
+              {!context.user ? (
+                <Stack.Screen name='Login'>
+                  {(props) => (
+                    <LoginScreen handleLogin={handleLogin} {...props} />
+                  )}
+                  {/* {() => (
                       <View>
                         <Text>hello</Text>
                       </View>
                     )} */}
-                  </Stack.Screen>
-                ) : (
-                  <Stack.Screen name='Root' component={BottomTabNavigator} />
-                )}
-              </Stack.Navigator>
-            </NavigationContainer>
-          </View>
-        </DateProvider>
-      </UserProvider>
+                </Stack.Screen>
+              ) : (
+                <Stack.Screen name='Root' component={BottomTabNavigator} />
+              )}
+            </Stack.Navigator>
+          </NavigationContainer>
+        </View>
+      </DateProvider>
     </AppProvider>
   )
 }
