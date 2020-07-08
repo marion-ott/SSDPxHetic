@@ -9,9 +9,27 @@ export const GET_USER = gql`
       sector {
         id
         zone
+        schedules {
+          startDate
+          endDate
+          shift {
+            startTime
+            endTime
+          }
+        }
       }
       address
       email
+      teams {
+        id
+        startDate
+        endDate
+        users {
+          id
+          firstName
+          lastName
+        }
+      }
     }
   }
 `

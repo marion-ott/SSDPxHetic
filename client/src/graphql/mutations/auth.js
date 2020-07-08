@@ -7,8 +7,27 @@ export const LOGIN = gql`
         id
         firstName
         lastName
-        email
-        role
+        teams {
+          id
+          startDate
+          endDate
+          users {
+            id
+            firstName
+          }
+        }
+        sector {
+          id
+          zone
+          schedules {
+            startDate
+            endDate
+            shift {
+              startTime
+              endTime
+            }
+          }
+        }
       }
       token
     }

@@ -10,11 +10,13 @@
     "apollo-boost": "^0.4.7",
     "apollo-client": "^2.6.8",
     "apollo-link-context": "^1.0.20",
+    "apollo-link-ws": "^1.0.20",
     "apollo-upload-client": "^12.1.0",
     "bulma": "^0.8.2",
     "formik": "^2.1.4",
     "graphql": "^15.0.0",
     "graphql-tag": "^2.10.1",
+    "moment": "^2.27.0",
     "prop-types": "^15.7.2",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
@@ -22,6 +24,7 @@
     "react-scripts": "3.4.1",
     "react-trello": "^2.2.6",
     "styled-components": "^5.1.0",
+    "subscriptions-transport-ws": "^0.9.16",
     "yup": "^0.28.5"
   },
   "scripts": {

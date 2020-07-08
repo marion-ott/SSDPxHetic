@@ -14,6 +14,7 @@ const schema = yup.object({
 const Login = ({ handleLogin }) => {
   const [login, { client, loading, error }] = useMutation(LOGIN, {
     onCompleted({ login }) {
+      console.log(login)
       handleLogin(login.user)
       localStorage.setItem('token', login.token)
       client.resetStore()

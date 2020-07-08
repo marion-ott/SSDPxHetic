@@ -1,19 +1,18 @@
 import React, { useContext } from 'react'
 import { useLocation } from 'react-router-dom'
 import { Link } from 'react-router-dom'
-import userContext from '../context/userContext'
+import appContext from '../context/appContext'
 import { Dropdown } from '../molecules'
 import { Logo, Button, Icon } from '../atoms'
 import { navEls } from '../global/data'
 
 const Nav = ({ setAuth }) => {
-  const { user } = useContext(userContext)
+  const { context, setContext } = useContext(appContext)
   const { pathname } = useLocation()
 
   const handleLogout = () => {
-    setAuth({
-      user: null,
-      loggedIn: false
+    setContext({
+      user: null
     })
     localStorage.removeItem('token')
   }
@@ -49,7 +48,7 @@ const Nav = ({ setAuth }) => {
                 {/* <Icon classProp='fa-bell' /> */}
                 <Dropdown
                   downicon={true}
-                  title={user.firstName}
+                  title={context.user.firstName}
                   titleicon='fa-user'>
                   <Link to='/' className='dropdown-item'>
                     Mon profil
