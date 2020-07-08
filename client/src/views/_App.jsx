@@ -6,6 +6,7 @@ import {
   Route
 } from 'react-router-dom'
 import { AppProvider } from '../context/appContext'
+import { DateProvider } from '../context/dateContext'
 import { SectorProvider } from '../context/sectorContext'
 import { useQuery, useLazyQuery } from '@apollo/react-hooks'
 import { GET_SECTORS } from './../graphql/queries/sectors'
@@ -102,63 +103,65 @@ function App() {
 
   return (
     <AppProvider value={{ context, setContext }}>
-      <SectorProvider value={sectors}>
-        <Router>
-          {context.user && <Nav />}
-          <Switch>
-            <Route
-              exact
-              path='/login'
-              render={() =>
-                !context.user ? (
-                  <Login handleLogin={handleLogin} />
-                ) : (
-                  <Redirect to='/' />
-                )
-              }
-            />
-            <Route
-              exact
-              path='/'
-              render={() =>
-                context.user ? <Home /> : <Redirect to='/login' />
-              }
-            />
-            <Route
-              exact
-              path='/users'
-              render={() =>
-                context.user ? <Employees /> : <Redirect to='/login' />
-              }
-            />
-            <Route
-              path='/users/:id'
-              render={() =>
-                context.user ? <Details /> : <Redirect to='/login' />
-              }
-            />
-            <Route
-              exact
-              path='/hotels'
-              render={() =>
-                context.user ? <Hotels /> : <Redirect to='/login' />
-              }
-            />
-            <Route
-              path='/hotels/:id'
-              render={() =>
-                context.user ? <Details /> : <Redirect to='/login' />
-              }
-            />
-            <Route
-              path='*'
-              render={() =>
-                context.user ? <Home /> : <Redirect to='/login' />
-              }
-            />
-          </Switch>
-        </Router>
-      </SectorProvider>
+      <DateProvider value={date}>
+        <SectorProvider value={sectors}>
+          <Router>
+            {context.user && <Nav />}
+            <Switch>
+              <Route
+                exact
+                path='/login'
+                render={() =>
+                  !context.user ? (
+                    <Login handleLogin={handleLogin} />
+                  ) : (
+                    <Redirect to='/' />
+                  )
+                }
+              />
+              <Route
+                exact
+                path='/'
+                render={() =>
+                  context.user ? <Home /> : <Redirect to='/login' />
+                }
+              />
+              <Route
+                exact
+                path='/users'
+                render={() =>
+                  context.user ? <Employees /> : <Redirect to='/login' />
+                }
+              />
+              <Route
+                path='/users/:id'
+                render={() =>
+                  context.user ? <Details /> : <Redirect to='/login' />
+                }
+              />
+              <Route
+                exact
+                path='/hotels'
+                render={() =>
+                  context.user ? <Hotels /> : <Redirect to='/login' />
+                }
+              />
+              <Route
+                path='/hotels/:id'
+                render={() =>
+                  context.user ? <Details /> : <Redirect to='/login' />
+                }
+              />
+              <Route
+                path='*'
+                render={() =>
+                  context.user ? <Home /> : <Redirect to='/login' />
+                }
+              />
+            </Switch>
+          </Router>
+        </SectorProvider>
+      </DateProvider>
     </AppProvider>
   )
 }

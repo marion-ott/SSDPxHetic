@@ -1,13 +1,33 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import Board, { onCardClick, onDataChange } from 'react-trello'
+import dateContext from '../context/dateContext'
+import appContext from '../context/appContext'
 import useGetVisits from '../hooks/useGetVisits'
 import { TableHead, Card } from '../molecules'
 import { Title } from '../atoms'
+import { formatDate } from '../utils'
 
 export default () => {
   const [planningId, setPlanningId] = useState(null)
   const [draggablePlanning, setDraggablePlanning] = useState(null)
-  const [loading, setLoading] = useState(true)
+  // const [loading, setLoading] = useState(true)
+  const { context } = useContext(appContext)
+  const { today } = useContext(dateContext)
+  const [selected, setSelected] = useState(today)
+
+  const { loading, error, data } = useGetVisits(
+    context.teamId,
+    formatDate(selected),
+    [selected]
+  )
+  const [visits, setVisits] = useState(null)
+
+  useEffect(() => {
+    if (data) {
+      console.log(data)
+      setVisits(data.myVisits)
+    }
+  }, [data])
 
   const format = (array) => {
     const planningFormatted = {
@@ -45,7 +65,7 @@ export default () => {
 
       <div className='Planning'>
         <TableHead />
-        {loading ? (
+        {/* {loading ? (
           <p>loading</p>
         ) : (
           <Board
@@ -58,7 +78,7 @@ export default () => {
             onCardDelete={onCardDelete}
             data={draggablePlanning}
           />
-        )}
+        )} */}
       </div>
     </section>
   )
