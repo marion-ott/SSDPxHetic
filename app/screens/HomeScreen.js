@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, useEffect } from 'react'
 import moment from 'moment'
 import useGetVisits from '../hooks/useGetVisits'
 import { StyleSheet, View, ActivityIndicator, ScrollView } from 'react-native'
@@ -8,58 +8,24 @@ import dateContext from '../context/dateContext'
 import { RecapScreen } from './'
 import { CardList } from '../components/organisms'
 import { Details } from '../components/molecules'
+import userContext from '../context/userContext'
 import Colors from '../constants/Colors'
 
 export default function HomeScreen() {
 
     const { user, teamId, schedule } = useContext(userContext)
-    const { hotels, rooms } = useContext(recapContext)
-    const { today } = useContext(dateContext)
     const [visits, setVisits] = useState([])
     const [details, setDetails] = useState([])
     const [recap, setRecap] = useState([])
     const { today } = useContext(dateContext)
     const [visitsCompleted, setVisitsCompleted] = useState(false)
 
-      //TODO: trigger recap display
-      const onVisitsCompleted = () => {
+    //TODO: trigger recap display
+    const onVisitsCompleted = () => {
         setVisitsCompleted(true)
-      }
+    }
 
     const { loading, error, data } = useGetVisits(teamId, today)
-
-    useEffect(() => {
-        if (data) {
-            const { myVisits } = data
-
-            let sum = 0
-            myVisits.forEach(({ hotel }) => (sum += hotel.rooms))
-
-            setRecap({
-                hotels: data.myVisits.length,
-                rooms: sum
-            })
-            setVisits(myVisits)
-            setDetails([
-                {
-                    label: 'Horaires',
-                    value: `${schedule.startTime}-${schedule.endTime}`
-                },
-                {
-                    label: 'Hôtels',
-                    value: data.myVisits.length
-                },
-                {
-                    label: 'Chambres',
-                    value: sum
-                }
-            ])
-        }
-    }, [data])
-
-    if (loading) {
-        return <ActivityIndicator size='small' color={Colors.main} />
-    }
 
     return (
         <View style={{
@@ -107,10 +73,10 @@ export default function HomeScreen() {
                         </View>
                         {visits && (
                             <CardList
-                             onComplete={onVisitsCompleted}
-                             startable={true}
-                             label={'Visites'}
-                           />
+                                onComplete={onVisitsCompleted}
+                                startable={true}
+                                label={'Visites'}
+                            />
                         )}
                     </View>
                 </View>
