@@ -395,6 +395,8 @@ export type UserOrderByInput =
   | "address_DESC"
   | "email_ASC"
   | "email_DESC"
+  | "phone_ASC"
+  | "phone_DESC"
   | "password_ASC"
   | "password_DESC"
   | "createdAt_ASC"
@@ -443,6 +445,8 @@ export type HotelOrderByInput =
   | "zipCode_DESC"
   | "city_ASC"
   | "city_DESC"
+  | "phone_ASC"
+  | "phone_DESC"
   | "active_ASC"
   | "active_DESC"
   | "rooms_ASC"
@@ -607,6 +611,20 @@ export interface UserWhereInput {
   email_not_starts_with?: Maybe<String>;
   email_ends_with?: Maybe<String>;
   email_not_ends_with?: Maybe<String>;
+  phone?: Maybe<String>;
+  phone_not?: Maybe<String>;
+  phone_in?: Maybe<String[] | String>;
+  phone_not_in?: Maybe<String[] | String>;
+  phone_lt?: Maybe<String>;
+  phone_lte?: Maybe<String>;
+  phone_gt?: Maybe<String>;
+  phone_gte?: Maybe<String>;
+  phone_contains?: Maybe<String>;
+  phone_not_contains?: Maybe<String>;
+  phone_starts_with?: Maybe<String>;
+  phone_not_starts_with?: Maybe<String>;
+  phone_ends_with?: Maybe<String>;
+  phone_not_ends_with?: Maybe<String>;
   password?: Maybe<String>;
   password_not?: Maybe<String>;
   password_in?: Maybe<String[] | String>;
@@ -794,6 +812,20 @@ export interface HotelWhereInput {
   city_not_starts_with?: Maybe<String>;
   city_ends_with?: Maybe<String>;
   city_not_ends_with?: Maybe<String>;
+  phone?: Maybe<String>;
+  phone_not?: Maybe<String>;
+  phone_in?: Maybe<String[] | String>;
+  phone_not_in?: Maybe<String[] | String>;
+  phone_lt?: Maybe<String>;
+  phone_lte?: Maybe<String>;
+  phone_gt?: Maybe<String>;
+  phone_gte?: Maybe<String>;
+  phone_contains?: Maybe<String>;
+  phone_not_contains?: Maybe<String>;
+  phone_starts_with?: Maybe<String>;
+  phone_not_starts_with?: Maybe<String>;
+  phone_ends_with?: Maybe<String>;
+  phone_not_ends_with?: Maybe<String>;
   active?: Maybe<Boolean>;
   active_not?: Maybe<Boolean>;
   rooms?: Maybe<Int>;
@@ -1219,6 +1251,7 @@ export interface HotelCreateInput {
   address: String;
   zipCode: Int;
   city: String;
+  phone?: Maybe<String>;
   active: Boolean;
   rooms: Int;
   lastVisit?: Maybe<DateTimeInput>;
@@ -1257,6 +1290,7 @@ export interface UserCreateWithoutSectorInput {
   role: Role;
   address?: Maybe<String>;
   email: String;
+  phone?: Maybe<String>;
   password?: Maybe<String>;
   teams?: Maybe<TeamCreateManyWithoutUsersInput>;
 }
@@ -1302,6 +1336,7 @@ export interface HotelCreateWithoutSectorInput {
   address: String;
   zipCode: Int;
   city: String;
+  phone?: Maybe<String>;
   active: Boolean;
   rooms: Int;
   lastVisit?: Maybe<DateTimeInput>;
@@ -1353,6 +1388,7 @@ export interface UserCreateWithoutTeamsInput {
   sector?: Maybe<SectorCreateOneWithoutUsersInput>;
   address?: Maybe<String>;
   email: String;
+  phone?: Maybe<String>;
   password?: Maybe<String>;
 }
 
@@ -1408,6 +1444,7 @@ export interface HotelCreateWithoutVisitsInput {
   address: String;
   zipCode: Int;
   city: String;
+  phone?: Maybe<String>;
   active: Boolean;
   rooms: Int;
   lastVisit?: Maybe<DateTimeInput>;
@@ -1469,6 +1506,7 @@ export interface HotelUpdateInput {
   address?: Maybe<String>;
   zipCode?: Maybe<Int>;
   city?: Maybe<String>;
+  phone?: Maybe<String>;
   active?: Maybe<Boolean>;
   rooms?: Maybe<Int>;
   lastVisit?: Maybe<DateTimeInput>;
@@ -1527,6 +1565,7 @@ export interface UserUpdateWithoutSectorDataInput {
   role?: Maybe<Role>;
   address?: Maybe<String>;
   email?: Maybe<String>;
+  phone?: Maybe<String>;
   password?: Maybe<String>;
   teams?: Maybe<TeamUpdateManyWithoutUsersInput>;
 }
@@ -1611,6 +1650,7 @@ export interface HotelUpdateWithoutSectorDataInput {
   address?: Maybe<String>;
   zipCode?: Maybe<Int>;
   city?: Maybe<String>;
+  phone?: Maybe<String>;
   active?: Maybe<Boolean>;
   rooms?: Maybe<Int>;
   lastVisit?: Maybe<DateTimeInput>;
@@ -1701,6 +1741,7 @@ export interface UserUpdateWithoutTeamsDataInput {
   sector?: Maybe<SectorUpdateOneWithoutUsersInput>;
   address?: Maybe<String>;
   email?: Maybe<String>;
+  phone?: Maybe<String>;
   password?: Maybe<String>;
 }
 
@@ -1800,6 +1841,7 @@ export interface HotelUpdateWithoutVisitsDataInput {
   address?: Maybe<String>;
   zipCode?: Maybe<Int>;
   city?: Maybe<String>;
+  phone?: Maybe<String>;
   active?: Maybe<Boolean>;
   rooms?: Maybe<Int>;
   lastVisit?: Maybe<DateTimeInput>;
@@ -2310,6 +2352,20 @@ export interface UserScalarWhereInput {
   email_not_starts_with?: Maybe<String>;
   email_ends_with?: Maybe<String>;
   email_not_ends_with?: Maybe<String>;
+  phone?: Maybe<String>;
+  phone_not?: Maybe<String>;
+  phone_in?: Maybe<String[] | String>;
+  phone_not_in?: Maybe<String[] | String>;
+  phone_lt?: Maybe<String>;
+  phone_lte?: Maybe<String>;
+  phone_gt?: Maybe<String>;
+  phone_gte?: Maybe<String>;
+  phone_contains?: Maybe<String>;
+  phone_not_contains?: Maybe<String>;
+  phone_starts_with?: Maybe<String>;
+  phone_not_starts_with?: Maybe<String>;
+  phone_ends_with?: Maybe<String>;
+  phone_not_ends_with?: Maybe<String>;
   password?: Maybe<String>;
   password_not?: Maybe<String>;
   password_in?: Maybe<String[] | String>;
@@ -2357,6 +2413,7 @@ export interface UserUpdateManyDataInput {
   role?: Maybe<Role>;
   address?: Maybe<String>;
   email?: Maybe<String>;
+  phone?: Maybe<String>;
   password?: Maybe<String>;
 }
 
@@ -2464,6 +2521,20 @@ export interface HotelScalarWhereInput {
   city_not_starts_with?: Maybe<String>;
   city_ends_with?: Maybe<String>;
   city_not_ends_with?: Maybe<String>;
+  phone?: Maybe<String>;
+  phone_not?: Maybe<String>;
+  phone_in?: Maybe<String[] | String>;
+  phone_not_in?: Maybe<String[] | String>;
+  phone_lt?: Maybe<String>;
+  phone_lte?: Maybe<String>;
+  phone_gt?: Maybe<String>;
+  phone_gte?: Maybe<String>;
+  phone_contains?: Maybe<String>;
+  phone_not_contains?: Maybe<String>;
+  phone_starts_with?: Maybe<String>;
+  phone_not_starts_with?: Maybe<String>;
+  phone_ends_with?: Maybe<String>;
+  phone_not_ends_with?: Maybe<String>;
   active?: Maybe<Boolean>;
   active_not?: Maybe<Boolean>;
   rooms?: Maybe<Int>;
@@ -2547,6 +2618,7 @@ export interface HotelUpdateManyDataInput {
   address?: Maybe<String>;
   zipCode?: Maybe<Int>;
   city?: Maybe<String>;
+  phone?: Maybe<String>;
   active?: Maybe<Boolean>;
   rooms?: Maybe<Int>;
   lastVisit?: Maybe<DateTimeInput>;
@@ -2585,6 +2657,7 @@ export interface HotelUpdateManyMutationInput {
   address?: Maybe<String>;
   zipCode?: Maybe<Int>;
   city?: Maybe<String>;
+  phone?: Maybe<String>;
   active?: Maybe<Boolean>;
   rooms?: Maybe<Int>;
   lastVisit?: Maybe<DateTimeInput>;
@@ -2618,6 +2691,7 @@ export interface HotelCreateWithoutResidentsInput {
   address: String;
   zipCode: Int;
   city: String;
+  phone?: Maybe<String>;
   active: Boolean;
   rooms: Int;
   lastVisit?: Maybe<DateTimeInput>;
@@ -2653,6 +2727,7 @@ export interface HotelUpdateWithoutResidentsDataInput {
   address?: Maybe<String>;
   zipCode?: Maybe<Int>;
   city?: Maybe<String>;
+  phone?: Maybe<String>;
   active?: Maybe<Boolean>;
   rooms?: Maybe<Int>;
   lastVisit?: Maybe<DateTimeInput>;
@@ -2857,6 +2932,7 @@ export interface UserCreateInput {
   sector?: Maybe<SectorCreateOneWithoutUsersInput>;
   address?: Maybe<String>;
   email: String;
+  phone?: Maybe<String>;
   password?: Maybe<String>;
   teams?: Maybe<TeamCreateManyWithoutUsersInput>;
 }
@@ -2869,6 +2945,7 @@ export interface UserUpdateInput {
   sector?: Maybe<SectorUpdateOneWithoutUsersInput>;
   address?: Maybe<String>;
   email?: Maybe<String>;
+  phone?: Maybe<String>;
   password?: Maybe<String>;
   teams?: Maybe<TeamUpdateManyWithoutUsersInput>;
 }
@@ -2880,6 +2957,7 @@ export interface UserUpdateManyMutationInput {
   role?: Maybe<Role>;
   address?: Maybe<String>;
   email?: Maybe<String>;
+  phone?: Maybe<String>;
   password?: Maybe<String>;
 }
 
@@ -3014,6 +3092,7 @@ export interface Hotel {
   address: String;
   zipCode: Int;
   city: String;
+  phone?: String;
   active: Boolean;
   rooms: Int;
   lastVisit?: DateTimeOutput;
@@ -3033,6 +3112,7 @@ export interface HotelPromise extends Promise<Hotel>, Fragmentable {
   address: () => Promise<String>;
   zipCode: () => Promise<Int>;
   city: () => Promise<String>;
+  phone: () => Promise<String>;
   active: () => Promise<Boolean>;
   rooms: () => Promise<Int>;
   lastVisit: () => Promise<DateTimeOutput>;
@@ -3073,6 +3153,7 @@ export interface HotelSubscription
   address: () => Promise<AsyncIterator<String>>;
   zipCode: () => Promise<AsyncIterator<Int>>;
   city: () => Promise<AsyncIterator<String>>;
+  phone: () => Promise<AsyncIterator<String>>;
   active: () => Promise<AsyncIterator<Boolean>>;
   rooms: () => Promise<AsyncIterator<Int>>;
   lastVisit: () => Promise<AsyncIterator<DateTimeOutput>>;
@@ -3113,6 +3194,7 @@ export interface HotelNullablePromise
   address: () => Promise<String>;
   zipCode: () => Promise<Int>;
   city: () => Promise<String>;
+  phone: () => Promise<String>;
   active: () => Promise<Boolean>;
   rooms: () => Promise<Int>;
   lastVisit: () => Promise<DateTimeOutput>;
@@ -3291,6 +3373,7 @@ export interface User {
   role: Role;
   address?: String;
   email: String;
+  phone?: String;
   password?: String;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
@@ -3305,6 +3388,7 @@ export interface UserPromise extends Promise<User>, Fragmentable {
   sector: <T = SectorPromise>() => T;
   address: () => Promise<String>;
   email: () => Promise<String>;
+  phone: () => Promise<String>;
   password: () => Promise<String>;
   teams: <T = FragmentableArray<Team>>(args?: {
     where?: TeamWhereInput;
@@ -3330,6 +3414,7 @@ export interface UserSubscription
   sector: <T = SectorSubscription>() => T;
   address: () => Promise<AsyncIterator<String>>;
   email: () => Promise<AsyncIterator<String>>;
+  phone: () => Promise<AsyncIterator<String>>;
   password: () => Promise<AsyncIterator<String>>;
   teams: <T = Promise<AsyncIterator<TeamSubscription>>>(args?: {
     where?: TeamWhereInput;
@@ -3355,6 +3440,7 @@ export interface UserNullablePromise
   sector: <T = SectorPromise>() => T;
   address: () => Promise<String>;
   email: () => Promise<String>;
+  phone: () => Promise<String>;
   password: () => Promise<String>;
   teams: <T = FragmentableArray<Team>>(args?: {
     where?: TeamWhereInput;
@@ -4164,6 +4250,7 @@ export interface HotelPreviousValues {
   address: String;
   zipCode: Int;
   city: String;
+  phone?: String;
   active: Boolean;
   rooms: Int;
   lastVisit?: DateTimeOutput;
@@ -4185,6 +4272,7 @@ export interface HotelPreviousValuesPromise
   address: () => Promise<String>;
   zipCode: () => Promise<Int>;
   city: () => Promise<String>;
+  phone: () => Promise<String>;
   active: () => Promise<Boolean>;
   rooms: () => Promise<Int>;
   lastVisit: () => Promise<DateTimeOutput>;
@@ -4206,6 +4294,7 @@ export interface HotelPreviousValuesSubscription
   address: () => Promise<AsyncIterator<String>>;
   zipCode: () => Promise<AsyncIterator<Int>>;
   city: () => Promise<AsyncIterator<String>>;
+  phone: () => Promise<AsyncIterator<String>>;
   active: () => Promise<AsyncIterator<Boolean>>;
   rooms: () => Promise<AsyncIterator<Int>>;
   lastVisit: () => Promise<AsyncIterator<DateTimeOutput>>;
@@ -4515,6 +4604,7 @@ export interface UserPreviousValues {
   role: Role;
   address?: String;
   email: String;
+  phone?: String;
   password?: String;
   createdAt: DateTimeOutput;
   updatedAt: DateTimeOutput;
@@ -4530,6 +4620,7 @@ export interface UserPreviousValuesPromise
   role: () => Promise<Role>;
   address: () => Promise<String>;
   email: () => Promise<String>;
+  phone: () => Promise<String>;
   password: () => Promise<String>;
   createdAt: () => Promise<DateTimeOutput>;
   updatedAt: () => Promise<DateTimeOutput>;
@@ -4545,6 +4636,7 @@ export interface UserPreviousValuesSubscription
   role: () => Promise<AsyncIterator<Role>>;
   address: () => Promise<AsyncIterator<String>>;
   email: () => Promise<AsyncIterator<String>>;
+  phone: () => Promise<AsyncIterator<String>>;
   password: () => Promise<AsyncIterator<String>>;
   createdAt: () => Promise<AsyncIterator<DateTimeOutput>>;
   updatedAt: () => Promise<AsyncIterator<DateTimeOutput>>;

@@ -3,11 +3,11 @@
 ### Install dependencies
 ```shell
 $ cd client
-$ yarn install
+$ yarn
 $ cd server
-$ yarn install
+$ yarn
 $ cd app
-$ expo install
+$ yarn
 ```
 
 ### Create environment variables file
@@ -39,6 +39,7 @@ $ docker exec ssdpxhetic_server_1 yarn deploy
 
 ```shell
 $ docker exec ssdpxhetic_server_1 yarn data --import
+$ docker exec ssdpxhetic_server_1 yarn task
 ```
 
 ###### Quit process (ctrl+c) once import is complete

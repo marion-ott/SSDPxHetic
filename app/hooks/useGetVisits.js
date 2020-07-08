@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { useQuery, useLazyQuery } from '@apollo/react-hooks'
+import { useLazyQuery } from '@apollo/react-hooks'
 import { GET_VISITS } from './../graphql/queries/visits'
 
 const useGetVisits = (teamId, date, deps = []) => {

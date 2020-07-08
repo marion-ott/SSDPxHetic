@@ -1,143 +1,179 @@
 import React, { useState } from 'react'
+import { useMutation } from '@apollo/react-hooks'
+import { UPDATE_VISIT } from '../../graphql/mutations/visits'
 import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import { Card, Text, Popover, Layout, Button } from '@ui-kitten/components'
 import Icon from '../atoms/Icon'
+import OpenURLButtonfrom from '../atoms/OpenURLButton'
+import CardHead from '../atoms/CardHead'
 import Colors from '../../constants/Colors'
 
-import OpenURLButton from './OpenURLButton'
-
 const HotelCard = ({
-  backgroundColor,
-  name,
-  address,
-  city,
-  zipCode,
-  rooms
+  id,
+  onChange,
+  startable,
+  disabled,
+  status: originalStatus,
+  ...hotel
 }) => {
-  const [actions, setActions] = useState(false)
-  const [options, setOptions] = useState(false)
+  const [status, setStatus] = useState(originalStatus)
 
-  const displayStartOrReport = () => {
-    setActions(!actions)
+  const [updateVisit, { loading, data, error }] = useMutation(UPDATE_VISIT, {
+    onCompleted: ({ updateVisit: { status } }) => {
+      onChange(id, status)
+      setStatus(status)
+    },
+    onError: (error) => console.error('ERREUR: ', error.message)
+  })
+
+  const onUpdate = () => {
+    const variables = {
+      id,
+      data: {
+        status: ''
+      }
+    }
+
+    if (status === 'UPCOMING') variables.data.status = 'ONGOING'
+    if (status === 'ONGOING') variables.data.status = 'DONE'
+    if (status === 'DONE') variables.data.status = 'UPCOMING'
+
+    updateVisit({ variables })
   }
 
-  const renderToggleButton = () => (
-    <TouchableOpacity
-      onPress={() => setOptions(true)}
-      activeOpacity={0.7}
-      style={styles.moreIcon}>
-      <Icon name='more-horizontal-outline' size={24} fill={Colors.black} />
-    </TouchableOpacity>
-  )
-
-  const CardHead = (props) => (
-    <View style={[styles.container, styles.cardHead]}>
-      <Text style={styles.title} category='h6'>
-        {name}
-      </Text>
-      <Popover
-        visible={options}
-        anchor={renderToggleButton}
-        onBackdropPress={() => setOptions(false)}>
-        <Layout style={styles.content}>
-          <TouchableOpacity activeOpacity={0.7} style={styles.touchableButton}>
-            <Text style={styles.TextStyle}>Itinéraire</Text>
-          </TouchableOpacity>
-          <View style={styles.callButton}>
-            <OpenURLButton url={'tel:${0652033775}'}>Appeler</OpenURLButton>
-          </View>
-        </Layout>
-      </Popover>
-    </View>
-  )
-
+  console.log(hotel.name, disabled, status)
+  
   return (
     <Card
-      onPress={() => displayStartOrReport()}
-      style={[styles.card, { backgroundColor }]}
-      header={CardHead}>
-      <View style={styles.content}>
-        <View>
-          <Text style={styles.text} category='s2'>
-            {address},
-          </Text>
-          <Text style={styles.text} category='s2'>
-            {zipCode} {city}
-          </Text>
+      style={[styles.card, styles[status]]}
+    >
+      <CardHead {...hotel} status={status} disabled={disabled} />
+      {/* DISPLAY INFO */}
+      {status !== 'DONE' && (
+        <View style={styles.content}>
+          <View>
+            <Text
+              style={[
+                styles.text,
+                disabled
+                  ? texts.grey
+                  : !disabled && (status === 'ONGOING')
+                  ? texts.white
+                  : texts.black
+              ]}
+              category='s2'>
+              {hotel.address},
+            </Text>
+            <Text
+              style={[
+                styles.text,
+                status === 'ONGOING' && !disabled ? texts.white : texts.black,
+                disabled ? texts.grey : ''
+              ]}
+              category='s2'>
+              {hotel.zipCode} {hotel.city}
+            </Text>
+          </View>
+          <View style={styles.room}>
+            <Icon
+              style={styles.roomIcon}
+              name='briefcase-outline'
+              fill={status === 'ONGOING' ? '#ffffff' : '#FF8139'}
+              width={18}
+              height={18}
+            />
+            <Text
+              style={[
+                styles.text,
+                { marginLeft: 5, fontWeight: 'bold' },
+                status === 'ONGOING' ? texts.white : texts.black
+              ]}
+              category='s2'>
+              {hotel.rooms}
+            </Text>
+          </View>
         </View>
-        <View style={styles.room}>
-          <Icon
-            style={styles.roomIcon}
-            name='briefcase-outline'
-            fill='#B97D08'
-            width={18}
-            height={18}
-          />
-          <Text style={(styles.text, { marginLeft: 5 })} category='s2'>
-            {rooms}
-          </Text>
+      )}
+      {/* DISPLAY BUTTS */}
+      {startable && status !== 'DONE' && !disabled && (
+        <View style={styles.buttons}>
+          {status == 'UPCOMING' && (
+            <TouchableOpacity
+              // onPress={() => onChange(id, 'startVisit')}
+              activeOpacity={0.7}
+              style={[styles.touchableButton, styles.button]}>
+              <View style={styles.borderLine}>
+                <Text
+                  style={[styles.text, styles.report, styles.bold]}
+                  category='h6'>
+                  Reporter
+                </Text>
+              </View>
+            </TouchableOpacity>
+          )}
+          <TouchableOpacity
+            onPress={onUpdate}
+            activeOpacity={0.7}
+            style={styles.touchableButton}>
+            <View
+              style={[
+                styles.startContainer,
+                styles.button,
+                startable && status === "UPCOMING"
+                  ? backgrounds.brightOrange
+                  : backgrounds.white
+              ]}>
+              {status == 'UPCOMING' && (
+                <View style={styles.translate}>
+                  <Icon
+                    style={styles.startIcon}
+                    name='play-circle-outline'
+                    width={24}
+                    height={24}
+                    fill={!disabled ? Colors.white : Colors.brightOrange}
+                  />
+                </View>
+              )}
+              <Text
+                appearance='alternative'
+                style={[
+                  styles.text,
+                  styles.startLabel,
+                  startable && status === "UPCOMING" ? texts.whiteBold : texts.orangeBold
+                ]}
+                category='h6'>
+                {status == 'UPCOMING' ? 'Commencer' : 'Terminer la visite'}
+              </Text>
+            </View>
+          </TouchableOpacity>
         </View>
-      </View>
-      <View style={styles.cardopen}>
-        <View style={styles.reportContainer}>
-          <Text style={[styles.text, styles.report]} category='h6'>
-            Reporter
-          </Text>
-        </View>
-        <View style={styles.startContainer}>
-          <Icon
-            style={styles.startIcon}
-            name='play-circle-outline'
-            width={24}
-            height={24}
-            fill='white'
-          />
-          <Text
-            appearance='alternative'
-            style={[styles.text, styles.startLabel]}
-            category='h6'>
-            Commencer
-          </Text>
-        </View>
-      </View>
+      )}
     </Card>
   )
 }
+
 const styles = StyleSheet.create({
-  cardHead: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingHorizontal: 24,
-    paddingVertical: 12
-  },
   card: {
     flex: 1,
-    backgroundColor: 'blue',
     borderRadius: 8,
     marginBottom: 7,
-    borderWidth: 0
+    borderWidth: 0,
+    backgroundColor: Colors.lightOrange
   },
-  touchableButton: {
-    marginHorizontal: 10,
-    paddingVertical: 5
+  UPCOMING: {
+    // backgroundColor: Colors.brightOrange,
   },
-  callButton: {
-    marginHorizontal: 10,
-    paddingVertical: 5
+  ONGOING: {
+    backgroundColor: Colors.brightOrange
   },
-  listview: {
-    padding: 10
+  DONE: {
+    // backgroundColor: Colors.lightOrange,
   },
   content: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    padding: 0
-  },
-  headerContain: {
-    padding: 12
+    paddingTop: 8,
   },
   room: {
     display: 'flex',
@@ -147,44 +183,91 @@ const styles = StyleSheet.create({
   roomIcon: {
     marginRight: 4
   },
-  cardopen: {
+  buttons: {
     marginTop: 14,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center'
   },
+  touchableButton: {
+    flex: 1,
+    height: 48,
+  },
+  button: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 18,
+    borderRadius: 40
+  },
   report: {
     color: Colors.brightOrange,
     textAlign: 'center'
-  },
-  title: {
-    fontSize: 16
   },
   text: {
     fontSize: 14
   },
   startContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: Colors.brightOrange,
-    paddingVertical: 12,
-    paddingHorizontal: 18,
-    borderRadius: 40
-  },
-  reportContainer: {
-    alignItems: 'center'
+    // backgroundColor: Colors.brightOrange
   },
   startLabel: {
     color: 'white',
     textAlign: 'center'
   },
+  translate: {
+    transform: [{ translateX: -10 }]
+  },
   borderLine: {
     borderBottomWidth: 1,
     textAlign: 'center',
     borderBottomColor: Colors.brightOrange,
-    width: 70
+    width: 48
+  },
+  bold: {
+    fontWeight: 'bold'
+  }
+})
+
+const backgrounds = StyleSheet.create({
+  lightOrange: {
+    backgroundColor: Colors.lightOrange
+  },
+  brightOrange: {
+    backgroundColor: Colors.brightOrange
+  },
+  white: {
+    backgroundColor: Colors.white
+  }
+})
+
+const texts = StyleSheet.create({
+  black: {
+    color: Colors.tabIconDefault
+  },
+  blackBold: {
+    color: Colors.tabIconDefault,
+    fontWeight: 'bold'
+  },
+  white: {
+    color: Colors.white
+  },
+  whiteBold: {
+    color: Colors.white,
+    fontWeight: 'bold'
+  },
+  grey: {
+    color: Colors.darkGrey
+  },
+  greyBold: {
+    color: Colors.darkGrey,
+    fontWeight: 'bold'
+  },
+  orangeBold: {
+    color: Colors.brightOrange,
+    fontWeight: 'bold'
   }
 })
 

@@ -51,7 +51,7 @@ const Query = {
 
 		return {
 			success: true,
-			user
+			id
 		}
 	},
 

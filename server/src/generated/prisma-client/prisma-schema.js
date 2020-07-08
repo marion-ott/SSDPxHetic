@@ -54,6 +54,7 @@ type Hotel {
   address: String!
   zipCode: Int!
   city: String!
+  phone: String
   active: Boolean!
   rooms: Int!
   lastVisit: DateTime
@@ -82,6 +83,7 @@ input HotelCreateInput {
   address: String!
   zipCode: Int!
   city: String!
+  phone: String
   active: Boolean!
   rooms: Int!
   lastVisit: DateTime
@@ -117,6 +119,7 @@ input HotelCreateWithoutResidentsInput {
   address: String!
   zipCode: Int!
   city: String!
+  phone: String
   active: Boolean!
   rooms: Int!
   lastVisit: DateTime
@@ -136,6 +139,7 @@ input HotelCreateWithoutSectorInput {
   address: String!
   zipCode: Int!
   city: String!
+  phone: String
   active: Boolean!
   rooms: Int!
   lastVisit: DateTime
@@ -155,6 +159,7 @@ input HotelCreateWithoutVisitsInput {
   address: String!
   zipCode: Int!
   city: String!
+  phone: String
   active: Boolean!
   rooms: Int!
   lastVisit: DateTime
@@ -186,6 +191,8 @@ enum HotelOrderByInput {
   zipCode_DESC
   city_ASC
   city_DESC
+  phone_ASC
+  phone_DESC
   active_ASC
   active_DESC
   rooms_ASC
@@ -214,6 +221,7 @@ type HotelPreviousValues {
   address: String!
   zipCode: Int!
   city: String!
+  phone: String
   active: Boolean!
   rooms: Int!
   lastVisit: DateTime
@@ -312,6 +320,20 @@ input HotelScalarWhereInput {
   city_not_starts_with: String
   city_ends_with: String
   city_not_ends_with: String
+  phone: String
+  phone_not: String
+  phone_in: [String!]
+  phone_not_in: [String!]
+  phone_lt: String
+  phone_lte: String
+  phone_gt: String
+  phone_gte: String
+  phone_contains: String
+  phone_not_contains: String
+  phone_starts_with: String
+  phone_not_starts_with: String
+  phone_ends_with: String
+  phone_not_ends_with: String
   active: Boolean
   active_not: Boolean
   rooms: Int
@@ -408,6 +430,7 @@ input HotelUpdateInput {
   address: String
   zipCode: Int
   city: String
+  phone: String
   active: Boolean
   rooms: Int
   lastVisit: DateTime
@@ -427,6 +450,7 @@ input HotelUpdateManyDataInput {
   address: String
   zipCode: Int
   city: String
+  phone: String
   active: Boolean
   rooms: Int
   lastVisit: DateTime
@@ -443,6 +467,7 @@ input HotelUpdateManyMutationInput {
   address: String
   zipCode: Int
   city: String
+  phone: String
   active: Boolean
   rooms: Int
   lastVisit: DateTime
@@ -492,6 +517,7 @@ input HotelUpdateWithoutResidentsDataInput {
   address: String
   zipCode: Int
   city: String
+  phone: String
   active: Boolean
   rooms: Int
   lastVisit: DateTime
@@ -510,6 +536,7 @@ input HotelUpdateWithoutSectorDataInput {
   address: String
   zipCode: Int
   city: String
+  phone: String
   active: Boolean
   rooms: Int
   lastVisit: DateTime
@@ -528,6 +555,7 @@ input HotelUpdateWithoutVisitsDataInput {
   address: String
   zipCode: Int
   city: String
+  phone: String
   active: Boolean
   rooms: Int
   lastVisit: DateTime
@@ -647,6 +675,20 @@ input HotelWhereInput {
   city_not_starts_with: String
   city_ends_with: String
   city_not_ends_with: String
+  phone: String
+  phone_not: String
+  phone_in: [String!]
+  phone_not_in: [String!]
+  phone_lt: String
+  phone_lte: String
+  phone_gt: String
+  phone_gte: String
+  phone_contains: String
+  phone_not_contains: String
+  phone_starts_with: String
+  phone_not_starts_with: String
+  phone_ends_with: String
+  phone_not_ends_with: String
   active: Boolean
   active_not: Boolean
   rooms: Int
@@ -2235,6 +2277,7 @@ type User {
   sector: Sector
   address: String
   email: String!
+  phone: String
   password: String
   teams(where: TeamWhereInput, orderBy: TeamOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Team!]
   createdAt: DateTime!
@@ -2256,6 +2299,7 @@ input UserCreateInput {
   sector: SectorCreateOneWithoutUsersInput
   address: String
   email: String!
+  phone: String
   password: String
   teams: TeamCreateManyWithoutUsersInput
 }
@@ -2278,6 +2322,7 @@ input UserCreateWithoutSectorInput {
   role: Role!
   address: String
   email: String!
+  phone: String
   password: String
   teams: TeamCreateManyWithoutUsersInput
 }
@@ -2291,6 +2336,7 @@ input UserCreateWithoutTeamsInput {
   sector: SectorCreateOneWithoutUsersInput
   address: String
   email: String!
+  phone: String
   password: String
 }
 
@@ -2314,6 +2360,8 @@ enum UserOrderByInput {
   address_DESC
   email_ASC
   email_DESC
+  phone_ASC
+  phone_DESC
   password_ASC
   password_DESC
   createdAt_ASC
@@ -2330,6 +2378,7 @@ type UserPreviousValues {
   role: Role!
   address: String
   email: String!
+  phone: String
   password: String
   createdAt: DateTime!
   updatedAt: DateTime!
@@ -2424,6 +2473,20 @@ input UserScalarWhereInput {
   email_not_starts_with: String
   email_ends_with: String
   email_not_ends_with: String
+  phone: String
+  phone_not: String
+  phone_in: [String!]
+  phone_not_in: [String!]
+  phone_lt: String
+  phone_lte: String
+  phone_gt: String
+  phone_gte: String
+  phone_contains: String
+  phone_not_contains: String
+  phone_starts_with: String
+  phone_not_starts_with: String
+  phone_ends_with: String
+  phone_not_ends_with: String
   password: String
   password_not: String
   password_in: [String!]
@@ -2485,6 +2548,7 @@ input UserUpdateInput {
   sector: SectorUpdateOneWithoutUsersInput
   address: String
   email: String
+  phone: String
   password: String
   teams: TeamUpdateManyWithoutUsersInput
 }
@@ -2496,6 +2560,7 @@ input UserUpdateManyDataInput {
   role: Role
   address: String
   email: String
+  phone: String
   password: String
 }
 
@@ -2506,6 +2571,7 @@ input UserUpdateManyMutationInput {
   role: Role
   address: String
   email: String
+  phone: String
   password: String
 }
 
@@ -2545,6 +2611,7 @@ input UserUpdateWithoutSectorDataInput {
   role: Role
   address: String
   email: String
+  phone: String
   password: String
   teams: TeamUpdateManyWithoutUsersInput
 }
@@ -2557,6 +2624,7 @@ input UserUpdateWithoutTeamsDataInput {
   sector: SectorUpdateOneWithoutUsersInput
   address: String
   email: String
+  phone: String
   password: String
 }
 
@@ -2672,6 +2740,20 @@ input UserWhereInput {
   email_not_starts_with: String
   email_ends_with: String
   email_not_ends_with: String
+  phone: String
+  phone_not: String
+  phone_in: [String!]
+  phone_not_in: [String!]
+  phone_lt: String
+  phone_lte: String
+  phone_gt: String
+  phone_gte: String
+  phone_contains: String
+  phone_not_contains: String
+  phone_starts_with: String
+  phone_not_starts_with: String
+  phone_ends_with: String
+  phone_not_ends_with: String
   password: String
   password_not: String
   password_in: [String!]

@@ -1,23 +1,13 @@
-import * as WebBrowser from 'expo-web-browser'
-import * as React from 'react'
-import { useContext } from 'react'
-import userContext from '../context/userContext'
-import {
-  Image,
-  Platform,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View
-} from 'react-native'
+import React, { useContext } from 'react'
+import notificationContext from '../context/notificationContext'
+import { StyleSheet, Text, View } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
 import { Layout } from '@ui-kitten/components'
 import Colors from '../constants/Colors'
-import Notif from '../components/molecules/Notif'
+import Notification from '../components/molecules/Notification'
 
 export default function NotificationScreen() {
-  const { user } = useContext(userContext)
-
+  const { notifications, updateNotifications } = useContext(notificationContext)
   const notifs = [
     {
       ico: 'flip-2-outline',
@@ -90,19 +80,20 @@ export default function NotificationScreen() {
   return (
     <View style={styles.container}>
       <Text style={[styles.currentDay, styles.text]} category='h5'>
-        Notifications
+        Notif
       </Text>
 
       <Layout style={styles.layout} level='1'>
         <Text style={styles.title}>Les plus récents</Text>
 
         <View style={styles.layoutContain}>
-          <ScrollView style={styles.cards}>
-            {Object.keys(notifs).map((notif) => {
-              var notifCard = notifs[notif]
-              return <Notif key={notif} data={notifCard} {...notifCard} />
-            })}
-          </ScrollView>
+          {notifications.length > 0 && (
+            <ScrollView style={styles.cards}>
+              {notifications.map((notification, id) => {
+                return <Notification key={id} {...notification} />
+              })}
+            </ScrollView>
+          )}
         </View>
       </Layout>
     </View>

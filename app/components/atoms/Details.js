@@ -22,8 +22,7 @@ const styles = StyleSheet.create({
     borderRadius: 8
   },
   text: {
-    fontWeight: '600',
-    whiteSpace: 'noWrap'
+    fontWeight: '600'
   }
 })
 

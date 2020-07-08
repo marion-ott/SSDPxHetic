@@ -1,21 +1,21 @@
 import * as React from 'react'
-import * as WebBrowser from 'expo-web-browser'
 import * as yup from 'yup'
 import { useMutation } from '@apollo/react-hooks'
 import { LOGIN } from './../graphql/mutations/auth'
 import { getFormProps } from './../global/data'
-import AsyncStorage from '@react-native-community/async-storage'
+import { setTokenInStorage } from '../utils/index'
+
 import {
   Platform,
   StyleSheet,
   Text,
-  TouchableOpacity,
+  ActivityIndicator,
   View,
   Image,
   KeyboardAvoidingView
 } from 'react-native'
-import Form from '../components/molecules/Form'
-
+import Form from '../components/organisms/Form'
+import { Colors } from 'react-native/Libraries/NewAppScreen'
 import logo from '../assets/images/logo.png'
 
 const schema = yup.object({
@@ -27,19 +27,11 @@ export default function LoginScreen({ handleLogin }) {
   const [login, { client, loading, error }] = useMutation(LOGIN, {
     onCompleted({ login }) {
       handleLogin(login.user)
-      // setTokenInStorage(login.user)
+      setTokenInStorage(login.token)
       // client.resetStore()
     },
     onError: (error) => console.log('ERROR MESSAGE : ', error)
   })
-
-  const setTokenInStorage = async (value) => {
-    try {
-      await AsyncStorage.setItem('token', value)
-    } catch (e) {
-      // saving error
-    }
-  }
 
   const [form] = getFormProps({
     email: '',
@@ -47,11 +39,11 @@ export default function LoginScreen({ handleLogin }) {
   })
 
   if (error) {
-    return <Text>there was an error: {JSON.stringify(error)}</Text>
+    return <Text>there was an error: {JSON.stringify(error.message)}</Text>
   }
 
   if (loading) {
-    return <Text>loading</Text>
+    return <ActivityIndicator size='small' color={Colors.main} />
   }
 
   return (
@@ -59,7 +51,7 @@ export default function LoginScreen({ handleLogin }) {
       <KeyboardAvoidingView
         behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
         style={styles.container}>
-        <View style={styles.container}>
+        <View style={styles.form}>
           <Image
             style={styles.logo}
             source={require('../assets/images/logo.png')}
@@ -67,7 +59,12 @@ export default function LoginScreen({ handleLogin }) {
           <Text style={styles.text} source={logo}>
             Accès agent de terrain
           </Text>
-          <Form data={form} callback={login} schema={schema} withIcon={true} />
+          <Form
+            data={form}
+            callback={login}
+            schema={schema}
+            btnLabel='Se connecter'
+          />
         </View>
       </KeyboardAvoidingView>
     </View>
@@ -85,16 +82,11 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
     paddingRight: 15
   },
-  input: {
-    width: 200,
-    height: 44,
-    padding: 10,
-    borderWidth: 1,
-    borderColor: 'black',
-    marginBottom: 10
+  form: {
+    flex: 1,
+    justifyContent: 'center'
   },
   logo: {
-    marginTop: 50,
     height: 50,
     width: '100%',
     alignSelf: 'center',
@@ -102,8 +94,7 @@ const styles = StyleSheet.create({
   },
   text: {
     alignSelf: 'center',
-    marginTop: 16,
-    marginBottom: 48,
+    marginBottom: 30,
     fontWeight: 'bold',
     fontSize: 16
   }

@@ -111,6 +111,7 @@ type User {
 	sector: Sector
 	address: String
 	email: String!
+	phone: String
 	password: String
 	teams: [Team!]
 	createdAt: DateTime!
@@ -125,7 +126,7 @@ type LoginPayload {
 
 type AuthPayload {
 	success: Boolean
-	user: User
+	id: String
 }
 
 input LoginInput {
@@ -140,6 +141,7 @@ input CreateUserInput {
 	sector: ID
 	address: String
 	email: String!
+	phone: String
 	password: String
 }
 
@@ -150,6 +152,7 @@ input UpdateUserInput {
 	sector: ID
 	address: String
 	email: String
+	phone: String
 	password: String
 }
 
@@ -301,6 +304,7 @@ type Hotel {
 	address: String!
 	zipCode: Int!
 	city: String!
+	phone: String
 	active: Boolean!
 	rooms: Int!
 	lastVisit: DateTime
@@ -320,6 +324,7 @@ input CreateHotelInput {
 	address: String!
 	zipCode: Int!
 	city: String!
+	phone: String
 	active: Boolean
 	criticity: Float
 	rooms: Int!
@@ -334,6 +339,7 @@ input UpdateHotelInput {
 	address: String
 	zipCode: Int
 	city: String
+	phone: String
 	status: Boolean
 	rooms: Int
 	lastVisit: DateTime

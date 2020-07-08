@@ -89,6 +89,7 @@ const dataImport = async (file, callback) => {
 			entry.long = info.features[0].geometry.coordinates[0] * 1
 			entry.lat = info.features[0].geometry.coordinates[1] * 1
 			entry.criticity = generatePriorityIndex(entry)
+			entry.phone = '0612345678'
 		}
 
 		if (entry.password) {
