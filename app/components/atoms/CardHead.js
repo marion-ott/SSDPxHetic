@@ -4,28 +4,13 @@ import { Text, Popover, Layout } from '@ui-kitten/components'
 import Icon from './Icon'
 import OpenURLButton from './OpenURLButton'
 import Colors from '../../constants/Colors'
+import openMap from 'react-native-open-maps'
 
 const CardHead = ({ name, phone, lat, long, status, disabled }) => {
   const [popover, setPopover] = useState(false)
 
-  const openMap = () => {
-    let url = ''
-    Platform.select({
-      ios: () => {
-        url = `maps:${lat},${long}?=Custom Label`
-      },
-      android: () => {
-        url = `geo:${lat},${long}?=Custom Label`
-      }
-    })
-
-    Linking.canOpenURL(url).then((supported) => {
-      if (supported) {
-        Linking.openURL(url)
-      } else {
-        console.log("Impossible d'ouvrir cet url.")
-      }
-    })
+  const openLoc = () => {
+    openMap({ latitude: lat, longitude: long, navigate_mode: "navigate", end: name })
   }
 
   const togglePopover = () => {
@@ -47,7 +32,7 @@ const CardHead = ({ name, phone, lat, long, status, disabled }) => {
   )
 
   return (
-    <View style={[styles.container, styles.cardHead]}>
+    <View style={[styles.cardHead, status == 'DONE' ? '' : styles.borderNotDone]}>
       <View style={styles.flexRow}>
         {status == 'DONE' && (
           <View style={styles.slide}>
@@ -62,7 +47,14 @@ const CardHead = ({ name, phone, lat, long, status, disabled }) => {
         <Text
           style={[
             styles.title,
-            status === 'ONGOING' ? styles.white : styles.black
+            disabled && (status === 'UPCOMING')
+              ? styles.grey
+              : (status === 'UPCOMING')
+                ? styles.black
+                : status === 'DONE'
+                  ? styles.black
+                  : status === 'ONGOING'
+                    ? styles.white : ''
           ]}
           category='h6'>
           {name}
@@ -76,7 +68,7 @@ const CardHead = ({ name, phone, lat, long, status, disabled }) => {
         onBackdropPress={togglePopover}>
         <Layout style={styles.popover}>
           <TouchableOpacity
-            onPress={openMap}
+            onPress={openLoc}
             activeOpacity={0.7}
             style={styles.options}>
             <Icon
@@ -108,12 +100,19 @@ const styles = StyleSheet.create({
   cardHead: {
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    // justifyContent: 'flex-start',
     alignItems: 'center',
-    paddingHorizontal: 24,
-    paddingVertical: 12
+    paddingRight: 24,
+    paddingVertical: 12,
+    width: '100%',
+  },
+  borderNotDone: {
+    borderBottomColor: Colors.darkGrey,
+    borderBottomWidth: 1,
   },
   popoverContainer: {
+    borderBottomColor: Colors.darkGrey,
+    borderBottomWidth: 1,
     borderWidth: 0,
     shadowColor: 'rgba(0, 0, 0, 0.25)',
     shadowOffset: { width: 0, height: 2 },
@@ -155,7 +154,9 @@ const styles = StyleSheet.create({
   },
   flexRow: {
     flexDirection: 'row',
-    alignItems: 'center'
+    // justifyContent: 'flex-start',
+    alignItems: 'center',
+    width: '100%',
   },
   slide: {
     marginRight: 10,
@@ -166,6 +167,9 @@ const styles = StyleSheet.create({
   },
   white: {
     color: Colors.white
+  },
+  grey: {
+    color: Colors.darkGrey
   }
 })
 

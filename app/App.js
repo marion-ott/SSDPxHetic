@@ -15,7 +15,7 @@ import { WebSocketLink } from 'apollo-link-ws'
 import { getMainDefinition } from 'apollo-utilities'
 import Root from './index'
 
-const devApiUrl = 'http://192.168.1.39:9000/'
+const devApiUrl = 'http://192.168.1.11:9000/'
 /* Configuration du endpoint de l'API */
 const httpLink = createHttpLink({ uri: devApiUrl })
 /* Configuration du header pour l'API */
