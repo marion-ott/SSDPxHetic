@@ -14,7 +14,7 @@ import * as SecureStore from 'expo-secure-store'
 
 import Root from './index'
 
-const devApiUrl = 'http://192.168.1.39:9000'
+const devApiUrl = 'http://192.168.1.11:9000'
 /* Configuration du endpoint de l'API */
 const httpLink = createHttpLink({ uri: devApiUrl })
 /* Configuration du header pour l'API */

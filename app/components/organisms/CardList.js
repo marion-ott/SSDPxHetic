@@ -94,6 +94,7 @@ const CardList = ({ label, startable, onComplete }) => {
             <HotelCard
               key={id}
               id={id}
+              disabled={(id !== state.visitInProgress)}
               startable={startable}
               status={status}
               {...hotel}

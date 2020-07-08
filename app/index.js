@@ -38,25 +38,7 @@ export default () => {
     today: formatDate(moment())
   })
 
-  const [context, setContext] = useState({
-    user: {
-      firstName: 'Stéphane',
-      lastName: 'Borgia',
-      email: 'stephane.borgia@samu-social.net',
-      phone: '0612345678',
-      mates: [
-        {
-          firstName: 'Paule',
-          lastName: 'Herman'
-        }
-      ]
-    },
-    teamId: '5f03013924aa9a0007167c21',
-    schedule: {
-      startTime: '08h30',
-      endTime: '16h30'
-    }
-  })
+  const [context, setContext] = useState({})
 
   const updateContext = (obj) => {
     setContext({
@@ -67,6 +49,7 @@ export default () => {
 
   useEffect(() => {
     if (auth && auth.checkAuth.success) {
+      auth.checkAuth.user.id = '5f043bdf24aa9a00074c5c4d'
       getData({
         variables: {
           id: auth.checkAuth.user.id
@@ -99,18 +82,18 @@ export default () => {
       }
     })
 
-    // updateContext({
-    //   user,
-    //   teamId,
-    //   schedule
-    // })
+    updateContext({
+      user,
+      teamId,
+      schedule
+    })
   }
 
   // console.log(loading, authLoading, auth, data)
 
-  // if (loading || authLoading) {
-  //   return <ActivityIndicator size='small' color={Colors.main} />
-  // }
+  if (loading || authLoading) {
+    return <ActivityIndicator size='small' color={Colors.main} />
+  }
 
   return (
     <AppProvider value={{ context, updateContext }}>

@@ -10,6 +10,7 @@ const HotelCard = ({
   id,
   onChange,
   startable,
+  disabled,
   status: originalStatus,
   ...hotel
 }) => {
@@ -38,64 +39,76 @@ const HotelCard = ({
     updateVisit({ variables })
   }
 
+
   return (
     <Card
       style={[styles.card, styles[status]]}
-      header={() => <CardHead {...hotel} />}>
-      <View style={styles.content}>
-        <View>
-          <Text style={styles.text} category='s2'>
-            {hotel.address},
-          </Text>
-          <Text style={styles.text} category='s2'>
-            {hotel.zipCode} {hotel.city}
-          </Text>
-        </View>
-        <View style={styles.room}>
-          <Icon
-            style={styles.roomIcon}
-            name='briefcase-outline'
-            fill='#B97D08'
-            width={18}
-            height={18}
-          />
-          <Text style={(styles.text, { marginLeft: 5 })} category='s2'>
-            {hotel.rooms}
-          </Text>
-        </View>
-      </View>
-      {startable && (
-        <View style={styles.buttons}>
-          <TouchableOpacity
-            // onPress={() => onChange(id, 'startVisit')}
-            activeOpacity={0.7}
-            style={[styles.touchableButton, styles.button]}>
-            <View style={styles.borderLine}>
-              <Text style={[styles.text, styles.report]} category='h6'>
-                Reporter
+      header={() => <CardHead {...hotel} status={status} disabled={disabled} />}>
+      {/* DISPLAY INFO */}
+        {status !== "DONE" && (
+          <View style={styles.content}>
+            <View>
+              <Text style={[styles.text, (disabled) ? texts.grey : (status === "ONGOING") ? texts.white : texts.black]} category='s2'>
+                {hotel.address},
+              </Text>
+            <Text style={[styles.text, (status === "ONGOING" && !disabled) ? texts.white : texts.black, (disabled) ? texts.grey : '' ]} category='s2'>
+                {hotel.zipCode} {hotel.city}
               </Text>
             </View>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={onUpdate}
-            activeOpacity={0.7}
-            style={styles.touchableButton}>
-            <View style={[styles.startContainer, styles.button]}>
+            <View style={styles.room}>
               <Icon
-                style={styles.startIcon}
-                name='play-circle-outline'
-                width={24}
-                height={24}
-                fill='white'
+                style={styles.roomIcon}
+                name='briefcase-outline'
+                fill={status === "ONGOING" ? '#ffffff' : '#FF8139'}
+                width={18}
+                height={18}
               />
-              <Text
-                appearance='alternative'
-                style={[styles.text, styles.startLabel]}
-                category='h6'>
-                {status}
+            <Text style={[styles.text, { marginLeft: 5, fontWeight: 'bold' }, (status === "ONGOING") ? texts.white : texts.black]} category='s2'>
+                {hotel.rooms}
               </Text>
             </View>
-          </TouchableOpacity>
+          </View>
+      )}
+      {/* DISPLAY BUTTS */}
+      { status !== "DONE" && (
+        <View style={styles.buttons}>
+          {status == "UPCOMING" && (
+            <TouchableOpacity
+              // onPress={() => onChange(id, 'startVisit')}
+              activeOpacity={0.7}
+              style={[styles.touchableButton, styles.button]}>
+              
+              <View style={styles.borderLine}>
+                <Text style={[styles.text, styles.report, styles.bold]} category='h6'>
+                  Reporter
+                </Text>
+              </View>
+            </TouchableOpacity>
+          )}
+        <TouchableOpacity
+          onPress={onUpdate}
+          activeOpacity={0.7}
+          style={styles.touchableButton}>
+            <View style={[styles.startContainer, styles.button, (startable && disabled) ? backgrounds.brightOrange : backgrounds.white]}>
+              {status == "UPCOMING" && (
+                <View style={styles.translate}>
+                  <Icon
+                    style={styles.startIcon}
+                    name='play-circle-outline'
+                    width={24}
+                    height={24}
+                    fill={(startable && disabled) ? Colors.white : Colors.brightOrange}
+                  />
+                </View>
+              )}
+            <Text
+              appearance='alternative'
+              style={[styles.text, styles.startLabel, (startable && disabled) ? texts.whiteBold : texts.orangeBold]}
+              category='h6'>
+              {status == "UPCOMING" ? "Commencer" : "Terminer la visite"}
+            </Text>
+          </View>
+        </TouchableOpacity>
         </View>
       )}
     </Card>
@@ -107,17 +120,17 @@ const styles = StyleSheet.create({
     flex: 1,
     borderRadius: 8,
     marginBottom: 7,
-    borderWidth: 0
-    // backgroundColor: Colors.lightOrange
+    borderWidth: 0,
+    backgroundColor: Colors.lightOrange,
   },
   UPCOMING: {
-    backgroundColor: 'red'
+    // backgroundColor: Colors.brightOrange,
   },
   ONGOING: {
-    backgroundColor: 'blue'
+    backgroundColor: Colors.brightOrange,
   },
   DONE: {
-    backgroundColor: 'orange'
+    // backgroundColor: Colors.lightOrange,
   },
   content: {
     flex: 1,
@@ -154,23 +167,69 @@ const styles = StyleSheet.create({
   },
   report: {
     color: Colors.brightOrange,
-    textAlign: 'center'
+    textAlign: 'center',
   },
   text: {
     fontSize: 14
   },
   startContainer: {
-    backgroundColor: Colors.brightOrange
+    // backgroundColor: Colors.brightOrange
   },
   startLabel: {
     color: 'white',
-    textAlign: 'center'
+    textAlign: 'center',
+  },
+  translate: {
+    transform: [{translateX: -10}]
   },
   borderLine: {
     borderBottomWidth: 1,
     textAlign: 'center',
     borderBottomColor: Colors.brightOrange,
-    width: 70
+    width: 48
+  },
+  bold: {
+    fontWeight: 'bold',
+  }
+})
+
+const backgrounds = StyleSheet.create({
+  lightOrange: {
+    backgroundColor: Colors.lightOrange,
+  },
+  brightOrange: {
+    backgroundColor: Colors.brightOrange,
+  },
+  white: {
+    backgroundColor: Colors.white,
+  }
+})
+
+const texts = StyleSheet.create({
+  black: {
+    color: Colors.tabIconDefault,
+  },
+  blackBold: {
+    color: Colors.tabIconDefault,
+    fontWeight: 'bold'
+  },
+  white: {
+    color: Colors.white,
+  },
+  whiteBold: {
+    color: Colors.white,
+    fontWeight: 'bold'
+  },
+  grey: {
+    color: Colors.tabIconDefault,
+  },
+  greyBold: {
+    color: Colors.tabIconDefault,
+    fontWeight: 'bold'
+  },
+  orangeBold: {
+    color: Colors.brightOrange,
+    fontWeight: 'bold'
   }
 })
 

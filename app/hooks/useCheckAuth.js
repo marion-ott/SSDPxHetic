@@ -5,7 +5,6 @@ const useCheckAuth = () => {
   const { loading, error, data } = useQuery(CHECK_AUTH, {
     fetchPolicy: 'no-cache'
   })
-
   return { loading, error, data }
 }
 
