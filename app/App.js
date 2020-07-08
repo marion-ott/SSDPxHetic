@@ -11,16 +11,18 @@ import { ApolloProvider } from '@apollo/react-hooks'
 import useCheckAuth from './hooks/useCheckAuth'
 import useCachedResources from './hooks/useCachedResources'
 import * as SecureStore from 'expo-secure-store'
-
+import { split, concat } from 'apollo-link'
+import { HttpLink } from 'apollo-link-http'
+import { WebSocketLink } from 'apollo-link-ws'
+import { getMainDefinition } from 'apollo-utilities'
 import Root from './index'
 
 const devApiUrl = 'http://192.168.1.39:9000'
 /* Configuration du endpoint de l'API */
 const httpLink = createHttpLink({ uri: devApiUrl })
 /* Configuration du header pour l'API */
-const authLink = setContext(async (_, { headers }) => {
+const authMiddleware = setContext(async (_, { headers }) => {
   const token = await SecureStore.getItemAsync('token')
-
   return {
     headers: {
       ...headers,
@@ -29,9 +31,28 @@ const authLink = setContext(async (_, { headers }) => {
   }
 })
 
+const wsLink = new WebSocketLink({
+  uri: `ws://192.168.1.39:9000`,
+  options: {
+    reconnect: true
+  }
+})
+
+const link = split(
+  ({ query }) => {
+    const definition = getMainDefinition(query)
+    return (
+      definition.kind === 'OperationDefinition' &&
+      definition.operation === 'subscription'
+    )
+  },
+  wsLink,
+  httpLink
+)
+
 /* Initialidation du client apollo pour l'API */
 const client = new ApolloClient({
-  link: authLink.concat(httpLink),
+  link: concat(authMiddleware, link),
   cache: new InMemoryCache(),
   resolvers: {}
 })

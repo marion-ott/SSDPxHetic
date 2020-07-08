@@ -2,24 +2,22 @@ import React from 'react'
 import { StyleSheet, View, Text } from 'react-native'
 import Icon from '../atoms/Icon'
 
-const Notif = ({ ico, color, type, fresh, data }) => {
-  return (
-    <View style={styles.container}>
-      <Icon fill={color} name={ico} />
+const Notification = ({ visit }) => (
+  <View style={styles.container}>
+    <Icon fill={'#C4DD2A'} name='flip-2-outline' />
 
-      <View style={styles.content}>
-        <View style={styles.contentCtn}>
-          <Text style={styles.type}>{type}</Text>
-          <Text style={styles.new}>{fresh ? 'Nouveau' : ''}</Text>
-        </View>
-
-        <Text style={styles.details}>
-          {`Le créneau de l'hôtel ${data.hotel} du ${data.initialDate} a été replannifié au ${data.newDate}.`}
-        </Text>
+    <View style={styles.content}>
+      <View style={styles.contentCtn}>
+        <Text style={styles.type}>Replanification</Text>
+        <Text style={styles.new}>Nouveau</Text>
       </View>
+
+      <Text style={styles.details}>
+        {`La visite de l'hôtel ${visit.data.hotel.name} a été modifiée.`}
+      </Text>
     </View>
-  )
-}
+  </View>
+)
 
 const styles = StyleSheet.create({
   container: {
@@ -57,4 +55,4 @@ const styles = StyleSheet.create({
   }
 })
 
-export default Notif
+export default Notification

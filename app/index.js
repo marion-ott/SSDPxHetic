@@ -39,23 +39,7 @@ export default () => {
   })
 
   const [context, setContext] = useState({
-    user: {
-      firstName: 'Stéphane',
-      lastName: 'Borgia',
-      email: 'stephane.borgia@samu-social.net',
-      phone: '0612345678',
-      mates: [
-        {
-          firstName: 'Paule',
-          lastName: 'Herman'
-        }
-      ]
-    },
-    teamId: '5f03013924aa9a0007167c21',
-    schedule: {
-      startTime: '08h30',
-      endTime: '16h30'
-    }
+    user: null
   })
 
   const updateContext = (obj) => {
@@ -84,8 +68,8 @@ export default () => {
       email: userData.email,
       phone: userData.phone
     }
-    let schedule, teamId
 
+    let schedule, teamId
     userData.teams.forEach(({ id, startDate, endDate, users }) => {
       if (moment().isBetween(startDate, endDate)) {
         teamId = id
@@ -99,11 +83,11 @@ export default () => {
       }
     })
 
-    // updateContext({
-    //   user,
-    //   teamId,
-    //   schedule
-    // })
+    updateContext({
+      user,
+      teamId,
+      schedule
+    })
   }
 
   // console.log(loading, authLoading, auth, data)

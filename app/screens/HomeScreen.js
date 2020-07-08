@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect, useReducer } from 'react'
+import React, { useState, useContext } from 'react'
 import moment from 'moment'
 import { StyleSheet, View, ScrollView } from 'react-native'
 import { Text, Layout } from '@ui-kitten/components'
