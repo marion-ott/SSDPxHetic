@@ -1,22 +1,30 @@
-import React, { useState, useContext, useEffect } from 'react'
-import userContext from '../context/userContext'
-import dateContext from '../context/dateContext'
-import recapContext from '../context/recapContext'
+import React, { useState, useContext } from 'react'
 import moment from 'moment'
 import useGetVisits from '../hooks/useGetVisits'
 import { StyleSheet, View, ActivityIndicator, ScrollView } from 'react-native'
 import { Text, Layout } from '@ui-kitten/components'
+import appContext from '../context/appContext'
+import dateContext from '../context/dateContext'
+import { RecapScreen } from './'
 import { CardList } from '../components/organisms'
 import { Details } from '../components/molecules'
 import Colors from '../constants/Colors'
 
 export default function HomeScreen() {
+
     const { user, teamId, schedule } = useContext(userContext)
     const { hotels, rooms } = useContext(recapContext)
     const { today } = useContext(dateContext)
     const [visits, setVisits] = useState([])
     const [details, setDetails] = useState([])
     const [recap, setRecap] = useState([])
+    const { today } = useContext(dateContext)
+    const [visitsCompleted, setVisitsCompleted] = useState(false)
+
+      //TODO: trigger recap display
+      const onVisitsCompleted = () => {
+        setVisitsCompleted(true)
+      }
 
     const { loading, error, data } = useGetVisits(teamId, today)
 
@@ -98,7 +106,11 @@ export default function HomeScreen() {
                             ))}
                         </View>
                         {visits && (
-                            <CardList hasCta={true} label={'Visites'} cards={visits} />
+                            <CardList
+                             onComplete={onVisitsCompleted}
+                             startable={true}
+                             label={'Visites'}
+                           />
                         )}
                     </View>
                 </View>
@@ -122,6 +134,7 @@ HomeScreen.navigationOptions = {
 }
 
 const styles = StyleSheet.create({
+
     container: {
         flex: 1,
         backgroundColor: Colors.main
@@ -163,4 +176,5 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: "column",
     }
+
 })

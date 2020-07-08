@@ -6,14 +6,6 @@ export const CHECK_AUTH = gql`
       success
       user {
         id
-        firstName
-        lastName
-        email
-        role
-        address
-        sector {
-          zone
-        }
       }
     }
   }

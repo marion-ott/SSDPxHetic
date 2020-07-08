@@ -7,6 +7,7 @@ export default {
   white: white,
   offWhite: '#F4F4F4',
   brightOrange: '#FF8139',
+  lightOrange: '#FFF2EB',
   tabIconDefault: black,
   tabIconSelected: main,
   tabBar: '#fefefe',

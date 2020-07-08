@@ -1,6 +1,5 @@
 import React, { useContext } from 'react'
-import userContext from '../context/userContext'
-import recapContext from '../context/recapContext'
+import appContext from '../context/appContext'
 import { StyleSheet, View, Image, TouchableOpacity } from 'react-native'
 import { Text, Layout } from '@ui-kitten/components'
 import Icon from '../components/atoms/Icon'
@@ -11,8 +10,7 @@ import congrats from '../assets/images/congrats.png'
 import moment from 'moment'
 
 export default function RecapScreen() {
-  const { user, schedule } = useContext(userContext)
-  const { hotels, rooms } = useContext(recapContext)
+  const { context, updateContext } = useContext(appContext)
 
   const getRandomWording = (array) => {
     const sample = (arr) => arr[Math.floor(Math.random() * arr.length)]
@@ -26,7 +24,7 @@ export default function RecapScreen() {
       <View style={styles.recapMessage}>
         <Image style={styles.picto} source={congrats} />
         <Text style={[styles.title, styles.labelUser]} category='h5'>
-          {getRandomWording(Words.congratWords)} {user.firstName},
+          {getRandomWording(Words.congratWords)} {context.user.firstName},
         </Text>
         <Text style={styles.title}>
           {' '}
@@ -60,9 +58,9 @@ export default function RecapScreen() {
             height={27}
           />
           <Text style={[styles.infoTxt, styles.marginTop]}>
-            {schedule.startTime}
+            {context.schedule.startTime}
           </Text>
-          <Text style={styles.infoTxt}>{schedule.endTime}</Text>
+          <Text style={styles.infoTxt}>{context.schedule.endTime}</Text>
         </View>
 
         <View style={styles.infoCtn}>
@@ -73,7 +71,9 @@ export default function RecapScreen() {
             width={27}
             height={27}
           />
-          <Text style={[styles.infoTxt, styles.marginTop]}>{rooms}</Text>
+          <Text style={[styles.infoTxt, styles.marginTop]}>
+            {context.rooms}
+          </Text>
           <Text style={styles.infoTxt}>chambres</Text>
         </View>
       </View>

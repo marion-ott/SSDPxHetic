@@ -218,5 +218,5 @@ const generateVisits = async () => {
 const generateAll = (async () => {
 	await generateSchedules()
 	await generateTeams()
-	await generateVisits()
+	// await generateVisits()
 })()

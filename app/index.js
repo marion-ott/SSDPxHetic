@@ -2,62 +2,64 @@ import React, { useEffect, useState } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import moment from 'moment'
-
-import { Platform, StatusBar, StyleSheet, View, Text } from 'react-native'
+import { GET_USER } from './graphql/queries/users'
+import { CHECK_AUTH } from './graphql/queries/auth'
+import { useLazyQuery, useQuery } from '@apollo/react-hooks'
+import {
+  Platform,
+  StatusBar,
+  StyleSheet,
+  View,
+  ActivityIndicator
+} from 'react-native'
 import useCheckAuth from './hooks/useCheckAuth'
 import { formatDate } from './utils/index'
 import BottomTabNavigator from './navigation/BottomTabNavigator'
 import LinkingConfiguration from './navigation/LinkingConfiguration'
 import { LoginScreen } from './screens'
+import { AppProvider } from './context/appContext'
 import { UserProvider } from './context/userContext'
 import { DateProvider } from './context/dateContext'
-import { RecapProvider } from './context/recapContext'
+import { Colors } from 'react-native/Libraries/NewAppScreen'
 
 const Stack = createStackNavigator()
 
 export default () => {
-  const { loading, error, data } = useCheckAuth()
+  const { loading: authLoading, error: authError, data: auth } = useCheckAuth()
+
+  const [getData, { loading, data, error }] = useLazyQuery(GET_USER, {
+    onCompleted: ({ user }) => {
+      handleLogin(user)
+    },
+    onError: (error) => console.warn(error)
+  })
+
   const [date, setDate] = useState({
     today: formatDate(moment())
   })
-  /**
-   * * temporary loggedin data
-   */
-  // const [auth, setAuth] = useState({
-  //   user: {
-  //     email: 'undefined',
-  //     firstName: 'Youssouf',
-  //     lastName: 'Salarié 9',
-  //     mates: [
-  //       {
-  //         firstName: 'Flora',
-  //         lastName: 'nom'
-  //       },
-  //       {
-  //         firstName: 'Ramdane',
-  //         lastName: 'nom'
-  //       }
-  //     ],
-  //     phone: '060000000'
-  //   },
-  //   schedule: { startTime: '08h30', endTime: '16h30', __typename: 'Shift' },
-  //   teamId: '5f03013924aa9a0007167c21',
-  //   loggedIn: true
-  // })
 
-  /**
-   * TODO: check localStorage for already loggedIn user
-   */
-  const [auth, setAuth] = useState({ user: null, loggedIn: false })
+  const [context, setContext] = useState({
+    user: null
+  })
+
+  const updateContext = (obj) => {
+    setContext({
+      ...context,
+      ...obj
+    })
+  }
 
   useEffect(() => {
-    if (data) {
-      setAuth({
-        user: data.checkAuth.user,
-        loggedIn: data.checkAuth.success
+    if (auth && auth.checkAuth.success) {
+      getData({
+        variables: {
+          id: auth.checkAuth.user.id
+        }
       })
     }
-  }, [error, data])
+  }, [authError, auth, authLoading])
+
+  useEffect(() => {}, [loading, data, error])
 
   const handleLogin = (userData) => {
     const user = {
@@ -66,6 +68,7 @@ export default () => {
       email: userData.email,
       phone: userData.phone
     }
+
     let schedule, teamId
     userData.teams.forEach(({ id, startDate, endDate, users }) => {
       if (moment().isBetween(startDate, endDate)) {
@@ -80,18 +83,23 @@ export default () => {
       }
     })
 
-    setAuth({
+    updateContext({
       user,
       teamId,
-      schedule,
-      loggedIn: true
+      schedule
     })
   }
 
+  // console.log(loading, authLoading, auth, data)
+
+  // if (loading || authLoading) {
+  //   return <ActivityIndicator size='small' color={Colors.main} />
+  // }
+
   return (
-    <UserProvider value={auth}>
-      <DateProvider value={date}>
-        <RecapProvider value={{}}>
+    <AppProvider value={{ context, updateContext }}>
+      <UserProvider value={context}>
+        <DateProvider value={date}>
           <View style={styles.container}>
             {Platform.OS === 'ios' && <StatusBar barStyle='dark-content' />}
             <StatusBar barStyle='light-content' />
@@ -100,7 +108,7 @@ export default () => {
                 screenOptions={{
                   headerShown: false
                 }}>
-                {!auth.loggedIn ? (
+                {!context.user ? (
                   <Stack.Screen
                     name='Login'
                     component={() => <LoginScreen handleLogin={handleLogin} />}
@@ -111,9 +119,9 @@ export default () => {
               </Stack.Navigator>
             </NavigationContainer>
           </View>
-        </RecapProvider>
-      </DateProvider>
-    </UserProvider>
+        </DateProvider>
+      </UserProvider>
+    </AppProvider>
   )
 }
 

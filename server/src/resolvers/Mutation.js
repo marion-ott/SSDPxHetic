@@ -181,10 +181,11 @@ const Mutation = {
 			}
 		}
 
-		const visit = prisma.updateVisit({
+		const visit = await prisma.updateVisit({
 			data,
 			where: {id}
 		})
+
 		await publishVisit('UPDATED', visit, pubsub)
 		return visit
 	},

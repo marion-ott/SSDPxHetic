@@ -4,18 +4,19 @@ import * as yup from 'yup'
 import { useMutation } from '@apollo/react-hooks'
 import { LOGIN } from './../graphql/mutations/auth'
 import { getFormProps } from './../global/data'
-import AsyncStorage from '@react-native-community/async-storage'
+import { setTokenInStorage } from '../utils/index'
+
 import {
   Platform,
   StyleSheet,
   Text,
-  TouchableOpacity,
+  ActivityIndicator,
   View,
   Image,
   KeyboardAvoidingView
 } from 'react-native'
 import Form from '../components/molecules/Form'
-
+import { Colors } from 'react-native/Libraries/NewAppScreen'
 import logo from '../assets/images/logo.png'
 
 const schema = yup.object({
@@ -27,19 +28,11 @@ export default function LoginScreen({ handleLogin }) {
   const [login, { client, loading, error }] = useMutation(LOGIN, {
     onCompleted({ login }) {
       handleLogin(login.user)
-      // setTokenInStorage(login.user)
+      setTokenInStorage(login.token)
       // client.resetStore()
     },
     onError: (error) => console.log('ERROR MESSAGE : ', error)
   })
-
-  const setTokenInStorage = async (value) => {
-    try {
-      await AsyncStorage.setItem('token', value)
-    } catch (e) {
-      // saving error
-    }
-  }
 
   const [form] = getFormProps({
     email: '',
@@ -51,7 +44,7 @@ export default function LoginScreen({ handleLogin }) {
   }
 
   if (loading) {
-    return <Text>loading</Text>
+    return <ActivityIndicator size='small' color={Colors.main} />
   }
 
   return (

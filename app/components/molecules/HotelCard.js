@@ -1,47 +1,54 @@
 import React, { useState } from 'react'
+import { useMutation } from '@apollo/react-hooks'
+import { UPDATE_VISIT } from '../../graphql/mutations/visits'
 import { StyleSheet, View, TouchableOpacity } from 'react-native'
 import { Card, Text, Popover, Layout, Button } from '@ui-kitten/components'
 import { Icon, OpenURLButton, CardHead } from '../atoms'
 import Colors from '../../constants/Colors'
 
 const HotelCard = ({
-  backgroundColor,
-  name,
-  address,
-  city,
-  zipCode,
-  lat,
-  long,
-  rooms,
-  hasCta = false
+  id,
+  onChange,
+  startable,
+  status: originalStatus,
+  ...hotel
 }) => {
-  const [actions, setActions] = useState(hasCta)
-  const [options, setOptions] = useState(false)
+  const [status, setStatus] = useState(originalStatus)
 
-  const displayStartOrReport = () => {
-    setActions(!actions)
+  const [updateVisit, { loading, data, error }] = useMutation(UPDATE_VISIT, {
+    onCompleted: ({ updateVisit: { status } }) => {
+      onChange(id, status)
+      setStatus(status)
+    },
+    onError: (error) => console.error('ERREUR: ', error.message)
+  })
+
+  const onUpdate = () => {
+    const variables = {
+      id,
+      data: {
+        status: ''
+      }
+    }
+
+    if (status === 'UPCOMING') variables.data.status = 'ONGOING'
+    if (status === 'ONGOING') variables.data.status = 'DONE'
+    if (status === 'DONE') variables.data.status = 'UPCOMING'
+
+    updateVisit({ variables })
   }
 
   return (
     <Card
-      onPress={() => displayStartOrReport()}
-      style={[styles.card, { backgroundColor }]}
-      header={() => (
-        <CardHead
-          name={name}
-          options={options}
-          lat={lat}
-          long={long}
-          setOptions={setOptions}
-        />
-      )}>
+      style={[styles.card, styles[status]]}
+      header={() => <CardHead {...hotel} />}>
       <View style={styles.content}>
         <View>
           <Text style={styles.text} category='s2'>
-            {address},
+            {hotel.address},
           </Text>
           <Text style={styles.text} category='s2'>
-            {zipCode} {city}
+            {hotel.zipCode} {hotel.city}
           </Text>
         </View>
         <View style={styles.room}>
@@ -53,28 +60,27 @@ const HotelCard = ({
             height={18}
           />
           <Text style={(styles.text, { marginLeft: 5 })} category='s2'>
-            {rooms}
+            {hotel.rooms}
           </Text>
         </View>
       </View>
-      {actions && (
-        <View
-          style={styles.cardopen}
-        >
+      {startable && (
+        <View style={styles.buttons}>
           <TouchableOpacity
-            onPress={() => reportTicket()}
+            // onPress={() => onChange(id, 'startVisit')}
             activeOpacity={0.7}
-            style={styles.reportContainer}>
+            style={[styles.touchableButton, styles.button]}>
             <View style={styles.borderLine}>
-              <Text style={[styles.text, styles.report]} category='h6'>Reporter</Text>
+              <Text style={[styles.text, styles.report]} category='h6'>
+                Reporter
+              </Text>
             </View>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => startTicket()}
+            onPress={onUpdate}
             activeOpacity={0.7}
-            style={styles.touchableButton}
-          >
-            <View style={styles.startContainer}>
+            style={styles.touchableButton}>
+            <View style={[styles.startContainer, styles.button]}>
               <Icon
                 style={styles.startIcon}
                 name='play-circle-outline'
@@ -86,8 +92,8 @@ const HotelCard = ({
                 appearance='alternative'
                 style={[styles.text, styles.startLabel]}
                 category='h6'>
-                Commencer
-            </Text>
+                {status}
+              </Text>
             </View>
           </TouchableOpacity>
         </View>
@@ -99,10 +105,19 @@ const HotelCard = ({
 const styles = StyleSheet.create({
   card: {
     flex: 1,
-    backgroundColor: 'blue',
     borderRadius: 8,
     marginBottom: 7,
     borderWidth: 0
+    // backgroundColor: Colors.lightOrange
+  },
+  UPCOMING: {
+    backgroundColor: 'red'
+  },
+  ONGOING: {
+    backgroundColor: 'blue'
+  },
+  DONE: {
+    backgroundColor: 'orange'
   },
   content: {
     flex: 1,
@@ -118,12 +133,24 @@ const styles = StyleSheet.create({
   roomIcon: {
     marginRight: 4
   },
-  cardopen: {
+  buttons: {
     marginTop: 14,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center'
+  },
+  touchableButton: {
+    flex: 1
+  },
+  button: {
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingVertical: 12,
+    paddingHorizontal: 18,
+    borderRadius: 40
   },
   report: {
     color: Colors.brightOrange,
@@ -133,16 +160,7 @@ const styles = StyleSheet.create({
     fontSize: 14
   },
   startContainer: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: Colors.brightOrange,
-    paddingVertical: 12,
-    paddingHorizontal: 18,
-    borderRadius: 40
-  },
-  reportContainer: {
-    alignItems: 'center'
+    backgroundColor: Colors.brightOrange
   },
   startLabel: {
     color: 'white',
@@ -151,7 +169,7 @@ const styles = StyleSheet.create({
   borderLine: {
     borderBottomWidth: 1,
     textAlign: 'center',
-    borderBottomColor: "#FF8139",
+    borderBottomColor: Colors.brightOrange,
     width: 70
   }
 })
