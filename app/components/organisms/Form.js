@@ -1,73 +1,85 @@
-import React from 'react'
+import React, { useState } from 'react'
+import { TouchableOpacity } from 'react-native'
 import { Formik } from 'formik'
-import { View, StyleSheet } from 'react-native'
+import { View, StyleSheet, Text } from 'react-native'
 import { Input, Button } from '@ui-kitten/components'
+import Icon from '../atoms/Icon'
 import Colors from '../../constants/Colors'
 
-const Form = ({ callback, data, id, editMode, setEditMode }) => (
-  <Formik
-    style={styles.container}
-    initialValues={data.initialValues}
-    onSubmit={(values) => {
-      const variables = {
-        data: {}
-      }
+const Form = ({ callback, data, id, editable = true, btnLabel }) => {
+  const [secureTextEntry, setSecureTextEntry] = useState(true)
 
-      for (const key in values) {
-        if (values[key] !== data.initialValues[key]) {
-          variables.data[key] = values[key]
+  const renderIcon = (props) => (
+    <TouchableOpacity onPress={() => setSecureTextEntry(!secureTextEntry)}>
+      <Icon {...props} name={secureTextEntry ? 'eye-off' : 'eye'} />
+    </TouchableOpacity>
+  )
+
+  return (
+    <Formik
+      style={styles.container}
+      initialValues={data.initialValues}
+      onSubmit={(values) => {
+        const variables = {
+          data: {}
         }
-      }
 
-      if (!Object.keys(variables.data).length) {
-        return null
-      }
+        for (const key in values) {
+          if (values[key] !== data.initialValues[key]) {
+            variables.data[key] = values[key]
+          }
+        }
 
-      if (id) {
-        variables.id = id
-      }
+        if (!Object.keys(variables.data).length) {
+          return null
+        }
 
-      callback({
-        variables
-      })
-    }}>
-    {({ handleChange, handleBlur, handleSubmit, values }) => (
-      <View>
-        {data.elements.map((el, index) => {
-          return (
+        if (id) {
+          variables.id = id
+        }
+
+        callback({
+          variables
+        })
+      }}>
+      {({ handleChange, handleBlur, handleSubmit, values }) => (
+        <View>
+          {data.elements.map(({ name, labelProps, inputProps }, index) => (
             <Input
               key={index}
               style={styles.input}
               size='large'
-              onChangeText={handleChange(el.name)}
-              onBlur={handleBlur(el.name)}
-              value={values[el.name]}
-              disabled={!editMode}
-              {...el.labelProps}
-              {...el.inputProps}
+              accessoryRight={name === 'password' && renderIcon}
+              onChangeText={handleChange(name)}
+              onBlur={handleBlur(name)}
+              value={values[name]}
+              disabled={!editable}
+              secureTextEntry={name === 'password' ? secureTextEntry : false}
+              {...labelProps}
+              {...inputProps}
             />
-          )
-        })}
-        {editMode && (
-          <Button style={styles.button} type='submit' onPress={handleSubmit}>
-            Enregistrer les modifications
-          </Button>
-        )}
-      </View>
-    )}
-  </Formik>
-)
+          ))}
+          {editable && (
+            <Button style={styles.button} type='submit' onPress={handleSubmit}>
+              {btnLabel}
+            </Button>
+          )}
+        </View>
+      )}
+    </Formik>
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
     padding: 16
   },
   input: {
-    marginBottom: 16,
+    marginBottom: 26,
     height: 55
   },
   button: {
-    marginTop: 32,
+    marginTop: 5,
     backgroundColor: Colors.main,
     height: 55,
     borderRadius: 30
