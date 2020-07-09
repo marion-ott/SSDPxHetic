@@ -7,20 +7,26 @@ import Colors from '../constants/Colors'
 import Notification from '../components/molecules/Notification'
 import Header from '../components/molecules/Header'
 import CustomScrollView from '../components/molecules/CustomScrollView'
+import IsEmpty from '../components/molecules/IsEmpty'
 
 export default function NotificationScreen() {
   const { notifications, updateNotifications } = useContext(notificationContext)
 
   return (
     <CustomScrollView Component={() => <Header text='Notification' />}>
-      <Text style={styles.title}>Les plus récents</Text>
-      {notifications.length > 0 && (
-        <ScrollView style={styles.cards}>
-          {notifications.map((notification, id) => {
-            return <Notification key={id} {...notification} />
-          })}
-        </ScrollView>
-      )}
+      {notifications.length == 0 ? (
+        <>
+          <Text style={styles.title}>Les plus récents</Text>
+          <ScrollView style={styles.cards}>
+            {notifications.map((notification, id) => {
+              return <Notification key={id} {...notification} />
+            })}
+          </ScrollView>
+        </>
+      )
+        :
+        <IsEmpty />
+      }
     </CustomScrollView>
   )
 }
