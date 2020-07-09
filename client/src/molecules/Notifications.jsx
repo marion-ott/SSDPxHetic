@@ -7,16 +7,13 @@ const Notifications = () => {
   const { data, loading } = useSubscription(SUBSCRIBE_VISITS)
 
   useEffect(() => {
+    console.log(data)
     if (data) {
       const state = notifications
       state.push(data)
-      updateNotifications(state)
+      setNotifications([...state])
     }
   }, [data])
-
-  const updateNotifications = (state) => {
-    setNotifications(state)
-  }
 
   return (
     <div className='dropdown is-right is-hoverable'>

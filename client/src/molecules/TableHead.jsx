@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useRef } from 'react'
 import styled from 'styled-components'
 import { formatDate, getWeek, getDateStr } from '../utils'
 import momentjs from 'moment/min/moment-with-locales'
@@ -43,7 +43,6 @@ export default ({ date }) => {
   const [days, setDays] = useState([])
 
   useEffect(() => {
-    console.log('new date: ', date)
     const { start, end } = getWeek(date)
     const range = moment.range(start, end)
     const state = []
@@ -53,10 +52,9 @@ export default ({ date }) => {
         state.push(date)
       }
     }
-    setDays(state)
+    console.log(state[0], date)
+    setDays([...state])
   }, [date])
-
-  console.log('render: ', days)
 
   return (
     <TableHead>

@@ -6,15 +6,16 @@ import Colors from '../../constants/Colors'
 
 const NotificationIcon = ({ name, focused }) => {
   const { notifications } = useContext(notificationContext)
+  // const [notifications, setNotifications]
 
   useEffect(() => {
     //TODO: toggle pastille
   }, [notifications])
-
+  console.log('render')
   return (
     <View style={styles.wrapper}>
       <Icon focused={focused} name={name} />
-      <View style={styles.pastille}></View>
+      {notifications.length > 0 && <View style={styles.pastille}></View>}
     </View>
   )
 }

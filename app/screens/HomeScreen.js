@@ -24,6 +24,7 @@ export default function HomeScreen() {
         onComplete={onVisitsCompleted}
         startable={true}
         label={'Visites'}
+        selected={today}
       />
     </CustomScrollView>
   )

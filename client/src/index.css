@@ -326,10 +326,7 @@ th[aria-label='empty cell'] {
   color: black;
 }
 
-.ant-picker-cell
-  .ant-picker-cell-in-view
-  .ant-picker-cell-today
-  .ant-picker-cell-inner {
+.ant-picker-cell .ant-picker-cell-in-view .ant-picker-cell-today .ant-picker-cell-inner {
   border: none;
 }
 
@@ -398,53 +395,122 @@ th[aria-label='empty cell'] {
   text-transform: uppercase;
 }
 
-/* PLANNING */
-/* .Planning {
-  position: relative;
-  width: 100%;
+
+
+
+.Loader {
   height: 100vh;
-  margin: 0;
-  border-radius: 8px;
-  margin: 15px;
-  overflow: hidden;
-
-}
-
-.react-trello-board {
-  width: 100%;
-  height: 90vh;
-  margin: 0 auto;
-  overflow-y: scroll;
-  padding: 0;
-}
-
-.react-trello-board>div {
   display: flex;
+  align-items: center;
   justify-content: center;
-  width: 100%;
-  height: 100%;
-
 }
 
-.smooth-dnd-container.horizontal {
-  margin: 0 auto;
-  width: 100%;
-  height: 100%;
-  display: grid;
-  grid-template-rows: auto;
-  grid-template-columns: repeat(5, 1fr);
 
+/*
+ * Default width: 50px */
+.svgIcon {
+  width: 80px;
 }
 
-.react-trello-lane {
-  padding: 0;
-  margin: 0;
+.svgIcon .body {
+  -webkit-animation: shake 0.2s ease-in-out infinite alternate;
+  animation: shake 0.2s ease-in-out infinite alternate;
 }
 
-.react-trello-lane:last-child {
-  border-right: none;
+.svgIcon .line {
+  transform-origin: center right;
+  stroke-dasharray: 22;
+  -webkit-animation: line 0.8s ease-in-out infinite;
+  animation: line 0.8s ease-in-out infinite;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
 }
 
-.smooth-dnd-container.vertical {
-  height: 100%;
-} */
+.svgIcon .line.first {
+  -webkit-animation-delay: 0s;
+  animation-delay: 0s;
+}
+
+.svgIcon .line.second {
+  -webkit-animation-delay: 0.2s;
+  animation-delay: 0.2s;
+}
+
+.svgIcon .line.third {
+  -webkit-animation-delay: 0.4s;
+  animation-delay: 0.4s;
+}
+
+
+@-webkit-keyframes shake {
+  0% {
+    transform: translateY(-1%);
+  }
+
+  100% {
+    transform: translateY(3%);
+  }
+}
+
+
+@keyframes shake {
+  0% {
+    transform: translateY(-1%);
+  }
+
+  100% {
+    transform: translateY(3%);
+  }
+}
+
+@-webkit-keyframes line {
+  0% {
+    stroke-dashoffset: 22;
+  }
+
+  25% {
+    stroke-dashoffset: 22;
+  }
+
+  50% {
+    stroke-dashoffset: 0;
+  }
+
+  51% {
+    stroke-dashoffset: 0;
+  }
+
+  80% {
+    stroke-dashoffset: -22;
+  }
+
+  100% {
+    stroke-dashoffset: -22;
+  }
+}
+
+@keyframes line {
+  0% {
+    stroke-dashoffset: 22;
+  }
+
+  25% {
+    stroke-dashoffset: 22;
+  }
+
+  50% {
+    stroke-dashoffset: 0;
+  }
+
+  51% {
+    stroke-dashoffset: 0;
+  }
+
+  80% {
+    stroke-dashoffset: -22;
+  }
+
+  100% {
+    stroke-dashoffset: -22;
+  }
+}
