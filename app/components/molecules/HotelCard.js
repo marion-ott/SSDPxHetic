@@ -26,24 +26,24 @@ const HotelCard = ({
     onError: (error) => console.error('ERREUR: ', error.message)
   })
 
-  const onUpdate = () => {
+  const onUpdate = (isCancelled) => {
     const variables = {
       id,
       data: {
         status: ''
       }
     }
-
+    
     if (status === 'UPCOMING') variables.data.status = 'ONGOING'
-    if (status === 'ONGOING') variables.data.status = 'DONE'
+    if (status === 'ONGOING') variables.data.status = isCancelled ? 'UPCOMING' : 'DONE'
     if (status === 'DONE') variables.data.status = 'UPCOMING'
-
+    
     updateVisit({ variables })
   }
 
   return (
     <Card style={[styles.card, styles[status]]}>
-      <CardHead {...hotel} status={status} disabled={disabled} />
+      <CardHead {...hotel} status={status} disabled={disabled} onChange={onUpdate} />
       {/* DISPLAY INFO */}
       {status !== 'DONE' && (
         <View style={styles.content}>
@@ -108,7 +108,7 @@ const HotelCard = ({
             </TouchableOpacity>
           )}
           <TouchableOpacity
-            onPress={onUpdate}
+            onPress={() => onUpdate(false)}
             activeOpacity={0.7}
             style={styles.touchableButton}>
             <View

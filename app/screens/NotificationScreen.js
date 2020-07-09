@@ -13,16 +13,16 @@ export default function NotificationScreen() {
   const { notifications, updateNotifications } = useContext(notificationContext)
   return (
     <CustomScrollView Component={() => <Header text='Notifications' />}>
-      {notifications.length === 0 ? (
-        <IsEmpty />
-      ) : (
-        <Fragment>
+      {notifications.length !== 0 ? (
+        <>
           <Text style={styles.title}>Les plus récents</Text>
-          {notifications.map((notification, id) => {
-            return <Notification key={id} {...notification} />
-          })}
-        </Fragment>
-      )}
+          <ScrollView style={styles.cards}>
+            {notifications.map((notification, id) => {
+              return <Notification key={id} {...notification} />
+            })}
+          </ScrollView>
+        </>
+      ) : <IsEmpty />)}
     </CustomScrollView>
   )
 }

@@ -6,8 +6,13 @@ import OpenURLButton from './OpenURLButton'
 import Colors from '../../constants/Colors'
 import openMap from 'react-native-open-maps'
 
-const CardHead = ({ name, phone, lat, long, status, disabled }) => {
+const CardHead = ({ name, phone, lat, long, status, disabled, onChange }) => {
   const [popover, setPopover] = useState(false)
+  const disabledStyle = disabled && (status === 'UPCOMING') 
+    ? styles.grey : (status === 'UPCOMING')
+    ? styles.black : status === 'DONE'
+    ? styles.black : status === 'ONGOING'
+    ? styles.white : ''
 
   const openLoc = () => {
     openMap({ latitude: lat, longitude: long, navigate_mode: "navigate", end: name })
@@ -47,14 +52,7 @@ const CardHead = ({ name, phone, lat, long, status, disabled }) => {
         <Text
           style={[
             styles.title,
-            disabled && (status === 'UPCOMING')
-              ? styles.grey
-              : (status === 'UPCOMING')
-                ? styles.black
-                : status === 'DONE'
-                  ? styles.black
-                  : status === 'ONGOING'
-                    ? styles.white : ''
+            disabledStyle
           ]}
           category='h6'>
           {name}
@@ -90,6 +88,22 @@ const CardHead = ({ name, phone, lat, long, status, disabled }) => {
               <Text style={styles.optionsText}>Appeler l'hôtel</Text>
             </View>
           </OpenURLButton>
+
+          { status === 'ONGOING' && (
+            <TouchableOpacity
+              onPress={() => onChange(true)}
+              activeOpacity={0.7}
+              style={[styles.options, { marginTop: 16, marginBottom: 0}]}
+            >
+              <Icon
+                name='clock-outline'
+                width={18}
+                height={18}
+                fill={Colors.black}
+              />
+              <Text style={styles.optionsText}>Reprendre plus tard</Text>
+            </TouchableOpacity>    
+          )}
         </Layout>
       </Popover>
     </View>
