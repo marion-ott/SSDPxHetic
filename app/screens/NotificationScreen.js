@@ -1,4 +1,4 @@
-import React, { useContext } from 'react'
+import React, { useContext, Fragment } from 'react'
 import notificationContext from '../context/notificationContext'
 import { StyleSheet, Text, View } from 'react-native'
 import { ScrollView } from 'react-native-gesture-handler'
@@ -11,22 +11,18 @@ import IsEmpty from '../components/molecules/IsEmpty'
 
 export default function NotificationScreen() {
   const { notifications, updateNotifications } = useContext(notificationContext)
-
   return (
     <CustomScrollView Component={() => <Header text='Notification' />}>
-      {notifications.length == 0 ? (
-        <>
-          <Text style={styles.title}>Les plus récents</Text>
-          <ScrollView style={styles.cards}>
-            {notifications.map((notification, id) => {
-              return <Notification key={id} {...notification} />
-            })}
-          </ScrollView>
-        </>
-      )
-        :
+      {notifications.length === 0 ? (
         <IsEmpty />
-      }
+      ) : (
+        <Fragment>
+          <Text style={styles.title}>Les plus récents</Text>
+          {notifications.map((notification, id) => {
+            return <Notification key={id} {...notification} />
+          })}
+        </Fragment>
+      )}
     </CustomScrollView>
   )
 }
