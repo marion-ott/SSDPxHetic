@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { createStackNavigator } from '@react-navigation/stack'
 import moment from 'moment'
@@ -13,6 +13,9 @@ import {
   Text,
   ActivityIndicator
 } from 'react-native'
+import { useSubscription } from '@apollo/react-hooks'
+import { SUBSCRIBE_VISITS } from './graphql/subscriptions/visits'
+import { NotificationProvider } from './context/notificationContext'
 import { formatDate } from './utils/index'
 import BottomTabNavigator from './navigation/BottomTabNavigator'
 import LinkingConfiguration from './navigation/LinkingConfiguration'
@@ -24,11 +27,14 @@ import { Colors } from 'react-native/Libraries/NewAppScreen'
 const Stack = createStackNavigator()
 
 export default () => {
+  const [notifications, setNotifications] = useState([])
+  const { data: res } = useSubscription(SUBSCRIBE_VISITS)
+
   const { loading: authLoading, error: authError, data: auth } = useQuery(
     CHECK_AUTH
   )
 
-  const [getData, { loading, data, error }] = useLazyQuery(GET_USER, {
+  const [getData] = useLazyQuery(GET_USER, {
     onCompleted: ({ user }) => {
       handleLogin(user)
     },
@@ -46,16 +52,16 @@ export default () => {
   const [lougout, setLogout] = useState(false)
 
   const updateContext = (obj) => {
+    console.log('update context')
     let state = context
     if (Object.keys(obj).length == 0) {
       setLogout(false)
-    }
-    else {
+    } else {
+      console.log('update: ', obj)
       state = Object.assign({ ...state, ...obj })
-      setContext(state)
+      setContext({ ...state })
       setLogout(true)
     }
-
   }
 
   useEffect(() => {
@@ -67,6 +73,14 @@ export default () => {
       })
     }
   }, [authError, auth, authLoading])
+
+  useEffect(() => {
+    if (res) {
+      const state = notifications
+      state.push(res)
+      setNotifications([...state])
+    }
+  }, [res])
 
   const handleLogin = (userData) => {
     const user = {
@@ -97,6 +111,9 @@ export default () => {
       schedule
     })
   }
+  if (context.user) {
+    console.log('render: ', context.user.firstName)
+  }
   // console.log("context", context)
 
   // if (loading || authLoading) {
@@ -106,28 +123,30 @@ export default () => {
 
   return (
     <AppProvider value={{ context, updateContext }}>
-      <DateProvider value={date}>
-        <View style={styles.container}>
-          {Platform.OS === 'ios' && <StatusBar barStyle='dark-content' />}
-          <StatusBar barStyle='light-content' />
-          <NavigationContainer linking={LinkingConfiguration}>
-            <Stack.Navigator
-              screenOptions={{
-                headerShown: false
-              }}>
-              {!lougout ? (
-                <Stack.Screen name='Login'>
-                  {(props) => (
-                    <LoginScreen handleLogin={handleLogin} {...props} />
-                  )}
-                </Stack.Screen>
-              ) : (
+      <NotificationProvider value={{ notifications, setNotifications }}>
+        <DateProvider value={date}>
+          <View style={styles.container}>
+            {Platform.OS === 'ios' && <StatusBar barStyle='dark-content' />}
+            <StatusBar barStyle='light-content' />
+            <NavigationContainer linking={LinkingConfiguration}>
+              <Stack.Navigator
+                screenOptions={{
+                  headerShown: false
+                }}>
+                {!lougout ? (
+                  <Stack.Screen name='Login'>
+                    {(props) => (
+                      <LoginScreen handleLogin={handleLogin} {...props} />
+                    )}
+                  </Stack.Screen>
+                ) : (
                   <Stack.Screen name='Root' component={BottomTabNavigator} />
                 )}
-            </Stack.Navigator>
-          </NavigationContainer>
-        </View>
-      </DateProvider>
+              </Stack.Navigator>
+            </NavigationContainer>
+          </View>
+        </DateProvider>
+      </NotificationProvider>
     </AppProvider>
   )
 }

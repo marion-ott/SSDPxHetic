@@ -2,7 +2,7 @@ import React from 'react'
 import { useMutation } from '@apollo/react-hooks'
 import { getFormProps } from './../global/data'
 import { Form } from './index'
-import { Title } from './../atoms'
+import { Title, Loader } from './../atoms'
 
 const Modal = ({ isActive, title, data, onClick, mutation }) => {
   const [callback, { loading, error }] = useMutation(mutation, {
@@ -18,7 +18,7 @@ const Modal = ({ isActive, title, data, onClick, mutation }) => {
   }
 
   if (loading) {
-    return <p>loading</p>
+    return <Loader />
   }
 
   return (

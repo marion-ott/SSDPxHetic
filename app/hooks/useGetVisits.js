@@ -4,7 +4,7 @@ import { GET_VISITS } from './../graphql/queries/visits'
 
 const useGetVisits = (teamId, date, deps = []) => {
   const [getData, { loading, data, error }] = useLazyQuery(GET_VISITS)
-  console.log(date)
+
   useEffect(() => {
     getData({
       variables: {

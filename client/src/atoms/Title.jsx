@@ -2,9 +2,13 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
 
-const BaseTitle = ({ classProp, size, tag, children }) => {
+const BaseTitle = ({ classProp, size, tag, children, color = 'black' }) => {
   const Tag = `${tag}`
-  return <Tag className={`title ${size} ${classProp}`}>{children}</Tag>
+  return (
+    <Tag style={{ color }} className={`title ${size} ${classProp}`}>
+      {children}
+    </Tag>
+  )
 }
 
 const Title = styled(BaseTitle)`

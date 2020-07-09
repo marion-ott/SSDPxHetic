@@ -1,19 +1,15 @@
 import React, { useState, useEffect, useContext } from 'react'
-import Board, { onCardClick, onDataChange } from 'react-trello'
 import moment from 'moment'
 import dateContext from '../context/dateContext'
 import appContext from '../context/appContext'
 import useGetVisits from '../hooks/useGetVisits'
-import { Calendar } from '../organisms'
+import { Calendar, Planning, Filters } from '../organisms'
 import { TableHead, Card } from '../molecules'
-import { Title } from '../atoms'
+import { Title, Loader } from '../atoms'
 import { formatDate, getWeek } from '../utils'
 import _ from 'lodash'
 
 export default () => {
-  const [planningId, setPlanningId] = useState(null)
-  const [draggablePlanning, setDraggablePlanning] = useState(null)
-  // const [loading, setLoading] = useState(true)
   const { context } = useContext(appContext)
   const { today } = useContext(dateContext)
   const [selected, setSelected] = useState(today)
@@ -27,75 +23,42 @@ export default () => {
 
   useEffect(() => {
     if (data) {
-      const formattedVisits = format(_.groupBy(data.visits, 'date'))
+      const formattedVisits = _.groupBy(data.visits, 'date')
       setVisits(formattedVisits)
     }
-  }, [data])
-
-  const format = (visits) => {
-    const planning = {
-      lanes: []
-    }
-
-    Object.keys(visits).forEach((date, index) => {
-      let newLane = {}
-      newLane.id = `lane${index}`
-      newLane.cards = visits[date]
-      planning.lanes.push(newLane)
-    })
-    return planning
-  }
-
-  const boardStyle = {
-    backgroundColor: '#FFFFFF'
-  }
-
-  const onDataChange = async (lanes) => {
-    // update visit
-  }
-
-  const onCardDelete = (id) => {
-    console.log(id)
-  }
+  }, [loading, error, data])
 
   const onDateChange = (date) => {
     const newDate = getWeek(formatDate(moment(date)))
-    setSelected(newDate)
+    setSelected(date)
   }
 
   return (
     <section className='section'>
       <Title classProp='is-1' tag='h1'>
-        planning {visits && visits.length}
+        Le planning par semaine
       </Title>
-      <Calendar onChange={onDateChange} />
-      <div className='Planning'>
-        <TableHead />
-        {/* <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-          {visits &&
-            visits.map(({ hotel }, index) => {
-              return (
-                <div key={index}>
-                  <p>{hotel.name}</p>
-                </div>
-              )
-            })}
-        </div> */}
-        {visits ? (
-          <Board
-            style={boardStyle}
-            components={{
-              Card: Card
-            }}
-            laneDraggable={false}
-            onDataChange={onDataChange}
-            onCardDelete={onCardDelete}
-            data={visits}
-          />
-        ) : (
-          <p>loading</p>
-        )}
-      </div>
+      {loading ? (
+        <Loader />
+      ) : (
+        <div className='planningWrapper'>
+          <div className='DatePickerWrapper'>
+            <div style={{ height: '290px' }}>
+              <div className='DatePicker'>
+                <Calendar onChange={onDateChange} />
+              </div>
+            </div>
+            <Filters />
+          </div>
+          <div className='Planning'>
+            {visits ? (
+              <Planning date={selected} visits={visits} />
+            ) : (
+              <p>loading</p>
+            )}
+          </div>
+        </div>
+      )}
     </section>
   )
 }

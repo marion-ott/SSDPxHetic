@@ -6,8 +6,7 @@ import Icon from '../components/atoms/Icon'
 import Colors from '../constants/Colors'
 import Words from '../constants/Words'
 import congrats from '../assets/images/congrats.png'
-
-import moment from 'moment'
+import moment from 'moment/min/moment-with-locales'
 
 export default function RecapScreen() {
   const { context, updateContext } = useContext(appContext)
@@ -42,11 +41,9 @@ export default function RecapScreen() {
             height={27}
           />
           <Text style={[styles.infoTxt, styles.marginTop]}>
-            {moment().locale('fr').format('dddd Do')}
+            {moment().format('dddd Do')}
           </Text>
-          <Text style={styles.infoTxt}>
-            {moment().locale('fr').format('MMMM YYYY')}
-          </Text>
+          <Text style={styles.infoTxt}>{moment().format('MMMM YYYY')}</Text>
         </View>
 
         <View style={[styles.infoCtn, styles.separator]}>

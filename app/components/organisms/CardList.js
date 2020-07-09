@@ -3,11 +3,13 @@ import { StyleSheet, View, ScrollView, ActivityIndicator } from 'react-native'
 import { Text, Divider } from '@ui-kitten/components'
 import { useLazyQuery } from '@apollo/react-hooks'
 import { GET_VISITS } from '../../graphql/queries/visits'
+import useGetVisits from '../../hooks/useGetVisits'
 import appContext from '../../context/appContext'
 import dateContext from '../../context/dateContext'
 import HotelCard from '../molecules/HotelCard'
 import ListHead from '../molecules/ListHead'
 import Colors from '../../constants/Colors'
+import { getDateStr, formatDate } from '../../utils/index'
 
 function reducer(state, { type, payload }) {
   switch (type) {
@@ -28,8 +30,7 @@ function reducer(state, { type, payload }) {
   }
 }
 
-const CardList = ({ label, startable, onComplete }) => {
-  const { today } = useContext(dateContext)
+const CardList = ({ label, startable, selected, onComplete }) => {
   const { context, updateContext } = useContext(appContext)
 
   const [state, dispatch] = useReducer(reducer, {
@@ -38,14 +39,20 @@ const CardList = ({ label, startable, onComplete }) => {
     visitInProgress: null
   })
 
-  const [getVisits, { loading }] = useLazyQuery(GET_VISITS, {
-    onCompleted: ({ myVisits }) => {
-      const visitInProgress = myVisits.find(
+  const { loading, error, data } = useGetVisits(
+    context.teamId,
+    formatDate(selected),
+    [selected]
+  )
+
+  useEffect(() => {
+    if (data) {
+      const visitInProgress = data.myVisits.find(
         (visit) => visit.status === 'ONGOING'
       )
 
-      const hotels = myVisits.length
-      const rooms = myVisits.reduce(
+      const hotels = data.myVisits.length
+      const rooms = data.myVisits.reduce(
         (total, { hotel }) => total + hotel.rooms,
         0
       )
@@ -57,23 +64,15 @@ const CardList = ({ label, startable, onComplete }) => {
       dispatch({
         type: 'SET_VISITS',
         payload: {
-          visits: myVisits,
-          visitsCompleted: myVisits.filter((visit) => visit.status === 'DONE'),
+          visits: data.myVisits,
+          visitsCompleted: data.myVisits.filter(
+            (visit) => visit.status === 'DONE'
+          ),
           visitInProgress: visitInProgress ? visitInProgress.id : null
         }
       })
-    },
-    onError: (error) => console.warn(error)
-  })
-
-  useEffect(() => {
-    getVisits({
-      variables: {
-        teamId: context.teamId,
-        date: today
-      }
-    })
-  }, [])
+    }
+  }, [data])
 
   useEffect(() => {
     if (state.visits.length === state.visitsCompleted.length) {

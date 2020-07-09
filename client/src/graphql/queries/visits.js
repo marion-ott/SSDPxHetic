@@ -7,6 +7,12 @@ export const GET_VISITS = gql`
       status
       priority
       date
+      team {
+        users {
+          firstName
+          lastName
+        }
+      }
       hotel {
         name
         address

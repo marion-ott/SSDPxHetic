@@ -3,7 +3,9 @@ import { useLazyQuery } from '@apollo/react-hooks'
 import { GET_VISITS } from './../graphql/queries/visits'
 
 const useGetVisits = (teamId, week, deps = []) => {
-  const [getData, { loading, data, error }] = useLazyQuery(GET_VISITS)
+  const [getData, { loading, data, error }] = useLazyQuery(GET_VISITS, {
+    fetchPolicy: 'no-cache'
+  })
 
   useEffect(() => {
     getData({
