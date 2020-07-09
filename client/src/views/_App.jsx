@@ -100,6 +100,7 @@ function App() {
   ) {
     return <p>error</p>
   }
+  console.log(context.user)
 
   return (
     <AppProvider value={{ context, setContext }}>
@@ -133,12 +134,7 @@ function App() {
                   context.user ? <Employees /> : <Redirect to='/login' />
                 }
               />
-              <Route
-                path='/users/:id'
-                render={() =>
-                  context.user ? <Details /> : <Redirect to='/login' />
-                }
-              />
+              <Route path='/users/:id' render={Details} />
               <Route
                 exact
                 path='/hotels'

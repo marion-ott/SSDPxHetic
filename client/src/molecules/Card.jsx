@@ -1,6 +1,6 @@
 import React from 'react'
 import styled from 'styled-components'
-import { Icon, Title } from '../atoms'
+import { Icon, Title, Initials } from '../atoms'
 
 const Card = styled.div`
   display: flex;
@@ -21,13 +21,13 @@ const Card = styled.div`
   }
 
   div.inner_ctn {
-    padding: 16px 10px 10px 16px;
+    padding: 16px 10px 0 16px;
   }
   p {
     font-size: 14px;
     opacity: 0.8;
     &:not(:last-child) {
-      margin-bottom: 5px;
+      margin-bottom: 10px;
     }
     &.team {
       text-align: right;
@@ -56,11 +56,12 @@ export default ({ team, ...hotel }) => {
           {hotel.zipCode} {hotel.city}
         </p>
         <br />
-        {team.users.map((user, i) => (
+        <Initials users={team.users} />
+        {/* {team.users.map((user, i) => (
           <p className='team' key={i}>
             {user.firstName} {user.lastName}
           </p>
-        ))}
+        ))} */}
       </div>
     </Card>
   )

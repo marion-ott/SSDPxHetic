@@ -370,6 +370,34 @@ th[aria-label='empty cell'] {
   transform: translateY(-100%);
 }
 
+.initials {
+  position: relative;
+}
+
+.initialsItem {
+  position: absolute !important;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+  border-radius: 50px;
+  box-sizing: border-box;
+  position: relative;
+  width: 30px;
+  height: 30px;
+}
+
+.initials p {
+  white-space: nowrap;
+  letter-spacing: -2px;
+  display: inline;
+  color: black;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
 /* PLANNING */
 /* .Planning {
   position: relative;

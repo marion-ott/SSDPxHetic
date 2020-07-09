@@ -22,12 +22,13 @@ export default () => {
   const [visits, setVisits] = useState(null)
 
   useEffect(() => {
-    console.log(data)
     if (data) {
       const formattedVisits = _.groupBy(data.visits, 'date')
       setVisits(formattedVisits)
     }
   }, [loading, error, data])
+
+  useEffect(() => {}, [])
 
   const format = (visits) => {
     const planning = {
@@ -56,11 +57,10 @@ export default () => {
   }
 
   const onDateChange = (date) => {
-    console.log(date)
     const newDate = getWeek(formatDate(moment(date)))
     setSelected(newDate)
   }
-
+  console.log('render', selected)
   return (
     <section className='section'>
       <Title classProp='is-1' tag='h1'>

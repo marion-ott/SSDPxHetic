@@ -11,6 +11,7 @@ export default ({ onChange }) => (
       onChange={onChange}
       locale={frFR}
       open={true}
+      defaultOpen={true}
       defaultValue={moment()}
       picker='week'
       onChange={onChange}

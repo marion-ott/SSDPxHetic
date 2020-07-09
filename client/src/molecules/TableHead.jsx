@@ -43,6 +43,7 @@ export default ({ date }) => {
   const [days, setDays] = useState([])
 
   useEffect(() => {
+    console.log('new date: ', date)
     const { start, end } = getWeek(date)
     const range = moment.range(start, end)
     const state = []
@@ -53,7 +54,9 @@ export default ({ date }) => {
       }
     }
     setDays(state)
-  }, [DataTransfer])
+  }, [date])
+
+  console.log('render: ', days)
 
   return (
     <TableHead>

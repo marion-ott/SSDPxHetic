@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation, withRouter } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 import appContext from '../context/appContext'
 import { Dropdown, Notifications } from '../molecules'
@@ -47,11 +47,10 @@ const Nav = ({ setAuth }) => {
                   downicon={true}
                   title={context.user.firstName}
                   titleicon='fa-user'>
-                  <Link to='/' className='dropdown-item'>
+                  <Link
+                    to={`/user/${context.user.id}`}
+                    className='dropdown-item'>
                     Mon profil
-                  </Link>
-                  <Link to='/' className='dropdown-item'>
-                    Mes visites
                   </Link>
                   <hr className='dropdown-divider'></hr>
                   <Link onClick={handleLogout} to='/' className='dropdown-item'>
@@ -67,4 +66,4 @@ const Nav = ({ setAuth }) => {
   )
 }
 
-export default Nav
+export default withRouter(Nav)
