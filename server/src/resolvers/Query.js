@@ -108,7 +108,7 @@ const Query = {
 		for (const visit of visits) {
 			const visitTeam = await prisma.visit({id: visit.id}).team({})
 
-			if (visitTeam.id === args.teamId) {
+			if (visitTeam.id === teamId) {
 				items.push(visit)
 			}
 		}

@@ -52,7 +52,7 @@ export default function ProfileScreen() {
   return (
     <CustomScrollView Component={() => <Header text='Mon profil' />}>
       <View style={styles.profileHeader}>
-        <Text style={[styles.text, styles.title]} category='h2'>
+        <Text style={[styles.text, styles.title]} category='h4'>
           {context.user.firstName} {context.user.lastName}
         </Text>
         <View style={styles.teamsWrapper}>
@@ -106,17 +106,7 @@ export default function ProfileScreen() {
 ProfileScreen.navigationOptions = {}
 
 const styles = StyleSheet.create({
-  mainTitle: {
-    color: Colors.white,
-    textAlign: 'center',
-    fontWeight: 'bold',
-    fontSize: 20,
-    lineHeight: 24,
-    paddingTop: 40,
-    paddingBottom: 20
-  },
   title: {
-    marginTop: 50,
     marginBottom: 16,
     textAlign: 'center',
     color: 'black'
@@ -148,10 +138,6 @@ const styles = StyleSheet.create({
   form: {
     justifyContent: 'center',
     width: '100%'
-  },
-  inputs: {},
-  labelInput: {
-    paddingBottom: 7
   },
   button: {
     justifyContent: 'center',
