@@ -42,7 +42,7 @@ const HotelCard = ({
   }
 
   return (
-    <Card style={[styles.card, styles[status]]}>
+    <View style={[styles.card, styles[status]]}>
       <CardHead {...hotel} status={status} disabled={disabled} />
       {/* DISPLAY INFO */}
       {status !== 'DONE' && (
@@ -75,13 +75,13 @@ const HotelCard = ({
               style={styles.roomIcon}
               name='briefcase-outline'
               fill={status === 'ONGOING' ? '#ffffff' : '#FF8139'}
-              width={18}
-              height={18}
+              width={20}
+              height={20}
             />
             <Text
               style={[
                 styles.text,
-                { marginLeft: 5, fontWeight: 'bold' },
+                { marginLeft: 5, fontWeight: '500' },
                 status === 'ONGOING' ? texts.white : texts.black
               ]}
               category='s2'>
@@ -146,7 +146,7 @@ const HotelCard = ({
           </TouchableOpacity>
         </View>
       )}
-    </Card>
+    </View>
   )
 }
 
@@ -154,9 +154,11 @@ const styles = StyleSheet.create({
   card: {
     flex: 1,
     borderRadius: 8,
-    marginBottom: 7,
+    marginBottom: 16,
     borderWidth: 0,
-    backgroundColor: Colors.lightOrange
+    paddingHorizontal: 16,
+    alignContent: 'center',
+    backgroundColor: Colors.lightOrange,
   },
   UPCOMING: {
     // backgroundColor: Colors.brightOrange,
@@ -171,7 +173,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingTop: 8
+    paddingTop: 8,
   },
   room: {
     display: 'flex',
@@ -186,11 +188,12 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
   },
   touchableButton: {
     flex: 1,
     height: 48,
+    marginBottom: 14
   },
   button: {
     flex: 1,
@@ -206,7 +209,8 @@ const styles = StyleSheet.create({
     width: 100,
   },
   text: {
-    fontSize: 14
+    fontSize: 15,
+    fontWeight: "400"
   },
   startContainer: {
     // backgroundColor: Colors.brightOrange
