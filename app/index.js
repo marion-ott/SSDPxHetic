@@ -41,6 +41,7 @@ export default () => {
     onError: (error) => console.warn(error)
   })
 
+  
   const [date, setDate] = useState({
     today: formatDate(moment())
   })

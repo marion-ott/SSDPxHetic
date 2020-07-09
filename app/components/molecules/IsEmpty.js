@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     },
     picto: {
-        textAlign: 'center'
+        alignSelf: 'center'
     }
 })
 

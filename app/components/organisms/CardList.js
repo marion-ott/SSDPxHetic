@@ -1,4 +1,4 @@
-import React, { useReducer, useContext, useEffect, useState } from 'react'
+import React, { useReducer, useContext, useEffect, useState, Fragment } from 'react'
 import { StyleSheet, View, ScrollView, ActivityIndicator } from 'react-native'
 import { Text, Divider } from '@ui-kitten/components'
 import { useLazyQuery } from '@apollo/react-hooks'
@@ -61,13 +61,13 @@ const CardList = ({ label, startable, selected, onComplete }) => {
         rooms
       })
 
+      const visitsCompleted = data.myVisits.filter((visit) => visit.status === 'DONE').map(visit => visit.id)
+
       dispatch({
         type: 'SET_VISITS',
         payload: {
           visits: data.myVisits,
-          visitsCompleted: data.myVisits.filter(
-            (visit) => visit.status === 'DONE'
-          ),
+          visitsCompleted,
           visitInProgress: visitInProgress ? visitInProgress.id : null
         }
       })
@@ -82,11 +82,11 @@ const CardList = ({ label, startable, selected, onComplete }) => {
   }, [state.visitsCompleted])
 
   if (loading) {
-    return <ActivityIndicator size='small' color={Colors.main} />
+   
   }
 
   return (
-    <ScrollView>
+    <View>
       <ListHead
         name={context.user.firstName}
         startTime={context.schedule.startTime}
@@ -94,37 +94,72 @@ const CardList = ({ label, startable, selected, onComplete }) => {
         hotels={context.hotels}
         rooms={context.rooms}
       />
-      <View style={styles.middleContainer}>
-        {label && (
-          <Text style={[styles.text, styles.subtitle]} category='s1'>
-            {label}
-          </Text>
-        )}
-        <Divider style={[{ marginBottom: 10 }]} />
-        <View style={styles.cardsWrapper}>
-          {state.visits.map(({ id, status, hotel }) => (
-            <HotelCard
-              key={id}
-              id={id}
-              disabled={
-                id !== state.visitInProgress && state.visitInProgress !== null
+      {state.visits.length > 0 && (
+        <Fragment>
+          <View style={[styles.middleContainer]}>
+            {label && (
+              <Text style={[styles.text, styles.subtitle]} category='s1'>
+                Visite prioritaire
+              </Text>
+            )}
+            <Divider style={[{ marginBottom: 10 }]} />
+            <View style={styles.cardsWrapper}>
+              <HotelCard
+                id={state.visits[0].id}
+                disabled={(state.visits[0].id !== state.visitInProgress && state.visitInProgress !== null)}
+                startable={startable}
+                status={state.visits[0].status}
+                {...state.visits[0].hotel}
+                onChange={(id, action) =>
+                  dispatch({
+                    type: action,
+                    payload: {
+                      id
+                    }
+                  })
+                }
+              />
+            </View>
+          </View>
+          <View style={[styles.middleContainer]}>
+            {label && (
+              <Text style={[styles.text, styles.subtitle]} category='s1'>
+                Visites standards
+              </Text>
+            )}
+            <Divider style={[{ marginBottom: 10 }]} />
+            <View style={styles.cardsWrapper}>
+              {state.visits.map(({ id, status, hotel }) => {
+                const firstVisitId = state.visits[0].id
+                if (id === firstVisitId) return
+                
+                const disabled = (id !== state.visitInProgress && state.visitInProgress !== null)
+                  || (!state.visitsCompleted.includes(firstVisitId) && id !== firstVisitId)
+                return (
+                  <HotelCard
+                    key={id}
+                    id={id}
+                    disabled={disabled}
+                    startable={startable}
+                    status={status}
+                    {...hotel}
+                    onChange={(id, action) =>
+                      dispatch({
+                        type: action,
+                        payload: {
+                          id
+                        }
+                      })
+                    }
+                  />
+                )
               }
-              startable={startable}
-              status={status}
-              {...hotel}
-              onChange={(id, action) =>
-                dispatch({
-                  type: action,
-                  payload: {
-                    id
-                  }
-                })
-              }
-            />
-          ))}
-        </View>
-      </View>
-    </ScrollView>
+              )}
+            </View>
+          </View>
+        </Fragment>
+      )}
+    </View>
   )
 }
 

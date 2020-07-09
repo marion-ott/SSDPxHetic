@@ -10,7 +10,7 @@ export default function HomeScreen() {
   const { today } = useContext(dateContext)
   const [visitsCompleted, setVisitsCompleted] = useState(false)
 
-  //TODO: trigger recap display
+  // TODO: trigger recap display
   const onVisitsCompleted = () => {
     setVisitsCompleted(true)
   }
