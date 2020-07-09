@@ -22,11 +22,11 @@ const styles = StyleSheet.create({
   },
   scrollWrapper: {
     flex: 1,
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    bottom: 24,
-    overflow: 'visible'
+    // position: 'absolute',
+    // left: 0,
+    // right: 0,
+    // bottom: 24,
+    // overflow: 'visible'
     // backgroundColor: 'yellow'
   },
   component: {
@@ -50,6 +50,6 @@ const styles = StyleSheet.create({
     position: 'relative',
     paddingTop: 40,
     paddingHorizontal: 16,
-    paddingBottom: 20
+    paddingBottom: 100
   }
 })

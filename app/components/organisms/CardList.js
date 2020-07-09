@@ -54,11 +54,13 @@ const CardList = ({ label, startable, onComplete }) => {
         rooms
       })
 
+      const visitsCompleted = myVisits.filter((visit) => visit.status === 'DONE').map(visit => visit.id)
+
       dispatch({
         type: 'SET_VISITS',
         payload: {
           visits: myVisits,
-          visitsCompleted: myVisits.filter((visit) => visit.status === 'DONE'),
+          visitsCompleted,
           visitInProgress: visitInProgress ? visitInProgress.id : null
         }
       })
@@ -103,26 +105,29 @@ const CardList = ({ label, startable, onComplete }) => {
         )}
         <Divider style={[{ marginBottom: 10 }]} />
         <View style={styles.cardsWrapper}>
-          {state.visits.map(({ id, status, hotel }) => (
-            <HotelCard
-              key={id}
-              id={id}
-              disabled={
-                id !== state.visitInProgress && state.visitInProgress !== null
-              }
-              startable={startable}
-              status={status}
-              {...hotel}
-              onChange={(id, action) =>
-                dispatch({
-                  type: action,
-                  payload: {
-                    id
-                  }
-                })
-              }
-            />
-          ))}
+          {state.visits.map(({ id, status, hotel }) => {
+            const firstVisitId = state.visits[0].id
+            const disabled = (id !== state.visitInProgress && state.visitInProgress !== null)
+              || (!state.visitsCompleted.includes(firstVisitId) && id !== firstVisitId)
+            return (
+              <HotelCard
+                key={id}
+                id={id}
+                disabled={disabled}
+                startable={startable}
+                status={status}
+                {...hotel}
+                onChange={(id, action) =>
+                  dispatch({
+                    type: action,
+                    payload: {
+                      id
+                    }
+                  })
+                }
+              />
+            )
+          })}
         </View>
       </View>
     </ScrollView>
