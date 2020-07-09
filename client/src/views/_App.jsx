@@ -20,6 +20,7 @@ import Employees from './Employees'
 import Hotels from './Hotels'
 import Details from './Details'
 import { Nav } from '../organisms'
+import { Loader } from '../atoms'
 
 function App() {
   const { loading: authLoading, error: authError, data: auth } = useQuery(
@@ -91,7 +92,7 @@ function App() {
   }
 
   if (loading || sectorsLoad) {
-    return <p>loading</p>
+    return <Loader />
   }
 
   if (
@@ -133,12 +134,7 @@ function App() {
                   context.user ? <Employees /> : <Redirect to='/login' />
                 }
               />
-              <Route
-                path='/users/:id'
-                render={() =>
-                  context.user ? <Details /> : <Redirect to='/login' />
-                }
-              />
+              <Route path='/users/:id' render={Details} />
               <Route
                 exact
                 path='/hotels'

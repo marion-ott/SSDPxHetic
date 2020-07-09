@@ -89,7 +89,7 @@ const Query = {
 	visit(parent, {id}, {prisma}) {
 		return prisma.visit({id})
 	},
-	visits(parent, {start, end}, {prisma}) {
+	visits(parent, {start, end, sector}, {prisma}) {
 		return prisma.visits({
 			where: {
 				AND: [{date_gte: start}, {date_lte: end}]

@@ -13,25 +13,8 @@ import { Colors } from 'react-native/Libraries/NewAppScreen'
 import CustomScrollView from '../components/molecules/CustomScrollView'
 
 export default function CalendarScreen() {
-  const { context } = useContext(appContext)
   const { today } = useContext(dateContext)
   const [selected, setSelected] = useState(today)
-
-  const { loading, error, data } = useGetVisits(
-    context.teamId,
-    formatDate(selected),
-    [selected]
-  )
-  const [visits, setVisits] = useState(null)
-
-  useEffect(() => {
-    if (data) {
-      setVisits(() => {
-        console.log(data)
-        return data.myVisits
-      })
-    }
-  }, [data])
 
   return (
     <CustomScrollView
@@ -43,11 +26,7 @@ export default function CalendarScreen() {
           onChange={(day) => setSelected(day)}
         />
       )}>
-      {loading ? (
-        <ActivityIndicator size='small' color={Colors.main} />
-      ) : (
-        visits && <CardList cards={visits} />
-      )}
+      <CardList selected={selected} />
     </CustomScrollView>
   )
 }
@@ -55,14 +34,3 @@ export default function CalendarScreen() {
 CalendarScreen.navigationOptions = {
   header: null
 }
-
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     backgroundColor: Colors.white
-//   },
-//   box: {
-//     flexGrow: 1,
-//     backgroundColor: Colors.white
-//   }
-// })

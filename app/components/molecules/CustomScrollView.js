@@ -1,6 +1,7 @@
 import React from 'react'
 import { StyleSheet, View, ScrollView, SafeAreaView } from 'react-native'
 import Colors from '../../constants/Colors'
+import { Dimensions } from 'react-native'
 
 export default function CustomScrollView({ top = 100, Component, children }) {
   return (
@@ -9,7 +10,7 @@ export default function CustomScrollView({ top = 100, Component, children }) {
         <Component />
       </View>
       <ScrollView style={[styles.scrollWrapper, { top }]}>
-        <View style={styles.content}>{children}</View>
+        <View style={[styles.content]}>{children}</View>
       </ScrollView>
     </View>
   )
@@ -17,8 +18,8 @@ export default function CustomScrollView({ top = 100, Component, children }) {
 
 const styles = StyleSheet.create({
   wrapper: {
-    flex: 1
-    // backgroundColor: 'blue'
+    flex: 1,
+    backgroundColor: 'white'
   },
   scrollWrapper: {
     flex: 1,
@@ -27,7 +28,6 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 24,
     overflow: 'visible'
-    // backgroundColor: 'yellow'
   },
   component: {
     minHeight: 200,
@@ -50,6 +50,6 @@ const styles = StyleSheet.create({
     position: 'relative',
     paddingTop: 40,
     paddingHorizontal: 16,
-    paddingBottom: 20
+    paddingBottom: 100
   }
 })

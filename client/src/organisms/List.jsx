@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import { useQuery } from '@apollo/react-hooks'
 import { ListItem, Pagination } from '../molecules'
-import { Input, Title } from '../atoms'
+import { Input, Title, Loader } from '../atoms'
 import { listKeys } from '../global/data'
 
 const List = ({ title, getMany, mutation, type }) => {
@@ -59,7 +59,7 @@ const List = ({ title, getMany, mutation, type }) => {
   }
 
   if (loading) {
-    return <p>loading</p>
+    return <Loader />
   }
 
   if (error) {
