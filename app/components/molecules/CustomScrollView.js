@@ -4,15 +4,12 @@ import Colors from '../../constants/Colors'
 import { Dimensions } from 'react-native'
 
 export default function CustomScrollView({ top = 100, Component, children }) {
-  const { height } = Dimensions.get('window')
-  const elHeight = height - top - 40 - 50
-
   return (
     <View style={styles.wrapper}>
       <View style={styles.component}>
         <Component />
       </View>
-      <ScrollView style={[styles.scrollWrapper, { top }, { height: elHeight }]}>
+      <ScrollView style={[styles.scrollWrapper, { top }]}>
         <View style={[styles.content]}>{children}</View>
       </ScrollView>
     </View>

@@ -12,7 +12,7 @@ import IsEmpty from '../components/molecules/IsEmpty'
 export default function NotificationScreen() {
   const { notifications, updateNotifications } = useContext(notificationContext)
   return (
-    <CustomScrollView Component={() => <Header text='Notification' />}>
+    <CustomScrollView Component={() => <Header text='Notifications' />}>
       {notifications.length === 0 ? (
         <IsEmpty />
       ) : (
