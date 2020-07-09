@@ -102,7 +102,7 @@ const CardList = ({ label, startable, selected, onComplete }) => {
                 Visite prioritaire
               </Text>
             )}
-            <Divider style={[{ marginBottom: 10 }]} />
+            <Divider style={[{ marginBottom: 16 }]} />
             <View style={styles.cardsWrapper}>
               <HotelCard
                 id={state.visits[0].id}
@@ -184,7 +184,8 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     marginBottom: 7,
-    marginTop: 20
+    marginTop: 26,
+    fontSize: 16
   },
   cardsWrapper: {
     flex: 1

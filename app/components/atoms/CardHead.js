@@ -31,7 +31,7 @@ const CardHead = ({ name, phone, lat, long, status, disabled, onChange }) => {
         name='more-vertical-outline'
         width={16}
         height={16}
-        fill={Colors.brightOrange}
+      // fill={Colors.brightOrange}
       />
     </TouchableOpacity>
   )
@@ -43,8 +43,8 @@ const CardHead = ({ name, phone, lat, long, status, disabled, onChange }) => {
           <View style={styles.slide}>
             <Icon
               name='checkmark-outline'
-              width={16}
-              height={16}
+              width={26}
+              height={26}
               fill={Colors.brightOrange}
             />
           </View>
@@ -114,11 +114,10 @@ const styles = StyleSheet.create({
   cardHead: {
     flex: 1,
     flexDirection: 'row',
-    // justifyContent: 'flex-start',
     alignItems: 'center',
     paddingRight: 24,
-    paddingVertical: 12,
     width: '100%',
+    height: 55,
   },
   borderNotDone: {
     borderBottomColor: Colors.darkGrey,
@@ -137,7 +136,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     borderRadius: 8,
     paddingVertical: 16,
-    fontSize: 16
+    fontSize: 16,
   },
   touchableButton: {
     marginHorizontal: 10,
@@ -157,24 +156,22 @@ const styles = StyleSheet.create({
     fontWeight: '500'
   },
   title: {
-    fontSize: 16,
-    fontWeight: 'bold'
+    fontSize: 17,
+    fontWeight: "500",
   },
   more: {
-    backgroundColor: '#FFE5D7',
     borderRadius: 5,
     paddingVertical: 4,
     paddingHorizontal: 4
   },
   flexRow: {
     flexDirection: 'row',
-    // justifyContent: 'flex-start',
     alignItems: 'center',
     width: '100%',
   },
   slide: {
-    marginRight: 10,
-    alignItems: 'center'
+    marginRight: 7,
+    alignItems: 'center',
   },
   black: {
     color: Colors.tabIconDefault

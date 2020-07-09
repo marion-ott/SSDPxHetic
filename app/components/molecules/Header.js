@@ -5,7 +5,7 @@ import Colors from '../../constants/Colors'
 
 const Header = ({ text }) => (
   <View style={styles.header}>
-    <Text style={[styles.date, styles.text]} category='h5'>
+    <Text style={[styles.date, styles.text]} >
       {text}
     </Text>
   </View>
@@ -24,8 +24,10 @@ const styles = StyleSheet.create({
   date: {
     color: Colors.white,
     textAlign: 'center',
-    paddingTop: 40,
-    paddingBottom: 20
+    paddingTop: 60,
+    paddingBottom: 20,
+    fontWeight: "600",
+    fontSize: 22
   }
 })
 
