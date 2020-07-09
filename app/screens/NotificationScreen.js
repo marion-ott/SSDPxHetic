@@ -22,7 +22,9 @@ export default function NotificationScreen() {
             })}
           </ScrollView>
         </>
-      ) : <IsEmpty />)}
+      ) : (
+        <IsEmpty />
+      )}
     </CustomScrollView>
   )
 }
