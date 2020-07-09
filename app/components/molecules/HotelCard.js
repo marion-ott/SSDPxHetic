@@ -33,16 +33,16 @@ const HotelCard = ({
         status: ''
       }
     }
-    
+
     if (status === 'UPCOMING') variables.data.status = 'ONGOING'
     if (status === 'ONGOING') variables.data.status = isCancelled ? 'UPCOMING' : 'DONE'
     if (status === 'DONE') variables.data.status = 'UPCOMING'
-    
+
     updateVisit({ variables })
   }
 
   return (
-    <Card style={[styles.card, styles[status]]}>
+    <View style={[styles.card, styles[status]]}>
       <CardHead {...hotel} status={status} disabled={disabled} onChange={onUpdate} />
       {/* DISPLAY INFO */}
       {status !== 'DONE' && (
