@@ -47,7 +47,7 @@ const HotelCard = ({
       {/* DISPLAY INFO */}
       {status !== 'DONE' && (
         <View style={styles.content}>
-          <View>
+          <View style={{ marginBottom: 16 }}>
             <Text
               style={[
                 styles.text,
@@ -184,7 +184,6 @@ const styles = StyleSheet.create({
     marginRight: 4
   },
   buttons: {
-    marginTop: 14,
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',

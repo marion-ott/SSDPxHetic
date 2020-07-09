@@ -9,11 +9,11 @@ const Icon = ({
   width = 23,
   height = 23
 }) => (
-  <EveIcon
-    style={{ width, height }}
-    name={name}
-    fill={focused ? Colors.tabIconSelected : fill}
-  />
-)
+    <EveIcon
+      style={{ width, height }}
+      name={name}
+      fill={focused ? Colors.tabIconSelected : fill}
+    />
+  )
 
 export default Icon
