@@ -228,8 +228,8 @@ const deleteVisits = async () => {
 // ! TODO: prevent doublon teams generation
 // ? if user.teams {date: moment + 5weeks} exists skip
 const generateAll = (async () => {
-	// await generateSchedules()
-	// await generateTeams()
+	await generateSchedules()
+	await generateTeams()
 
 	await generateVisits()
 	// await deleteVisits()

@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react'
-import moment from 'moment'
+import moment from 'moment/min/moment-with-locales'
 import appContext from '../context/appContext'
 import dateContext from '../context/dateContext'
 import CardList from '../components/organisms/CardList'

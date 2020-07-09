@@ -1,11 +1,20 @@
 import React from 'react'
 import { ConfigProvider } from 'antd'
 import frFR from 'antd/es/locale/fr_FR'
-import { Calendar } from 'antd'
+import { DatePicker } from 'antd'
 import 'antd/dist/antd.css'
+import moment from 'moment'
 
 export default ({ onChange }) => (
   <ConfigProvider locale={frFR}>
-    <Calendar fullscreen={false} locale={frFR} onChange={onChange} />
+    <DatePicker
+      onChange={onChange}
+      locale={frFR}
+      open={true}
+      defaultValue={moment()}
+      picker='week'
+      onChange={onChange}
+      // getPopupContainer={() => document.querySelector('.DatePicker')}
+    />
   </ConfigProvider>
 )
