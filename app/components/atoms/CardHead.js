@@ -38,8 +38,8 @@ const CardHead = ({ name, phone, lat, long, status, disabled }) => {
           <View style={styles.slide}>
             <Icon
               name='checkmark-outline'
-              width={16}
-              height={16}
+              width={26}
+              height={26}
               fill={Colors.brightOrange}
             />
           </View>
@@ -103,7 +103,7 @@ const styles = StyleSheet.create({
     // justifyContent: 'flex-start',
     alignItems: 'center',
     paddingRight: 24,
-    paddingVertical: 12,
+    // paddingVertical: 12,
     width: '100%',
   },
   borderNotDone: {
@@ -144,7 +144,8 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 16,
-    fontWeight: 'bold'
+    fontWeight: "500",
+    marginTop: 3
   },
   more: {
     backgroundColor: '#FFE5D7',
@@ -159,7 +160,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   slide: {
-    marginRight: 10,
+    marginRight: 7,
     alignItems: 'center'
   },
   black: {

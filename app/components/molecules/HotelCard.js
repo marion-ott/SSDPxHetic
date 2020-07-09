@@ -54,8 +54,8 @@ const HotelCard = ({
                 disabled
                   ? texts.grey
                   : !disabled && status === 'ONGOING'
-                  ? texts.white
-                  : texts.black
+                    ? texts.white
+                    : texts.black
               ]}
               category='s2'>
               {hotel.address},
@@ -190,7 +190,7 @@ const styles = StyleSheet.create({
   },
   touchableButton: {
     flex: 1,
-    height: 48
+    height: 48,
   },
   button: {
     flex: 1,
@@ -203,7 +203,7 @@ const styles = StyleSheet.create({
   },
   report: {
     color: Colors.brightOrange,
-    textAlign: 'center'
+    width: 100,
   },
   text: {
     fontSize: 14
@@ -222,7 +222,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     textAlign: 'center',
     borderBottomColor: Colors.brightOrange,
-    width: 48
+    width: 61
   },
   bold: {
     fontWeight: 'bold'

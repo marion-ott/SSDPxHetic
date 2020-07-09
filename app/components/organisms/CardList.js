@@ -101,7 +101,7 @@ const CardList = ({ label, startable, onComplete }) => {
             {label}
           </Text>
         )}
-        <Divider style={[{ marginBottom: 10 }]} />
+        <Divider style={[{ marginBottom: 16 }]} />
         <View style={styles.cardsWrapper}>
           {state.visits.map(({ id, status, hotel }) => (
             <HotelCard
@@ -150,7 +150,8 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     marginBottom: 7,
-    marginTop: 20
+    marginTop: 26,
+    fontSize: 16
   },
   cardsWrapper: {
     flex: 1
