@@ -60,7 +60,7 @@ export default function ProfileScreen() {
         </Text>
         <View style={styles.teamsWrapper}>
           {context.user.mates.map((mate, index) => (
-            <View style={styles.team} key={index}>
+            <View style={[styles.team, { marginTop: index != 0 ? 7 : 0 }]} key={index}>
               <Icon fill={Colors.black} name='people-outline' />
               <Text style={styles.teamText} category='h2'>
                 {mate.firstName} {mate.lastName}
@@ -84,7 +84,7 @@ export default function ProfileScreen() {
         />
         {editable === false && (
           <TouchableOpacity
-            style={styles.button}
+            style={[styles.button, styles.settings]}
             onPress={() => setEditable(true)}>
             <Text style={styles.buttonLabel}>
               {!editable
@@ -109,16 +109,23 @@ export default function ProfileScreen() {
 ProfileScreen.navigationOptions = {}
 
 const styles = StyleSheet.create({
+  profileHeader: {
+    fontWeight: 'bold',
+    marginBottom: 4,
+    marginTop: 26
+  },
   title: {
-    marginBottom: 16,
+    marginBottom: 26,
     textAlign: 'center',
-    color: 'black'
+    color: 'black',
+    fontWeight: "700"
   },
   textInfo: {
     marginBottom: 24,
-    marginTop: 16,
-    fontSize: 20,
-    lineHeight: 24
+    marginTop: 7,
+    fontSize: 23,
+    lineHeight: 24,
+    fontWeight: "500"
   },
   teamsWrapper: {
     backgroundColor: Colors.offWhite,
@@ -134,13 +141,13 @@ const styles = StyleSheet.create({
   teamText: {
     marginLeft: 18,
     textAlign: 'left',
-    fontSize: 16,
+    fontSize: 18,
     fontWeight: '600',
     textDecorationLine: 'underline'
   },
   form: {
     justifyContent: 'center',
-    width: '100%'
+    width: '100%',
   },
   button: {
     justifyContent: 'center',
