@@ -1,11 +1,12 @@
 import gql from 'graphql-tag'
 
 export const GET_VISITS = gql`
-  query Visits($teamId: ID!, $date: String) {
-    myVisits(teamId: $teamId, date: $date) {
+  query Visits($start: String, $end: String) {
+    visits(start: $start, end: $end) {
       id
       status
       priority
+      date
       hotel {
         name
         address

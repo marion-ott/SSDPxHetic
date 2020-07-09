@@ -33,7 +33,7 @@ type Query {
 
 	# Visit
 	visit(id: ID!): Visit!
-	visits(query: String): [Visit!]!
+	visits(start: String, end: String): [Visit!]!
 	myVisits(teamId: ID!, date: String): [Visit!]
 
 	# Team

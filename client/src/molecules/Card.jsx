@@ -1,8 +1,7 @@
 import React from 'react'
 // import Icon from '../atoms/Icon'
-// import Details from './../molecules/Details'
 
-export default (props) => {
+export default ({ onDelete, id, hotel }) => {
   const minToHours = (num) => {
     var hours = Math.floor(num / 60)
     var minutes = num % 60
@@ -18,16 +17,12 @@ export default (props) => {
   }
 
   return (
-    <div className='Card' key={props._id} onClick={() => props.onDelete()}>
+    <div className='Card' key={id} onClick={() => onDelete()}>
       <div className='inner_ctn' onClick={dontDelete}>
-        {/* <Details
-          hotel={props.hotel_name}
-          anomaly={`Note actuelle : ${props.anomaly}`}
-          rooms={`${props.rooms} chambres`}
-          hour={`Durée estimée : ${minToHours(props.duration)}`}
-        />
+        <p>{hotel.name}</p>
+        <p>{hotel.rooms}</p>
         <br />
-        {props.team.map((el, i) => (
+        {/* {props.team.map((el, i) => (
           <p className='team' key={i}>
             {el.firstName} {el.lastName}
           </p>

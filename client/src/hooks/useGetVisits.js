@@ -2,15 +2,12 @@ import { useEffect } from 'react'
 import { useLazyQuery } from '@apollo/react-hooks'
 import { GET_VISITS } from './../graphql/queries/visits'
 
-const useGetVisits = (teamId, date, deps = []) => {
+const useGetVisits = (teamId, week, deps = []) => {
   const [getData, { loading, data, error }] = useLazyQuery(GET_VISITS)
 
   useEffect(() => {
     getData({
-      variables: {
-        teamId,
-        date
-      }
+      variables: { ...week }
     })
   }, deps)
 
