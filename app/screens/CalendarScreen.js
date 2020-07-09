@@ -16,6 +16,7 @@ export default function CalendarScreen() {
   const { context } = useContext(appContext)
   const { today } = useContext(dateContext)
   const [selected, setSelected] = useState(today)
+
   const { loading, error, data } = useGetVisits(
     context.teamId,
     formatDate(selected),
@@ -25,7 +26,10 @@ export default function CalendarScreen() {
 
   useEffect(() => {
     if (data) {
-      setVisits(data.myVisits)
+      setVisits(() => {
+        console.log(data)
+        return data.myVisits
+      })
     }
   }, [data])
 

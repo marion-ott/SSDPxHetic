@@ -6,7 +6,6 @@ import { listKeys } from '../global/data'
 
 const Details = ({ location, match }) => {
   const type = location.pathname.replace(`/${match.params.id}`, '').slice(1, -1)
-  console.log(match.params)
   const { loading, error, data } = useGetOne(type, match.params.id)
 
   if (error) {
@@ -42,29 +41,29 @@ const Details = ({ location, match }) => {
       <div className='columns'>
         <div className='column is-one-third'>
           <div className='card box'>
-            <div class='card-content'>
-              <div class='media'>
-                <div class='media-left'>
-                  <figure class='image is-48x48'>
+            <div className='card-content'>
+              <div className='media'>
+                <div className='media-left'>
+                  <figure className='image is-48x48'>
                     <img
                       src='https://bulma.io/images/placeholders/96x96.png'
                       alt='Placeholder'
                     />
                   </figure>
                 </div>
-                <div class='media-content'>
-                  <p class='title is-4'>
+                <div className='media-content'>
+                  <p className='title is-4'>
                     {data[type].name ||
                       `${data[type].firstName} ${data[type].lastName}`}
                   </p>
-                  <p class='subtitle is-6'>
+                  <p className='subtitle is-6'>
                     Secteur :{' '}
                     {data[type].sector ? data[type].sector.zone : 'N/A'}
                   </p>
                 </div>
               </div>
 
-              <div class='content'>
+              <div className='content'>
                 {Object.keys(data[type]).map((el) => {
                   const properKey = keys.find((key) => key.name === el)
                   if (
@@ -92,13 +91,13 @@ const Details = ({ location, match }) => {
             </div>
           </div>
         </div>
-        <div class='column'>
+        <div className='column'>
           <Title size='is-3' tag='h3'>
             Visites
           </Title>
-          <div class='box tabs is-small'>
+          <div className='box tabs is-small'>
             <ul>
-              <li class='is-active'>
+              <li className='is-active'>
                 <a href='/'>À venir</a>
               </li>
               <li>

@@ -89,31 +89,26 @@ const Query = {
 	visit(parent, {id}, {prisma}) {
 		return prisma.visit({id})
 	},
-	visits(parent, args, {prisma}) {
-		const opArgs = {
-			where: {},
-			first: args.first,
-			skip: args.skip,
-			orderBy: args.orderBy
-		}
-
-		if (args.query) {
-			const input = generateSearchIndex(args.query)
-			opArgs.where = {
-				date: args.query
+	visits(parent, {start, end}, {prisma}) {
+		return prisma.visits({
+			where: {
+				AND: [{date_gte: start}, {date_lte: end}]
 			}
-		}
-
-		return prisma.visits(opArgs)
+		})
 	},
 
-	async myVisits(parent, args, {prisma}) {
+	async myVisits(parent, {date, teamId}, {prisma}) {
 		const items = []
-		const visits = await prisma.visits()
-		for (const visit of visits) {
-			const visitTeam = await prisma.visit({id: visit.id}).team()
+		const visits = await prisma.visits({
+			where: {
+				date
+			}
+		})
 
-			if (visitTeam.id === args.teamId && visit.date === args.date) {
+		for (const visit of visits) {
+			const visitTeam = await prisma.visit({id: visit.id}).team({})
+
+			if (visitTeam.id === args.teamId) {
 				items.push(visit)
 			}
 		}
