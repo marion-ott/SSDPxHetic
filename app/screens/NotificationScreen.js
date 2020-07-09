@@ -14,7 +14,7 @@ export default function NotificationScreen() {
 
   return (
     <CustomScrollView Component={() => <Header text='Notification' />}>
-      {notifications.length == 0 ? (
+      {notifications.length !== 0 ? (
         <>
           <Text style={styles.title}>Les plus récents</Text>
           <ScrollView style={styles.cards}>

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link, withRouter } from 'react-router-dom'
 import useGetOne from './../hooks/useGetOne'
-import { Title } from './../atoms'
+import { Title, Loader } from './../atoms'
 import { listKeys } from '../global/data'
 
 const Details = ({ location, match }) => {
@@ -13,7 +13,7 @@ const Details = ({ location, match }) => {
   }
 
   if (loading) {
-    return <p>{loading}</p>
+    return <Loader />
   }
 
   const keys = listKeys.filter((el) =>

@@ -4,7 +4,7 @@ import { useMutation } from '@apollo/react-hooks'
 import { LOGIN } from './../graphql/mutations/auth'
 import { getFormProps } from './../global/data'
 import { Form } from './../organisms'
-import { Logo } from './../atoms'
+import { Logo, Loader } from './../atoms'
 
 const schema = yup.object({
   email: yup.string().email('Email invalide').required('Email requis'),
@@ -32,7 +32,7 @@ const Login = ({ handleLogin }) => {
   }
 
   if (loading) {
-    return <p>loading</p>
+    return <Loader />
   }
 
   return (

@@ -1,13 +1,15 @@
-import React, { useReducer, useContext, useEffect, useState } from 'react'
+import React, { useReducer, useContext, useEffect, useState, Fragment } from 'react'
 import { StyleSheet, View, ScrollView, ActivityIndicator } from 'react-native'
 import { Text, Divider } from '@ui-kitten/components'
 import { useLazyQuery } from '@apollo/react-hooks'
 import { GET_VISITS } from '../../graphql/queries/visits'
+import useGetVisits from '../../hooks/useGetVisits'
 import appContext from '../../context/appContext'
 import dateContext from '../../context/dateContext'
 import HotelCard from '../molecules/HotelCard'
 import ListHead from '../molecules/ListHead'
 import Colors from '../../constants/Colors'
+import { getDateStr, formatDate } from '../../utils/index'
 
 function reducer(state, { type, payload }) {
   switch (type) {
@@ -28,8 +30,7 @@ function reducer(state, { type, payload }) {
   }
 }
 
-const CardList = ({ label, startable, onComplete }) => {
-  const { today } = useContext(dateContext)
+const CardList = ({ label, startable, selected, onComplete }) => {
   const { context, updateContext } = useContext(appContext)
 
   const [state, dispatch] = useReducer(reducer, {
@@ -38,14 +39,20 @@ const CardList = ({ label, startable, onComplete }) => {
     visitInProgress: null
   })
 
-  const [getVisits, { loading }] = useLazyQuery(GET_VISITS, {
-    onCompleted: ({ myVisits }) => {
-      const visitInProgress = myVisits.find(
+  const { loading, error, data } = useGetVisits(
+    context.teamId,
+    formatDate(selected),
+    [selected]
+  )
+
+  useEffect(() => {
+    if (data) {
+      const visitInProgress = data.myVisits.find(
         (visit) => visit.status === 'ONGOING'
       )
 
-      const hotels = myVisits.length
-      const rooms = myVisits.reduce(
+      const hotels = data.myVisits.length
+      const rooms = data.myVisits.reduce(
         (total, { hotel }) => total + hotel.rooms,
         0
       )
@@ -54,28 +61,18 @@ const CardList = ({ label, startable, onComplete }) => {
         rooms
       })
 
-      const visitsCompleted = myVisits.filter((visit) => visit.status === 'DONE').map(visit => visit.id)
+      const visitsCompleted = data.myVisits.filter((visit) => visit.status === 'DONE').map(visit => visit.id)
 
       dispatch({
         type: 'SET_VISITS',
         payload: {
-          visits: myVisits,
+          visits: data.myVisits,
           visitsCompleted,
           visitInProgress: visitInProgress ? visitInProgress.id : null
         }
       })
-    },
-    onError: (error) => console.warn(error)
-  })
-
-  useEffect(() => {
-    getVisits({
-      variables: {
-        teamId: context.teamId,
-        date: today
-      }
-    })
-  }, [])
+    }
+  }, [data])
 
   useEffect(() => {
     if (state.visits.length === state.visitsCompleted.length) {
@@ -85,11 +82,11 @@ const CardList = ({ label, startable, onComplete }) => {
   }, [state.visitsCompleted])
 
   if (loading) {
-    return <ActivityIndicator size='small' color={Colors.main} />
+   
   }
 
   return (
-    <ScrollView>
+    <View>
       <ListHead
         name={context.user.firstName}
         startTime={context.schedule.startTime}
@@ -97,26 +94,22 @@ const CardList = ({ label, startable, onComplete }) => {
         hotels={context.hotels}
         rooms={context.rooms}
       />
-      <View style={styles.middleContainer}>
-        {label && (
-          <Text style={[styles.text, styles.subtitle]} category='s1'>
-            {label}
-          </Text>
-        )}
-        <Divider style={[{ marginBottom: 10 }]} />
-        <View style={styles.cardsWrapper}>
-          {state.visits.map(({ id, status, hotel }) => {
-            const firstVisitId = state.visits[0].id
-            const disabled = (id !== state.visitInProgress && state.visitInProgress !== null)
-              || (!state.visitsCompleted.includes(firstVisitId) && id !== firstVisitId)
-            return (
+      {state.visits.length > 0 && (
+        <Fragment>
+          <View style={[styles.middleContainer]}>
+            {label && (
+              <Text style={[styles.text, styles.subtitle]} category='s1'>
+                Visite prioritaire
+              </Text>
+            )}
+            <Divider style={[{ marginBottom: 10 }]} />
+            <View style={styles.cardsWrapper}>
               <HotelCard
-                key={id}
-                id={id}
-                disabled={disabled}
+                id={state.visits[0].id}
+                disabled={(state.visits[0].id !== state.visitInProgress && state.visitInProgress !== null)}
                 startable={startable}
-                status={status}
-                {...hotel}
+                status={state.visits[0].status}
+                {...state.visits[0].hotel}
                 onChange={(id, action) =>
                   dispatch({
                     type: action,
@@ -126,11 +119,47 @@ const CardList = ({ label, startable, onComplete }) => {
                   })
                 }
               />
-            )
-          })}
-        </View>
-      </View>
-    </ScrollView>
+            </View>
+          </View>
+          <View style={[styles.middleContainer]}>
+            {label && (
+              <Text style={[styles.text, styles.subtitle]} category='s1'>
+                Visites standards
+              </Text>
+            )}
+            <Divider style={[{ marginBottom: 10 }]} />
+            <View style={styles.cardsWrapper}>
+              {state.visits.map(({ id, status, hotel }) => {
+                const firstVisitId = state.visits[0].id
+                if (id === firstVisitId) return
+                
+                const disabled = (id !== state.visitInProgress && state.visitInProgress !== null)
+                  || (!state.visitsCompleted.includes(firstVisitId) && id !== firstVisitId)
+                return (
+                  <HotelCard
+                    key={id}
+                    id={id}
+                    disabled={disabled}
+                    startable={startable}
+                    status={status}
+                    {...hotel}
+                    onChange={(id, action) =>
+                      dispatch({
+                        type: action,
+                        payload: {
+                          id
+                        }
+                      })
+                    }
+                  />
+                )
+              }
+              )}
+            </View>
+          </View>
+        </Fragment>
+      )}
+    </View>
   )
 }
 
