@@ -10,6 +10,7 @@ const fs = require('fs')
  * TODO: CRON -> execute every week
  */
 const generateSchedules = async () => {
+	console.log('Generating schedules...')
 	const sectors = await prisma.sectors()
 
 	for (const sector of sectors) {
@@ -66,6 +67,7 @@ const generateSchedules = async () => {
  * TODO: CRON -> execture every 5 weeks
  */
 const generateTeams = async () => {
+	console.log('Generating teams...')
 	const sectors = await prisma.sectors()
 	const data = []
 
@@ -144,6 +146,7 @@ const generateTeams = async () => {
  * * PASSER AU JOUR SUIVANT APRES X HOTELS
  **/
 const generateVisits = async () => {
+	console.log('Generating visits...')
 	const MAX_VISITS_PER_DAY = 3
 	const sectors = await prisma.sectors()
 	const hotelsBySector = []
@@ -175,6 +178,7 @@ const generateVisits = async () => {
 		})
 
 		let hotelsToSkip = 0
+		let day = 0
 
 		for (const team of teams) {
 			for (let i = 0; i <= limit; i++) {
@@ -182,7 +186,7 @@ const generateVisits = async () => {
 				if (moment(date).day() !== 0 && moment(date).day() !== 6) {
 					const hotelsToSchedule = hotels.slice(
 						hotelsToSkip,
-						MAX_VISITS_PER_DAY * (i + 1)
+						MAX_VISITS_PER_DAY * (day + 1)
 					)
 
 					for (const hotel of hotelsToSchedule) {
@@ -205,6 +209,7 @@ const generateVisits = async () => {
 						await prisma.createVisit(visit)
 						hotelsToSkip++
 					}
+					day++
 				}
 			}
 		}
@@ -212,11 +217,20 @@ const generateVisits = async () => {
 	console.log('Visits successfully generated.')
 }
 
+const deleteVisits = async () => {
+	const visits = await prisma.visits()
+	for (const {id} of visits) {
+		await prisma.deleteVisit({id})
+	}
+	console.log('visits deleted')
+}
+
 // ! TODO: prevent doublon teams generation
 // ? if user.teams {date: moment + 5weeks} exists skip
-
 const generateAll = (async () => {
-	await generateSchedules()
-	await generateTeams()
-	// await generateVisits()
+	// await generateSchedules()
+	// await generateTeams()
+
+	await generateVisits()
+	// await deleteVisits()
 })()
