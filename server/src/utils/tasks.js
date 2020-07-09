@@ -1,5 +1,5 @@
 const moment = require('moment')
-const {prisma} = require('../generated/prisma-client')
+const { prisma } = require('../generated/prisma-client')
 const _ = require('lodash')
 const _shuffle = require('lodash.shuffle')
 const _groupBy = require('lodash.groupby')
@@ -24,13 +24,13 @@ const generateSchedules = async () => {
 			.startOf('day')
 
 		const shifts = await prisma.shifts()
-		const schedule = await prisma.sector({id: sector.id}).schedules({
+		const schedule = await prisma.sector({ id: sector.id }).schedules({
 			where: {
 				endDate: now
 			}
 		})
 
-		const shift = await prisma.schedule({id: schedule[0].id}).shift()
+		const shift = await prisma.schedule({ id: schedule[0].id }).shift()
 
 		let newIndex = shift.index + 1
 		if (shifts.length === shift.index) {
@@ -71,7 +71,7 @@ const generateTeams = async () => {
 
 	for (const sector of sectors) {
 		const array = await prisma
-			.sector({id: sector.id})
+			.sector({ id: sector.id })
 			.users()
 			.id()
 		const item = {
@@ -154,7 +154,7 @@ const generateVisits = async () => {
 	const limit = moment(endDate).diff(startDate, 'days')
 
 	for (const sector of sectors) {
-		const hotels = await prisma.sector({id: sector.id}).hotels({
+		const hotels = await prisma.sector({ id: sector.id }).hotels({
 			orderBy: 'criticity_ASC'
 		})
 		const element = {
@@ -164,7 +164,7 @@ const generateVisits = async () => {
 		hotelsBySector.push(element)
 	}
 
-	for (const {sector, hotels} of hotelsBySector) {
+	for (const { sector, hotels } of hotelsBySector) {
 		const teams = await prisma.teams({
 			where: {
 				sector: {
@@ -218,5 +218,5 @@ const generateVisits = async () => {
 const generateAll = (async () => {
 	await generateSchedules()
 	await generateTeams()
-	// await generateVisits()
+	await generateVisits()
 })()

@@ -43,10 +43,19 @@ export default () => {
     user: null
   })
 
+  const [lougout, setLogout] = useState(false)
+
   const updateContext = (obj) => {
     let state = context
-    state = Object.assign({ ...state, ...obj })
-    setContext(state)
+    if (Object.keys(obj).length == 0) {
+      setLogout(false)
+    }
+    else {
+      state = Object.assign({ ...state, ...obj })
+      setContext(state)
+      setLogout(true)
+    }
+
   }
 
   useEffect(() => {
@@ -88,6 +97,7 @@ export default () => {
       schedule
     })
   }
+  // console.log("context", context)
 
   // if (loading || authLoading) {
   //   return <ActivityIndicator size='small' color={Colors.main} />
@@ -105,15 +115,15 @@ export default () => {
               screenOptions={{
                 headerShown: false
               }}>
-              {!context.user ? (
+              {!lougout ? (
                 <Stack.Screen name='Login'>
                   {(props) => (
                     <LoginScreen handleLogin={handleLogin} {...props} />
                   )}
                 </Stack.Screen>
               ) : (
-                <Stack.Screen name='Root' component={BottomTabNavigator} />
-              )}
+                  <Stack.Screen name='Root' component={BottomTabNavigator} />
+                )}
             </Stack.Navigator>
           </NavigationContainer>
         </View>
