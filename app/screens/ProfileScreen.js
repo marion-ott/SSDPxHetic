@@ -46,7 +46,10 @@ export default function ProfileScreen() {
       setEditable(false)
     } else {
       deleteTokenInStorage()
+      updateContext({})
     }
+
+    // console.log(context)
   }
 
   return (
