@@ -34,7 +34,7 @@ export default () => {
     CHECK_AUTH
   )
 
-  const [getData, { loading, data, error }] = useLazyQuery(GET_USER, {
+  const [getData] = useLazyQuery(GET_USER, {
     onCompleted: ({ user }) => {
       handleLogin(user)
     },
@@ -52,12 +52,14 @@ export default () => {
   const [lougout, setLogout] = useState(false)
 
   const updateContext = (obj) => {
+    console.log('update context')
     let state = context
     if (Object.keys(obj).length == 0) {
       setLogout(false)
     } else {
+      console.log('update: ', obj)
       state = Object.assign({ ...state, ...obj })
-      setContext(state)
+      setContext({ ...state })
       setLogout(true)
     }
   }
@@ -109,7 +111,9 @@ export default () => {
       schedule
     })
   }
-
+  if (context.user) {
+    console.log('render: ', context.user.firstName)
+  }
   // console.log("context", context)
 
   // if (loading || authLoading) {
