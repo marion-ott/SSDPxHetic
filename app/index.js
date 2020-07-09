@@ -53,12 +53,10 @@ export default () => {
   const [lougout, setLogout] = useState(false)
 
   const updateContext = (obj) => {
-    console.log('update context')
     let state = context
     if (Object.keys(obj).length == 0) {
       setLogout(false)
     } else {
-      console.log('update: ', obj)
       state = Object.assign({ ...state, ...obj })
       setContext({ ...state })
       setLogout(true)
@@ -111,9 +109,6 @@ export default () => {
       teamId,
       schedule
     })
-  }
-  if (context.user) {
-    console.log('render: ', context.user.firstName)
   }
   // console.log("context", context)
 

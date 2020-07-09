@@ -29,7 +29,6 @@ export default () => {
   }, [loading, error, data])
 
   const onDateChange = (date) => {
-    const newDate = getWeek(formatDate(moment(date)))
     setSelected(date)
   }
 

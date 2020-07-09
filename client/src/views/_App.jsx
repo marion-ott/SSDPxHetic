@@ -101,7 +101,6 @@ function App() {
   ) {
     return <p>error</p>
   }
-  console.log(context.user)
 
   return (
     <AppProvider value={{ context, setContext }}>
