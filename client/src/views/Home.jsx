@@ -22,11 +22,12 @@ export default () => {
   const [visits, setVisits] = useState(null)
 
   useEffect(() => {
+    console.log(data)
     if (data) {
       const formattedVisits = _.groupBy(data.visits, 'date')
       setVisits(formattedVisits)
     }
-  }, [data])
+  }, [loading, error, data])
 
   const format = (visits) => {
     const planning = {
@@ -55,6 +56,7 @@ export default () => {
   }
 
   const onDateChange = (date) => {
+    console.log(date)
     const newDate = getWeek(formatDate(moment(date)))
     setSelected(newDate)
   }

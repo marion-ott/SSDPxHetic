@@ -57,8 +57,8 @@ export default ({ date }) => {
 
   return (
     <TableHead>
-      {days.map((day) => (
-        <div className='date'>
+      {days.map((day, index) => (
+        <div key={index} className='date'>
           <p>{moment(day).locale('fr').format('dddd Do MMMM')}</p>
         </div>
       ))}
