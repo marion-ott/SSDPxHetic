@@ -11,13 +11,13 @@ export default {
   red: '#D80000',
   tabIconDefault: black,
   tabIconSelected: main,
-  darkGrey: '#E0E0E0',
+  lightGrey: '#E0E0E0',
+  darkGrey: 'rgba(0,0,0,0.5)',
   tabBar: '#fefefe',
   errorBackground: 'red',
   errorText: white,
   warningBackground: '#EAEB5E',
   warningText: '#666804',
   noticeBackground: main,
-  noticeText: white,
-  notifdisable: "#241F1F"
+  noticeText: white
 }

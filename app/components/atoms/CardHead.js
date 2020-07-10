@@ -39,16 +39,31 @@ const CardHead = ({ name, phone, lat, long, status, disabled, onChange }) => {
       style={styles.more}>
       <Icon
         name='more-vertical-outline'
+        fill={
+          disabled
+            ? Colors.darkGrey
+            : status === 'ONGOING'
+            ? Colors.white
+            : Colors.black
+        }
         width={16}
         height={16}
-        fill={Colors.brightOrange}
       />
     </TouchableOpacity>
   )
 
   return (
     <View
-      style={[styles.cardHead, status == 'DONE' ? '' : styles.borderNotDone]}>
+      style={[
+        styles.cardHead,
+        status == 'DONE'
+          ? ''
+          : disabled
+          ? styles.borderDisabled
+          : status == 'UPCOMING'
+          ? styles.borderUpcoming
+          : styles.borderNotDone
+      ]}>
       <View style={styles.flexRow}>
         {status == 'DONE' && (
           <View style={styles.slide}>
@@ -124,8 +139,16 @@ const styles = StyleSheet.create({
     width: '100%',
     height: 55
   },
-  borderNotDone: {
+  borderDisabled: {
     borderBottomColor: Colors.darkGrey,
+    borderBottomWidth: 1
+  },
+  borderNotDone: {
+    borderBottomColor: Colors.white,
+    borderBottomWidth: 1
+  },
+  borderUpcoming: {
+    borderBottomColor: Colors.lightGrey,
     borderBottomWidth: 1
   },
   popoverContainer: {

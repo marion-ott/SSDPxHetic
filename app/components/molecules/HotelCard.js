@@ -44,12 +44,7 @@ const HotelCard = ({
   }
 
   return (
-    <View
-      style={[
-        styles.card,
-        styles[status],
-        { backgroundColor: disabled ? '#F4F4F4' : Colors.lightOrange }
-      ]}>
+    <View style={[styles.card, styles[status], disabled && styles.disabled]}>
       <CardHead
         {...hotel}
         status={status}
@@ -64,7 +59,7 @@ const HotelCard = ({
               style={[
                 styles.text,
                 disabled
-                  ? texts.grey && texts.lightgrey
+                  ? texts.grey
                   : !disabled && status === 'ONGOING'
                   ? texts.white
                   : texts.black
@@ -76,7 +71,7 @@ const HotelCard = ({
               style={[
                 styles.text,
                 status === 'ONGOING' && !disabled ? texts.white : texts.black,
-                disabled ? texts.grey && texts.lightgrey : ''
+                disabled ? texts.grey : ''
               ]}
               category='s2'>
               {hotel.zipCode} {hotel.city}
@@ -86,7 +81,13 @@ const HotelCard = ({
             <Icon
               style={styles.roomIcon}
               name='briefcase-outline'
-              fill={status === 'ONGOING' ? '#ffffff' : '#FF8139'}
+              fill={
+                status === 'ONGOING'
+                  ? '#ffffff'
+                  : disabled
+                  ? Colors.darkGrey
+                  : '#FF8139'
+              }
               width={20}
               height={20}
             />
@@ -94,7 +95,8 @@ const HotelCard = ({
               style={[
                 styles.text,
                 { marginLeft: 5, fontWeight: '500' },
-                status === 'ONGOING' ? texts.white : texts.black
+                status === 'ONGOING' ? texts.white : texts.black,
+                disabled ? texts.grey : ''
               ]}
               category='s2'>
               {hotel.rooms}
@@ -177,13 +179,13 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.lightOrange
   },
   UPCOMING: {
-    // backgroundColor: Colors.brightOrange,
+    backgroundColor: Colors.lightOrange
   },
   ONGOING: {
     backgroundColor: Colors.brightOrange
   },
   DONE: {
-    // backgroundColor: Colors.lightOrange,
+    backgroundColor: Colors.lightOrange
   },
   content: {
     flex: 1,
@@ -245,6 +247,9 @@ const styles = StyleSheet.create({
   },
   bold: {
     fontWeight: 'bold'
+  },
+  disabled: {
+    backgroundColor: Colors.lightGrey
   }
 })
 
@@ -285,6 +290,7 @@ const texts = StyleSheet.create({
   orangeBold: {
     color: Colors.brightOrange,
     fontWeight: 'bold'
+<<<<<<< HEAD
   },
   lightgrey: {
     color: Colors.notifdisable
@@ -292,6 +298,8 @@ const texts = StyleSheet.create({
   lightgreyBold: {
     color: Colors.notifdisable,
     fontWeight: 'bold'
+=======
+>>>>>>> v2.0
   }
 })
 
