@@ -290,16 +290,6 @@ const texts = StyleSheet.create({
   orangeBold: {
     color: Colors.brightOrange,
     fontWeight: 'bold'
-<<<<<<< HEAD
-  },
-  lightgrey: {
-    color: Colors.notifdisable
-  },
-  lightgreyBold: {
-    color: Colors.notifdisable,
-    fontWeight: 'bold'
-=======
->>>>>>> v2.0
   }
 })
 
