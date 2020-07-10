@@ -42,6 +42,7 @@ function reducer(state, { type, payload }) {
 
 const CardList = ({ label, startable, selected, onComplete }) => {
   const triggerRecap = useRef(false)
+  const preventTrigger = useRef(true)
   const { context, updateContext } = useContext(appContext)
 
   const [state, dispatch] = useReducer(reducer, {
@@ -84,15 +85,20 @@ const CardList = ({ label, startable, selected, onComplete }) => {
           visitInProgress: visitInProgress ? visitInProgress.id : null
         }
       })
+      if (state.visitsCompleted.length !== state.visits.length) {
+        preventTrigger.current = false
+      }
     }
   }, [data])
 
   useEffect(() => {
-    if (state.visits.length === state.visitsCompleted.length) {
-      if (!triggerRecap.current) {
-        console.log('complete')
+    if (
+      state.visits.length > 0 &&
+      state.visits.length === state.visitsCompleted.length
+    ) {
+      if (!triggerRecap.current && !preventTrigger.current) {
         onComplete()
-        triggerRecap.current = false
+        triggerRecap.current = true
       }
     }
   }, [state.visitsCompleted])
