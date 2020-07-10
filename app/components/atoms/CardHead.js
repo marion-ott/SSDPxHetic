@@ -40,8 +40,10 @@ const CardHead = ({ name, phone, lat, long, status, disabled, onChange }) => {
       <Icon
         name='more-vertical-outline'
         fill={
-          disabled
+          disabled && status !== 'DONE'
             ? Colors.darkGrey
+            : status === 'DONE'
+            ? Colors.brightOrange
             : status === 'ONGOING'
             ? Colors.white
             : Colors.black

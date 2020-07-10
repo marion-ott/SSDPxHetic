@@ -13,6 +13,7 @@ const HotelCard = ({
   onChange,
   startable,
   disabled,
+  isLast,
   status: originalStatus,
   ...hotel
 }) => {
@@ -43,7 +44,12 @@ const HotelCard = ({
   }
 
   return (
-    <View style={[styles.card, styles[status], disabled && styles.disabled]}>
+    <View
+      style={[
+        styles.card,
+        styles[status],
+        disabled && status !== 'DONE' && styles.disabled
+      ]}>
       <CardHead
         {...hotel}
         status={status}
@@ -153,7 +159,11 @@ const HotelCard = ({
                     : texts.orangeBold
                 ]}
                 category='h6'>
-                {status == 'UPCOMING' ? 'Commencer' : 'Terminer la visite'}
+                {status == 'UPCOMING'
+                  ? 'Commencer'
+                  : isLast
+                  ? 'Terminer ma journée'
+                  : 'Terminer la visite'}
               </Text>
             </View>
           </TouchableOpacity>

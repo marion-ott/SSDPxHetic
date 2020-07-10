@@ -8,7 +8,7 @@ import Words from '../constants/Words'
 import congrats from '../assets/images/congrats.png'
 import moment from 'moment/min/moment-with-locales'
 
-export default function RecapScreen() {
+export default function RecapScreen({ onPress }) {
   const { context, updateContext } = useContext(appContext)
 
   const getRandomWording = (array) => {
@@ -41,9 +41,8 @@ export default function RecapScreen() {
             height={27}
           />
           <Text style={[styles.infoTxt, styles.marginTop]}>
-            {moment().format('dddd Do')}
+            {moment().locale('fr').format('dddd Do MMMM')}
           </Text>
-          <Text style={styles.infoTxt}>{moment().format('MMMM YYYY')}</Text>
         </View>
 
         <View style={[styles.infoCtn, styles.separator]}>
@@ -75,10 +74,7 @@ export default function RecapScreen() {
         </View>
       </View>
 
-      <TouchableOpacity
-        style={styles.button}
-        // onPress={onPress}
-      >
+      <TouchableOpacity style={styles.button} onPress={onPress}>
         <Text style={styles.buttonLabel}>Revenir à mon planning</Text>
       </TouchableOpacity>
     </Layout>
@@ -98,9 +94,9 @@ const styles = StyleSheet.create({
     padding: 16
   },
   picto: {
-    marginBottom: 40,
-    width: 122,
-    height: 122
+    marginBottom: 20,
+    width: 112,
+    height: 112
   },
   title: {
     color: Colors.white,
@@ -120,10 +116,10 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     width: '100%',
     maxWidth: 345,
-    height: 176,
+    height: 136,
     marginBottom: 42,
-    paddingTop: 30,
-    paddingBottom: 30
+    paddingTop: 10,
+    paddingBottom: 10
   },
   infoCtn: {
     width: 115,
