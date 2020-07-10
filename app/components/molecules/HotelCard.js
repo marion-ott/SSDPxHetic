@@ -80,7 +80,7 @@ const HotelCard = ({
             <Icon
               style={styles.roomIcon}
               name='briefcase-outline'
-              fill={status === 'ONGOING' ? '#ffffff' : '#FF8139'}
+              fill={status === 'ONGOING' ? '#ffffff' : '#FF8139' && disabled && Colors.notifdisable}
               width={20}
               height={20}
             />
