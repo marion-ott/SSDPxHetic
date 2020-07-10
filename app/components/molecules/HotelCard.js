@@ -13,6 +13,7 @@ const HotelCard = ({
   onChange,
   startable,
   disabled,
+  isLast,
   status: originalStatus,
   ...hotel
 }) => {
@@ -35,15 +36,26 @@ const HotelCard = ({
     }
 
     if (status === 'UPCOMING') variables.data.status = 'ONGOING'
-    if (status === 'ONGOING') variables.data.status = isCancelled ? 'UPCOMING' : 'DONE'
+    if (status === 'ONGOING')
+      variables.data.status = isCancelled ? 'UPCOMING' : 'DONE'
     if (status === 'DONE') variables.data.status = 'UPCOMING'
 
     updateVisit({ variables })
   }
 
   return (
-    <View style={[styles.card, styles[status], { backgroundColor: disabled ? "#F4F4F4" : Colors.lightOrange }]}>
-      <CardHead {...hotel} status={status} disabled={disabled} onChange={onUpdate} />
+    <View
+      style={[
+        styles.card,
+        styles[status],
+        { backgroundColor: disabled ? '#F4F4F4' : Colors.lightOrange }
+      ]}>
+      <CardHead
+        {...hotel}
+        status={status}
+        disabled={disabled}
+        onChange={onUpdate}
+      />
       {/* DISPLAY INFO */}
       {status !== 'DONE' && (
         <View style={styles.content}>
@@ -54,8 +66,8 @@ const HotelCard = ({
                 disabled
                   ? texts.grey && texts.lightgrey
                   : !disabled && status === 'ONGOING'
-                    ? texts.white
-                    : texts.black
+                  ? texts.white
+                  : texts.black
               ]}
               category='s2'>
               {hotel.address},
@@ -140,7 +152,11 @@ const HotelCard = ({
                     : texts.orangeBold
                 ]}
                 category='h6'>
-                {status == 'UPCOMING' ? 'Commencer' : 'Terminer la visite'}
+                {status == 'UPCOMING'
+                  ? 'Commencer'
+                  : isLast
+                  ? 'Terminer ma journée'
+                  : 'Terminer la visite'}
               </Text>
             </View>
           </TouchableOpacity>
@@ -158,7 +174,7 @@ const styles = StyleSheet.create({
     borderWidth: 0,
     paddingHorizontal: 16,
     alignContent: 'center',
-    backgroundColor: Colors.lightOrange,
+    backgroundColor: Colors.lightOrange
   },
   UPCOMING: {
     // backgroundColor: Colors.brightOrange,
@@ -173,7 +189,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingTop: 8,
+    paddingTop: 8
   },
   room: {
     display: 'flex',
@@ -187,7 +203,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   touchableButton: {
     flex: 1,
@@ -205,11 +221,11 @@ const styles = StyleSheet.create({
   },
   report: {
     color: Colors.brightOrange,
-    width: 100,
+    width: 100
   },
   text: {
     fontSize: 15,
-    fontWeight: "400"
+    fontWeight: '400'
   },
   startContainer: {
     // backgroundColor: Colors.brightOrange
@@ -271,7 +287,7 @@ const texts = StyleSheet.create({
     fontWeight: 'bold'
   },
   lightgrey: {
-    color: Colors.notifdisable,
+    color: Colors.notifdisable
   },
   lightgreyBold: {
     color: Colors.notifdisable,
