@@ -29,22 +29,26 @@ const Planning = styled.div`
   }
 `
 
-export default ({ visits, date }) => {
+export default ({ sectorSelected, visits, date }) => {
+  console.log(sectorSelected)
   return (
     <PlanningWrapper>
       <TableHead date={date} />
       <Planning>
         {Object.keys(visits).map((key, index) => (
           <div key={index}>
-            {visits[key].map(({ id, status, hotel, team }) => (
-              <Card
-                key={id}
-                visitId={id}
-                status={status}
-                team={team}
-                {...hotel}
-              />
-            ))}
+            {visits[key].map(({ id, status, hotel, team }) => {
+              if (sectorSelected !== hotel.sector.id) return
+              return (
+                <Card
+                  key={id}
+                  visitId={id}
+                  status={status}
+                  team={team}
+                  {...hotel}
+                />
+              )
+            })}
           </div>
         ))}
       </Planning>

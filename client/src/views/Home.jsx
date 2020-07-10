@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react'
 import dateContext from '../context/dateContext'
 import appContext from '../context/appContext'
+import sectorContext from '../context/sectorContext'
 import useGetVisits from '../hooks/useGetVisits'
 import { Calendar, Planning, Filters } from '../organisms'
 import { Title, Loader } from '../atoms'
@@ -10,7 +11,9 @@ import _ from 'lodash'
 export default () => {
   const { context } = useContext(appContext)
   const { today } = useContext(dateContext)
+  const { sectors } = useContext(sectorContext)
   const [selected, setSelected] = useState(today)
+  const [sectorSelected, setSectorSelected] = useState()
 
   const { loading, error, data } = useGetVisits(
     context.teamId,
@@ -18,6 +21,10 @@ export default () => {
     [selected]
   )
   const [visits, setVisits] = useState(null)
+
+  useEffect(() => {
+    setSectorSelected(sectors[0].id)
+  }, [])
 
   useEffect(() => {
     if (data) {
@@ -28,6 +35,10 @@ export default () => {
 
   const onDateChange = (date) => {
     setSelected(date)
+  }
+
+  const onSectorChange = (sector) => {
+    setSectorSelected(sector.id)
   }
 
   return (
@@ -45,11 +56,19 @@ export default () => {
                 <Calendar selected={selected} onChange={onDateChange} />
               </div>
             </div>
-            <Filters />
+            <Filters
+              onSectorChange={onSectorChange}
+              sectorSelected={sectorSelected}
+              setSectorSelected={setSectorSelected}
+            />
           </div>
           <div className='Planning'>
             {visits ? (
-              <Planning date={selected} visits={visits} />
+              <Planning
+                sectorSelected={sectorSelected}
+                date={selected}
+                visits={visits}
+              />
             ) : (
               <p>loading</p>
             )}

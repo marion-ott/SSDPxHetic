@@ -2,19 +2,20 @@ import React, { useState, useContext } from 'react'
 import sectorContext from '../context/sectorContext'
 import { Title, Label, Input } from './../atoms'
 
-const Filters = () => {
+const Filters = ({ sectorSelected, setSectorSelected }) => {
   const { sectors } = useContext(sectorContext)
   const [isSector, setSector] = useState([])
   // const [isCritic, setCritic] = useState([])
 
   const onChangeSector = (e) => {
-    const val = e.target.value
+    // const val = e.target.value
 
-    if (e.target.checked) {
-      setSector([...isSector, { name: val }])
-    } else {
-      setSector(isSector.filter((isSector) => isSector.name !== val))
-    }
+    // if (e.target.checked) {
+    //   setSector([...isSector, { name: val }])
+    // } else {
+    //   setSector(isSector.filter((isSector) => isSector.name !== val))
+    // }
+    setSectorSelected(e.target.value)
   }
 
   return (
@@ -28,16 +29,18 @@ const Filters = () => {
             <strong>Secteurs</strong>
           </p>
           <ul className='menu-list control'>
-            {sectors.map((item, i) => (
-              <li className='panel-block' key={i}>
-                <Input
-                  value={item.zone}
-                  onChange={onChangeSector}
-                  type='checkbox'
-                />
-                <Label text={item.zone} />
-              </li>
-            ))}
+            {sectorSelected &&
+              sectors.map((item, i) => (
+                <li className='panel-block' key={i}>
+                  <Input
+                    value={item.id}
+                    onChange={onChangeSector}
+                    type='checkbox'
+                    checked={sectorSelected === item.id}
+                  />
+                  <Label text={item.zone} />
+                </li>
+              ))}
           </ul>
         </div>
       </div>

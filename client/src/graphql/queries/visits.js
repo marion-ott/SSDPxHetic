@@ -21,6 +21,9 @@ export const GET_VISITS = gql`
         rooms
         lat
         long
+        sector {
+          id
+        }
       }
     }
   }
