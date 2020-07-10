@@ -11,6 +11,7 @@ export const GET_VISITS = gql`
         address
         zipCode
         city
+        phone
         rooms
         lat
         long
