@@ -1,113 +1,119 @@
-import React, { useState, useEffect } from 'react'
-import { useSubscription } from '@apollo/react-hooks'
-import { SUBSCRIBE_VISITS } from '../graphql/subscriptions/visits'
+import React, { useState, useContext, useEffect } from 'react'
+import notificationContext from '../context/notificationContext'
+import { getDateStr } from '../utils'
+import moment from 'moment/min/moment-with-locales'
 
 const Notifications = () => {
-  const [notifications, setNotifications] = useState([])
-  const { data, loading } = useSubscription(SUBSCRIBE_VISITS)
+  const { notifications } = useContext(notificationContext)
+  const [readNotifications, setReadNotifications] = useState(true)
 
   useEffect(() => {
-    console.log(data)
-    if (data) {
-      const state = notifications
-      state.push(data)
-      setNotifications([...state])
-    }
-  }, [data])
+    setReadNotifications(false)
+  }, [notifications])
 
   return (
-    <div className='dropdown is-right is-hoverable'>
+    <div
+      className='dropdown is-right is-hoverable'
+      onMouseLeave={() => setReadNotifications(true)}>
       <div className='dropdown-trigger'>
-        {notifications && notifications.length}
         <button
-          style={{ border: 'none', outline: 0 }}
+          style={{
+            border: 'none',
+            outline: 0,
+            background: 'rgba(0, 0, 0, 0.1)',
+            marginRight: '15px'
+          }}
           className='button'
           aria-haspopup='true'
           aria-controls='dropdown-menu4'>
-          <span className='icon is-small'>
+          <span style={{ position: 'relative' }} className='icon is-small'>
             <i className='far fa-bell'></i>
+            {notifications.length > 0 && !readNotifications && (
+              <div
+                style={{
+                  position: 'absolute',
+                  top: '2px',
+                  right: '2px',
+                  width: '10px',
+                  height: '10px',
+                  background: '#D80000',
+                  borderRadius: '50px'
+                }}></div>
+            )}
           </span>
         </button>
       </div>
-      <div
-        style={{ minWidth: '19rem', borderRadius: 8 }}
-        className='dropdown-menu'
-        id='dropdown-menu4'
-        role='menu'>
-        <div className='dropdown-content'>
-          {[1, 2, 3].map((index) => {
-            return (
-              <div
-                key={index}
-                style={{
-                  backgroundColor: '#FCFCFC',
-                  margin: 5,
-                  borderRadius: 8
-                }}
-                className='dropdown-item'>
-                <div>
-                  <div
-                    style={{
-                      display: 'flex',
-                      justifyContent: 'space-between'
-                    }}>
+      {notifications.length > 0 && (
+        <div
+          style={{ minWidth: '19rem', borderRadius: 8 }}
+          className='dropdown-menu'
+          id='dropdown-menu4'
+          role='menu'>
+          <div className='dropdown-content'>
+            {notifications.map(({ visit }, index) => {
+              return (
+                <div
+                  key={index}
+                  style={{
+                    backgroundColor: '#F8F8F8',
+                    margin: 8,
+                    borderRadius: 8
+                  }}
+                  className='dropdown-item'>
+                  <div style={{ marginTop: 7 }}>
                     <div
                       style={{
                         color: '#241F1F',
                         opacity: 0.5,
                         fontWeight: 500
                       }}>
-                      Demandeur
+                      Report de visite
                     </div>
                     <div
-                      style={{ color: '#241F1F', opacity: 0.5, fontSize: 12 }}>
-                      il y a 50min
+                      style={{
+                        color: '#241F1F',
+                        fontSize: 16,
+                        fontWeight: 500
+                      }}>
+                      {`La visite de l'hôtel ${visit.data.hotel.name} prévue le
+                      ${moment(visit.data.date)
+                        .locale('fr')
+                        .format('dddd Do MMMM')} a été reportée.`}
                     </div>
                   </div>
-                  <div
-                    style={{ color: '#241F1F', fontSize: 16, fontWeight: 500 }}>
-                    Victoria Alexander
+                  <div style={{ marginTop: 7 }}>
+                    <div
+                      style={{
+                        color: '#241F1F',
+                        opacity: 0.5,
+                        fontWeight: 500
+                      }}>
+                      Équipe
+                    </div>
+                    <div style={{ color: '#241F1F', fontSize: 12 }}>
+                      <p>
+                        {visit.data.team.users.map(
+                          ({ firstName, lastName }, index) => {
+                            const suffix =
+                              index === visit.data.team.users.length - 1
+                                ? ''
+                                : '& '
+                            return (
+                              <span>
+                                {firstName} {firstName} {suffix}
+                              </span>
+                            )
+                          }
+                        )}
+                      </p>
+                    </div>
                   </div>
                 </div>
-                <div style={{ marginTop: 7 }}>
-                  <div
-                    style={{ color: '#241F1F', opacity: 0.5, fontWeight: 500 }}>
-                    Type
-                  </div>
-                  <div
-                    style={{ color: '#241F1F', fontSize: 16, fontWeight: 500 }}>
-                    Congés
-                  </div>
-                </div>
-                <div style={{ marginTop: 7 }}>
-                  <div
-                    style={{ color: '#241F1F', opacity: 0.5, fontWeight: 500 }}>
-                    Description
-                  </div>
-                  <div style={{ color: '#241F1F', fontSize: 12 }}>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Mattis est laoreet nisl, pellentesque cursus amet, a.
-                  </div>
-                </div>
-                <div style={{ marginTop: 7, display: 'flex' }}>
-                  <button className='button is-small is-success'>
-                    <span className='icon is-small'>
-                      <i className='fas fa-check'></i>
-                    </span>
-                    <span>Accepter</span>
-                  </button>
-                  <button className='button is-small'>
-                    <span className='icon is-small'>
-                      <i className='fas fa-times'></i>
-                    </span>
-                    <span>Rejeter</span>
-                  </button>
-                </div>
-              </div>
-            )
-          })}
+              )
+            })}
+          </div>
         </div>
-      </div>
+      )}
     </div>
   )
 }

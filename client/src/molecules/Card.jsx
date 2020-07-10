@@ -1,6 +1,9 @@
-import React from 'react'
+import React, { useState, useContext } from 'react'
 import styled from 'styled-components'
-import { Icon, Title, Initials } from '../atoms'
+import _ from 'lodash'
+import { Title, Initials } from '../atoms'
+import notificationContext from '../context/notificationContext'
+import { useEffect } from 'react'
 
 const Card = styled.div`
   display: flex;
@@ -43,7 +46,22 @@ const Card = styled.div`
   }
 `
 
-export default ({ team, ...hotel }) => {
+export default ({ visitId, status, team, ...hotel }) => {
+  const { notifications } = useContext(notificationContext)
+  const [newStatus, setNewStatus] = useState(status)
+
+  useEffect(() => {
+    if (notifications.length > 0) {
+      const lastItem = _.last(notifications)
+      if (
+        lastItem.visit.data.id === visitId &&
+        lastItem.visit.data.status !== newStatus
+      ) {
+        setNewStatus(lastItem.visit.data.status)
+      }
+    }
+  }, [notifications])
+
   return (
     <Card>
       <div className='inner_ctn'>
@@ -57,11 +75,13 @@ export default ({ team, ...hotel }) => {
         </p>
         <br />
         <Initials users={team.users} />
-        {/* {team.users.map((user, i) => (
-          <p className='team' key={i}>
-            {user.firstName} {user.lastName}
-          </p>
-        ))} */}
+        <p>
+          {newStatus === 'DONE'
+            ? 'Visite terminée'
+            : newStatus === 'UPCOMING'
+            ? 'À venir'
+            : 'En cours'}
+        </p>
       </div>
     </Card>
   )

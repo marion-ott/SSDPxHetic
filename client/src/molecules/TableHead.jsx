@@ -1,6 +1,6 @@
-import React, { useState, useRef } from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
-import { formatDate, getWeek, getDateStr } from '../utils'
+import { getWeek } from '../utils'
 import momentjs from 'moment/min/moment-with-locales'
 import { extendMoment } from 'moment-range'
 import { useEffect } from 'react'
@@ -52,7 +52,6 @@ export default ({ date }) => {
         state.push(date)
       }
     }
-    console.log(state[0], date)
     setDays([...state])
   }, [date])
 
