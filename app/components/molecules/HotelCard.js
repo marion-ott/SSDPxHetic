@@ -15,6 +15,7 @@ const HotelCard = ({
   onChange,
   startable,
   disabled,
+  isLast,
   status: originalStatus,
   ...hotel
 }) => {
@@ -53,21 +54,28 @@ const HotelCard = ({
   }
 
   return (
-    <View style={[styles.card, styles[status], { backgroundColor: disabled ? "#F4F4F4" : Colors.lightOrange }]}>
-      <Modal
-        visible={visible}
-        backdropStyle={styles.backdrop}
-        onBackdropPress={() => setVisible(false)}
-      >
-        <ModalBody
-          hotel={hotel}
-          deleteVisit={() => onChange(id, 'deleteVisit')}
-        />
-      </Modal>
-
-    <View style={[styles.card, styles[status], disabled && styles.disabled]}>
-      <CardHead {...hotel} status={status} disabled={disabled} onChange={onUpdate} />
-
+    <View
+      style={[
+        styles.card,
+        styles[status],
+        disabled && status !== 'DONE' && styles.disabled
+      ]}>
+        <Modal
+          visible={visible}
+          backdropStyle={styles.backdrop}
+          onBackdropPress={() => setVisible(false)}
+        >
+          <ModalBody
+            hotel={hotel}
+            deleteVisit={() => onChange(id, 'deleteVisit')}
+          />
+        </Modal>
+      <CardHead
+        {...hotel}
+        status={status}
+        disabled={disabled}
+        onChange={onUpdate}
+      />
       {/* DISPLAY INFO */}
       {status !== 'DONE' && (
         <View style={styles.content}>
@@ -171,7 +179,11 @@ const HotelCard = ({
                     : texts.orangeBold
                 ]}
                 category='h6'>
-                {status == 'UPCOMING' ? 'Commencer' : 'Terminer la visite'}
+                {status == 'UPCOMING'
+                  ? 'Commencer'
+                  : isLast
+                  ? 'Terminer ma journée'
+                  : 'Terminer la visite'}
               </Text>
             </View>
           </TouchableOpacity>
@@ -261,15 +273,12 @@ const styles = StyleSheet.create({
   bold: {
     fontWeight: 'bold'
   },
-<<<<<<< HEAD
   backdrop: {
     backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
-=======
   disabled: {
     backgroundColor: Colors.lightGrey
   }
->>>>>>> 082c30d305d15c5db42fabed8533a359f6c37e3d
 })
 
 const backgrounds = StyleSheet.create({

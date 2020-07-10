@@ -1,4 +1,10 @@
-import React, { useReducer, useContext, useEffect, useState, Fragment } from 'react'
+import React, {
+  useReducer,
+  useContext,
+  useEffect,
+  useRef,
+  Fragment
+} from 'react'
 import { StyleSheet, View, ScrollView, ActivityIndicator } from 'react-native'
 import { Text, Divider } from '@ui-kitten/components'
 import { useLazyQuery } from '@apollo/react-hooks'
@@ -20,10 +26,14 @@ function reducer(state, { type, payload }) {
     case 'ONGOING':
       return { ...state, visitInProgress: payload.id }
     case 'DONE':
+      let visitsCompleted = [...state.visitsCompleted]
+      if (!visitsCompleted.includes(payload.id)) {
+        visitsCompleted = [...state.visitsCompleted, payload.id]
+      }
       return {
         ...state,
         visitInProgress: null,
-        visitsCompleted: [...state.visitsCompleted, payload.id]
+        visitsCompleted
       }
     default:
       throw new Error()
@@ -31,6 +41,7 @@ function reducer(state, { type, payload }) {
 }
 
 const CardList = ({ label, startable, selected, onComplete }) => {
+  const triggerRecap = useRef(false)
   const { context, updateContext } = useContext(appContext)
 
   const [state, dispatch] = useReducer(reducer, {
@@ -61,7 +72,9 @@ const CardList = ({ label, startable, selected, onComplete }) => {
         rooms
       })
 
-      const visitsCompleted = data.myVisits.filter((visit) => visit.status === 'DONE').map(visit => visit.id)
+      const visitsCompleted = data.myVisits
+        .filter((visit) => visit.status === 'DONE')
+        .map((visit) => visit.id)
 
       dispatch({
         type: 'SET_VISITS',
@@ -76,14 +89,13 @@ const CardList = ({ label, startable, selected, onComplete }) => {
 
   useEffect(() => {
     if (state.visits.length === state.visitsCompleted.length) {
-      //TODO: trigger recap display
-      //onComplete()
+      if (!triggerRecap.current) {
+        console.log('complete')
+        onComplete()
+        triggerRecap.current = false
+      }
     }
   }, [state.visitsCompleted])
-
-  if (loading) {
-   
-  }
 
   return (
     <View>
@@ -106,7 +118,10 @@ const CardList = ({ label, startable, selected, onComplete }) => {
             <View style={styles.cardsWrapper}>
               <HotelCard
                 id={state.visits[0].id}
-                disabled={(state.visits[0].id !== state.visitInProgress && state.visitInProgress !== null)}
+                disabled={
+                  state.visits[0].id !== state.visitInProgress &&
+                  state.visitInProgress !== null
+                }
                 startable={startable}
                 status={state.visits[0].status}
                 {...state.visits[0].hotel}
@@ -132,9 +147,13 @@ const CardList = ({ label, startable, selected, onComplete }) => {
               {state.visits.map(({ id, status, hotel }) => {
                 const firstVisitId = state.visits[0].id
                 if (id === firstVisitId) return
-                
-                const disabled = (id !== state.visitInProgress && state.visitInProgress !== null)
-                  || (!state.visitsCompleted.includes(firstVisitId) && id !== firstVisitId)
+                const isLast =
+                  state.visitsCompleted.length === state.visits.length - 1
+                const disabled =
+                  (id !== state.visitInProgress &&
+                    state.visitInProgress !== null) ||
+                  (!state.visitsCompleted.includes(firstVisitId) &&
+                    id !== firstVisitId)
                 return (
                   <HotelCard
                     key={id}
@@ -142,6 +161,7 @@ const CardList = ({ label, startable, selected, onComplete }) => {
                     disabled={disabled}
                     startable={startable}
                     status={status}
+                    isLast={isLast}
                     {...hotel}
                     onChange={(id, action) =>
                       dispatch({
@@ -153,8 +173,7 @@ const CardList = ({ label, startable, selected, onComplete }) => {
                     }
                   />
                 )
-              }
-              )}
+              })}
             </View>
           </View>
         </Fragment>
