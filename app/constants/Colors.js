@@ -18,6 +18,5 @@ export default {
   warningBackground: '#EAEB5E',
   warningText: '#666804',
   noticeBackground: main,
-  noticeText: white,
-  notifdisable: "#241F1F"
+  noticeText: white
 }

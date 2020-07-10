@@ -8,11 +8,11 @@ import openMap from 'react-native-open-maps'
 
 const CardHead = ({ name, phone, lat, long, status, disabled, onChange }) => {
   const [popover, setPopover] = useState(false)
-  const disabledStyle = disabled && (status === 'UPCOMING')
+  const disabledStyle = disabled && (status === 'UPCOMING') 
     ? styles.grey : (status === 'UPCOMING')
-      ? styles.black : status === 'DONE'
-        ? styles.black : status === 'ONGOING'
-          ? styles.white : ''
+    ? styles.black : status === 'DONE'
+    ? styles.black : status === 'ONGOING'
+    ? styles.white : ''
 
   const openLoc = () => {
     openMap({ latitude: lat, longitude: long, navigate_mode: "navigate", end: name })
@@ -89,11 +89,11 @@ const CardHead = ({ name, phone, lat, long, status, disabled, onChange }) => {
             </View>
           </OpenURLButton>
 
-          {status === 'ONGOING' && (
+          { status === 'ONGOING' && (
             <TouchableOpacity
               onPress={() => onChange(true)}
               activeOpacity={0.7}
-              style={[styles.options, { marginTop: 16, marginBottom: 0 }]}
+              style={[styles.options, { marginTop: 16, marginBottom: 0}]}
             >
               <Icon
                 name='clock-outline'
@@ -102,7 +102,7 @@ const CardHead = ({ name, phone, lat, long, status, disabled, onChange }) => {
                 fill={Colors.black}
               />
               <Text style={styles.optionsText}>Reprendre plus tard</Text>
-            </TouchableOpacity>
+            </TouchableOpacity>    
           )}
         </Layout>
       </Popover>
