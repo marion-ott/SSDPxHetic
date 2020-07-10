@@ -1,18 +1,13 @@
 import React, { useState } from 'react'
 import { useMutation } from '@apollo/react-hooks'
-import { UPDATE_VISIT } from '../../graphql/mutations/visits'
+import { UPDATE_VISIT, DELETE_VISIT } from '../../graphql/mutations/visits'
 import { StyleSheet, View, TouchableOpacity } from 'react-native'
-import {
-  Card,
-  Text,
-  Popover,
-  Layout,
-  Button,
-  Modal
-} from '@ui-kitten/components'
+import { Button, Card, Modal, Text, Divider } from '@ui-kitten/components'
 import Icon from '../atoms/Icon'
 import OpenURLButtonfrom from '../atoms/OpenURLButton'
 import CardHead from '../atoms/CardHead'
+import ModalBody from '../molecules/ModalBody'
+
 import Colors from '../../constants/Colors'
 
 const HotelCard = ({
@@ -25,11 +20,19 @@ const HotelCard = ({
   ...hotel
 }) => {
   const [status, setStatus] = useState(originalStatus)
+  const [visible, setVisible] = useState(false)
 
   const [updateVisit, { loading, data, error }] = useMutation(UPDATE_VISIT, {
     onCompleted: ({ updateVisit: { status } }) => {
       onChange(id, status)
       setStatus(status)
+    },
+    onError: (error) => console.error('ERREUR: ', error.message)
+  })
+
+  const [deleteVisit, { loading2, data2, error2 }] = useMutation(DELETE_VISIT, {
+    onCompleted: () => {
+      onChange(id, 'DELETED')
     },
     onError: (error) => console.error('ERREUR: ', error.message)
   })
@@ -57,6 +60,16 @@ const HotelCard = ({
         styles[status],
         disabled && status !== 'DONE' && styles.disabled
       ]}>
+        <Modal
+          visible={visible}
+          backdropStyle={styles.backdrop}
+          onBackdropPress={() => setVisible(false)}
+        >
+          <ModalBody
+            hotel={hotel}
+            deleteVisit={() => onChange(id, 'deleteVisit')}
+          />
+        </Modal>
       <CardHead
         {...hotel}
         status={status}
@@ -121,7 +134,7 @@ const HotelCard = ({
         <View style={styles.buttons}>
           {status == 'UPCOMING' && (
             <TouchableOpacity
-              // onPress={() => onChange(id, 'startVisit')}
+              onPress={() => setVisible(true)}
               activeOpacity={0.7}
               style={[styles.touchableButton, styles.button]}>
               <View style={styles.borderLine}>
@@ -259,6 +272,9 @@ const styles = StyleSheet.create({
   },
   bold: {
     fontWeight: 'bold'
+  },
+  backdrop: {
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
   },
   disabled: {
     backgroundColor: Colors.lightGrey

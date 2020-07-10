@@ -48,8 +48,6 @@ export default function ProfileScreen() {
       deleteTokenInStorage()
       updateContext({})
     }
-
-    // console.log(context)
   }
 
   return (
