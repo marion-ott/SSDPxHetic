@@ -43,7 +43,7 @@ const CardHead = ({ name, phone, lat, long, status, disabled, onChange }) => {
           disabled && status !== 'DONE'
             ? Colors.darkGrey
             : status === 'DONE'
-            ? Colors.brightOrange
+            ? Colors.black
             : status === 'ONGOING'
             ? Colors.white
             : Colors.black

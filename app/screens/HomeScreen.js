@@ -1,4 +1,6 @@
-import React, { useState, useContext } from 'react'
+import React, { useState, useContext, Fragment } from 'react'
+import { StyleSheet, View } from 'react-native'
+import { Button, Card, Modal, Text } from '@ui-kitten/components'
 import moment from 'moment/min/moment-with-locales'
 import appContext from '../context/appContext'
 import dateContext from '../context/dateContext'
@@ -9,21 +11,26 @@ import CustomScrollView from '../components/molecules/CustomScrollView'
 
 export default function HomeScreen() {
   const { today } = useContext(dateContext)
-  const [visitsCompleted, setVisitsCompleted] = useState(false)
+  const [visible, setVisible] = useState(false)
 
-  const onVisitsCompleted = () => {
-    setVisitsCompleted(true)
+  const closeModal = () => {
+    setTimeout(() => {
+      setVisible(false)
+    }, 200)
   }
 
-  return visitsCompleted ? (
-    <RecapScreen onPress={setVisitsCompleted(false)} />
+  return visible ? (
+    <RecapScreen onPress={closeModal} />
   ) : (
     <CustomScrollView
       Component={() => (
-        <Header text={moment(today).locale('fr').format('dddd Do MMMM')} />
+        <Header text={moment().locale('fr').format('dddd Do MMMM')} />
       )}>
       <CardList
-        onComplete={onVisitsCompleted}
+        onComplete={() => {
+          console.log('complete')
+          setVisible(true)
+        }}
         startable={true}
         label={'Visites'}
         selected={today}

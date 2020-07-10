@@ -2,7 +2,14 @@ import React, { useState } from 'react'
 import { useMutation } from '@apollo/react-hooks'
 import { UPDATE_VISIT } from '../../graphql/mutations/visits'
 import { StyleSheet, View, TouchableOpacity } from 'react-native'
-import { Card, Text, Popover, Layout, Button } from '@ui-kitten/components'
+import {
+  Card,
+  Text,
+  Popover,
+  Layout,
+  Button,
+  Modal
+} from '@ui-kitten/components'
 import Icon from '../atoms/Icon'
 import OpenURLButtonfrom from '../atoms/OpenURLButton'
 import CardHead from '../atoms/CardHead'
