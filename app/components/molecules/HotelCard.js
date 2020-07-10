@@ -43,7 +43,7 @@ const HotelCard = ({
   }
 
   return (
-    <View style={[styles.card, styles[status]]}>
+    <View style={[styles.card, styles[status], disabled && styles.disabled]}>
       <CardHead
         {...hotel}
         status={status}
@@ -80,7 +80,13 @@ const HotelCard = ({
             <Icon
               style={styles.roomIcon}
               name='briefcase-outline'
-              fill={status === 'ONGOING' ? '#ffffff' : '#FF8139' && disabled && Colors.notifdisable}
+              fill={
+                status === 'ONGOING'
+                  ? '#ffffff'
+                  : disabled
+                  ? Colors.darkGrey
+                  : '#FF8139'
+              }
               width={20}
               height={20}
             />
@@ -88,7 +94,8 @@ const HotelCard = ({
               style={[
                 styles.text,
                 { marginLeft: 5, fontWeight: '500' },
-                status === 'ONGOING' ? texts.white : texts.black
+                status === 'ONGOING' ? texts.white : texts.black,
+                disabled ? texts.grey : ''
               ]}
               category='s2'>
               {hotel.rooms}
@@ -167,13 +174,13 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.lightOrange
   },
   UPCOMING: {
-    // backgroundColor: Colors.brightOrange,
+    backgroundColor: Colors.lightOrange
   },
   ONGOING: {
     backgroundColor: Colors.brightOrange
   },
   DONE: {
-    // backgroundColor: Colors.lightOrange,
+    backgroundColor: Colors.lightOrange
   },
   content: {
     flex: 1,
@@ -235,6 +242,9 @@ const styles = StyleSheet.create({
   },
   bold: {
     fontWeight: 'bold'
+  },
+  disabled: {
+    backgroundColor: Colors.lightGrey
   }
 })
 

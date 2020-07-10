@@ -24,10 +24,16 @@ const ListHead = ({ startTime, endTime, hotels, rooms, name }) => {
       <Text style={styles.labelUser} category='h4'>
         Bonjour {name},
       </Text>
-      <Text style={styles.sub} appearance='hint'>Voici le récapitulatif de votre journée.</Text>
+      <Text style={styles.sub} appearance='hint'>
+        Voici le récapitulatif de votre journée.
+      </Text>
       <View style={styles.details}>
         {details.map((el, index) => (
-          <Details key={index} {...el} />
+          <Details
+            key={index}
+            {...el}
+            margin={index === details.length - 1 ? 0 : 10}
+          />
         ))}
       </View>
     </View>
@@ -42,8 +48,8 @@ const styles = StyleSheet.create({
   },
   sub: {
     fontSize: 17,
-    color: "#241F1F",
-    fontWeight: "500",
+    color: '#241F1F',
+    fontWeight: '500',
     marginTop: 3,
     opacity: 0.5
   },
@@ -51,7 +57,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginTop: 20,
-    flex: 1,
+    flex: 1
   }
 })
 
