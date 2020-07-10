@@ -3,7 +3,7 @@ import { useLocation, withRouter } from 'react-router-dom'
 import { Link } from 'react-router-dom'
 import appContext from '../context/appContext'
 import { Dropdown, Notifications } from '../molecules'
-import { Logo, Button, Icon } from '../atoms'
+import { Logo } from '../atoms'
 import { navEls } from '../global/data'
 
 const Nav = ({ setAuth }) => {
@@ -42,7 +42,6 @@ const Nav = ({ setAuth }) => {
             <div className='navbar-item'>
               <div className='buttons'>
                 <Notifications />
-                {/* <Icon classProp='fa-bell' /> */}
                 <Dropdown
                   downicon={true}
                   title={context.user.firstName}

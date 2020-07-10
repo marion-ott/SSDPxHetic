@@ -23,8 +23,8 @@ export default function NotificationScreen() {
           </ScrollView>
         </>
       ) : (
-        <IsEmpty />
-      )}
+          <IsEmpty />
+        )}
     </CustomScrollView>
   )
 }
@@ -35,10 +35,11 @@ NotificationScreen.navigationOptions = {
 
 const styles = StyleSheet.create({
   title: {
-    marginBottom: 16,
-    fontWeight: 'bold',
+    marginBottom: 20,
+    marginTop: 15,
+    fontWeight: '500',
     color: '#241F1F',
-    fontSize: 16,
+    fontSize: 17,
     lineHeight: 19
   }
 })

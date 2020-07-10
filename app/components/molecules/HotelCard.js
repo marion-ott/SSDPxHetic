@@ -42,7 +42,7 @@ const HotelCard = ({
   }
 
   return (
-    <View style={[styles.card, styles[status]]}>
+    <View style={[styles.card, styles[status], { backgroundColor: disabled ? "#F4F4F4" : Colors.lightOrange }]}>
       <CardHead {...hotel} status={status} disabled={disabled} onChange={onUpdate} />
       {/* DISPLAY INFO */}
       {status !== 'DONE' && (
@@ -52,7 +52,7 @@ const HotelCard = ({
               style={[
                 styles.text,
                 disabled
-                  ? texts.grey
+                  ? texts.grey && texts.lightgrey
                   : !disabled && status === 'ONGOING'
                     ? texts.white
                     : texts.black
@@ -64,7 +64,7 @@ const HotelCard = ({
               style={[
                 styles.text,
                 status === 'ONGOING' && !disabled ? texts.white : texts.black,
-                disabled ? texts.grey : ''
+                disabled ? texts.grey && texts.lightgrey : ''
               ]}
               category='s2'>
               {hotel.zipCode} {hotel.city}
@@ -268,6 +268,13 @@ const texts = StyleSheet.create({
   },
   orangeBold: {
     color: Colors.brightOrange,
+    fontWeight: 'bold'
+  },
+  lightgrey: {
+    color: Colors.notifdisable,
+  },
+  lightgreyBold: {
+    color: Colors.notifdisable,
     fontWeight: 'bold'
   }
 })
