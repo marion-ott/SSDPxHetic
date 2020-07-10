@@ -8,14 +8,24 @@ import openMap from 'react-native-open-maps'
 
 const CardHead = ({ name, phone, lat, long, status, disabled, onChange }) => {
   const [popover, setPopover] = useState(false)
-  const disabledStyle = disabled && (status === 'UPCOMING') 
-    ? styles.grey : (status === 'UPCOMING')
-    ? styles.black : status === 'DONE'
-    ? styles.black : status === 'ONGOING'
-    ? styles.white : ''
+  const disabledStyle =
+    disabled && status === 'UPCOMING'
+      ? styles.grey
+      : status === 'UPCOMING'
+      ? styles.black
+      : status === 'DONE'
+      ? styles.black
+      : status === 'ONGOING'
+      ? styles.white
+      : ''
 
   const openLoc = () => {
-    openMap({ latitude: lat, longitude: long, navigate_mode: "navigate", end: name })
+    openMap({
+      latitude: lat,
+      longitude: long,
+      navigate_mode: 'navigate',
+      end: name
+    })
   }
 
   const togglePopover = () => {
@@ -29,15 +39,16 @@ const CardHead = ({ name, phone, lat, long, status, disabled, onChange }) => {
       style={styles.more}>
       <Icon
         name='more-vertical-outline'
+        fill={Colors.brightOrange}
         width={16}
         height={16}
-      // fill={Colors.brightOrange}
       />
     </TouchableOpacity>
   )
 
   return (
-    <View style={[styles.cardHead, status == 'DONE' ? '' : styles.borderNotDone]}>
+    <View
+      style={[styles.cardHead, status == 'DONE' ? '' : styles.borderNotDone]}>
       <View style={styles.flexRow}>
         {status == 'DONE' && (
           <View style={styles.slide}>
@@ -49,12 +60,7 @@ const CardHead = ({ name, phone, lat, long, status, disabled, onChange }) => {
             />
           </View>
         )}
-        <Text
-          style={[
-            styles.title,
-            disabledStyle
-          ]}
-          category='h6'>
+        <Text style={[styles.title, disabledStyle]} category='h6'>
           {name}
         </Text>
       </View>
@@ -89,12 +95,11 @@ const CardHead = ({ name, phone, lat, long, status, disabled, onChange }) => {
             </View>
           </OpenURLButton>
 
-          { status === 'ONGOING' && (
+          {status === 'ONGOING' && (
             <TouchableOpacity
               onPress={() => onChange(true)}
               activeOpacity={0.7}
-              style={[styles.options, { marginTop: 16, marginBottom: 0}]}
-            >
+              style={[styles.options, { marginTop: 16, marginBottom: 0 }]}>
               <Icon
                 name='clock-outline'
                 width={18}
@@ -102,7 +107,7 @@ const CardHead = ({ name, phone, lat, long, status, disabled, onChange }) => {
                 fill={Colors.black}
               />
               <Text style={styles.optionsText}>Reprendre plus tard</Text>
-            </TouchableOpacity>    
+            </TouchableOpacity>
           )}
         </Layout>
       </Popover>
@@ -117,11 +122,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingRight: 24,
     width: '100%',
-    height: 55,
+    height: 55
   },
   borderNotDone: {
     borderBottomColor: Colors.darkGrey,
-    borderBottomWidth: 1,
+    borderBottomWidth: 1
   },
   popoverContainer: {
     borderBottomColor: Colors.darkGrey,
@@ -136,7 +141,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     borderRadius: 8,
     paddingVertical: 16,
-    fontSize: 16,
+    fontSize: 16
   },
   touchableButton: {
     marginHorizontal: 10,
@@ -157,7 +162,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 17,
-    fontWeight: "500",
+    fontWeight: '500'
   },
   more: {
     borderRadius: 5,
@@ -167,11 +172,11 @@ const styles = StyleSheet.create({
   flexRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    width: '100%',
+    width: '100%'
   },
   slide: {
     marginRight: 7,
-    alignItems: 'center',
+    alignItems: 'center'
   },
   black: {
     color: Colors.tabIconDefault
