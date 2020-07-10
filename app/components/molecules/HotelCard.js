@@ -2,9 +2,8 @@ import React, { useState } from 'react'
 import { useMutation } from '@apollo/react-hooks'
 import { UPDATE_VISIT, DELETE_VISIT } from '../../graphql/mutations/visits'
 import { StyleSheet, View, TouchableOpacity } from 'react-native'
-import { Button, Card, Modal, Text, Divider } from '@ui-kitten/components'
+import { Modal, Text } from '@ui-kitten/components'
 import Icon from '../atoms/Icon'
-import OpenURLButtonfrom from '../atoms/OpenURLButton'
 import CardHead from '../atoms/CardHead'
 import ModalBody from '../molecules/ModalBody'
 
@@ -22,7 +21,7 @@ const HotelCard = ({
   const [status, setStatus] = useState(originalStatus)
   const [visible, setVisible] = useState(false)
 
-  const [updateVisit, { loading, data, error }] = useMutation(UPDATE_VISIT, {
+  const [updateVisit] = useMutation(UPDATE_VISIT, {
     onCompleted: ({ updateVisit: { status } }) => {
       onChange(id, status)
       setStatus(status)
@@ -30,12 +29,13 @@ const HotelCard = ({
     onError: (error) => console.error('ERREUR: ', error.message)
   })
 
-  // const [deleteVisit, { loading2, data2, error2 }] = useMutation(DELETE_VISIT, {
-  //   onCompleted: () => {
-  //     onChange(id, 'DELETED')
-  //   },
-  //   onError: (error) => console.error('ERREUR: ', error.message)
-  // })
+  const [deleteVisit] = useMutation(DELETE_VISIT, {
+    onCompleted: () => {
+      setVisible(false)
+      onChange(id, 'DELETED')
+    },
+    onError: (error) => console.error('ERREUR: ', error.message)
+  })
 
   const onUpdate = (isCancelled) => {
     const variables = {
@@ -66,7 +66,8 @@ const HotelCard = ({
         onBackdropPress={() => setVisible(false)}>
         <ModalBody
           hotel={hotel}
-          deleteVisit={() => onChange(id, 'deleteVisit')}
+          deleteVisit={deleteVisit}
+          setVisible={() => setVisible(false)}
         />
       </Modal>
       <CardHead

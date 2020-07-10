@@ -5,15 +5,10 @@ import Icon from '../atoms/Icon'
 import Colors from '../../constants/Colors'
 
 const ModalBody = ({ setVisible, hotel, deleteVisit }) => {
-
   return (
     <View style={[styles.container]}>
       <View style={[styles.modalHead]}>
-
-        <Text style={styles.title}>
-          Confirmation de report
-        </Text>
-
+        <Text style={styles.title}>Confirmation de report</Text>
       </View>
 
       <View>
@@ -21,29 +16,20 @@ const ModalBody = ({ setVisible, hotel, deleteVisit }) => {
           Souhaitez-vous vraiment reporter la visite de l'hôtel {hotel.name} ?
         </Text>
 
-        <View style={[{ flexDirection: "row" }]}>
-          
+        <View style={[{ flexDirection: 'row' }]}>
           <TouchableOpacity
             style={[styles.button, styles.logout]}
-            onPress={() => setVisible()}>
+            onPress={() => setVisible(false)}>
             <Text style={[styles.buttonLabel, styles.logoutLabel]}>
-              Non
+              Annuler
             </Text>
           </TouchableOpacity>
 
-          <TouchableOpacity
-            style={styles.button}
-            onPress={() => deleteVisit}>
-            <Text style={styles.buttonLabel}>
-              Oui
-            </Text>
+          <TouchableOpacity style={styles.button} onPress={deleteVisit}>
+            <Text style={styles.buttonLabel}>Confirmer</Text>
           </TouchableOpacity>
-          
         </View>
-
       </View>
-
-
     </View>
   )
 }
@@ -53,12 +39,12 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.white,
     borderRadius: 16,
     padding: 24,
-    minWidth: 300,
+    minWidth: 300
   },
   modalHead: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginBottom: 24,
+    marginBottom: 24
   },
   title: {
     fontSize: 20,
@@ -87,11 +73,11 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     fontSize: 14,
     fontWeight: '500',
-    lineHeight: 16,
+    lineHeight: 16
   },
   input: {
     justifyContent: 'flex-start',
-    alignItems: 'flex-start',
+    alignItems: 'flex-start'
   },
   logout: {
     backgroundColor: 'transparent',

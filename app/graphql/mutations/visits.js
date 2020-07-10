@@ -8,3 +8,11 @@ export const UPDATE_VISIT = gql`
     }
   }
 `
+
+export const DELETE_VISIT = gql`
+  mutation DeleteVisit($id: ID!) {
+    deleteVisit(id: $id) {
+      id
+    }
+  }
+`

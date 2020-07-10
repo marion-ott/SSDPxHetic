@@ -5,17 +5,14 @@ import React, {
   useRef,
   Fragment
 } from 'react'
-import { StyleSheet, View, ScrollView, ActivityIndicator } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { Text, Divider } from '@ui-kitten/components'
-import { useLazyQuery } from '@apollo/react-hooks'
-import { GET_VISITS } from '../../graphql/queries/visits'
 import useGetVisits from '../../hooks/useGetVisits'
 import appContext from '../../context/appContext'
-import dateContext from '../../context/dateContext'
 import HotelCard from '../molecules/HotelCard'
 import ListHead from '../molecules/ListHead'
 import Colors from '../../constants/Colors'
-import { getDateStr, formatDate } from '../../utils/index'
+import { formatDate } from '../../utils/index'
 
 function reducer(state, { type, payload }) {
   switch (type) {
@@ -34,6 +31,14 @@ function reducer(state, { type, payload }) {
         ...state,
         visitInProgress: null,
         visitsCompleted
+      }
+    case 'DELETED':
+      const visits = [...state.visits]
+      const visitId = visits.findIndex((visit) => visit.id === payload.id)
+      visits.splice(visitId, 1)
+      return {
+        ...state,
+        visits
       }
     default:
       throw new Error()
