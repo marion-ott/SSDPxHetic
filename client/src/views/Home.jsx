@@ -1,12 +1,10 @@
 import React, { useState, useEffect, useContext } from 'react'
-import moment from 'moment'
 import dateContext from '../context/dateContext'
 import appContext from '../context/appContext'
 import useGetVisits from '../hooks/useGetVisits'
 import { Calendar, Planning, Filters } from '../organisms'
-import { TableHead, Card } from '../molecules'
 import { Title, Loader } from '../atoms'
-import { formatDate, getWeek } from '../utils'
+import { getWeek } from '../utils'
 import _ from 'lodash'
 
 export default () => {
@@ -44,7 +42,7 @@ export default () => {
           <div className='DatePickerWrapper'>
             <div style={{ height: '290px' }}>
               <div className='DatePicker'>
-                <Calendar onChange={onDateChange} />
+                <Calendar selected={selected} onChange={onDateChange} />
               </div>
             </div>
             <Filters />

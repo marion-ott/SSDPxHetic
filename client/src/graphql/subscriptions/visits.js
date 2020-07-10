@@ -6,7 +6,14 @@ export const SUBSCRIBE_VISITS = gql`
       mutation
       data {
         id
+        date
         status
+        team {
+          users {
+            firstName
+            lastName
+          }
+        }
         hotel {
           name
         }

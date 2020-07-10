@@ -5,6 +5,7 @@ export default ({ users }) => {
     <div className='initials'>
       {users.map((user, index) => (
         <div
+          key={index}
           className='initialsItem'
           style={{ transform: `translateX(-${index * 65}%)` }}>
           <p>

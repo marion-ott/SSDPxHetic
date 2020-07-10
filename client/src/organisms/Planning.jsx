@@ -36,8 +36,14 @@ export default ({ visits, date }) => {
       <Planning>
         {Object.keys(visits).map((key, index) => (
           <div key={index}>
-            {visits[key].map(({ hotel, team }, id) => (
-              <Card key={id} team={team} {...hotel} />
+            {visits[key].map(({ id, status, hotel, team }) => (
+              <Card
+                key={id}
+                visitId={id}
+                status={status}
+                team={team}
+                {...hotel}
+              />
             ))}
           </div>
         ))}

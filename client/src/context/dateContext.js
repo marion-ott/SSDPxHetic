@@ -1,5 +1,4 @@
 import React from 'react'
-import moment from 'moment'
 
 const dateContext = React.createContext()
 const DateProvider = dateContext.Provider

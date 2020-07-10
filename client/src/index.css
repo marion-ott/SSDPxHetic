@@ -40,6 +40,10 @@ a.navbar-item.is-active {
   background: rgba(7, 100, 159, 0.1) !important;
 }
 
+.navbar .container {
+  padding: .6rem 1.5rem .8rem !important;
+}
+
 .login {
   display: flex;
   justify-content: center;
@@ -396,8 +400,6 @@ th[aria-label='empty cell'] {
 }
 
 
-
-
 .Loader {
   height: 100vh;
   display: flex;
@@ -405,9 +407,6 @@ th[aria-label='empty cell'] {
   justify-content: center;
 }
 
-
-/*
- * Default width: 50px */
 .svgIcon {
   width: 80px;
 }
