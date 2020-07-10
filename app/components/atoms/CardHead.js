@@ -24,6 +24,7 @@ const CardHead = ({ name, phone, lat, long, status, disabled, onChange }) => {
       latitude: lat,
       longitude: long,
       navigate_mode: 'navigate',
+      query: name,
       end: name
     })
   }

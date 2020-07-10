@@ -30,12 +30,12 @@ const HotelCard = ({
     onError: (error) => console.error('ERREUR: ', error.message)
   })
 
-  const [deleteVisit, { loading2, data2, error2 }] = useMutation(DELETE_VISIT, {
-    onCompleted: () => {
-      onChange(id, 'DELETED')
-    },
-    onError: (error) => console.error('ERREUR: ', error.message)
-  })
+  // const [deleteVisit, { loading2, data2, error2 }] = useMutation(DELETE_VISIT, {
+  //   onCompleted: () => {
+  //     onChange(id, 'DELETED')
+  //   },
+  //   onError: (error) => console.error('ERREUR: ', error.message)
+  // })
 
   const onUpdate = (isCancelled) => {
     const variables = {
@@ -60,16 +60,15 @@ const HotelCard = ({
         styles[status],
         disabled && status !== 'DONE' && styles.disabled
       ]}>
-        <Modal
-          visible={visible}
-          backdropStyle={styles.backdrop}
-          onBackdropPress={() => setVisible(false)}
-        >
-          <ModalBody
-            hotel={hotel}
-            deleteVisit={() => onChange(id, 'deleteVisit')}
-          />
-        </Modal>
+      <Modal
+        visible={visible}
+        backdropStyle={styles.backdrop}
+        onBackdropPress={() => setVisible(false)}>
+        <ModalBody
+          hotel={hotel}
+          deleteVisit={() => onChange(id, 'deleteVisit')}
+        />
+      </Modal>
       <CardHead
         {...hotel}
         status={status}
@@ -274,7 +273,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   },
   backdrop: {
-    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)'
   },
   disabled: {
     backgroundColor: Colors.lightGrey
