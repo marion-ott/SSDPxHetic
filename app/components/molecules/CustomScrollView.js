@@ -22,12 +22,12 @@ const styles = StyleSheet.create({
     backgroundColor: 'white'
   },
   scrollWrapper: {
-    flex: 1,
-    position: 'absolute',
-    left: 0,
-    right: 0,
-    bottom: 24,
-    overflow: 'visible'
+    // flex: 1,
+    // position: 'absolute',
+    // left: 0,
+    // right: 0,
+    // bottom: 24,
+    // overflow: 'visible'
   },
   component: {
     minHeight: 200,

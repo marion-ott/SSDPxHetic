@@ -28,7 +28,6 @@ export default function LoginScreen({ handleLogin }) {
     onCompleted({ login }) {
       handleLogin(login.user)
       setTokenInStorage(login.token)
-      // client.resetStore()
     },
     onError: (error) => console.log('ERROR MESSAGE : ', error)
   })
