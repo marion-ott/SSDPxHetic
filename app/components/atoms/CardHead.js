@@ -45,7 +45,7 @@ const CardHead = ({ name, phone, lat, long, status, disabled, onChange }) => {
               name='checkmark-outline'
               width={26}
               height={26}
-              fill={disabled ? Colors.notifdisable : Colors.brightOrange}
+              fill={Colors.brightOrange}
             />
           </View>
         )}
@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
     color: Colors.white
   },
   grey: {
-    color: Colors.notifdisable
+    color: Colors.darkGrey
   }
 })
 

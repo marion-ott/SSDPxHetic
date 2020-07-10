@@ -42,7 +42,7 @@ const HotelCard = ({
   }
 
   return (
-    <View style={[styles.card, styles[status], { backgroundColor: disabled && "#F4F4F4" }]}>
+    <View style={[styles.card, styles[status], { backgroundColor: disabled ? "#F4F4F4" : Colors.lightOrange }]}>
       <CardHead {...hotel} status={status} disabled={disabled} onChange={onUpdate} />
       {/* DISPLAY INFO */}
       {status !== 'DONE' && (
