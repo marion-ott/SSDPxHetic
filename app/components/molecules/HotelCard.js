@@ -44,7 +44,12 @@ const HotelCard = ({
   }
 
   return (
-    <View style={[styles.card, styles[status], disabled && styles.disabled]}>
+    <View
+      style={[
+        styles.card,
+        styles[status],
+        disabled && status !== 'DONE' && styles.disabled
+      ]}>
       <CardHead
         {...hotel}
         status={status}
