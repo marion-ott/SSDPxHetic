@@ -35,15 +35,21 @@ const HotelCard = ({
     }
 
     if (status === 'UPCOMING') variables.data.status = 'ONGOING'
-    if (status === 'ONGOING') variables.data.status = isCancelled ? 'UPCOMING' : 'DONE'
+    if (status === 'ONGOING')
+      variables.data.status = isCancelled ? 'UPCOMING' : 'DONE'
     if (status === 'DONE') variables.data.status = 'UPCOMING'
 
     updateVisit({ variables })
   }
 
   return (
-    <View style={[styles.card, styles[status], { backgroundColor: disabled ? "#F4F4F4" : Colors.lightOrange }]}>
-      <CardHead {...hotel} status={status} disabled={disabled} onChange={onUpdate} />
+    <View style={[styles.card, styles[status], disabled && styles.disabled]}>
+      <CardHead
+        {...hotel}
+        status={status}
+        disabled={disabled}
+        onChange={onUpdate}
+      />
       {/* DISPLAY INFO */}
       {status !== 'DONE' && (
         <View style={styles.content}>
@@ -52,10 +58,10 @@ const HotelCard = ({
               style={[
                 styles.text,
                 disabled
-                  ? texts.grey && texts.lightgrey
+                  ? texts.grey
                   : !disabled && status === 'ONGOING'
-                    ? texts.white
-                    : texts.black
+                  ? texts.white
+                  : texts.black
               ]}
               category='s2'>
               {hotel.address},
@@ -64,7 +70,7 @@ const HotelCard = ({
               style={[
                 styles.text,
                 status === 'ONGOING' && !disabled ? texts.white : texts.black,
-                disabled ? texts.grey && texts.lightgrey : ''
+                disabled ? texts.grey : ''
               ]}
               category='s2'>
               {hotel.zipCode} {hotel.city}
@@ -74,7 +80,13 @@ const HotelCard = ({
             <Icon
               style={styles.roomIcon}
               name='briefcase-outline'
-              fill={status === 'ONGOING' ? '#ffffff' : '#FF8139'}
+              fill={
+                status === 'ONGOING'
+                  ? '#ffffff'
+                  : disabled
+                  ? Colors.darkGrey
+                  : '#FF8139'
+              }
               width={20}
               height={20}
             />
@@ -82,7 +94,8 @@ const HotelCard = ({
               style={[
                 styles.text,
                 { marginLeft: 5, fontWeight: '500' },
-                status === 'ONGOING' ? texts.white : texts.black
+                status === 'ONGOING' ? texts.white : texts.black,
+                disabled ? texts.grey : ''
               ]}
               category='s2'>
               {hotel.rooms}
@@ -158,22 +171,22 @@ const styles = StyleSheet.create({
     borderWidth: 0,
     paddingHorizontal: 16,
     alignContent: 'center',
-    backgroundColor: Colors.lightOrange,
+    backgroundColor: Colors.lightOrange
   },
   UPCOMING: {
-    // backgroundColor: Colors.brightOrange,
+    backgroundColor: Colors.lightOrange
   },
   ONGOING: {
     backgroundColor: Colors.brightOrange
   },
   DONE: {
-    // backgroundColor: Colors.lightOrange,
+    backgroundColor: Colors.lightOrange
   },
   content: {
     flex: 1,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingTop: 8,
+    paddingTop: 8
   },
   room: {
     display: 'flex',
@@ -187,7 +200,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center',
+    alignItems: 'center'
   },
   touchableButton: {
     flex: 1,
@@ -205,11 +218,11 @@ const styles = StyleSheet.create({
   },
   report: {
     color: Colors.brightOrange,
-    width: 100,
+    width: 100
   },
   text: {
     fontSize: 15,
-    fontWeight: "400"
+    fontWeight: '400'
   },
   startContainer: {
     // backgroundColor: Colors.brightOrange
@@ -229,6 +242,9 @@ const styles = StyleSheet.create({
   },
   bold: {
     fontWeight: 'bold'
+  },
+  disabled: {
+    backgroundColor: Colors.lightGrey
   }
 })
 
@@ -268,13 +284,6 @@ const texts = StyleSheet.create({
   },
   orangeBold: {
     color: Colors.brightOrange,
-    fontWeight: 'bold'
-  },
-  lightgrey: {
-    color: Colors.notifdisable,
-  },
-  lightgreyBold: {
-    color: Colors.notifdisable,
     fontWeight: 'bold'
   }
 })
